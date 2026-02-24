@@ -82,13 +82,13 @@ def render_fields(fields):
     """渲染 bit field 表格"""
     if not fields:
         return ""
-    
+
     lines = ["| Bits | Name | Access | Default | Description |",
              "|------|------|--------|---------|-------------|"]
-    
+
     covered = set()
     parsed_fields = []
-    
+
     for f in fields:
         high, low = parse_bits(f["bits"])
         for b in range(low, high + 1):
@@ -103,13 +103,15 @@ def render_fields(fields):
             "default": f.get("default", "0") if active else "0",
             "description": f.get("description", "") if active else "reserved",
         })
-    
+
     parsed_fields.sort(key=lambda x: -x["high"])
-    
+
     for f in parsed_fields:
-        bits_str = f"{f['high']}:{f['low']}" if f["high"] != f["low"] else str(f["high"])
-        lines.append(f"| {bits_str} | {f['name']} | {f['access']} | {f['default']} | {f['description']} |")
-    
+        bits_str = f"{f['high']}:{f['low']}" if f["high"] != f["low"] else str(
+            f["high"])
+        lines.append(
+            f"| {bits_str} | {f['name']} | {f['access']} | {f['default']} | {f['description']} |")
+
     return "\n".join(lines)
 
 
@@ -139,14 +141,14 @@ def gen_base_table():
              "| Module | Address |", "|--------|---------|"]
     for name, addr in sorted(MODULES.items(), key=lambda x: x[1]):
         addr_str = f"0x{addr:08X}"
-        
+
         # 检查是否在 MODULE_GATE 中且未启用
         if name in MODULE_GATE:
             active = is_active(name)
             if not active:
                 lines.append(f"| {strike(name)} | {strike(addr_str)} |")
                 continue
-        
+
         lines.append(f"| {name} | {addr_str} |")
     return "\n".join(lines)
 
@@ -200,20 +202,20 @@ def gen_module_regs(yaml_path):
     data = yaml.safe_load(yaml_path.read_text())
     module_name = data["module"]
     instances = data.get("instances", {})
-    
+
     all_lines = []
-    
+
     # 如果没有实例定义，当作单例模块
     if not instances:
         mod_key = module_name.lower()
         lines = [f"### {module_name}", ""]
-        
+
         # 检查模块级条件
         if not check_module_condition(data):
             lines.append(f"*Not present in {CHIP}*")
             all_lines.extend(lines)
             return "\n".join(all_lines)
-        
+
         if mod_key in MODULE_GATE and not is_active(mod_key):
             lines.append(f"*Not present in {CHIP}*")
         else:
@@ -245,24 +247,25 @@ def gen_module_regs(yaml_path):
                     if fields:
                         lines.append(render_fields(fields))
                         lines.append("")
-        
+
         all_lines.extend(lines)
     else:
         # 有多个实例
         for inst_id, inst_cfg in instances.items():
             inst_key = f"{module_name.lower()}_{inst_id.lower()}"
             lines = [f"### {module_name}_{inst_id}", ""]
-            
+
             if inst_key in MODULE_GATE and not is_active(inst_key):
                 lines.append(f"*Not present in {CHIP}*")
             elif inst_key not in MODULES:
                 lines.append(f"*Not defined in MODULES*")
             else:
-                rename_rules = inst_cfg.get("rename_rules") if inst_cfg else None
+                rename_rules = inst_cfg.get(
+                    "rename_rules") if inst_cfg else None
                 for reg in data.get("registers", []):
                     rname = reg["name"]
                     rname = apply_rename_rules(rname, rename_rules)
-                    
+
                     offsets = reg.get("offsets")
                     if isinstance(offsets, dict):
                         for idx, off in offsets.items():
@@ -289,10 +292,10 @@ def gen_module_regs(yaml_path):
                         if fields:
                             lines.append(render_fields(fields))
                             lines.append("")
-            
+
             all_lines.extend(lines)
             all_lines.append("")
-    
+
     return "\n".join(all_lines)
 
 

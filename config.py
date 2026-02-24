@@ -13,45 +13,45 @@ MACROS = {
     # ── 输入设备 ──
     "tdmin": {
         "A": {"imp": 1, "pad_num": 2},
-        "B": {"imp": 0, "pad_num": 2},
-        "C": {"imp": 0, "pad_num": 8},
-        "D": {"imp": 0, "pad_num": 8},
+        "B": {"imp": 1, "pad_num": 2},
+        "C": {"imp": 1, "pad_num": 8},
+        "D": {"imp": 1, "pad_num": 8},
         "LB_A": {"imp": 1, "pad_num": 2},
-        "LB_B": {"imp": 0, "pad_num": 8},
+        "LB_B": {"imp": 1, "pad_num": 8},
     },
     "spdifin": {
-        "A": {"imp": 0},
-        "B": {"imp": 0},
-        "LB_A": {"imp": 0},
-        "LB_B": {"imp": 0},
+        "A": {"imp": 1},
+        "B": {"imp": 1},
+        "LB_A": {"imp": 1},
+        "LB_B": {"imp": 1},
     },
     "pdm": {
-        "A": {"imp": 0, "chan_num": 8},
+        "A": {"imp": 1, "chan_num": 8},
         "B": {"imp": 1, "chan_num": 8},
     },
     "hdmirx": {  # TDM/SPDIF/DSD input interface
-        "A": {"imp": 0, "dsdin_imp": 0},
-        "B": {"imp": 0, "dsdin_imp": 0},
+        "A": {"imp": 1, "dsdin_imp": 0},
+        "B": {"imp": 1, "dsdin_imp": 0},
     },
-    "earcrx": {"imp": 0},
-    "atv": {"imp": 0},
+    "earcrx": {"imp": 1},
+    "atv": {"imp": 1},
 
     # ── 输出设备 ──
     "tdmout": {
         "A": {"imp": 1, "pad_num": 2},
         "B": {"imp": 1, "pad_num": 2},
-        "C": {"imp": 0, "pad_num": 8},
-        "D": {"imp": 0, "pad_num": 8},
+        "C": {"imp": 1, "pad_num": 8},
+        "D": {"imp": 1, "pad_num": 8},
     },
     "spdifout": {
-        "A": {"imp": 0, "ch16": 1},  # else 8ch
-        "B": {"imp": 0, "ch16": 1},  # else 8ch
+        "A": {"imp": 1, "ch16": 1},  # else 8ch
+        "B": {"imp": 1, "ch16": 1},  # else 8ch
     },
     "hdmi_dp_tx": {
-        "A": {"imp": 0},
-        "B": {"imp": 0}
+        "A": {"imp": 1},
+        "B": {"imp": 1}
     },
-    "earctx": {"imp": 0},
+    "earctx": {"imp": 1},
 
     # ── 输入处理 ──
     "loopback": {
@@ -60,13 +60,13 @@ MACROS = {
     },
     "resample": {
         "A": {"imp": 1, "dw": 24, "chnum": 8},
-        "B": {"imp": 0, "dw": 24, "chnum": 32},
-        "C": {"imp": 0, "dw": 24, "chnum": 32},
+        "B": {"imp": 1, "dw": 24, "chnum": 32},
+        "C": {"imp": 1, "dw": 24, "chnum": 32},
     },
 
     # ── 输出处理 ──
     "eqdrc": {
-        "imp": 0,
+        "imp": 1,
         "ch_in": 0,
         "static_coeff": 0  # TV: use dynamic coeff; STB: use static coeff
     },
@@ -77,24 +77,24 @@ MACROS = {
     "toddr": {
         "A": {"imp": 1, "fifo_depth": 128},
         "B": {"imp": 1, "fifo_depth": 128},
-        "C": {"imp": 0, "fifo_depth": 128},
-        "D": {"imp": 0, "fifo_depth": 128},
-        "E": {"imp": 0, "fifo_depth": 128},
+        "C": {"imp": 1, "fifo_depth": 128},
+        "D": {"imp": 1, "fifo_depth": 128},
+        "E": {"imp": 1, "fifo_depth": 128},
         "ch_sync_depth": 16,  # TV: 32; STB: 16 (no channel sync for FRDDR)
     },
     "frddr": {
         "A": {"imp": 1, "fifo_depth": 128},
         "B": {"imp": 1, "fifo_depth": 128},
-        "C": {"imp": 0, "fifo_depth": 128},
-        "D": {"imp": 0, "fifo_depth": 128},
-        "E": {"imp": 0, "fifo_depth": 128},
+        "C": {"imp": 1, "fifo_depth": 128},
+        "D": {"imp": 1, "fifo_depth": 128},
+        "E": {"imp": 1, "fifo_depth": 128},
     },
     "axi_irq_sync": {"imp": 1},
 
     # ── MISC ──
     "voice": {
         "imp": 1,
-        "algo": "vad",  # vad(传统谱熵检测)/sed(神经网络特征检测)
+        "algo": "sed",  # vad(传统谱熵检测)/sed(神经网络特征检测)
         "in_ao": 1  # 放在ao还是ee
     },
     "aocdec": {"imp": 1},
@@ -103,8 +103,8 @@ MACROS = {
     "pwr_domain": {"imp": 1},
     "ddr_arb": {"imp": 0},
     "acc_wrapper": {
-        "ASRC": {"imp": 0},   # ACC for ASRC
-        "EQDRC": {"imp": 0},  # ACC for EQ/DRC
+        "ASRC": {"imp": 1},   # ACC for ASRC
+        "EQDRC": {"imp": 1},  # ACC for EQ/DRC
     },
 }
 
@@ -115,37 +115,37 @@ MODULES = {
     # 主控制模块
     "audio_top_ee":        0xFFAE0000,
     "audio_top_ao":        0xFFAE1000,
-    
+
     # Voice模块 (根据宏配置使用不同算法实现)
     "sed":                 0xFFAC0000,  # SED算法(神经网络)
     "vad":                 0xFE331800,  # VAD算法(传统谱熵)
-    
+
     # PDM 实例
     "pdm_a":               0xFFAE2000,
     "pdm_b":               0xFFAE2400,
-    
+
     # Resample 实例
     "resample_a":          0xFFAE3000,
     "resample_b":          0xFFAE3400,
     "resample_c":          0xFFAE3800,
-    
+
     # EQ/DRC
     "eq_drc":              0xFFAE4000,
-    
+
     # eARC TX
     "earctx_cmdc":         0xFFAE5000,
     "earctx_dmac":         0xFFAE5400,
     "earctx_top":          0xFFAE5600,
-    
+
     # eARC RX
     "earcrx_cmdc":         0xFFAE5800,
     "earcrx_dmac":         0xFFAE5C00,
     "earcrx_top":          0xFFAE5E00,
-    
+
     # Locker 实例
     "locker_a":            0xFFAE6000,
     "locker_b":            0xFFAE6400,
-    
+
     # ACC Wrappers
     "acc_wrapper_asrc":    0xFFAE8400,
     "acc_wrapper_eqdrc":   0xFFAE8800,
@@ -160,9 +160,10 @@ def get_active_voice_module():
     voice_cfg = MACROS.get("voice", {})
     if not voice_cfg.get("imp"):
         return None
-    
+
     algo = voice_cfg.get("algo", "sed")
     return algo  # 返回 "sed" 或 "vad"
+
 
 # ============================================================================
 # 3. 时钟输入源
