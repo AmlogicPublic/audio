@@ -1,5 +1,248 @@
 module: AUDIO_TOP_EE
 
+# ==============================================================================
+# Field templates for EXCEPTION IRQ registers (64 exception irqs)
+# reg0 contains irq bits 31:0, reg1 contains irq bits 63:32
+# ==============================================================================
+exception_irq_fields_0: &exception_irq_fields_0
+  - bits: "31"
+    name: loopback_a_orig_chnum_sync_err1
+    default: "0"
+    description: "LOOPBACK_A ORIG DATA, CHNUM_SYNC_ERR1: detect write new ch when pop buffer"
+    condition: { macro_path: ["loopback", "A", "imp"], eq: 1 }
+  - bits: "30"
+    name: loopback_a_orig_chnum_sync_err0
+    default: "0"
+    description: "LOOPBACK_A ORIG DATA, CHNUM_SYNC_ERR0: miss CH (cur_chnum_id != reg_chnum_id)"
+    condition: { macro_path: ["loopback", "A", "imp"], eq: 1 }
+  - bits: "29"
+    name: loopback_a_insert_chnum_sync_err1
+    default: "0"
+    description: "LOOPBACK_A INSERT DATA, CHNUM_SYNC_ERR1: detect write new ch when pop buffer"
+    condition: { macro_path: ["loopback", "A", "imp"], eq: 1 }
+  - bits: "28"
+    name: loopback_a_insert_chnum_sync_err0
+    default: "0"
+    description: "LOOPBACK_A INSERT DATA, CHNUM_SYNC_ERR0: miss CH (cur_chnum_id != reg_chnum_id)"
+    condition: { macro_path: ["loopback", "A", "imp"], eq: 1 }
+  - bits: "27"
+    name: loopback_b_orig_chnum_sync_err1
+    default: "0"
+    description: "LOOPBACK_B ORIG DATA, CHNUM_SYNC_ERR1: detect write new ch when pop buffer"
+    condition: { macro_path: ["loopback", "B", "imp"], eq: 1 }
+  - bits: "26"
+    name: loopback_b_orig_chnum_sync_err0
+    default: "0"
+    description: "LOOPBACK_B ORIG DATA, CHNUM_SYNC_ERR0: miss CH (cur_chnum_id != reg_chnum_id)"
+    condition: { macro_path: ["loopback", "B", "imp"], eq: 1 }
+  - bits: "25"
+    name: loopback_b_insert_chnum_sync_err1
+    default: "0"
+    description: "LOOPBACK_B INSERT DATA, CHNUM_SYNC_ERR1: detect write new ch when pop buffer"
+    condition: { macro_path: ["loopback", "B", "imp"], eq: 1 }
+  - bits: "24"
+    name: loopback_b_insert_chnum_sync_err0
+    default: "0"
+    description: "LOOPBACK_B INSERT DATA, CHNUM_SYNC_ERR0: miss CH (cur_chnum_id != reg_chnum_id)"
+    condition: { macro_path: ["loopback", "B", "imp"], eq: 1 }
+  - bits: "23"
+    name: resample_a_chnum_sync_err1
+    default: "0"
+    description: "RESAMPLE_A CHNUM_SYNC_ERR1: detect write new ch when pop buffer"
+    condition: { macro_path: ["resample", "A", "imp"], eq: 1 }
+  - bits: "22"
+    name: resample_a_chnum_sync_err0
+    default: "0"
+    description: "RESAMPLE_A CHNUM_SYNC_ERR0: miss CH (cur_chnum_id != reg_chnum_id)"
+    condition: { macro_path: ["resample", "A", "imp"], eq: 1 }
+  - bits: "21"
+    name: resample_b_chnum_sync_err1
+    default: "0"
+    description: "RESAMPLE_B CHNUM_SYNC_ERR1: detect write new ch when pop buffer"
+    condition: { macro_path: ["resample", "B", "imp"], eq: 1 }
+  - bits: "20"
+    name: resample_b_chnum_sync_err0
+    default: "0"
+    description: "RESAMPLE_B CHNUM_SYNC_ERR0: miss CH (cur_chnum_id != reg_chnum_id)"
+    condition: { macro_path: ["resample", "B", "imp"], eq: 1 }
+  - bits: "17"
+    name: spdifin_reserved
+    default: "0"
+    description: "SPDIFIN reserved"
+    condition: { macro_path: ["spdifin", "A", "imp"], eq: 1 }
+  - bits: "16"
+    name: spdifin_afifo_overflow
+    default: "0"
+    description: "SPDIFIN afifo overflow"
+    condition: { macro_path: ["spdifin", "A", "imp"], eq: 1 }
+  - bits: "15"
+    name: spdifin_cyc_cnt_err_min
+    default: "0"
+    description: "SPDIFIN cyc_cnt err, < min"
+    condition: { macro_path: ["spdifin", "A", "imp"], eq: 1 }
+  - bits: "14"
+    name: spdifin_cyc_cnt_err_max
+    default: "0"
+    description: "SPDIFIN cyc_cnt err, > max"
+    condition: { macro_path: ["spdifin", "A", "imp"], eq: 1 }
+  - bits: "13"
+    name: spdifin_parity_err
+    default: "0"
+    description: "SPDIFIN parity_err"
+    condition: { macro_path: ["spdifin", "A", "imp"], eq: 1 }
+  - bits: "12"
+    name: spdifin_bit_cnt_err_gt64
+    default: "0"
+    description: "SPDIFIN bit_cnt err, > 64"
+    condition: { macro_path: ["spdifin", "A", "imp"], eq: 1 }
+  - bits: "11"
+    name: spdifin_bit_cnt_err_ne64
+    default: "0"
+    description: "SPDIFIN bit_cnt err, != 64"
+    condition: { macro_path: ["spdifin", "A", "imp"], eq: 1 }
+  - bits: "10"
+    name: spdifin_xyz_err
+    default: "0"
+    description: "SPDIFIN xyz_err"
+    condition: { macro_path: ["spdifin", "A", "imp"], eq: 1 }
+  - bits: "9"
+    name: sed_chnum_sync_err1
+    default: "0"
+    description: "SED CHNUM_SYNC_ERR1: detect write new ch when pop buffer"
+    condition: { macro_path: ["eqdrc", "imp"], eq: 1 }
+  - bits: "8"
+    name: sed_chnum_sync_err0
+    default: "0"
+    description: "SED CHNUM_SYNC_ERR0: miss CH (cur_chnum_id != reg_chnum_id)"
+    condition: { macro_path: ["eqdrc", "imp"], eq: 1 }
+
+exception_irq_fields_1: &exception_irq_fields_1
+  - bits: "31"
+    name: toddr_a_chnum_sync_err1
+    default: "0"
+    description: "TODDR_A CHNUM_SYNC_ERR1: detect write new ch when pop buffer"
+    condition: { macro_path: ["toddr", "A", "imp"], eq: 1 }
+  - bits: "30"
+    name: toddr_a_chnum_sync_err0
+    default: "0"
+    description: "TODDR_A CHNUM_SYNC_ERR0: miss CH (cur_chnum_id != reg_chnum_id)"
+    condition: { macro_path: ["toddr", "A", "imp"], eq: 1 }
+  - bits: "29"
+    name: toddr_b_chnum_sync_err1
+    default: "0"
+    description: "TODDR_B CHNUM_SYNC_ERR1: detect write new ch when pop buffer"
+    condition: { macro_path: ["toddr", "B", "imp"], eq: 1 }
+  - bits: "28"
+    name: toddr_b_chnum_sync_err0
+    default: "0"
+    description: "TODDR_B CHNUM_SYNC_ERR0: miss CH (cur_chnum_id != reg_chnum_id)"
+    condition: { macro_path: ["toddr", "B", "imp"], eq: 1 }
+  - bits: "27"
+    name: toddr_c_chnum_sync_err1
+    default: "0"
+    description: "TODDR_C CHNUM_SYNC_ERR1: detect write new ch when pop buffer"
+    condition: { macro_path: ["toddr", "C", "imp"], eq: 1 }
+  - bits: "26"
+    name: toddr_c_chnum_sync_err0
+    default: "0"
+    description: "TODDR_C CHNUM_SYNC_ERR0: miss CH (cur_chnum_id != reg_chnum_id)"
+    condition: { macro_path: ["toddr", "C", "imp"], eq: 1 }
+  - bits: "25"
+    name: toddr_d_chnum_sync_err1
+    default: "0"
+    description: "TODDR_D CHNUM_SYNC_ERR1: detect write new ch when pop buffer"
+    condition: { macro_path: ["toddr", "D", "imp"], eq: 1 }
+  - bits: "24"
+    name: toddr_d_chnum_sync_err0
+    default: "0"
+    description: "TODDR_D CHNUM_SYNC_ERR0: miss CH (cur_chnum_id != reg_chnum_id)"
+    condition: { macro_path: ["toddr", "D", "imp"], eq: 1 }
+  - bits: "23"
+    name: toddr_e_chnum_sync_err1
+    default: "0"
+    description: "TODDR_E CHNUM_SYNC_ERR1: detect write new ch when pop buffer"
+    condition: { macro_path: ["toddr", "E", "imp"], eq: 1 }
+  - bits: "22"
+    name: toddr_e_chnum_sync_err0
+    default: "0"
+    description: "TODDR_E CHNUM_SYNC_ERR0: miss CH (cur_chnum_id != reg_chnum_id)"
+    condition: { macro_path: ["toddr", "E", "imp"], eq: 1 }
+  - bits: "17"
+    name: pdmin_hpf_not_finish
+    default: "0"
+    description: "PDMIN HPF NOT FINISH"
+    condition: { macro_path: ["pdm", "A", "imp"], eq: 1 }
+  - bits: "16"
+    name: pdmin_hcic_not_finish
+    default: "0"
+    description: "PDMIN HCIC NOT FINISH"
+    condition: { macro_path: ["pdm", "A", "imp"], eq: 1 }
+  - bits: "14"
+    name: tdmin_a_afifo_overflow
+    default: "0"
+    description: "TDMIN_A AFIFO OVERFLOW"
+    condition: { macro_path: ["tdmin", "A", "imp"], eq: 1 }
+  - bits: "13"
+    name: tdmin_a_slot_cnt_err
+    default: "0"
+    description: "TDMIN_A SLOT_CNT_ERR, SLOT CNT between two WS_RISE didn't equal to REG_SLOT_NUM"
+    condition: { macro_path: ["tdmin", "A", "imp"], eq: 1 }
+  - bits: "12"
+    name: tdmin_a_bit_cnt_err
+    default: "0"
+    description: "TDMIN_A BIT_CNT_ERR, BIT CNT between two SLOT didn't equal to REG_BIT_NUM"
+    condition: { macro_path: ["tdmin", "A", "imp"], eq: 1 }
+  - bits: "10"
+    name: tdmin_b_afifo_overflow
+    default: "0"
+    description: "TDMIN_B AFIFO OVERFLOW"
+    condition: { macro_path: ["tdmin", "B", "imp"], eq: 1 }
+  - bits: "9"
+    name: tdmin_b_slot_cnt_err
+    default: "0"
+    description: "TDMIN_B SLOT_CNT_ERR, SLOT CNT between two WS_RISE didn't equal to REG_SLOT_NUM"
+    condition: { macro_path: ["tdmin", "B", "imp"], eq: 1 }
+  - bits: "8"
+    name: tdmin_b_bit_cnt_err
+    default: "0"
+    description: "TDMIN_B BIT_CNT_ERR, BIT CNT between two SLOT didn't equal to REG_BIT_NUM"
+    condition: { macro_path: ["tdmin", "B", "imp"], eq: 1 }
+  - bits: "6"
+    name: tdmin_c_afifo_overflow
+    default: "0"
+    description: "TDMIN_C AFIFO OVERFLOW"
+    condition: { macro_path: ["tdmin", "C", "imp"], eq: 1 }
+  - bits: "5"
+    name: tdmin_c_slot_cnt_err
+    default: "0"
+    description: "TDMIN_C SLOT_CNT_ERR, SLOT CNT between two WS_RISE didn't equal to REG_SLOT_NUM"
+    condition: { macro_path: ["tdmin", "C", "imp"], eq: 1 }
+  - bits: "4"
+    name: tdmin_c_bit_cnt_err
+    default: "0"
+    description: "TDMIN_C BIT_CNT_ERR, BIT CNT between two SLOT didn't equal to REG_BIT_NUM"
+    condition: { macro_path: ["tdmin", "C", "imp"], eq: 1 }
+  - bits: "3"
+    name: ddr_arb_timeout
+    default: "0"
+    description: "DDR_ARB locked for one request for long time (> time_out_cnt)"
+    condition: { macro_path: ["ddr_arb", "imp"], eq: 1 }
+  - bits: "2"
+    name: tdmin_lb_afifo_overflow
+    default: "0"
+    description: "TDMIN_LB AFIFO OVERFLOW"
+    condition: { macro_path: ["tdmin", "LB_A", "imp"], eq: 1 }
+  - bits: "1"
+    name: tdmin_lb_slot_cnt_err
+    default: "0"
+    description: "TDMIN_LB SLOT_CNT_ERR, SLOT CNT between two WS_RISE didn't equal to REG_SLOT_NUM"
+    condition: { macro_path: ["tdmin", "LB_A", "imp"], eq: 1 }
+  - bits: "0"
+    name: tdmin_lb_bit_cnt_err
+    default: "0"
+    description: "TDMIN_LB BIT_CNT_ERR, BIT CNT between two SLOT didn't equal to REG_BIT_NUM"
+    condition: { macro_path: ["tdmin", "LB_A", "imp"], eq: 1 }
+
 registers:
   # ============================================================================
   # CLK/RESET Registers
@@ -1371,94 +1614,69 @@ registers:
         description: "set 7 if need div 8"
 
   # ============================================================================
-  # EXCEPTION IRQ Registers
+  # EXCEPTION IRQ Registers (64 exception irqs, bits 31:0 in reg0, bits 63:32 in reg1)
   # ============================================================================
+  # --------------------------------------------------------------------------
+  # EXCEPTION_IRQ_STS (status registers)
+  # --------------------------------------------------------------------------
   - name: EXCEPTION_IRQ_STS0
     offset: 0x380
-    fields:
-      - bits: "31:0"
-        name: irq_sts
-        access: R
-        default: "0x00000000"
-        description: "change to high by irq; change to low by clr"
+    fields: *exception_irq_fields_0
+    field_access_override: R
 
   - name: EXCEPTION_IRQ_STS1
     offset: 0x381
-    fields:
-      - bits: "31:0"
-        name: irq_sts
-        access: R
-        default: "0x00000000"
-        description: "change to high by irq; change to low by clr"
+    fields: *exception_irq_fields_1
+    field_access_override: R
 
+  # --------------------------------------------------------------------------
+  # EXCEPTION_IRQ_MASK (mask registers)
+  # --------------------------------------------------------------------------
   - name: EXCEPTION_IRQ_MASK0
     offset: 0x382
-    fields:
-      - bits: "31:0"
-        name: irq_mask
-        access: R/W
-        default: "0x00000000"
-        description: "irq mask"
+    fields: *exception_irq_fields_0
+    field_access_override: R/W
 
   - name: EXCEPTION_IRQ_MASK1
     offset: 0x383
-    fields:
-      - bits: "31:0"
-        name: irq_mask
-        access: R/W
-        default: "0x00000000"
-        description: "irq mask"
+    fields: *exception_irq_fields_1
+    field_access_override: R/W
 
+  # --------------------------------------------------------------------------
+  # EXCEPTION_IRQ_MODE (mode registers: 0=pulse, 1=level)
+  # --------------------------------------------------------------------------
   - name: EXCEPTION_IRQ_MODE0
     offset: 0x384
-    fields:
-      - bits: "31:0"
-        name: irq_mode
-        access: R/W
-        default: "0x00000000"
-        description: "each bit: 0:pulse irq; 1:level irq"
+    fields: *exception_irq_fields_0
+    field_access_override: R/W
 
   - name: EXCEPTION_IRQ_MODE1
     offset: 0x385
-    fields:
-      - bits: "31:0"
-        name: irq_mode
-        access: R/W
-        default: "0x00000000"
-        description: "each bit: 0:pulse irq; 1:level irq"
+    fields: *exception_irq_fields_1
+    field_access_override: R/W
 
+  # --------------------------------------------------------------------------
+  # EXCEPTION_IRQ_CLR (clear registers)
+  # --------------------------------------------------------------------------
   - name: EXCEPTION_IRQ_CLR0
     offset: 0x386
-    fields:
-      - bits: "31:0"
-        name: irq_clr
-        access: R/W
-        default: "0x00000000"
-        description: "each bit can clear each sts bit"
+    fields: *exception_irq_fields_0
+    field_access_override: R/W
 
   - name: EXCEPTION_IRQ_CLR1
     offset: 0x387
-    fields:
-      - bits: "31:0"
-        name: irq_clr
-        access: R/W
-        default: "0x00000000"
-        description: "each bit can clear each sts bit"
+    fields: *exception_irq_fields_1
+    field_access_override: R/W
 
+  # --------------------------------------------------------------------------
+  # EXCEPTION_IRQ_INV (invert registers)
+  # --------------------------------------------------------------------------
   - name: EXCEPTION_IRQ_INV0
     offset: 0x388
-    fields:
-      - bits: "31:0"
-        name: irq_inv
-        access: R/W
-        default: "0x00000000"
-        description: "each bit can invert irq"
+    fields: *exception_irq_fields_0
+    field_access_override: R/W
 
   - name: EXCEPTION_IRQ_INV1
     offset: 0x389
-    fields:
-      - bits: "31:0"
-        name: irq_inv
-        access: R/W
-        default: "0x00000000"
-        description: "each bit can invert irq"
+    fields: *exception_irq_fields_1
+    field_access_override: R/W

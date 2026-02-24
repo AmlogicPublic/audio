@@ -231,8 +231,18 @@ def render_register(reg, lines, rename_rules=None):
                 lines.append(render_fields(fields))
                 lines.append("")
     elif isinstance(offsets, dict):
-        for idx, off in offsets.items():
-            n = rname.replace("{IDX}", idx)
+        instances = reg.get("instances", list(offsets.keys()))
+        conditions = reg.get("conditions", {})
+        for idx in instances:
+            if idx not in offsets:
+                continue
+            # 检查实例级条件
+            inst_cond = conditions.get(idx)
+            if inst_cond and not check_condition(inst_cond):
+                continue
+            off = offsets[idx]
+            # 支持多种占位符格式: {X}, {IDX}, 等
+            n = re.sub(r'\{[A-Z_]+\}', idx, rname)
             lines.append(f"#### {n} @ 10'h{off:03X}")
             lines.append("")
             desc = reg.get("description", "")
