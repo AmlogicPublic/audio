@@ -1,0 +1,208 @@
+#!/usr/bin/env python3
+"""
+Audio Spec 生成器
+"""
+
+import re
+from pathlib import Path
+import yaml
+
+from config import CHIP, MACROS, MODULES, CLK_INPUTS
+
+# ============================================================================
+# 辅助定义（派生规则，放这里不污染 config）
+# ============================================================================
+
+# 模块 gate 映射：模块名 → MACROS 路径
+MODULE_GATE = {
+    "pdm_a":         ("pdm", "A", "imp"),
+    "pdm_b":         ("pdm", "B", "imp"),
+    "resample_a":    ("resample", "A", "imp"),
+    "resample_b":    ("resample", "B", "imp"),
+    "resample_c":    ("resample", "C", "imp"),
+    "eq_drc":        ("eqdrc", "imp"),
+    "earctx_cmdc":   ("earctx", "imp"),
+    "earctx_dmac":   ("earctx", "imp"),
+    "earctx_top":    ("earctx", "imp"),
+    "earcrx_cmdc":   ("earcrx", "imp"),
+    "earcrx_dmac":   ("earcrx", "imp"),
+    "earcrx_top":    ("earcrx", "imp"),
+    "locker_a":      ("locker", "A", "imp"),
+    "locker_b":      ("locker", "B", "imp"),
+    "asrc_wrapper":  None,   # C5 不支持
+    "eqdrc_wrapper": None,   # C5 不支持
+}
+
+# ============================================================================
+# 工具函数
+# ============================================================================
+
+
+def get_macro(*path):
+    """从 MACROS 树中取值"""
+    node = MACROS
+    for p in path:
+        if not isinstance(node, dict) or p not in node:
+            return 0
+        node = node[p]
+    return node if not isinstance(node, dict) else node.get("imp", 0)
+
+
+def is_active(mod_name):
+    """模块是否启用"""
+    gate = MODULE_GATE.get(mod_name)
+    if gate is None:
+        return False
+    return get_macro(*gate)
+
+
+def strike(text):
+    return f"~~{text}~~"
+
+
+# ============================================================================
+# 文档生成
+# ============================================================================
+
+def gen_base_table():
+    lines = ["### Module Base Addresses", "",
+             "| Module | Address |", "|--------|---------|"]
+    for name, addr in sorted(MODULES.items(), key=lambda x: x[1]):
+        addr_str = f"0x{addr:08X}"
+        
+        # 检查是否在 MODULE_GATE 中且未启用
+        if name in MODULE_GATE:
+            active = is_active(name)
+            if not active:
+                lines.append(f"| {strike(name)} | {strike(addr_str)} |")
+                continue
+        
+        lines.append(f"| {name} | {addr_str} |")
+    return "\n".join(lines)
+
+
+def gen_clk_table():
+    lines = ["### Clock Input Sources", ""]
+    for group, inputs in CLK_INPUTS.items():
+        lines.extend(["| Port | Driver |", "|------|--------|"])
+        for suffix, driver in inputs.items():
+            lines.append(f"| I_{group}_{suffix} | {driver} |")
+        lines.append("")
+    return "\n".join(lines)
+
+
+def gen_macro_table():
+    lines = ["### Macro Parameters", "",
+             "| Path | Value |", "|------|-------|"]
+
+    def walk(node, path=""):
+        if isinstance(node, dict):
+            for k, v in node.items():
+                walk(v, f"{path}.{k}" if path else k)
+        else:
+            lines.append(f"| {path} | {node} |")
+
+    walk(MACROS)
+    return "\n".join(lines)
+
+
+def apply_rename_rules(reg_name, rules):
+    """应用重命名规则"""
+    if not rules:
+        return reg_name
+    for rule in rules:
+        pattern = rule.get("pattern", "")
+        replacement = rule.get("replacement", "")
+        reg_name = re.sub(pattern, replacement, reg_name)
+    return reg_name
+
+
+def gen_module_regs(yaml_path):
+    """生成单个模块的寄存器章节"""
+    data = yaml.safe_load(yaml_path.read_text())
+    module_name = data["module"]
+    instances = data.get("instances", {})
+    
+    all_lines = []
+    
+    # 如果没有实例定义，当作单例模块
+    if not instances:
+        mod_key = module_name.lower()
+        lines = [f"### {module_name}", ""]
+        
+        if mod_key in MODULE_GATE and not is_active(mod_key):
+            lines.append(f"*Not present in {CHIP}*")
+        else:
+            for reg in data.get("registers", []):
+                rname = reg["name"]
+                offsets = reg.get("offsets")
+                if isinstance(offsets, dict):
+                    for idx, off in offsets.items():
+                        n = rname.replace("{IDX}", idx)
+                        lines.append(f"- `{n}` @ 10'h{off:03X}")
+                else:
+                    off = reg.get("offset", 0)
+                    lines.append(f"- `{rname}` @ 10'h{off:03X}")
+        
+        all_lines.extend(lines)
+    else:
+        # 有多个实例
+        for inst_id, inst_cfg in instances.items():
+            inst_key = f"{module_name.lower()}_{inst_id.lower()}"
+            lines = [f"### {module_name}_{inst_id}", ""]
+            
+            if inst_key in MODULE_GATE and not is_active(inst_key):
+                lines.append(f"*Not present in {CHIP}*")
+            elif inst_key not in MODULES:
+                lines.append(f"*Not defined in MODULES*")
+            else:
+                rename_rules = inst_cfg.get("rename_rules") if inst_cfg else None
+                for reg in data.get("registers", []):
+                    rname = reg["name"]
+                    rname = apply_rename_rules(rname, rename_rules)
+                    
+                    offsets = reg.get("offsets")
+                    if isinstance(offsets, dict):
+                        for idx, off in offsets.items():
+                            n = rname.replace("{IDX}", idx)
+                            lines.append(f"- `{n}` @ 10'h{off:03X}")
+                    else:
+                        off = reg.get("offset", 0)
+                        lines.append(f"- `{rname}` @ 10'h{off:03X}")
+            
+            all_lines.extend(lines)
+            all_lines.append("")
+    
+    return "\n".join(all_lines)
+
+
+# ============================================================================
+# 主流程
+# ============================================================================
+
+def main():
+    modules_dir = Path("modules")
+    assert modules_dir.exists()
+
+    lines = [
+        f"# {CHIP} Audio Register Specification",
+        "",
+        gen_base_table(),
+        "",
+        "---",
+        "",
+        "## Register Details",
+        "",
+    ]
+
+    for yaml_path in sorted(modules_dir.glob("*.yaml")):
+        lines.extend([gen_module_regs(yaml_path), ""])
+
+    lines.extend(["---", "", gen_clk_table(), "---", "", gen_macro_table()])
+
+    Path("generated_regs.md").write_text("\n".join(lines))
+    print("输出: generated_regs.md")
+
+
+if __name__ == "__main__":
+    main()

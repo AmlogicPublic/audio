@@ -1,0 +1,2319 @@
+module: AUDIO_TOP_EE
+
+registers:
+  - name: EE_AUDIO_CLK_GATE_EN0
+    offset: 0x0000
+
+  - name: EE_AUDIO_CLK_GATE_EN1
+    offset: 0x0001
+
+  - name: EE_AUDIO_MCLK_{IDX}_CTRL
+    offsets:
+      A: 0x0002
+      B: 0x0003
+      C: 0x0004
+      D: 0x0005
+      E: 0x0006
+      F: 0x0007
+
+  - name: EE_AUDIO_SW_RESET0
+    offset: 0x000a
+
+  - name: EE_AUDIO_SW_RESET1
+    offset: 0x000b
+
+  - name: EE_AUDIO_CLK81_CTRL
+    offset: 0x000c
+
+  - name: EE_AUDIO_CLK81_EN
+    offset: 0x000d
+
+  - name: EE_AUDIO_MCLK_CTRL
+    offset: 0x000e
+
+  - name: EE_AUDIO_MST_{IDX}_SCLK_CTRL0
+    offsets:
+      A: 0x0010
+      B: 0x0012
+      C: 0x0014
+      D: 0x0016
+      E: 0x0018
+      F: 0x001a
+
+  - name: EE_AUDIO_MST_{IDX}_SCLK_CTRL1
+    offsets:
+      A: 0x0011
+      B: 0x0013
+      C: 0x0015
+      D: 0x0017
+      E: 0x0019
+      F: 0x001b
+
+  - name: EE_AUDIO_MST_DLY_CTRL0
+    offset: 0x001c
+
+  - name: EE_AUDIO_MST_DLY_CTRL1
+    offset: 0x001d
+
+  - name: EE_AUDIO_CLK_TDMIN_{IDX}_CTRL
+    offsets:
+      A: 0x0020
+      B: 0x0021
+      C: 0x0022
+      D: 0x003a
+      LB: 0x0023
+    gates:
+      A: null
+      B: TDMIN_B_IMP
+      C: TDMIN_C_IMP
+      D: TDMIN_D_IMP
+      LB: null
+
+  - name: EE_AUDIO_CLK_TDMOUT_{IDX}_CTRL
+    offsets:
+      A: 0x0024
+      B: 0x0025
+      C: 0x0026
+      D: 0x003b
+    gates:
+      A: null
+      B: TDMOUT_B_IMP
+      C: TDMOUT_C_IMP
+      D: TDMOUT_D_IMP
+
+  - name: EE_AUDIO_CLK_SPDIFIN_CTRL
+    offset: 0x0027
+    gate: SPDIFIN_IMP
+
+  - name: EE_AUDIO_CLK_SPDIFOUT_CTRL
+    offset: 0x0028
+    gate: SPDIFOUT_IMP
+
+  - name: EE_AUDIO_CLK_RESAMPLEA_CTRL
+    offset: 0x0029
+
+  - name: EE_AUDIO_CLK_LOCKER_CTRL
+    offset: 0x002a
+
+  - name: EE_AUDIO_CLK_PDMIN_CTRL0
+    offset: 0x002b
+
+  - name: EE_AUDIO_CLK_PDMIN_CTRL1
+    offset: 0x002c
+
+  - name: EE_AUDIO_CLK_SPDIFOUT_B_CTRL
+    offset: 0x002d
+    gate: SPDIFOUT_B_IMP
+
+  - name: EE_AUDIO_CLK_RESAMPLEB_CTRL
+    offset: 0x002e
+    gate: RSAMPL_B_IMP
+
+  - name: EE_AUDIO_CLK_SPDIFIN_LB_CTRL
+    offset: 0x002f
+    gate: SPDIF_LB_IMP
+
+  - name: EE_AUDIO_CLK_EQDRC_CTRL0
+    offset: 0x0030
+    gate: EQDRC_IMP
+
+  - name: EE_AUDIO_{VOICE}_CLK_CTRL
+    offset: 0x0031
+    voice_param: true
+    gates:
+      sed: VOICE_IMP
+      vad: VOICE_IMP
+
+  - name: EE_AUDIO_EARCTX_CMDC_CLK_CTRL
+    offset: 0x0032
+    gate: EARCTX_IMP
+
+  - name: EE_AUDIO_EARCTX_DMAC_CLK_CTRL
+    offset: 0x0033
+    gate: EARCTX_IMP
+
+  - name: EE_AUDIO_EARCRX_CMDC_CLK_CTRL
+    offset: 0x0034
+    gate: EARCRX_IMP
+
+  - name: EE_AUDIO_EARCRX_DMAC_CLK_CTRL
+    offset: 0x0035
+    gate: EARCRX_IMP
+
+  - name: EE_AUDIO_CLK_LOCKERB_CTRL
+    offset: 0x0036
+    gate: LOCKER_B_IMP
+
+  - name: EE_AUDIO_CLK_TDMINB_LB_CTRL
+    offset: 0x0037
+    gate: TDMINB_LB_IMP
+
+  - name: EE_AUDIO_CLK_PDMIN_CTRL2
+    offset: 0x0038
+
+  - name: EE_AUDIO_CLK_PDMIN_CTRL3
+    offset: 0x0039
+
+  - name: EE_AUDIO_CLK_RESAMPLEC_CTRL
+    offset: 0x003c
+    gate: RSAMPL_C_IMP
+
+  - name: EE_AUDIO_TODDR_{IDX}_CTRL0
+    offsets:
+      A: 0x0040
+      B: 0x0050
+      C: 0x0060
+      D: 0x0210
+      E: 0x0240
+    gates:
+      A: null
+      B: TODDR_B_IMP
+      C: TODDR_C_IMP
+      D: TODDR_D_IMP
+      E: TODDR_E_IMP
+
+  - name: EE_AUDIO_TODDR_{IDX}_CTRL1
+    offsets:
+      A: 0x0041
+      B: 0x0051
+      C: 0x0061
+      D: 0x0211
+      E: 0x0241
+    gates:
+      A: null
+      B: TODDR_B_IMP
+      C: TODDR_C_IMP
+      D: TODDR_D_IMP
+      E: TODDR_E_IMP
+
+  - name: EE_AUDIO_TODDR_{IDX}_START_ADDR
+    offsets:
+      A: 0x0042
+      B: 0x0052
+      C: 0x0062
+      D: 0x0212
+      E: 0x0242
+    gates:
+      A: null
+      B: TODDR_B_IMP
+      C: TODDR_C_IMP
+      D: TODDR_D_IMP
+      E: TODDR_E_IMP
+
+  - name: EE_AUDIO_TODDR_{IDX}_FINISH_ADDR
+    offsets:
+      A: 0x0043
+      B: 0x0053
+      C: 0x0063
+      D: 0x0213
+      E: 0x0243
+    gates:
+      A: null
+      B: TODDR_B_IMP
+      C: TODDR_C_IMP
+      D: TODDR_D_IMP
+      E: TODDR_E_IMP
+
+  - name: EE_AUDIO_TODDR_{IDX}_INT_ADDR
+    offsets:
+      A: 0x0044
+      B: 0x0054
+      C: 0x0064
+      D: 0x0214
+      E: 0x0244
+    gates:
+      A: null
+      B: TODDR_B_IMP
+      C: TODDR_C_IMP
+      D: TODDR_D_IMP
+      E: TODDR_E_IMP
+
+  - name: EE_AUDIO_TODDR_{IDX}_STATUS1
+    offsets:
+      A: 0x0045
+      B: 0x0055
+      C: 0x0065
+      D: 0x0215
+      E: 0x0245
+    gates:
+      A: null
+      B: TODDR_B_IMP
+      C: TODDR_C_IMP
+      D: TODDR_D_IMP
+      E: TODDR_E_IMP
+
+  - name: EE_AUDIO_TODDR_{IDX}_STATUS2
+    offsets:
+      A: 0x0046
+      B: 0x0056
+      C: 0x0066
+      D: 0x0216
+      E: 0x0246
+    gates:
+      A: null
+      B: TODDR_B_IMP
+      C: TODDR_C_IMP
+      D: TODDR_D_IMP
+      E: TODDR_E_IMP
+
+  - name: EE_AUDIO_TODDR_{IDX}_START_ADDRB
+    offsets:
+      A: 0x0047
+      B: 0x0057
+      C: 0x0067
+      D: 0x0217
+      E: 0x0247
+    gates:
+      A: null
+      B: TODDR_B_IMP
+      C: TODDR_C_IMP
+      D: TODDR_D_IMP
+      E: TODDR_E_IMP
+
+  - name: EE_AUDIO_TODDR_{IDX}_FINISH_ADDRB
+    offsets:
+      A: 0x0048
+      B: 0x0058
+      C: 0x0068
+      D: 0x0218
+      E: 0x0248
+    gates:
+      A: null
+      B: TODDR_B_IMP
+      C: TODDR_C_IMP
+      D: TODDR_D_IMP
+      E: TODDR_E_IMP
+
+  - name: EE_AUDIO_TODDR_{IDX}_INIT_ADDR
+    offsets:
+      A: 0x0049
+      B: 0x0059
+      C: 0x0069
+      D: 0x0219
+      E: 0x0249
+    gates:
+      A: null
+      B: TODDR_B_IMP
+      C: TODDR_C_IMP
+      D: TODDR_D_IMP
+      E: TODDR_E_IMP
+
+  - name: EE_AUDIO_TODDR_{IDX}_CTRL2
+    offsets:
+      A: 0x004a
+      B: 0x005a
+      C: 0x006a
+      D: 0x021a
+      E: 0x024a
+    gates:
+      A: null
+      B: TODDR_B_IMP
+      C: TODDR_C_IMP
+      D: TODDR_D_IMP
+      E: TODDR_E_IMP
+
+  - name: EE_AUDIO_TODDR_{IDX}_AADDR
+    offsets:
+      A: 0x004b
+      B: 0x005b
+      C: 0x006b
+      D: 0x021b
+      E: 0x024b
+    gates:
+      A: null
+      B: TODDR_B_IMP
+      C: TODDR_C_IMP
+      D: TODDR_D_IMP
+      E: TODDR_E_IMP
+
+  - name: EE_AUDIO_TODDR_{IDX}_STATUS3
+    offsets:
+      A: 0x004c
+      B: 0x005c
+      C: 0x006c
+      D: 0x021c
+      E: 0x024c
+    gates:
+      A: null
+      B: TODDR_B_IMP
+      C: TODDR_C_IMP
+      D: TODDR_D_IMP
+      E: TODDR_E_IMP
+
+  - name: EE_AUDIO_FRDDR_{IDX}_CTRL0
+    offsets:
+      A: 0x0070
+      B: 0x0080
+      C: 0x0090
+      D: 0x0220
+      E: 0x0250
+    gates:
+      A: null
+      B: FRDDR_B_IMP
+      C: FRDDR_C_IMP
+      D: FRDDR_D_IMP
+      E: FRDDR_E_IMP
+
+  - name: EE_AUDIO_FRDDR_{IDX}_CTRL1
+    offsets:
+      A: 0x0071
+      B: 0x0081
+      C: 0x0091
+      D: 0x0221
+      E: 0x0251
+    gates:
+      A: null
+      B: FRDDR_B_IMP
+      C: FRDDR_C_IMP
+      D: FRDDR_D_IMP
+      E: FRDDR_E_IMP
+
+  - name: EE_AUDIO_FRDDR_{IDX}_START_ADDR
+    offsets:
+      A: 0x0072
+      B: 0x0082
+      C: 0x0092
+      D: 0x0222
+      E: 0x0252
+    gates:
+      A: null
+      B: FRDDR_B_IMP
+      C: FRDDR_C_IMP
+      D: FRDDR_D_IMP
+      E: FRDDR_E_IMP
+
+  - name: EE_AUDIO_FRDDR_{IDX}_FINISH_ADDR
+    offsets:
+      A: 0x0073
+      B: 0x0083
+      C: 0x0093
+      D: 0x0223
+      E: 0x0253
+    gates:
+      A: null
+      B: FRDDR_B_IMP
+      C: FRDDR_C_IMP
+      D: FRDDR_D_IMP
+      E: FRDDR_E_IMP
+
+  - name: EE_AUDIO_FRDDR_{IDX}_INT_ADDR
+    offsets:
+      A: 0x0074
+      B: 0x0084
+      C: 0x0094
+      D: 0x0224
+      E: 0x0254
+    gates:
+      A: null
+      B: FRDDR_B_IMP
+      C: FRDDR_C_IMP
+      D: FRDDR_D_IMP
+      E: FRDDR_E_IMP
+
+  - name: EE_AUDIO_FRDDR_{IDX}_STATUS1
+    offsets:
+      A: 0x0075
+      B: 0x0085
+      C: 0x0095
+      D: 0x0225
+      E: 0x0255
+    gates:
+      A: null
+      B: FRDDR_B_IMP
+      C: FRDDR_C_IMP
+      D: FRDDR_D_IMP
+      E: FRDDR_E_IMP
+
+  - name: EE_AUDIO_FRDDR_{IDX}_STATUS2
+    offsets:
+      A: 0x0076
+      B: 0x0086
+      C: 0x0096
+      D: 0x0226
+      E: 0x0256
+    gates:
+      A: null
+      B: FRDDR_B_IMP
+      C: FRDDR_C_IMP
+      D: FRDDR_D_IMP
+      E: FRDDR_E_IMP
+
+  - name: EE_AUDIO_FRDDR_{IDX}_START_ADDRB
+    offsets:
+      A: 0x0077
+      B: 0x0087
+      C: 0x0097
+      D: 0x0227
+      E: 0x0257
+    gates:
+      A: null
+      B: FRDDR_B_IMP
+      C: FRDDR_C_IMP
+      D: FRDDR_D_IMP
+      E: FRDDR_E_IMP
+
+  - name: EE_AUDIO_FRDDR_{IDX}_FINISH_ADDRB
+    offsets:
+      A: 0x0078
+      B: 0x0088
+      C: 0x0098
+      D: 0x0228
+      E: 0x0258
+    gates:
+      A: null
+      B: FRDDR_B_IMP
+      C: FRDDR_C_IMP
+      D: FRDDR_D_IMP
+      E: FRDDR_E_IMP
+
+  - name: EE_AUDIO_FRDDR_{IDX}_INIT_ADDR
+    offsets:
+      A: 0x0079
+      B: 0x0089
+      C: 0x0099
+      D: 0x0229
+      E: 0x0259
+    gates:
+      A: null
+      B: FRDDR_B_IMP
+      C: FRDDR_C_IMP
+      D: FRDDR_D_IMP
+      E: FRDDR_E_IMP
+
+  - name: EE_AUDIO_FRDDR_{IDX}_CTRL2
+    offsets:
+      A: 0x007a
+      B: 0x008a
+      C: 0x009a
+      D: 0x022a
+      E: 0x025a
+    gates:
+      A: null
+      B: FRDDR_B_IMP
+      C: FRDDR_C_IMP
+      D: FRDDR_D_IMP
+      E: FRDDR_E_IMP
+
+  - name: EE_AUDIO_FRDDR_{IDX}_AADDR
+    offsets:
+      A: 0x007b
+      B: 0x008b
+      C: 0x009b
+      D: 0x022b
+      E: 0x025b
+    gates:
+      A: null
+      B: FRDDR_B_IMP
+      C: FRDDR_C_IMP
+      D: FRDDR_D_IMP
+      E: FRDDR_E_IMP
+
+  - name: EE_AUDIO_FRDDR_{IDX}_STATUS3
+    offsets:
+      A: 0x007c
+      B: 0x008c
+      C: 0x009c
+      D: 0x022c
+      E: 0x025c
+    gates:
+      A: null
+      B: FRDDR_B_IMP
+      C: FRDDR_C_IMP
+      D: FRDDR_D_IMP
+      E: FRDDR_E_IMP
+
+  - name: EE_AUDIO_ARB_CTRL0
+    offset: 0x00a0
+
+  - name: EE_AUDIO_ARB_CTRL1
+    offset: 0x00a1
+
+  - name: EE_AUDIO_AM2AXI_CTRL0
+    offset: 0x00a2
+
+  - name: EE_AUDIO_AM2AXI_CTRL1
+    offset: 0x00a3
+
+  - name: EE_AUDIO_AXI_ASYNC_CTRL0
+    offset: 0x00a4
+
+  - name: EE_AUDIO_AXI_UGT_CTRL0
+    offset: 0x00a5
+
+  - name: EE_AUDIO_ARB_STS
+    offset: 0x00a8
+
+  - name: EE_AUDIO_AM2AXI_STS
+    offset: 0x00a9
+
+  - name: EE_AUDIO_AXI_ASYNC_STS
+    offset: 0x00aa
+
+  - name: EE_AUDIO_LB_A_CTRL0
+    offset: 0x00b0
+
+  - name: EE_AUDIO_LB_A_CTRL1
+    offset: 0x00b1
+
+  - name: EE_AUDIO_LB_A_CTRL2
+    offset: 0x00b2
+
+  - name: EE_AUDIO_LB_A_CTRL3
+    offset: 0x00b3
+
+  - name: EE_AUDIO_LB_A_DAT_CH_ID0
+    offset: 0x00b4
+
+  - name: EE_AUDIO_LB_A_DAT_CH_ID1
+    offset: 0x00b5
+
+  - name: EE_AUDIO_LB_A_DAT_CH_ID2
+    offset: 0x00b6
+
+  - name: EE_AUDIO_LB_A_DAT_CH_ID3
+    offset: 0x00b7
+
+  - name: EE_AUDIO_LB_A_LB_CH_ID0
+    offset: 0x00b8
+
+  - name: EE_AUDIO_LB_A_LB_CH_ID1
+    offset: 0x00b9
+
+  - name: EE_AUDIO_LB_A_LB_CH_ID2
+    offset: 0x00ba
+
+  - name: EE_AUDIO_LB_A_LB_CH_ID3
+    offset: 0x00bb
+
+  - name: EE_AUDIO_LB_A_STS
+    offset: 0x00bc
+
+  - name: EE_AUDIO_LB_A_CHSYNC_CTRL_INSERT
+    offset: 0x00bd
+
+  - name: EE_AUDIO_LB_A_CHSYNC_CTRL_ORIG
+    offset: 0x00be
+
+  - name: EE_AUDIO_LB_A_CTRL4
+    offset: 0x00bf
+
+  - name: EE_AUDIO_TDMIN_{IDX}_CTRL
+    offsets:
+      A: 0x00c0
+      B: 0x00d0
+      C: 0x00e0
+      D: 0x02e0
+      LB: 0x00f0
+    gates:
+      A: null
+      B: TDMIN_B_IMP
+      C: TDMIN_C_IMP
+      D: TDMIN_D_IMP
+      LB: null
+
+  - name: EE_AUDIO_TDMIN_{IDX}_SWAP0
+    offsets:
+      A: 0x00c1
+      B: 0x00d1
+      C: 0x00e1
+      D: 0x02e1
+      LB: 0x00f1
+    gates:
+      A: null
+      B: TDMIN_B_IMP
+      C: TDMIN_C_IMP
+      D: TDMIN_D_IMP
+      LB: null
+
+  - name: EE_AUDIO_TDMIN_{IDX}_MASK0
+    offsets:
+      A: 0x00c2
+      B: 0x00d2
+      C: 0x00e2
+      D: 0x02e2
+      LB: 0x00f2
+    gates:
+      A: null
+      B: TDMIN_B_IMP
+      C: TDMIN_C_IMP
+      D: TDMIN_D_IMP
+      LB: null
+
+  - name: EE_AUDIO_TDMIN_{IDX}_MASK1
+    offsets:
+      A: 0x00c3
+      B: 0x00d3
+      C: 0x00e3
+      D: 0x02e3
+      LB: 0x00f3
+    gates:
+      A: null
+      B: TDMIN_B_IMP
+      C: TDMIN_C_IMP
+      D: TDMIN_D_IMP
+      LB: null
+
+  - name: EE_AUDIO_TDMIN_{IDX}_MASK2
+    offsets:
+      A: 0x00c4
+      B: 0x00d4
+      C: 0x00e4
+      D: 0x02e4
+      LB: 0x00f4
+    gates:
+      A: null
+      B: TDMIN_B_IMP
+      C: TDMIN_C_IMP
+      D: TDMIN_D_IMP
+      LB: null
+
+  - name: EE_AUDIO_TDMIN_{IDX}_MASK3
+    offsets:
+      A: 0x00c5
+      B: 0x00d5
+      C: 0x00e5
+      D: 0x02e5
+      LB: 0x00f5
+    gates:
+      A: null
+      B: TDMIN_B_IMP
+      C: TDMIN_C_IMP
+      D: TDMIN_D_IMP
+      LB: null
+
+  - name: EE_AUDIO_TDMIN_{IDX}_STAT
+    offsets:
+      A: 0x00c6
+      B: 0x00d6
+      C: 0x00e6
+      D: 0x02e6
+      LB: 0x00f6
+    gates:
+      A: null
+      B: TDMIN_B_IMP
+      C: TDMIN_C_IMP
+      D: TDMIN_D_IMP
+      LB: null
+
+  - name: EE_AUDIO_TDMIN_{IDX}_MUTE_VAL
+    offsets:
+      A: 0x00c7
+      B: 0x00d7
+      C: 0x00e7
+      D: 0x02e7
+      LB: 0x00f7
+    gates:
+      A: null
+      B: TDMIN_B_IMP
+      C: TDMIN_C_IMP
+      D: TDMIN_D_IMP
+      LB: null
+
+  - name: EE_AUDIO_TDMIN_{IDX}_MUTE0
+    offsets:
+      A: 0x00c8
+      B: 0x00d8
+      C: 0x00e8
+      D: 0x02e8
+      LB: 0x00f8
+    gates:
+      A: null
+      B: TDMIN_B_IMP
+      C: TDMIN_C_IMP
+      D: TDMIN_D_IMP
+      LB: null
+
+  - name: EE_AUDIO_TDMIN_{IDX}_MUTE1
+    offsets:
+      A: 0x00c9
+      B: 0x00d9
+      C: 0x00e9
+      D: 0x02e9
+      LB: 0x00f9
+    gates:
+      A: null
+      B: TDMIN_B_IMP
+      C: TDMIN_C_IMP
+      D: TDMIN_D_IMP
+      LB: null
+
+  - name: EE_AUDIO_TDMIN_{IDX}_MUTE2
+    offsets:
+      A: 0x00ca
+      B: 0x00da
+      C: 0x00ea
+      D: 0x02ea
+      LB: 0x00fa
+    gates:
+      A: null
+      B: TDMIN_B_IMP
+      C: TDMIN_C_IMP
+      D: TDMIN_D_IMP
+      LB: null
+
+  - name: EE_AUDIO_TDMIN_{IDX}_MUTE3
+    offsets:
+      A: 0x00cb
+      B: 0x00db
+      C: 0x00eb
+      D: 0x02eb
+      LB: 0x00fb
+    gates:
+      A: null
+      B: TDMIN_B_IMP
+      C: TDMIN_C_IMP
+      D: TDMIN_D_IMP
+      LB: null
+
+  - name: EE_AUDIO_SPDIFIN_CTRL0
+    offset: 0x0100
+    gate: SPDIFIN_IMP
+
+  - name: EE_AUDIO_SPDIFIN_CTRL1
+    offset: 0x0101
+    gate: SPDIFIN_IMP
+
+  - name: EE_AUDIO_SPDIFIN_CTRL2
+    offset: 0x0102
+    gate: SPDIFIN_IMP
+
+  - name: EE_AUDIO_SPDIFIN_CTRL3
+    offset: 0x0103
+    gate: SPDIFIN_IMP
+
+  - name: EE_AUDIO_SPDIFIN_CTRL4
+    offset: 0x0104
+    gate: SPDIFIN_IMP
+
+  - name: EE_AUDIO_SPDIFIN_CTRL5
+    offset: 0x0105
+    gate: SPDIFIN_IMP
+
+  - name: EE_AUDIO_SPDIFIN_CTRL6
+    offset: 0x0106
+    gate: SPDIFIN_IMP
+
+  - name: EE_AUDIO_SPDIFIN_STAT0
+    offset: 0x0107
+    gate: SPDIFIN_IMP
+
+  - name: EE_AUDIO_SPDIFIN_STAT1
+    offset: 0x0108
+    gate: SPDIFIN_IMP
+
+  - name: EE_AUDIO_SPDIFIN_STAT2
+    offset: 0x0109
+    gate: SPDIFIN_IMP
+
+  - name: EE_AUDIO_SPDIFIN_MUTE_VAL
+    offset: 0x010a
+    gate: SPDIFIN_IMP
+
+  - name: EE_AUDIO_SPDIFIN_CTRL7
+    offset: 0x010b
+    gate: SPDIFIN_IMP
+
+  - name: EE_AUDIO_RESAMPLEA_CTRL0
+    offset: 0x0110
+
+  - name: EE_AUDIO_RESAMPLEA_CTRL1
+    offset: 0x0111
+
+  - name: EE_AUDIO_RESAMPLEA_CTRL2
+    offset: 0x0112
+
+  - name: EE_AUDIO_RESAMPLEA_CTRL3
+    offset: 0x0113
+
+  - name: EE_AUDIO_RESAMPLEA_COEF0
+    offset: 0x0114
+
+  - name: EE_AUDIO_RESAMPLEA_COEF1
+    offset: 0x0115
+
+  - name: EE_AUDIO_RESAMPLEA_COEF2
+    offset: 0x0116
+
+  - name: EE_AUDIO_RESAMPLEA_COEF3
+    offset: 0x0117
+
+  - name: EE_AUDIO_RESAMPLEA_COEF4
+    offset: 0x0118
+
+  - name: EE_AUDIO_RESAMPLEA_STATUS1
+    offset: 0x0119
+
+  - name: EE_AUDIO_SPDIFOUT_STAT
+    offset: 0x0120
+    gate: SPDIFOUT_IMP
+
+  - name: EE_AUDIO_SPDIFOUT_GAIN0
+    offset: 0x0121
+    gate: SPDIFOUT_IMP
+
+  - name: EE_AUDIO_SPDIFOUT_GAIN1
+    offset: 0x0122
+    gate: SPDIFOUT_IMP
+
+  - name: EE_AUDIO_SPDIFOUT_CTRL0
+    offset: 0x0123
+    gate: SPDIFOUT_IMP
+
+  - name: EE_AUDIO_SPDIFOUT_CTRL1
+    offset: 0x0124
+    gate: SPDIFOUT_IMP
+
+  - name: EE_AUDIO_SPDIFOUT_PREAMB
+    offset: 0x0125
+    gate: SPDIFOUT_IMP
+
+  - name: EE_AUDIO_SPDIFOUT_SWAP
+    offset: 0x0126
+    gate: SPDIFOUT_IMP
+
+  - name: EE_AUDIO_SPDIFOUT_CHSTS0
+    offset: 0x0127
+    gate: SPDIFOUT_IMP
+
+  - name: EE_AUDIO_SPDIFOUT_CHSTS1
+    offset: 0x0128
+    gate: SPDIFOUT_IMP
+
+  - name: EE_AUDIO_SPDIFOUT_CHSTS2
+    offset: 0x0129
+    gate: SPDIFOUT_IMP
+
+  - name: EE_AUDIO_SPDIFOUT_CHSTS3
+    offset: 0x012a
+    gate: SPDIFOUT_IMP
+
+  - name: EE_AUDIO_SPDIFOUT_CHSTS4
+    offset: 0x012b
+    gate: SPDIFOUT_IMP
+
+  - name: EE_AUDIO_SPDIFOUT_CHSTS5
+    offset: 0x012c
+    gate: SPDIFOUT_IMP
+
+  - name: EE_AUDIO_SPDIFOUT_CHSTS6
+    offset: 0x012d
+    gate: SPDIFOUT_IMP
+
+  - name: EE_AUDIO_SPDIFOUT_CHSTS7
+    offset: 0x012e
+    gate: SPDIFOUT_IMP
+
+  - name: EE_AUDIO_SPDIFOUT_CHSTS8
+    offset: 0x012f
+    gate: SPDIFOUT_IMP
+
+  - name: EE_AUDIO_SPDIFOUT_CHSTS9
+    offset: 0x0130
+    gate: SPDIFOUT_IMP
+
+  - name: EE_AUDIO_SPDIFOUT_CHSTSA
+    offset: 0x0131
+    gate: SPDIFOUT_IMP
+
+  - name: EE_AUDIO_SPDIFOUT_CHSTSB
+    offset: 0x0132
+    gate: SPDIFOUT_IMP
+
+  - name: EE_AUDIO_SPDIFOUT_MUTE_VAL
+    offset: 0x0133
+    gate: SPDIFOUT_IMP
+
+  - name: EE_AUDIO_SPDIFOUT_GAIN2
+    offset: 0x0134
+    gate: SPDIFOUT_IMP
+
+  - name: EE_AUDIO_SPDIFOUT_GAIN3
+    offset: 0x0135
+    gate: SPDIFOUT_IMP
+
+  - name: EE_AUDIO_SPDIFOUT_GAIN_EN
+    offset: 0x0136
+    gate: SPDIFOUT_IMP
+
+  - name: EE_AUDIO_SPDIFOUT_GAIN_CTRL
+    offset: 0x0137
+    gate: SPDIFOUT_IMP
+
+  - name: EE_AUDIO_SPDIFOUT_CTRL2
+    offset: 0x0138
+    gate: SPDIFOUT_IMP
+
+  - name: EE_AUDIO_TDMOUT_{IDX}_CTRL0
+    offsets:
+      A: 0x0140
+      B: 0x0150
+      C: 0x0160
+      D: 0x03d0
+    gates:
+      A: null
+      B: TDMOUT_B_IMP
+      C: TDMOUT_C_IMP
+      D: TDMOUT_D_IMP
+
+  - name: EE_AUDIO_TDMOUT_{IDX}_CTRL1
+    offsets:
+      A: 0x0141
+      B: 0x0151
+      C: 0x0161
+      D: 0x03d1
+    gates:
+      A: null
+      B: TDMOUT_B_IMP
+      C: TDMOUT_C_IMP
+      D: TDMOUT_D_IMP
+
+  - name: EE_AUDIO_TDMOUT_{IDX}_SWAP0
+    offsets:
+      A: 0x0142
+      B: 0x0152
+      C: 0x0162
+      D: 0x03d2
+    gates:
+      A: null
+      B: TDMOUT_B_IMP
+      C: TDMOUT_C_IMP
+      D: TDMOUT_D_IMP
+
+  - name: EE_AUDIO_TDMOUT_{IDX}_MASK0
+    offsets:
+      A: 0x0143
+      B: 0x0153
+      C: 0x0163
+      D: 0x03d3
+    gates:
+      A: null
+      B: TDMOUT_B_IMP
+      C: TDMOUT_C_IMP
+      D: TDMOUT_D_IMP
+
+  - name: EE_AUDIO_TDMOUT_{IDX}_MASK1
+    offsets:
+      A: 0x0144
+      B: 0x0154
+      C: 0x0164
+      D: 0x03d4
+    gates:
+      A: null
+      B: TDMOUT_B_IMP
+      C: TDMOUT_C_IMP
+      D: TDMOUT_D_IMP
+
+  - name: EE_AUDIO_TDMOUT_{IDX}_MASK2
+    offsets:
+      A: 0x0145
+      B: 0x0155
+      C: 0x0165
+      D: 0x03d5
+    gates:
+      A: null
+      B: TDMOUT_B_IMP
+      C: TDMOUT_C_IMP
+      D: TDMOUT_D_IMP
+
+  - name: EE_AUDIO_TDMOUT_{IDX}_MASK3
+    offsets:
+      A: 0x0146
+      B: 0x0156
+      C: 0x0166
+      D: 0x03d6
+    gates:
+      A: null
+      B: TDMOUT_B_IMP
+      C: TDMOUT_C_IMP
+      D: TDMOUT_D_IMP
+
+  - name: EE_AUDIO_TDMOUT_{IDX}_STAT
+    offsets:
+      A: 0x0147
+      B: 0x0157
+      C: 0x0167
+      D: 0x03d7
+    gates:
+      A: null
+      B: TDMOUT_B_IMP
+      C: TDMOUT_C_IMP
+      D: TDMOUT_D_IMP
+
+  - name: EE_AUDIO_TDMOUT_{IDX}_GAIN0
+    offsets:
+      A: 0x0148
+      B: 0x0158
+      C: 0x0168
+      D: 0x03d8
+    gates:
+      A: null
+      B: TDMOUT_B_IMP
+      C: TDMOUT_C_IMP
+      D: TDMOUT_D_IMP
+
+  - name: EE_AUDIO_TDMOUT_{IDX}_GAIN1
+    offsets:
+      A: 0x0149
+      B: 0x0159
+      C: 0x0169
+      D: 0x03d9
+    gates:
+      A: null
+      B: TDMOUT_B_IMP
+      C: TDMOUT_C_IMP
+      D: TDMOUT_D_IMP
+
+  - name: EE_AUDIO_TDMOUT_{IDX}_MUTE_VAL
+    offsets:
+      A: 0x014a
+      B: 0x015a
+      C: 0x016a
+      D: 0x03da
+    gates:
+      A: null
+      B: TDMOUT_B_IMP
+      C: TDMOUT_C_IMP
+      D: TDMOUT_D_IMP
+
+  - name: EE_AUDIO_TDMOUT_{IDX}_MUTE0
+    offsets:
+      A: 0x014b
+      B: 0x015b
+      C: 0x016b
+      D: 0x03db
+    gates:
+      A: null
+      B: TDMOUT_B_IMP
+      C: TDMOUT_C_IMP
+      D: TDMOUT_D_IMP
+
+  - name: EE_AUDIO_TDMOUT_{IDX}_MUTE1
+    offsets:
+      A: 0x014c
+      B: 0x015c
+      C: 0x016c
+      D: 0x03dc
+    gates:
+      A: null
+      B: TDMOUT_B_IMP
+      C: TDMOUT_C_IMP
+      D: TDMOUT_D_IMP
+
+  - name: EE_AUDIO_TDMOUT_{IDX}_MUTE2
+    offsets:
+      A: 0x014d
+      B: 0x015d
+      C: 0x016d
+      D: 0x03dd
+    gates:
+      A: null
+      B: TDMOUT_B_IMP
+      C: TDMOUT_C_IMP
+      D: TDMOUT_D_IMP
+
+  - name: EE_AUDIO_TDMOUT_{IDX}_MUTE3
+    offsets:
+      A: 0x014e
+      B: 0x015e
+      C: 0x016e
+      D: 0x03de
+    gates:
+      A: null
+      B: TDMOUT_B_IMP
+      C: TDMOUT_C_IMP
+      D: TDMOUT_D_IMP
+
+  - name: EE_AUDIO_TDMOUT_{IDX}_MASK_VAL
+    offsets:
+      A: 0x014f
+      B: 0x015f
+      C: 0x016f
+      D: 0x03df
+    gates:
+      A: null
+      B: TDMOUT_B_IMP
+      C: TDMOUT_C_IMP
+      D: TDMOUT_D_IMP
+
+  - name: EE_AUDIO_TDMINB_LB_CTRL
+    offset: 0x0170
+    gate: TDMINB_LB_IMP
+
+  - name: EE_AUDIO_TDMINB_LB_SWAP0
+    offset: 0x0171
+    gate: TDMINB_LB_IMP
+
+  - name: EE_AUDIO_TDMINB_LB_MASK0
+    offset: 0x0172
+    gate: TDMINB_LB_IMP
+
+  - name: EE_AUDIO_TDMINB_LB_MASK1
+    offset: 0x0173
+    gate: TDMINB_LB_IMP
+
+  - name: EE_AUDIO_TDMINB_LB_MASK2
+    offset: 0x0174
+    gate: TDMINB_LB_IMP
+
+  - name: EE_AUDIO_TDMINB_LB_MASK3
+    offset: 0x0175
+    gate: TDMINB_LB_IMP
+
+  - name: EE_AUDIO_TDMINB_LB_STAT
+    offset: 0x0176
+    gate: TDMINB_LB_IMP
+
+  - name: EE_AUDIO_TDMINB_LB_MUTE_VAL
+    offset: 0x0177
+    gate: TDMINB_LB_IMP
+
+  - name: EE_AUDIO_TDMINB_LB_MUTE0
+    offset: 0x0178
+    gate: TDMINB_LB_IMP
+
+  - name: EE_AUDIO_TDMINB_LB_MUTE1
+    offset: 0x0179
+    gate: TDMINB_LB_IMP
+
+  - name: EE_AUDIO_TDMINB_LB_MUTE2
+    offset: 0x017a
+    gate: TDMINB_LB_IMP
+
+  - name: EE_AUDIO_TDMINB_LB_MUTE3
+    offset: 0x017b
+    gate: TDMINB_LB_IMP
+
+  - name: EE_AUDIO_MIXER_COEF0_A
+    offset: 0x0180
+
+  - name: EE_AUDIO_MIXER_COEF1_A
+    offset: 0x0181
+
+  - name: EE_AUDIO_MIXER_COEF2_A
+    offset: 0x0182
+
+  - name: EE_AUDIO_MIXER_COEF3_A
+    offset: 0x0183
+
+  - name: EE_AUDIO_MIXER_COEF4_A
+    offset: 0x0184
+
+  - name: EE_AUDIO_MIXER_COEF5_A
+    offset: 0x0185
+
+  - name: EE_AUDIO_MIXER_COEF6_A
+    offset: 0x0186
+
+  - name: EE_AUDIO_MIXER_COEF7_A
+    offset: 0x0187
+
+  - name: EE_AUDIO_MIXER_COEF0_B
+    offset: 0x0188
+
+  - name: EE_AUDIO_MIXER_COEF1_B
+    offset: 0x0189
+
+  - name: EE_AUDIO_MIXER_COEF2_B
+    offset: 0x018a
+
+  - name: EE_AUDIO_MIXER_COEF3_B
+    offset: 0x018b
+
+  - name: EE_AUDIO_MIXER_COEF4_B
+    offset: 0x018c
+
+  - name: EE_AUDIO_MIXER_COEF5_B
+    offset: 0x018d
+
+  - name: EE_AUDIO_MIXER_COEF6_B
+    offset: 0x018e
+
+  - name: EE_AUDIO_MIXER_COEF7_B
+    offset: 0x018f
+
+  - name: EE_AUDIO_MIXER_THD
+    offset: 0x0190
+
+  - name: EE_AUDIO_MIXER_CTRL0
+    offset: 0x0191
+
+  - name: EE_AUDIO_MIXER_CTRL1
+    offset: 0x0192
+
+  - name: EE_AUDIO_MIXER_CTRL2
+    offset: 0x0193
+
+  - name: EE_AUDIO_MIXER_CTRL3
+    offset: 0x0194
+
+  - name: EE_AUDIO_MIXER_CTRL4
+    offset: 0x0195
+
+  - name: EE_AUDIO_MIXER_CTRL5
+    offset: 0x0196
+
+  - name: EE_AUDIO_MIXER_STATUS1
+    offset: 0x0197
+
+  - name: EE_AUDIO_SECURITY_CTRL0
+    offset: 0x019a
+
+  - name: EE_AUDIO_SECURITY_CTRL1
+    offset: 0x019b
+
+  - name: EE_AUDIO_SECURITY_CTRL2
+    offset: 0x019c
+
+  - name: EE_AUDIO_SECURITY_MUTE
+    offset: 0x019d
+
+  - name: EE_AUDIO_SPDIFOUT_B_STAT
+    offset: 0x01a0
+    gate: SPDIFOUT_B_IMP
+
+  - name: EE_AUDIO_SPDIFOUT_B_GAIN0
+    offset: 0x01a1
+    gate: SPDIFOUT_B_IMP
+
+  - name: EE_AUDIO_SPDIFOUT_B_GAIN1
+    offset: 0x01a2
+    gate: SPDIFOUT_B_IMP
+
+  - name: EE_AUDIO_SPDIFOUT_B_CTRL0
+    offset: 0x01a3
+    gate: SPDIFOUT_B_IMP
+
+  - name: EE_AUDIO_SPDIFOUT_B_CTRL1
+    offset: 0x01a4
+    gate: SPDIFOUT_B_IMP
+
+  - name: EE_AUDIO_SPDIFOUT_B_PREAMB
+    offset: 0x01a5
+    gate: SPDIFOUT_B_IMP
+
+  - name: EE_AUDIO_SPDIFOUT_B_SWAP
+    offset: 0x01a6
+    gate: SPDIFOUT_B_IMP
+
+  - name: EE_AUDIO_SPDIFOUT_B_CHSTS0
+    offset: 0x01a7
+    gate: SPDIFOUT_B_IMP
+
+  - name: EE_AUDIO_SPDIFOUT_B_CHSTS1
+    offset: 0x01a8
+    gate: SPDIFOUT_B_IMP
+
+  - name: EE_AUDIO_SPDIFOUT_B_CHSTS2
+    offset: 0x01a9
+    gate: SPDIFOUT_B_IMP
+
+  - name: EE_AUDIO_SPDIFOUT_B_CHSTS3
+    offset: 0x01aa
+    gate: SPDIFOUT_B_IMP
+
+  - name: EE_AUDIO_SPDIFOUT_B_CHSTS4
+    offset: 0x01ab
+    gate: SPDIFOUT_B_IMP
+
+  - name: EE_AUDIO_SPDIFOUT_B_CHSTS5
+    offset: 0x01ac
+    gate: SPDIFOUT_B_IMP
+
+  - name: EE_AUDIO_SPDIFOUT_B_CHSTS6
+    offset: 0x01ad
+    gate: SPDIFOUT_B_IMP
+
+  - name: EE_AUDIO_SPDIFOUT_B_CHSTS7
+    offset: 0x01ae
+    gate: SPDIFOUT_B_IMP
+
+  - name: EE_AUDIO_SPDIFOUT_B_CHSTS8
+    offset: 0x01af
+    gate: SPDIFOUT_B_IMP
+
+  - name: EE_AUDIO_SPDIFOUT_B_CHSTS9
+    offset: 0x01b0
+    gate: SPDIFOUT_B_IMP
+
+  - name: EE_AUDIO_SPDIFOUT_B_CHSTSA
+    offset: 0x01b1
+    gate: SPDIFOUT_B_IMP
+
+  - name: EE_AUDIO_SPDIFOUT_B_CHSTSB
+    offset: 0x01b2
+    gate: SPDIFOUT_B_IMP
+
+  - name: EE_AUDIO_SPDIFOUT_B_MUTE_VAL
+    offset: 0x01b3
+    gate: SPDIFOUT_B_IMP
+
+  - name: EE_AUDIO_SPDIFOUT_B_GAIN2
+    offset: 0x01b4
+    gate: SPDIFOUT_B_IMP
+
+  - name: EE_AUDIO_SPDIFOUT_B_GAIN3
+    offset: 0x01b5
+    gate: SPDIFOUT_B_IMP
+
+  - name: EE_AUDIO_SPDIFOUT_B_GAIN_EN
+    offset: 0x01b6
+    gate: SPDIFOUT_B_IMP
+
+  - name: EE_AUDIO_SPDIFOUT_B_GAIN_CTRL
+    offset: 0x01b7
+    gate: SPDIFOUT_B_IMP
+
+  - name: EE_AUDIO_SPDIFOUT_B_CTRL2
+    offset: 0x01b8
+    gate: SPDIFOUT_B_IMP
+
+  - name: EE_AUDIO_SPDIFOUT_MUX
+    offset: 0x01ba
+    gate: SPDIFOUT_IMP
+
+  - name: EE_AUDIO_TORAM_CTRL0
+    offset: 0x01c0
+
+  - name: EE_AUDIO_TORAM_CTRL1
+    offset: 0x01c1
+
+  - name: EE_AUDIO_TORAM_START_ADDR
+    offset: 0x01c2
+
+  - name: EE_AUDIO_TORAM_FINISH_ADDR
+    offset: 0x01c3
+
+  - name: EE_AUDIO_TORAM_INT_ADDR
+    offset: 0x01c4
+
+  - name: EE_AUDIO_TORAM_STATUS1
+    offset: 0x01c5
+
+  - name: EE_AUDIO_TORAM_STATUS2
+    offset: 0x01c6
+
+  - name: EE_AUDIO_TORAM_INIT_ADDR
+    offset: 0x01c7
+
+  - name: EE_AUDIO_TOACODEC_CTRL0
+    offset: 0x01d0
+    gate: AOCDEC_IMP
+
+  - name: EE_AUDIO_TO{VOICE}_CTRL0
+    offset: 0x01d2
+    voice_param: true
+    gates:
+      sed: VOICE_IMP
+      vad: VOICE_IMP
+
+  - name: EE_AUDIO_FRATV_CTRL0
+    offset: 0x01d3
+    gate: ATV_IMP
+
+  - name: EE_AUDIO_TOACODEC_CTRL1
+    offset: 0x01d4
+    gate: AOCDEC_IMP
+
+  - name: EE_AUDIO_TOHDMI_DP_TX_{IDX}_CTRL0
+    offsets:
+      A: 0x01d7
+      B: 0x01d8
+
+  - name: EE_AUDIO_RESAMPLEB_CTRL0
+    offset: 0x01e0
+
+  - name: EE_AUDIO_RESAMPLEB_CTRL1
+    offset: 0x01e1
+
+  - name: EE_AUDIO_RESAMPLEB_CTRL2
+    offset: 0x01e2
+
+  - name: EE_AUDIO_RESAMPLEB_CTRL3
+    offset: 0x01e3
+
+  - name: EE_AUDIO_RESAMPLEB_COEF0
+    offset: 0x01e4
+
+  - name: EE_AUDIO_RESAMPLEB_COEF1
+    offset: 0x01e5
+
+  - name: EE_AUDIO_RESAMPLEB_COEF2
+    offset: 0x01e6
+
+  - name: EE_AUDIO_RESAMPLEB_COEF3
+    offset: 0x01e7
+
+  - name: EE_AUDIO_RESAMPLEB_COEF4
+    offset: 0x01e8
+
+  - name: EE_AUDIO_RESAMPLEB_STATUS1
+    offset: 0x01e9
+
+  - name: EE_AUDIO_SPDIFIN_LB_CTRL0
+    offset: 0x01f0
+    gate: SPDIF_LB_IMP
+
+  - name: EE_AUDIO_SPDIFIN_LB_CTRL1
+    offset: 0x01f1
+    gate: SPDIF_LB_IMP
+
+  - name: EE_AUDIO_SPDIFIN_LB_CTRL6
+    offset: 0x01f6
+    gate: SPDIF_LB_IMP
+
+  - name: EE_AUDIO_SPDIFIN_LB_STAT0
+    offset: 0x01f7
+    gate: SPDIF_LB_IMP
+
+  - name: EE_AUDIO_SPDIFIN_LB_STAT1
+    offset: 0x01f8
+    gate: SPDIF_LB_IMP
+
+  - name: EE_AUDIO_SPDIFIN_LB_MUTE_VAL
+    offset: 0x01fa
+    gate: SPDIF_LB_IMP
+
+  - name: EE_AUDIO_FRHDMIRX_CTRL0
+    offset: 0x0200
+
+  - name: EE_AUDIO_FRHDMIRX_CTRL1
+    offset: 0x0201
+
+  - name: EE_AUDIO_FRHDMIRX_CTRL2
+    offset: 0x0202
+
+  - name: EE_AUDIO_FRHDMIRX_CTRL3
+    offset: 0x0203
+
+  - name: EE_AUDIO_FRHDMIRX_CTRL4
+    offset: 0x0204
+
+  - name: EE_AUDIO_FRHDMIRX_CTRL5
+    offset: 0x0205
+
+  - name: EE_AUDIO_FRHDMIRX_CTRL6
+    offset: 0x0206
+
+  - name: EE_AUDIO_FRHDMIRX_CTRL7
+    offset: 0x0207
+
+  - name: EE_AUDIO_FRHDMIRX_STAT0
+    offset: 0x020a
+
+  - name: EE_AUDIO_FRHDMIRX_STAT1
+    offset: 0x020b
+
+  - name: EE_AUDIO_FRHDMIRX_STAT2
+    offset: 0x020c
+
+  - name: EE_AUDIO_FRHDMIRX_DEBUG
+    offset: 0x020d
+
+  - name: EE_AUDIO_LB_B_CTRL0
+    offset: 0x0230
+
+  - name: EE_AUDIO_LB_B_CTRL1
+    offset: 0x0231
+
+  - name: EE_AUDIO_LB_B_CTRL2
+    offset: 0x0232
+
+  - name: EE_AUDIO_LB_B_CTRL3
+    offset: 0x0233
+
+  - name: EE_AUDIO_LB_B_DAT_CH_ID0
+    offset: 0x0234
+
+  - name: EE_AUDIO_LB_B_DAT_CH_ID1
+    offset: 0x0235
+
+  - name: EE_AUDIO_LB_B_DAT_CH_ID2
+    offset: 0x0236
+
+  - name: EE_AUDIO_LB_B_DAT_CH_ID3
+    offset: 0x0237
+
+  - name: EE_AUDIO_LB_B_LB_CH_ID0
+    offset: 0x0238
+
+  - name: EE_AUDIO_LB_B_LB_CH_ID1
+    offset: 0x0239
+
+  - name: EE_AUDIO_LB_B_LB_CH_ID2
+    offset: 0x023a
+
+  - name: EE_AUDIO_LB_B_LB_CH_ID3
+    offset: 0x023b
+
+  - name: EE_AUDIO_LB_B_STS
+    offset: 0x023c
+
+  - name: EE_AUDIO_LB_B_CHSYNC_CTRL_INSERT
+    offset: 0x023d
+
+  - name: EE_AUDIO_LB_B_CHSYNC_CTRL_ORIG
+    offset: 0x023e
+
+  - name: EE_AUDIO_LB_B_CTRL4
+    offset: 0x023f
+
+  - name: EE_AUDIO_TDMIN_{IDX}_SWAP1
+    offsets:
+      A: 0x0260
+      B: 0x0270
+      C: 0x0280
+      D: 0x02f0
+      LB: 0x0290
+    gates:
+      A: null
+      B: TDMIN_B_IMP
+      C: TDMIN_C_IMP
+      D: TDMIN_D_IMP
+      LB: null
+
+  - name: EE_AUDIO_TDMIN_{IDX}_MASK4
+    offsets:
+      A: 0x0261
+      B: 0x0271
+      C: 0x0281
+      D: 0x02f1
+      LB: 0x0291
+    gates:
+      A: null
+      B: TDMIN_B_IMP
+      C: TDMIN_C_IMP
+      D: TDMIN_D_IMP
+      LB: null
+
+  - name: EE_AUDIO_TDMIN_{IDX}_MASK5
+    offsets:
+      A: 0x0262
+      B: 0x0272
+      C: 0x0282
+      D: 0x02f2
+      LB: 0x0292
+    gates:
+      A: null
+      B: TDMIN_B_IMP
+      C: TDMIN_C_IMP
+      D: TDMIN_D_IMP
+      LB: null
+
+  - name: EE_AUDIO_TDMIN_{IDX}_MASK6
+    offsets:
+      A: 0x0263
+      B: 0x0273
+      C: 0x0283
+      D: 0x02f3
+      LB: 0x0293
+    gates:
+      A: null
+      B: TDMIN_B_IMP
+      C: TDMIN_C_IMP
+      D: TDMIN_D_IMP
+      LB: null
+
+  - name: EE_AUDIO_TDMIN_{IDX}_MASK7
+    offsets:
+      A: 0x0264
+      B: 0x0274
+      C: 0x0284
+      D: 0x02f4
+      LB: 0x0294
+    gates:
+      A: null
+      B: TDMIN_B_IMP
+      C: TDMIN_C_IMP
+      D: TDMIN_D_IMP
+      LB: null
+
+  - name: EE_AUDIO_TDMIN_{IDX}_MUTE4
+    offsets:
+      A: 0x0265
+      B: 0x0275
+      C: 0x0285
+      D: 0x02f5
+      LB: 0x0295
+    gates:
+      A: null
+      B: TDMIN_B_IMP
+      C: TDMIN_C_IMP
+      D: TDMIN_D_IMP
+      LB: null
+
+  - name: EE_AUDIO_TDMIN_{IDX}_MUTE5
+    offsets:
+      A: 0x0266
+      B: 0x0276
+      C: 0x0286
+      D: 0x02f6
+      LB: 0x0296
+    gates:
+      A: null
+      B: TDMIN_B_IMP
+      C: TDMIN_C_IMP
+      D: TDMIN_D_IMP
+      LB: null
+
+  - name: EE_AUDIO_TDMIN_{IDX}_MUTE6
+    offsets:
+      A: 0x0267
+      B: 0x0277
+      C: 0x0287
+      D: 0x02f7
+      LB: 0x0297
+    gates:
+      A: null
+      B: TDMIN_B_IMP
+      C: TDMIN_C_IMP
+      D: TDMIN_D_IMP
+      LB: null
+
+  - name: EE_AUDIO_TDMIN_{IDX}_MUTE7
+    offsets:
+      A: 0x0268
+      B: 0x0278
+      C: 0x0288
+      D: 0x02f8
+      LB: 0x0298
+    gates:
+      A: null
+      B: TDMIN_B_IMP
+      C: TDMIN_C_IMP
+      D: TDMIN_D_IMP
+      LB: null
+
+  - name: EE_AUDIO_TDMOUT_{IDX}_CTRL2
+    offsets:
+      A: 0x02a0
+      B: 0x02b0
+      C: 0x02c0
+      D: 0x03e0
+    gates:
+      A: null
+      B: TDMOUT_B_IMP
+      C: TDMOUT_C_IMP
+      D: TDMOUT_D_IMP
+
+  - name: EE_AUDIO_TDMOUT_{IDX}_SWAP1
+    offsets:
+      A: 0x02a1
+      B: 0x02b1
+      C: 0x02c1
+      D: 0x03e1
+    gates:
+      A: null
+      B: TDMOUT_B_IMP
+      C: TDMOUT_C_IMP
+      D: TDMOUT_D_IMP
+
+  - name: EE_AUDIO_TDMOUT_{IDX}_GAIN2
+    offsets:
+      A: 0x02a2
+      B: 0x02b2
+      C: 0x02c2
+      D: 0x03e2
+    gates:
+      A: null
+      B: TDMOUT_B_IMP
+      C: TDMOUT_C_IMP
+      D: TDMOUT_D_IMP
+
+  - name: EE_AUDIO_TDMOUT_{IDX}_GAIN3
+    offsets:
+      A: 0x02a3
+      B: 0x02b3
+      C: 0x02c3
+      D: 0x03e3
+    gates:
+      A: null
+      B: TDMOUT_B_IMP
+      C: TDMOUT_C_IMP
+      D: TDMOUT_D_IMP
+
+  - name: EE_AUDIO_TDMOUT_{IDX}_MASK4
+    offsets:
+      A: 0x02a4
+      B: 0x02b4
+      C: 0x02c4
+      D: 0x03e4
+    gates:
+      A: null
+      B: TDMOUT_B_IMP
+      C: TDMOUT_C_IMP
+      D: TDMOUT_D_IMP
+
+  - name: EE_AUDIO_TDMOUT_{IDX}_MASK5
+    offsets:
+      A: 0x02a5
+      B: 0x02b5
+      C: 0x02c5
+      D: 0x03e5
+    gates:
+      A: null
+      B: TDMOUT_B_IMP
+      C: TDMOUT_C_IMP
+      D: TDMOUT_D_IMP
+
+  - name: EE_AUDIO_TDMOUT_{IDX}_MASK6
+    offsets:
+      A: 0x02a6
+      B: 0x02b6
+      C: 0x02c6
+      D: 0x03e6
+    gates:
+      A: null
+      B: TDMOUT_B_IMP
+      C: TDMOUT_C_IMP
+      D: TDMOUT_D_IMP
+
+  - name: EE_AUDIO_TDMOUT_{IDX}_MASK7
+    offsets:
+      A: 0x02a7
+      B: 0x02b7
+      C: 0x02c7
+      D: 0x03e7
+    gates:
+      A: null
+      B: TDMOUT_B_IMP
+      C: TDMOUT_C_IMP
+      D: TDMOUT_D_IMP
+
+  - name: EE_AUDIO_TDMOUT_{IDX}_MUTE4
+    offsets:
+      A: 0x02a8
+      B: 0x02b8
+      C: 0x02c8
+      D: 0x03e8
+    gates:
+      A: null
+      B: TDMOUT_B_IMP
+      C: TDMOUT_C_IMP
+      D: TDMOUT_D_IMP
+
+  - name: EE_AUDIO_TDMOUT_{IDX}_MUTE5
+    offsets:
+      A: 0x02a9
+      B: 0x02b9
+      C: 0x02c9
+      D: 0x03e9
+    gates:
+      A: null
+      B: TDMOUT_B_IMP
+      C: TDMOUT_C_IMP
+      D: TDMOUT_D_IMP
+
+  - name: EE_AUDIO_TDMOUT_{IDX}_MUTE6
+    offsets:
+      A: 0x02aa
+      B: 0x02ba
+      C: 0x02ca
+      D: 0x03ea
+    gates:
+      A: null
+      B: TDMOUT_B_IMP
+      C: TDMOUT_C_IMP
+      D: TDMOUT_D_IMP
+
+  - name: EE_AUDIO_TDMOUT_{IDX}_MUTE7
+    offsets:
+      A: 0x02ab
+      B: 0x02bb
+      C: 0x02cb
+      D: 0x03eb
+    gates:
+      A: null
+      B: TDMOUT_B_IMP
+      C: TDMOUT_C_IMP
+      D: TDMOUT_D_IMP
+
+  - name: EE_AUDIO_TDMOUT_{IDX}_GAIN_EN
+    offsets:
+      A: 0x02ac
+      B: 0x02bc
+      C: 0x02cc
+      D: 0x03ec
+    gates:
+      A: null
+      B: TDMOUT_B_IMP
+      C: TDMOUT_C_IMP
+      D: TDMOUT_D_IMP
+
+  - name: EE_AUDIO_TDMOUT_{IDX}_GAIN_CTRL
+    offsets:
+      A: 0x02ad
+      B: 0x02bd
+      C: 0x02cd
+      D: 0x03ed
+    gates:
+      A: null
+      B: TDMOUT_B_IMP
+      C: TDMOUT_C_IMP
+      D: TDMOUT_D_IMP
+
+  - name: EE_AUDIO_TDMINB_LB_SWAP1
+    offset: 0x02d0
+    gate: TDMINB_LB_IMP
+
+  - name: EE_AUDIO_TDMINB_LB_MASK4
+    offset: 0x02d1
+    gate: TDMINB_LB_IMP
+
+  - name: EE_AUDIO_TDMINB_LB_MASK5
+    offset: 0x02d2
+    gate: TDMINB_LB_IMP
+
+  - name: EE_AUDIO_TDMINB_LB_MASK6
+    offset: 0x02d3
+    gate: TDMINB_LB_IMP
+
+  - name: EE_AUDIO_TDMINB_LB_MASK7
+    offset: 0x02d4
+    gate: TDMINB_LB_IMP
+
+  - name: EE_AUDIO_TDMINB_LB_MUTE4
+    offset: 0x02d5
+    gate: TDMINB_LB_IMP
+
+  - name: EE_AUDIO_TDMINB_LB_MUTE5
+    offset: 0x02d6
+    gate: TDMINB_LB_IMP
+
+  - name: EE_AUDIO_TDMINB_LB_MUTE6
+    offset: 0x02d7
+    gate: TDMINB_LB_IMP
+
+  - name: EE_AUDIO_TDMINB_LB_MUTE7
+    offset: 0x02d8
+    gate: TDMINB_LB_IMP
+
+  - name: EE_AUDIO_TODDR_{IDX}_CHNUM_ID0
+    offsets:
+      A: 0x0300
+      B: 0x0310
+      C: 0x0320
+      D: 0x0330
+      E: 0x0340
+    gates:
+      A: null
+      B: TODDR_B_IMP
+      C: TODDR_C_IMP
+      D: TODDR_D_IMP
+      E: TODDR_E_IMP
+
+  - name: EE_AUDIO_TODDR_{IDX}_CHNUM_ID1
+    offsets:
+      A: 0x0301
+      B: 0x0311
+      C: 0x0321
+      D: 0x0331
+      E: 0x0341
+    gates:
+      A: null
+      B: TODDR_B_IMP
+      C: TODDR_C_IMP
+      D: TODDR_D_IMP
+      E: TODDR_E_IMP
+
+  - name: EE_AUDIO_TODDR_{IDX}_CHNUM_ID2
+    offsets:
+      A: 0x0302
+      B: 0x0312
+      C: 0x0322
+      D: 0x0332
+      E: 0x0342
+    gates:
+      A: null
+      B: TODDR_B_IMP
+      C: TODDR_C_IMP
+      D: TODDR_D_IMP
+      E: TODDR_E_IMP
+
+  - name: EE_AUDIO_TODDR_{IDX}_CHNUM_ID3
+    offsets:
+      A: 0x0303
+      B: 0x0313
+      C: 0x0323
+      D: 0x0333
+      E: 0x0343
+    gates:
+      A: null
+      B: TODDR_B_IMP
+      C: TODDR_C_IMP
+      D: TODDR_D_IMP
+      E: TODDR_E_IMP
+
+  - name: EE_AUDIO_TODDR_{IDX}_CHNUM_ID4
+    offsets:
+      A: 0x0304
+      B: 0x0314
+      C: 0x0324
+      D: 0x0334
+      E: 0x0344
+    gates:
+      A: null
+      B: TODDR_B_IMP
+      C: TODDR_C_IMP
+      D: TODDR_D_IMP
+      E: TODDR_E_IMP
+
+  - name: EE_AUDIO_TODDR_{IDX}_CHNUM_ID5
+    offsets:
+      A: 0x0305
+      B: 0x0315
+      C: 0x0325
+      D: 0x0335
+      E: 0x0345
+    gates:
+      A: null
+      B: TODDR_B_IMP
+      C: TODDR_C_IMP
+      D: TODDR_D_IMP
+      E: TODDR_E_IMP
+
+  - name: EE_AUDIO_TODDR_{IDX}_CHNUM_ID6
+    offsets:
+      A: 0x0306
+      B: 0x0316
+      C: 0x0326
+      D: 0x0336
+      E: 0x0346
+    gates:
+      A: null
+      B: TODDR_B_IMP
+      C: TODDR_C_IMP
+      D: TODDR_D_IMP
+      E: TODDR_E_IMP
+
+  - name: EE_AUDIO_TODDR_{IDX}_CHNUM_ID7
+    offsets:
+      A: 0x0307
+      B: 0x0317
+      C: 0x0327
+      D: 0x0337
+      E: 0x0347
+    gates:
+      A: null
+      B: TODDR_B_IMP
+      C: TODDR_C_IMP
+      D: TODDR_D_IMP
+      E: TODDR_E_IMP
+
+  - name: EE_AUDIO_TODDR_{IDX}_CHSYNC_CTRL
+    offsets:
+      A: 0x030f
+      B: 0x031f
+      C: 0x032f
+      D: 0x033f
+      E: 0x034f
+    gates:
+      A: null
+      B: TODDR_B_IMP
+      C: TODDR_C_IMP
+      D: TODDR_D_IMP
+      E: TODDR_E_IMP
+
+  - name: EE_AUDIO_RSAMP_{IDX}_CHNUM_ID0
+    offsets:
+      A: 0x0350
+      B: 0x0360
+      C: 0x0370
+    gates:
+      A: null
+      B: RSAMPL_B_IMP
+      C: RSAMPL_C_IMP
+
+  - name: EE_AUDIO_RSAMP_{IDX}_CHNUM_ID1
+    offsets:
+      A: 0x0351
+      B: 0x0361
+      C: 0x0371
+    gates:
+      A: null
+      B: RSAMPL_B_IMP
+      C: RSAMPL_C_IMP
+
+  - name: EE_AUDIO_RSAMP_{IDX}_CHNUM_ID2
+    offsets:
+      A: 0x0352
+      B: 0x0362
+      C: 0x0372
+    gates:
+      A: null
+      B: RSAMPL_B_IMP
+      C: RSAMPL_C_IMP
+
+  - name: EE_AUDIO_RSAMP_{IDX}_CHNUM_ID3
+    offsets:
+      A: 0x0353
+      B: 0x0363
+      C: 0x0373
+    gates:
+      A: null
+      B: RSAMPL_B_IMP
+      C: RSAMPL_C_IMP
+
+  - name: EE_AUDIO_RSAMP_{IDX}_CHNUM_ID4
+    offsets:
+      A: 0x0354
+      B: 0x0364
+      C: 0x0374
+    gates:
+      A: null
+      B: RSAMPL_B_IMP
+      C: RSAMPL_C_IMP
+
+  - name: EE_AUDIO_RSAMP_{IDX}_CHNUM_ID5
+    offsets:
+      A: 0x0355
+      B: 0x0365
+      C: 0x0375
+    gates:
+      A: null
+      B: RSAMPL_B_IMP
+      C: RSAMPL_C_IMP
+
+  - name: EE_AUDIO_RSAMP_{IDX}_CHNUM_ID6
+    offsets:
+      A: 0x0356
+      B: 0x0366
+      C: 0x0376
+    gates:
+      A: null
+      B: RSAMPL_B_IMP
+      C: RSAMPL_C_IMP
+
+  - name: EE_AUDIO_RSAMP_{IDX}_CHNUM_ID7
+    offsets:
+      A: 0x0357
+      B: 0x0367
+      C: 0x0377
+    gates:
+      A: null
+      B: RSAMPL_B_IMP
+      C: RSAMPL_C_IMP
+
+  - name: EE_AUDIO_RSAMP_CHSYNC_MASK
+    offset: 0x035e
+
+  - name: EE_AUDIO_RSAMP_{IDX}_CHSYNC_CTRL
+    offsets:
+      A: 0x035f
+      B: 0x036f
+      C: 0x037f
+    gates:
+      A: null
+      B: RSAMPL_B_IMP
+      C: RSAMPL_C_IMP
+
+  - name: EE_AUDIO_EXCEPTION_IRQ_STS0
+    offset: 0x0380
+
+  - name: EE_AUDIO_EXCEPTION_IRQ_STS1
+    offset: 0x0381
+
+  - name: EE_AUDIO_EXCEPTION_IRQ_MASK0
+    offset: 0x0382
+
+  - name: EE_AUDIO_EXCEPTION_IRQ_MASK1
+    offset: 0x0383
+
+  - name: EE_AUDIO_EXCEPTION_IRQ_MODE0
+    offset: 0x0384
+
+  - name: EE_AUDIO_EXCEPTION_IRQ_MODE1
+    offset: 0x0385
+
+  - name: EE_AUDIO_EXCEPTION_IRQ_CLR0
+    offset: 0x0386
+
+  - name: EE_AUDIO_EXCEPTION_IRQ_CLR1
+    offset: 0x0387
+
+  - name: EE_AUDIO_EXCEPTION_IRQ_INV0
+    offset: 0x0388
+
+  - name: EE_AUDIO_EXCEPTION_IRQ_INV1
+    offset: 0x0389
+
+  - name: EE_AUDIO_EXCEPTION_IRQ_STS2
+    offset: 0x038a
+
+  - name: EE_AUDIO_EXCEPTION_IRQ_MASK2
+    offset: 0x038b
+
+  - name: EE_AUDIO_EXCEPTION_IRQ_MODE2
+    offset: 0x038c
+
+  - name: EE_AUDIO_EXCEPTION_IRQ_CLR2
+    offset: 0x038d
+
+  - name: EE_AUDIO_EXCEPTION_IRQ_INV2
+    offset: 0x038e
+
+  - name: EE_AUDIO_DAT_PAD_CTRL0
+    offset: 0x0390
+
+  - name: EE_AUDIO_DAT_PAD_CTRL1
+    offset: 0x0391
+
+  - name: EE_AUDIO_DAT_PAD_CTRL2
+    offset: 0x0392
+
+  - name: EE_AUDIO_DAT_PAD_CTRL3
+    offset: 0x0393
+
+  - name: EE_AUDIO_DAT_PAD_CTRL4
+    offset: 0x0394
+
+  - name: EE_AUDIO_DAT_PAD_CTRL5
+    offset: 0x0395
+
+  - name: EE_AUDIO_DAT_PAD_CTRL6
+    offset: 0x0396
+
+  - name: EE_AUDIO_DAT_PAD_CTRL7
+    offset: 0x0397
+
+  - name: EE_AUDIO_DAT_PAD_CTRL8
+    offset: 0x0398
+
+  - name: EE_AUDIO_DAT_PAD_CTRL9
+    offset: 0x0399
+
+  - name: EE_AUDIO_DAT_PAD_CTRLA
+    offset: 0x039a
+
+  - name: EE_AUDIO_DAT_PAD_CTRLB
+    offset: 0x039b
+
+  - name: EE_AUDIO_DAT_PAD_CTRLC
+    offset: 0x039c
+
+  - name: EE_AUDIO_DAT_PAD_CTRLD
+    offset: 0x039d
+
+  - name: EE_AUDIO_DAT_PAD_CTRLE
+    offset: 0x039e
+
+  - name: EE_AUDIO_DAT_PAD_CTRLF
+    offset: 0x039f
+
+  - name: EE_AUDIO_MCLK_PAD_CTRL0
+    offset: 0x03a0
+
+  - name: EE_AUDIO_MCLK_PAD_CTRL1
+    offset: 0x03a1
+
+  - name: EE_AUDIO_SCLK_PAD_CTRL0
+    offset: 0x03a2
+
+  - name: EE_AUDIO_LRCLK_PAD_CTRL0
+    offset: 0x03a3
+
+  - name: EE_AUDIO_MCLK_PAD_CTRL2
+    offset: 0x03a4
+
+  - name: EE_AUDIO_DAT_PAD_CTRLG
+    offset: 0x03a5
+
+  - name: EE_AUDIO_DAT_PAD_CTRLH
+    offset: 0x03a6
+
+  - name: EE_AUDIO_PCPD_MON_{IDX}_CTRL0
+    offsets:
+      A: 0x03b0
+      B: 0x03c0
+    gates:
+      A: null
+      B: PCPD_MON_B_IMP
+
+  - name: EE_AUDIO_PCPD_MON_{IDX}_CTRL1
+    offsets:
+      A: 0x03b1
+      B: 0x03c1
+    gates:
+      A: null
+      B: PCPD_MON_B_IMP
+
+  - name: EE_AUDIO_PCPD_MON_{IDX}_CTRL2
+    offsets:
+      A: 0x03b2
+      B: 0x03c2
+    gates:
+      A: null
+      B: PCPD_MON_B_IMP
+
+  - name: EE_AUDIO_PCPD_MON_{IDX}_CTRL3
+    offsets:
+      A: 0x03b3
+      B: 0x03c3
+    gates:
+      A: null
+      B: PCPD_MON_B_IMP
+
+  - name: EE_AUDIO_PCPD_MON_{IDX}_CTRL4
+    offsets:
+      A: 0x03b4
+      B: 0x03c4
+    gates:
+      A: null
+      B: PCPD_MON_B_IMP
+
+  - name: EE_AUDIO_PCPD_MON_{IDX}_CTRL5
+    offsets:
+      A: 0x03b5
+      B: 0x03c5
+    gates:
+      A: null
+      B: PCPD_MON_B_IMP
+
+  - name: EE_AUDIO_PCPD_MON_{IDX}_STAT0
+    offsets:
+      A: 0x03b8
+      B: 0x03c8
+    gates:
+      A: null
+      B: PCPD_MON_B_IMP
+
+  - name: EE_AUDIO_PCPD_MON_{IDX}_STAT1
+    offsets:
+      A: 0x03b9
+      B: 0x03c9
+    gates:
+      A: null
+      B: PCPD_MON_B_IMP
+
+  - name: EE_AUDIO_FRHDMIRX_B_CTRL0
+    offset: 0x03f0
+
+  - name: EE_AUDIO_FRHDMIRX_B_CTRL1
+    offset: 0x03f1
+
+  - name: EE_AUDIO_FRHDMIRX_B_CTRL2
+    offset: 0x03f2
+
+  - name: EE_AUDIO_FRHDMIRX_B_CTRL3
+    offset: 0x03f3
+
+  - name: EE_AUDIO_FRHDMIRX_B_CTRL4
+    offset: 0x03f4
+
+  - name: EE_AUDIO_FRHDMIRX_B_CTRL5
+    offset: 0x03f5
+
+  - name: EE_AUDIO_FRHDMIRX_B_CTRL6
+    offset: 0x03f6
+
+  - name: EE_AUDIO_FRHDMIRX_B_CTRL7
+    offset: 0x03f7
+
+  - name: EE_AUDIO_FRHDMIRX_B_STAT0
+    offset: 0x03fa
+
+  - name: EE_AUDIO_FRHDMIRX_B_STAT1
+    offset: 0x03fb
+
+  - name: EE_AUDIO_FRHDMIRX_B_STAT2
+    offset: 0x03fc
+

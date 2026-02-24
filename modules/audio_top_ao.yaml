@@ -1,0 +1,324 @@
+module: AUDIO_TOP_AO
+
+# Voice相关寄存器参数化规则
+# {VOICE} 会被替换为大写的算法名: SED 或 VAD
+# {TO_VOICE} 会被替换为: TOSED 或 TOVAD
+voice_params:
+  placeholders:
+    - VOICE      # 直接用算法名: sed->SED, vad->VAD
+    - TO_VOICE   # 带TO前缀: sed->TOSED, vad->TOVAD
+
+registers:
+  - name: EE_AUDIO2_CLK81_CTRL
+    offset: 0x0000
+
+  - name: EE_AUDIO2_CLK81_EN
+    offset: 0x0001
+
+  - name: EE_AUDIO2_SW_RESET0
+    offset: 0x0002
+
+  - name: EE_AUDIO2_CLK_GATE_EN0
+    offset: 0x0003
+
+  - name: EE_AUDIO2_SECURITY_CTRL0
+    offset: 0x0004
+
+  - name: EE_AUDIO2_SECURITY_CTRL1
+    offset: 0x0005
+
+  - name: EE_AUDIO2_SECURITY_MUTE
+    offset: 0x0006
+
+  # Voice相关寄存器（名称根据algo参数化）
+  - name: EE_AUDIO2_MCLK_{VOICE}_CTRL
+    offset: 0x0010
+    voice_param: true
+
+  - name: EE_AUDIO2_{VOICE}_CLK_CTRL
+    offset: 0x0011
+    voice_param: true
+
+  - name: EE_AUDIO2_MST_DLY_CTRL0
+    offset: 0x0012
+
+  - name: EE_AUDIO2_MST_{VOICE}_SCLK_CTRL0
+    offset: 0x0013
+    voice_param: true
+
+  - name: EE_AUDIO2_MST_{VOICE}_SCLK_CTRL1
+    offset: 0x0014
+    voice_param: true
+
+  - name: EE_AUDIO2_CLK_TDMIN_{VOICE}_CTRL
+    offset: 0x0015
+    voice_param: true
+
+  - name: EE_AUDIO2_CLK_PDMIN_CTRL0
+    offset: 0x0016
+
+  - name: EE_AUDIO2_CLK_PDMIN_CTRL1
+    offset: 0x0017
+
+  - name: EE_AUDIO2_AUD_{VOICE}_PAD_CTRL0
+    offset: 0x0018
+    voice_param: true
+
+  - name: EE_AUDIO2_CLK_PDMIN_CTRL2
+    offset: 0x0019
+
+  - name: EE_AUDIO2_{TO_VOICE}_CTRL0
+    offset: 0x0020
+    voice_param: true
+
+  - name: EE_AUDIO2_{TO_VOICE}_CTRL1
+    offset: 0x0021
+    voice_param: true
+
+  - name: EE_AUDIO2_{TO_VOICE}_CH_EN
+    offset: 0x0022
+    voice_param: true
+
+  - name: EE_AUDIO2_{TO_VOICE}_CHNUM_ID0
+    offset: 0x0023
+    voice_param: true
+
+  - name: EE_AUDIO2_{TO_VOICE}_CHNUM_ID1
+    offset: 0x0024
+    voice_param: true
+
+  - name: EE_AUDIO2_{TO_VOICE}_CHNUM_ID2
+    offset: 0x0025
+    voice_param: true
+
+  - name: EE_AUDIO2_{TO_VOICE}_CHNUM_ID3
+    offset: 0x0026
+    voice_param: true
+
+  - name: EE_AUDIO2_{TO_VOICE}_CHNUM_ID4
+    offset: 0x0027
+    voice_param: true
+
+  - name: EE_AUDIO2_{TO_VOICE}_CHNUM_ID5
+    offset: 0x0028
+    voice_param: true
+
+  - name: EE_AUDIO2_{TO_VOICE}_CHNUM_ID6
+    offset: 0x0029
+    voice_param: true
+
+  - name: EE_AUDIO2_{TO_VOICE}_CHNUM_ID7
+    offset: 0x002a
+    voice_param: true
+
+  - name: EE_AUDIO2_TODDR_{VOICE}_CTRL0
+    offset: 0x0030
+    voice_param: true
+
+  - name: EE_AUDIO2_TODDR_{VOICE}_CTRL1
+    offset: 0x0031
+    voice_param: true
+
+  - name: EE_AUDIO2_TODDR_{VOICE}_CTRL2
+    offset: 0x0032
+    voice_param: true
+
+  - name: EE_AUDIO2_TODDR_{VOICE}_START_ADDR
+    offset: 0x0033
+    voice_param: true
+
+  - name: EE_AUDIO2_TODDR_{VOICE}_INIT_ADDR
+    offset: 0x0034
+    voice_param: true
+
+  - name: EE_AUDIO2_TODDR_{VOICE}_FINISH_ADDR
+    offset: 0x0035
+    voice_param: true
+
+  - name: EE_AUDIO2_TODDR_{VOICE}_START_ADDRB
+    offset: 0x0036
+    voice_param: true
+
+  - name: EE_AUDIO2_TODDR_{VOICE}_FINISH_ADDRB
+    offset: 0x0037
+    voice_param: true
+
+  - name: EE_AUDIO2_TODDR_{VOICE}_INT_ADDR
+    offset: 0x0038
+    voice_param: true
+
+  - name: EE_AUDIO2_TODDR_{VOICE}_STATUS1
+    offset: 0x0039
+    voice_param: true
+
+  - name: EE_AUDIO2_TODDR_{VOICE}_STATUS2
+    offset: 0x003a
+    voice_param: true
+
+  - name: EE_AUDIO2_TODDR_{VOICE}_AADDR
+    offset: 0x003b
+    voice_param: true
+
+  - name: EE_AUDIO2_TDMIN_{VOICE}_CTRL
+    offset: 0x0040
+    voice_param: true
+
+  - name: EE_AUDIO2_TDMIN_{VOICE}_SWAP0
+    offset: 0x0041
+    voice_param: true
+
+  - name: EE_AUDIO2_TDMIN_{VOICE}_SWAP1
+    offset: 0x0042
+    voice_param: true
+
+  - name: EE_AUDIO2_TDMIN_{VOICE}_MUTE_VAL
+    offset: 0x0043
+    voice_param: true
+
+  - name: EE_AUDIO2_TDMIN_{VOICE}_STAT
+    offset: 0x0044
+    voice_param: true
+
+  - name: EE_AUDIO2_TDMIN_{VOICE}_MUTE0
+    offset: 0x0050
+    voice_param: true
+
+  - name: EE_AUDIO2_TDMIN_{VOICE}_MUTE1
+    offset: 0x0051
+    voice_param: true
+
+  - name: EE_AUDIO2_TDMIN_{VOICE}_MUTE2
+    offset: 0x0052
+    voice_param: true
+
+  - name: EE_AUDIO2_TDMIN_{VOICE}_MUTE3
+    offset: 0x0053
+    voice_param: true
+
+  - name: EE_AUDIO2_TDMIN_{VOICE}_MUTE4
+    offset: 0x0054
+    voice_param: true
+
+  - name: EE_AUDIO2_TDMIN_{VOICE}_MUTE5
+    offset: 0x0055
+    voice_param: true
+
+  - name: EE_AUDIO2_TDMIN_{VOICE}_MUTE6
+    offset: 0x0056
+    voice_param: true
+
+  - name: EE_AUDIO2_TDMIN_{VOICE}_MUTE7
+    offset: 0x0057
+    voice_param: true
+
+  - name: EE_AUDIO2_TDMIN_{VOICE}_MASK0
+    offset: 0x0058
+    voice_param: true
+
+  - name: EE_AUDIO2_TDMIN_{VOICE}_MASK1
+    offset: 0x0059
+    voice_param: true
+
+  - name: EE_AUDIO2_TDMIN_{VOICE}_MASK2
+    offset: 0x005a
+    voice_param: true
+
+  - name: EE_AUDIO2_TDMIN_{VOICE}_MASK3
+    offset: 0x005b
+    voice_param: true
+
+  - name: EE_AUDIO2_TDMIN_{VOICE}_MASK4
+    offset: 0x005c
+    voice_param: true
+
+  - name: EE_AUDIO2_TDMIN_{VOICE}_MASK5
+    offset: 0x005d
+    voice_param: true
+
+  - name: EE_AUDIO2_TDMIN_{VOICE}_MASK6
+    offset: 0x005e
+    voice_param: true
+
+  - name: EE_AUDIO2_TDMIN_{VOICE}_MASK7
+    offset: 0x005f
+    voice_param: true
+
+  - name: EE_AUDIO2_{VOICE}_DAT_PAD_CTRL0
+    offset: 0x0060
+    voice_param: true
+
+  - name: EE_AUDIO2_{VOICE}_DAT_PAD_CTRL1
+    offset: 0x0061
+    voice_param: true
+
+  - name: EE_AUDIO2_TODDR_{VOICE}_CHNUM_ID0
+    offset: 0x0070
+    voice_param: true
+
+  - name: EE_AUDIO2_TODDR_{VOICE}_CHNUM_ID1
+    offset: 0x0071
+    voice_param: true
+
+  - name: EE_AUDIO2_TODDR_{VOICE}_CHNUM_ID2
+    offset: 0x0072
+    voice_param: true
+
+  - name: EE_AUDIO2_TODDR_{VOICE}_CHNUM_ID3
+    offset: 0x0073
+    voice_param: true
+
+  - name: EE_AUDIO2_TODDR_{VOICE}_CHNUM_ID4
+    offset: 0x0074
+    voice_param: true
+
+  - name: EE_AUDIO2_TODDR_{VOICE}_CHNUM_ID5
+    offset: 0x0075
+    voice_param: true
+
+  - name: EE_AUDIO2_TODDR_{VOICE}_CHNUM_ID6
+    offset: 0x0076
+    voice_param: true
+
+  - name: EE_AUDIO2_TODDR_{VOICE}_CHNUM_ID7
+    offset: 0x0077
+    voice_param: true
+
+  - name: EE_AUDIO2_TODDR_{VOICE}_CHSYNC_CTRL
+    offset: 0x007f
+    voice_param: true
+
+  - name: EE_AUDIO2_{VOICE}_AM2AXI_CTRL0
+    offset: 0x0080
+    voice_param: true
+
+  - name: EE_AUDIO2_{VOICE}_AXIWR_ASYNC_CTRL0
+    offset: 0x0081
+    voice_param: true
+
+  - name: EE_AUDIO2_{VOICE}_AM2AXI_STAT
+    offset: 0x0088
+    voice_param: true
+
+  - name: EE_AUDIO2_{VOICE}_AXIWR_ASYNC_STAT
+    offset: 0x0089
+    voice_param: true
+
+  - name: EE_AUDIO2_{VOICE}_PDM_TODDR_CTRL
+    offset: 0x008a
+    voice_param: true
+
+  - name: EE_AUDIO2_EXCEPTION_IRQ_STS0
+    offset: 0x0090
+
+  - name: EE_AUDIO2_EXCEPTION_IRQ_MASK0
+    offset: 0x0091
+
+  - name: EE_AUDIO2_EXCEPTION_IRQ_MODE0
+    offset: 0x0092
+
+  - name: EE_AUDIO2_EXCEPTION_IRQ_CLR0
+    offset: 0x0093
+
+  - name: EE_AUDIO2_EXCEPTION_IRQ_INV0
+    offset: 0x0094
+

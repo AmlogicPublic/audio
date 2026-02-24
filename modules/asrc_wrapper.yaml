@@ -1,0 +1,27 @@
+module: ASRC_WRAPPER
+c5_base: 0xFE42_8400
+range: 8KB
+gate: false
+
+registers:
+  - name: AUDIO_ACC_ASRC_WRAPPER_TOP_CTL0
+    offset: 0x0000
+
+  - name: AUDIO_ACC_ASRC_WRAPPER_TOP_CTL1
+    offset: 0x0001
+
+  - name: AUDIO_ACC_ASRC_WRAPPER_TOP_CTL2
+    offset: 0x0002
+
+  - name: AUDIO_ACC_ASRC_WRAPPER_TOP_CTL3
+    offset: 0x0003
+
+  - name: AUDIO_ACC_ASRC_WRAPPER_TOP_CTL4
+    offset: 0x0004
+
+  - name: AUDIO_ACC_ASRC_WRAPPER_TOP_ST0
+    offset: 0x0010
+
+  - name: AUDIO_ACC_ASRC_WRAPPER_TOP_ST1
+    offset: 0x0011
+

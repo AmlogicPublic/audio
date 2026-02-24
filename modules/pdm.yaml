@@ -1,0 +1,61 @@
+module: PDM
+
+instances:
+  A:
+  B:
+    rename_rules:
+      - pattern: "^PDM_"
+        replacement: "PDMB_"
+
+registers:
+  - name: PDM_CTRL
+    offset: 0x0000
+
+  - name: PDM_HCIC_CTRL1
+    offset: 0x0001
+
+  - name: PDM_HCIC_CTRL2
+    offset: 0x0002
+
+  - name: PDM_F1_CTRL
+    offset: 0x0003
+
+  - name: PDM_F2_CTRL
+    offset: 0x0004
+
+  - name: PDM_F3_CTRL
+    offset: 0x0005
+
+  - name: PDM_HPF_CTRL
+    offset: 0x0006
+
+  - name: PDM_CHAN_CTRL
+    offset: 0x0007
+
+  - name: PDM_CHAN_CTRL1
+    offset: 0x0008
+
+  - name: PDM_COEFF_ADDR
+    offset: 0x0009
+
+  - name: PDM_COEFF_DATA
+    offset: 0x000a
+
+  - name: PDM_CLKG_CTRL
+    offset: 0x000b
+
+  - name: PDM_STS
+    offset: 0x000c
+
+  - name: PDM_MUTE_VALUE
+    offset: 0x000d
+
+  - name: PDM_MASK_NUM
+    offset: 0x000e
+
+  - name: PDM_CHAN_CTRL2
+    offset: 0x000f
+
+  - name: PDM_HPF_GAIN_CTRL
+    offset: 0x0010
+

@@ -1,0 +1,297 @@
+module: EARCRX
+
+sections:
+  CMDC:
+    registers:
+      - name: EARC_RX_CMDC_TOP_CTRL0
+        offset: 0x0000
+
+      - name: EARC_RX_CMDC_TOP_CTRL1
+        offset: 0x0001
+
+      - name: EARC_RX_CMDC_TOP_CTRL2
+        offset: 0x0002
+
+      - name: EARC_RX_CMDC_TIMER_CTRL0
+        offset: 0x0003
+
+      - name: EARC_RX_CMDC_TIMER_CTRL1
+        offset: 0x0004
+
+      - name: EARC_RX_CMDC_TIMER_CTRL2
+        offset: 0x0005
+
+      - name: EARC_RX_CMDC_TIMER_CTRL3
+        offset: 0x0006
+
+      - name: EARC_RX_CMDC_VSM_CTRL0
+        offset: 0x0007
+
+      - name: EARC_RX_CMDC_VSM_CTRL1
+        offset: 0x0008
+
+      - name: EARC_RX_CMDC_VSM_CTRL2
+        offset: 0x0009
+
+      - name: EARC_RX_CMDC_VSM_CTRL3
+        offset: 0x000a
+
+      - name: EARC_RX_CMDC_VSM_CTRL4
+        offset: 0x000b
+
+      - name: EARC_RX_CMDC_VSM_CTRL5
+        offset: 0x000c
+
+      - name: EARC_RX_CMDC_VSM_CTRL6
+        offset: 0x000d
+
+      - name: EARC_RX_CMDC_VSM_CTRL7
+        offset: 0x000e
+
+      - name: EARC_RX_CMDC_VSM_CTRL8
+        offset: 0x000f
+
+      - name: EARC_RX_CMDC_VSM_CTRL9
+        offset: 0x0010
+
+      - name: EARC_RX_CMDC_SENDER_CTRL0
+        offset: 0x0011
+
+      - name: EARC_RX_CMDC_PACKET_CTRL0
+        offset: 0x0012
+
+      - name: EARC_RX_CMDC_PACKET_CTRL1
+        offset: 0x0013
+
+      - name: EARC_RX_CMDC_PACKET_CTRL2
+        offset: 0x0014
+
+      - name: EARC_RX_CMDC_PACKET_CTRL3
+        offset: 0x0015
+
+      - name: EARC_RX_CMDC_PACKET_CTRL4
+        offset: 0x0016
+
+      - name: EARC_RX_CMDC_PACKET_CTRL5
+        offset: 0x0017
+
+      - name: EARC_RX_CMDC_PACKET_CTRL6
+        offset: 0x0018
+
+      - name: EARC_RX_CMDC_BIPHASE_CTRL0
+        offset: 0x0019
+
+      - name: EARC_RX_CMDC_BIPHASE_CTRL1
+        offset: 0x001a
+
+      - name: EARC_RX_CMDC_BIPHASE_CTRL2
+        offset: 0x001b
+
+      - name: EARC_RX_CMDC_BIPHASE_CTRL3
+        offset: 0x001c
+
+      - name: EARC_RX_CMDC_DEVICE_ID_CTRL
+        offset: 0x001d
+
+      - name: EARC_RX_CMDC_DEVICE_WDATA
+        offset: 0x001e
+
+      - name: EARC_RX_CMDC_DEVICE_RDATA
+        offset: 0x001f
+
+      - name: EARC_RX_ANA_CTRL0
+        offset: 0x0020
+
+      - name: EARC_RX_ANA_CTRL1
+        offset: 0x0021
+
+      - name: EARC_RX_ANA_CTRL2
+        offset: 0x0022
+
+      - name: EARC_RX_ANA_CTRL3
+        offset: 0x0023
+
+      - name: EARC_RX_ANA_CTRL4
+        offset: 0x0024
+
+      - name: EARC_RX_ANA_CTRL5
+        offset: 0x0025
+
+      - name: EARC_RX_ANA_STAT0
+        offset: 0x0026
+
+      - name: EARC_RX_CMDC_STATUS0
+        offset: 0x0027
+
+      - name: EARC_RX_CMDC_STATUS1
+        offset: 0x0028
+
+      - name: EARC_RX_CMDC_STATUS2
+        offset: 0x0029
+
+      - name: EARC_RX_CMDC_STATUS3
+        offset: 0x002a
+
+      - name: EARC_RX_CMDC_STATUS4
+        offset: 0x002b
+
+      - name: EARC_RX_CMDC_STATUS5
+        offset: 0x002c
+
+      - name: EARC_RX_CMDC_STATUS6
+        offset: 0x002d
+
+  DMAC:
+    registers:
+      - name: EARCRX_DMAC_TOP_CTRL0
+        offset: 0x0000
+
+      - name: EARCRX_DMAC_SYNC_CTRL0
+        offset: 0x0001
+
+      - name: EARCRX_DMAC_SYNC_STAT0
+        offset: 0x0002
+
+      - name: EARCRX_SPDIFIN_SAMPLE_CTRL0
+        offset: 0x0003
+
+      - name: EARCRX_SPDIFIN_SAMPLE_CTRL1
+        offset: 0x0004
+
+      - name: EARCRX_SPDIFIN_SAMPLE_CTRL2
+        offset: 0x0005
+
+      - name: EARCRX_SPDIFIN_SAMPLE_CTRL3
+        offset: 0x0006
+
+      - name: EARCRX_SPDIFIN_SAMPLE_CTRL4
+        offset: 0x0007
+
+      - name: EARCRX_SPDIFIN_SAMPLE_CTRL5
+        offset: 0x0008
+
+      - name: EARCRX_SPDIFIN_SAMPLE_STAT0
+        offset: 0x0009
+
+      - name: EARCRX_SPDIFIN_SAMPLE_STAT1
+        offset: 0x000a
+
+      - name: EARCRX_SPDIFIN_MUTE_VAL
+        offset: 0x000b
+
+      - name: EARCRX_SPDIFIN_CTRL0
+        offset: 0x000c
+
+      - name: EARCRX_SPDIFIN_CTRL1
+        offset: 0x000d
+
+      - name: EARCRX_SPDIFIN_CTRL2
+        offset: 0x000e
+
+      - name: EARCRX_SPDIFIN_CTRL3
+        offset: 0x000f
+
+      - name: EARCRX_SPDIFIN_STAT0
+        offset: 0x0010
+
+      - name: EARCRX_SPDIFIN_STAT1
+        offset: 0x0011
+
+      - name: EARCRX_SPDIFIN_STAT2
+        offset: 0x0012
+
+      - name: EARCRX_DMAC_UBIT_CTRL0
+        offset: 0x0013
+
+      - name: EARCRX_IU_RDATA
+        offset: 0x0014
+
+      - name: EARCRX_DMAC_UBIT_STAT0
+        offset: 0x0015
+
+      - name: EARCRX_ERR_CORRECT_CTRL0
+        offset: 0x0016
+
+      - name: EARCRX_ERR_CORRECT_STAT0
+        offset: 0x0017
+
+      - name: EARCRX_ANA_RST_CTRL0
+        offset: 0x0018
+
+      - name: EARCRX_ANA_RST_CTRL1
+        offset: 0x0019
+
+      - name: EARCRX_SPDIFIN_CTRL4
+        offset: 0x0020
+
+      - name: EARCRX_SPDIFIN_CTRL5
+        offset: 0x0021
+
+      - name: EARCRX_SPDIFIN_CTRL6
+        offset: 0x0022
+
+      - name: EARCRX_DMAC_SYNC_CTRL1
+        offset: 0x0023
+
+      - name: EARCRX_SPDIFIN_SAMPLE_CTRL6
+        offset: 0x0024
+
+      - name: EARCRX_DMAC_SYNC_CTRL2
+        offset: 0x0025
+
+      - name: EARCRX_DMAC_SYNC_CTRL3
+        offset: 0x0026
+
+      - name: EARCRX_DMAC_SYNC_CTRL4
+        offset: 0x0027
+
+      - name: EARCRX_DMAC_SYNC_STAT1
+        offset: 0x0028
+
+      - name: EARCRX_DMAC_SYNC_STAT2
+        offset: 0x0029
+
+      - name: EARCRX_DMAC_SYNC_STAT3
+        offset: 0x002a
+
+  TOP:
+    registers:
+      - name: EARCRX_TOP_CTRL0
+        offset: 0x0000
+
+      - name: EARCRX_DMAC_INT_MASK
+        offset: 0x0001
+
+      - name: EARCRX_DMAC_INT_PENDING
+        offset: 0x0002
+
+      - name: EARCRX_CMDC_INT_MASK
+        offset: 0x0003
+
+      - name: EARCRX_CMDC_INT_PENDING
+        offset: 0x0004
+
+      - name: EARCRX_ANA_CTRL0
+        offset: 0x0005
+
+      - name: EARCRX_ANA_CTRL1
+        offset: 0x0006
+
+      - name: EARCRX_ANA_STAT0
+        offset: 0x0007
+
+      - name: EARCRX_PLL_CTRL0
+        offset: 0x0008
+
+      - name: EARCRX_PLL_CTRL1
+        offset: 0x0009
+
+      - name: EARCRX_PLL_CTRL2
+        offset: 0x000a
+
+      - name: EARCRX_PLL_CTRL3
+        offset: 0x000b
+
+      - name: EARCRX_PLL_STAT0
+        offset: 0x000c
+

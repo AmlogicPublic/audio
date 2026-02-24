@@ -1,0 +1,101 @@
+module: SED
+
+registers:
+  - name: SED_VERSION_ADDR
+    offset: 0x0000
+
+  - name: SED_SYS_CFG_REG0
+    offset: 0x0004
+
+  - name: SED_SYS_CFG_REG1
+    offset: 0x0005
+
+  - name: SED_CMD_CHAIN
+    offset: 0x0010
+
+  - name: SED_IRQ_EN
+    offset: 0x0011
+
+  - name: SED_IRQ_STS
+    offset: 0x0012
+
+  - name: SED_TIMELOG
+    offset: 0x0013
+
+  - name: SED_CMD_CFG0
+    offset: 0x0040
+
+  - name: SED_CMD_CFG1
+    offset: 0x0041
+
+  - name: SED_CMD_CFG2
+    offset: 0x0042
+
+  - name: SED_CMD_CFG3
+    offset: 0x0043
+
+  - name: SED_DSM_COEF0
+    offset: 0x0080
+
+  - name: SED_DSM_COEF1
+    offset: 0x0081
+
+  - name: SED_DSM_COEF2
+    offset: 0x0082
+
+  - name: SED_DSM_COEF3
+    offset: 0x0083
+
+  - name: SED_DSM_COEF4
+    offset: 0x0084
+
+  - name: SED_DSM_COEF5
+    offset: 0x0085
+
+  - name: SED_DSM_COEF6
+    offset: 0x0086
+
+  - name: SED_DSM_COEF7
+    offset: 0x0087
+
+  - name: SED_DSM_COEF8
+    offset: 0x0088
+
+  - name: SED_DSM_COEF9
+    offset: 0x0089
+
+  - name: SED_DSM_COEFA
+    offset: 0x008a
+
+  - name: SED_DSM_COEFB
+    offset: 0x008b
+
+  - name: SED_DSM_COEFC
+    offset: 0x008c
+
+  - name: SED_CFG_REG0
+    offset: 0x0090
+
+  - name: SED_CFG_REG1
+    offset: 0x0091
+
+  - name: SED_POW_CTRL0
+    offset: 0x0092
+
+  - name: SED_POW_CTRL1
+    offset: 0x0093
+
+  - name: SED_POW_CTRL2
+    offset: 0x0094
+
+  - name: SED_LOG_CTRL0
+    offset: 0x0095
+
+  - name: SED_LOG_CTRL1
+    offset: 0x0096
+
+  - name: SED_NN_CTRL0
+    offset: 0x0097
+
+  - name: SED_MEL_COEF_BASE_ADR
+    offset: 0x1200

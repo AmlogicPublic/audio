@@ -1,0 +1,90 @@
+module: LOCKER
+
+instances:
+  A:
+  B:
+    rename_rules:
+      - pattern: "^AUD_LOCK_"
+        replacement: "AUD_LOCKB_"
+      - pattern: "^RO_"
+        replacement: "ROB_"
+
+registers:
+  - name: AUD_LOCK_EN
+    offset: 0x0000
+
+  - name: AUD_LOCK_SW_RESET
+    offset: 0x0001
+
+  - name: AUD_LOCK_SW_LATCH
+    offset: 0x0002
+
+  - name: AUD_LOCK_HW_LATCH
+    offset: 0x0003
+
+  - name: AUD_LOCK_REFCLK_SRC
+    offset: 0x0004
+
+  - name: AUD_LOCK_REFCLK_LAT_INT
+    offset: 0x0005
+
+  - name: AUD_LOCK_IMCLK_LAT_INT
+    offset: 0x0006
+
+  - name: AUD_LOCK_OMCLK_LAT_INT
+    offset: 0x0007
+
+  - name: AUD_LOCK_REFCLK_DS_INT
+    offset: 0x0008
+
+  - name: AUD_LOCK_IMCLK_DS_INT
+    offset: 0x0009
+
+  - name: AUD_LOCK_OMCLK_DS_INT
+    offset: 0x000a
+
+  - name: AUD_LOCK_INT_CLR
+    offset: 0x000b
+
+  - name: AUD_LOCK_GCLK_CTRL
+    offset: 0x000c
+
+  - name: AUD_LOCK_INT_CTRL
+    offset: 0x000d
+
+  - name: RO_REF2IMCLK_CNT_L
+    offset: 0x0010
+
+  - name: RO_REF2IMCLK_CNT_H
+    offset: 0x0011
+
+  - name: RO_REF2OMCLK_CNT_L
+    offset: 0x0012
+
+  - name: RO_REF2OMCLK_CNT_H
+    offset: 0x0013
+
+  - name: RO_IMCLK2REF_CNT_L
+    offset: 0x0014
+
+  - name: RO_IMCLK2REF_CNT_H
+    offset: 0x0015
+
+  - name: RO_OMCLK2REF_CNT_L
+    offset: 0x0016
+
+  - name: RO_OMCLK2REF_CNT_H
+    offset: 0x0017
+
+  - name: RO_REFCLK_PKG_CNT
+    offset: 0x0018
+
+  - name: RO_IMCLK_PKG_CNT
+    offset: 0x0019
+
+  - name: RO_OMCLK_PKG_CNT
+    offset: 0x001a
+
+  - name: RO_AUD_LOCK_INT_STATUS
+    offset: 0x001b
+

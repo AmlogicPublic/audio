@@ -1,0 +1,119 @@
+module: RESAMPLE
+
+instances:
+  A:
+    rename_rules:
+      - pattern: "^RESAMPLE_"
+        replacement: "AUDIO_RSAMP_"
+  B:
+    rename_rules:
+      - pattern: "^RESAMPLE_"
+        replacement: "AUDIO_RSAMPB_"
+  C:
+    rename_rules:
+      - pattern: "^RESAMPLE_"
+        replacement: "AUDIO_RSAMPC_"
+
+registers:
+  - name: RESAMPLE_CTRL0
+    offset: 0x0000
+
+  - name: RESAMPLE_CTRL1
+    offset: 0x0001
+
+  - name: RESAMPLE_CTRL2
+    offset: 0x0002
+
+  - name: RESAMPLE_PHSINIT
+    offset: 0x0003
+
+  - name: RESAMPLE_PHSSTEP
+    offset: 0x0004
+
+  - name: RESAMPLE_SHIFT
+    offset: 0x0005
+
+  - name: RESAMPLE_ADJ_CTRL0
+    offset: 0x0006
+
+  - name: RESAMPLE_ADJ_CTRL1
+    offset: 0x0007
+
+  - name: RESAMPLE_ADJ_SFT
+    offset: 0x0008
+
+  - name: RESAMPLE_ADJ_IDET_LEN
+    offset: 0x0009
+
+  - name: RESAMPLE_ADJ_FORCE
+    offset: 0x000a
+
+  - name: RESAMPLE_ADJ_KI_FORCE
+    offset: 0x000b
+
+  - name: RESAMPLE_WATCHDOG_THRD
+    offset: 0x000c
+
+  - name: RESAMPLE_DBG_INFO
+    offset: 0x000d
+
+  - name: RESAMPLE_AOUT_FORCE
+    offset: 0x000e
+
+  - name: RESAMPLE_IRQ_CTRL
+    offset: 0x000f
+
+  - name: RESAMPLE_RO_STATUS
+    offset: 0x0010
+
+  - name: RESAMPLE_RO_ADJ_FREQ
+    offset: 0x0011
+
+  - name: RESAMPLE_RO_ADJ_DIFF_BAK
+    offset: 0x0012
+
+  - name: RESAMPLE_RO_ADJ_DIFF_DLT
+    offset: 0x0013
+
+  - name: RESAMPLE_RO_ADJ_PHS_ERR
+    offset: 0x0014
+
+  - name: RESAMPLE_RO_ADJ_KI_OUT
+    offset: 0x0015
+
+  - name: RESAMPLE_RO_IN_CNT
+    offset: 0x0016
+
+  - name: RESAMPLE_RO_OUT_CNT
+    offset: 0x0017
+
+  - name: RESAMPLE_RO_ADJ_PHS_ERR_VAR
+    offset: 0x0018
+
+  - name: RESAMPLE_POST_COEF0
+    offset: 0x0020
+
+  - name: RESAMPLE_POST_COEF1
+    offset: 0x0021
+
+  - name: RESAMPLE_POST_COEF2
+    offset: 0x0022
+
+  - name: RESAMPLE_POST_COEF3
+    offset: 0x0023
+
+  - name: RESAMPLE_POST_COEF4
+    offset: 0x0024
+
+  - name: RESAMPLE_AA_COEF_ADDR
+    offset: 0x0030
+
+  - name: RESAMPLE_AA_COEF_DATA
+    offset: 0x0031
+
+  - name: RESAMPLE_SINC_COEF_ADDR
+    offset: 0x0040
+
+  - name: RESAMPLE_SINC_COEF_DATA
+    offset: 0x0041
+
