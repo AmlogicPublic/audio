@@ -8,7 +8,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 import yaml
 
-from config import CHIP, MACROS, MODULE_TREE, CLK_INPUTS
+from config import CHIP, MODULE_TREE, CLK_INPUTS
 
 FILE = f"audio_spec_{CHIP}"
 COLORS = ["#e3f2fd", "#fce4ec", "#e8f5e9", "#fff3e0", "#f3e5f5",
@@ -46,24 +46,34 @@ class Module:
     children: list = field(default_factory=list)
 
 # ============================================================================
-# 宏处理
+# 配置查询
 # ============================================================================
 
 
-def get_macro(*path):
-    node = MACROS
-    for p in path:
-        if not isinstance(node, dict) or p not in node:
+def get_cfg(*path):
+    """从 MODULE_TREE 查找配置值"""
+    def search(node, remaining):
+        if not remaining:
+            return node if not isinstance(node, dict) else node.get("imp")
+        key = remaining[0]
+        if not isinstance(node, dict):
             return None
-        node = node[p]
-    return node if not isinstance(node, dict) else node.get("imp")
+        if key in node:
+            return search(node[key], remaining[1:])
+        for v in node.values():
+            if isinstance(v, dict):
+                result = search(v, remaining)
+                if result is not None:
+                    return result
+        return None
+    return search(MODULE_TREE, list(path))
 
 
 def check_cond(cond):
     if not cond:
         return True
     path = cond.get("macro_path", [])
-    val = get_macro(*path)
+    val = get_cfg(*path)
     if val is None:
         return False
     if "eq" in cond:
@@ -74,10 +84,11 @@ def check_cond(cond):
 
 
 def resolve_voice(s: str) -> str:
-    algo = get_macro("voice", "algo")
-    if isinstance(algo, str):
-        s = s.replace("{VOICE}", algo.upper()).replace(
-            "{TO_VOICE}", f"TO{algo.upper()}")
+    sed_imp = get_cfg("sed", "imp")
+    vad_imp = get_cfg("vad", "imp")
+    algo = "SED" if sed_imp else ("VAD" if vad_imp else None)
+    if algo:
+        s = s.replace("{VOICE}", algo).replace("{TO_VOICE}", f"TO{algo}")
     return s
 
 
@@ -175,42 +186,55 @@ def get_module_info(name: str) -> tuple[list[Reg], int]:
 # ============================================================================
 
 
+def is_leaf(val) -> bool:
+    """判断是否为叶子模块配置（有 imp 字段）"""
+    return isinstance(val, dict) and "imp" in val
+
+
+def is_module_parent(key: str, val: dict) -> bool:
+    """是否为模块父节点（小写开头，所有子节点都是叶子）
+    如 tdmin, earcrx 等，子节点是实例 A/B/C/CMDC/DMAC 等
+    """
+    if not key[0].islower():
+        return False
+    subs = [v for k, v in val.items() if not k.startswith("_")]
+    return subs and all(is_leaf(v) for v in subs)
+
+
 def build_tree() -> list[Module]:
     """根据 MODULE_TREE 构建完整模块树"""
-    load_all_yaml()  # 预加载所有 YAML
+    load_all_yaml()
 
     def build(key: str, val) -> Module:
-        if isinstance(val, int):
-            regs, _ = get_module_info(key)
-            active = bool(regs) or get_macro(key.lower(), "imp") == 1
-            return Module(key, addr=val, active=active, regs=regs)
-
-        if val == "_parent":
-            cfg = MACROS.get(key.lower(), {})
-            children = []
-            if isinstance(cfg, dict):
-                for iid, icfg in cfg.items():
-                    if isinstance(icfg, dict):
-                        inst_name = f"{key}_{iid}"
-                        regs, offset = get_module_info(inst_name)
-                        # 有数据且 imp=1 才是 active
-                        has_data = bool(regs) or offset > 0
-                        active = has_data and icfg.get("imp", 0) == 1
-                        children.append(
-                            Module(inst_name, offset=offset, active=active, regs=regs))
-            if children:
-                # 有数据的按 offset 排前面，无数据的排后面
-                children.sort(key=lambda m: (not m.active, m.offset, m.name))
-                return Module(key, children=children)
+        if not isinstance(val, dict):
             return None
 
-        if isinstance(val, dict):
+        if is_leaf(val):
             addr = val.get("_addr", 0)
-            children = [build(k, v)
-                        for k, v in val.items() if not k.startswith("_")]
-            children = [c for c in children if c]
-            if children:
-                return Module(key, addr=addr, children=children)
+            imp = val.get("imp", 0) == 1
+            regs, offset = get_module_info(key)
+            return Module(key, addr=addr, offset=offset, active=imp, regs=regs)
+
+        if is_module_parent(key, val):
+            children = []
+            for k, v in val.items():
+                if k.startswith("_"):
+                    continue
+                full_name = f"{key}_{k}"
+                addr = v.get("_addr", 0)
+                imp = v.get("imp", 0) == 1
+                regs, offset = get_module_info(full_name)
+                children.append(Module(full_name, addr=addr,
+                                offset=offset, active=imp, regs=regs))
+            children.sort(key=lambda m: (not m.active, m.offset, m.name))
+            return Module(key, children=children)
+
+        addr = val.get("_addr", 0)
+        children = [build(k, v)
+                    for k, v in val.items() if not k.startswith("_")]
+        children = [c for c in children if c]
+        if children:
+            return Module(key, addr=addr, children=children)
         return None
 
     return [build(k, v) for k, v in MODULE_TREE.items() if build(k, v)]
@@ -236,6 +260,7 @@ def count_regs(node: Module) -> int:
     if node.children:
         return sum(count_regs(c) for c in node.children)
     return len(node.regs) if node.active else 0
+
 
 def tree_html(node: Module, base_addr=0, level=0) -> str:
     """渲染地址树，叶子节点包含完整地址信息"""
@@ -317,10 +342,13 @@ def macro_html() -> str:
     def walk(node, path=""):
         if isinstance(node, dict):
             for k, v in node.items():
-                walk(v, f"{path}.{k}" if path else k)
+                if k.startswith("_"):
+                    rows.append([f"{path}.{k}" if path else k, str(v)])
+                else:
+                    walk(v, f"{path}.{k}" if path else k)
         else:
             rows.append([path, str(node)])
-    walk(MACROS)
+    walk(MODULE_TREE)
     return table_html(["Path", "Value"], rows)
 
 
@@ -474,10 +502,13 @@ def macro_md() -> str:
     def walk(node, path=""):
         if isinstance(node, dict):
             for k, v in node.items():
-                walk(v, f"{path}.{k}" if path else k)
+                if k.startswith("_"):
+                    lines.append(f"| {f'{path}.{k}' if path else k} | {v} |\n")
+                else:
+                    walk(v, f"{path}.{k}" if path else k)
         else:
             lines.append(f"| {path} | {node} |\n")
-    walk(MACROS)
+    walk(MODULE_TREE)
     return "".join(lines)
 
 

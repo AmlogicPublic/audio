@@ -1,13 +1,16 @@
-module: TOHDMITX
+module: TOHDMI_DP_TX
 parent_base: audio_top_ee
 
 instances:
   A:
-    offset_base: 0x1d1
-    condition: { macro_path: ["tohdmitx", "imp"], eq: 1 }
+    offset_base: 0x1d7
+    condition: { macro_path: ["tohdmi_dp_tx", "A", "imp"], eq: 1 }
+  B:
+    offset_base: 0x1d8
+    condition: { macro_path: ["tohdmi_dp_tx", "B", "imp"], eq: 1 }
 
 registers:
-  - name: TOHDMITX_CTRL0
+  - name: TOHDMI_DP_TX_{X}_CTRL0
     offset: 0x00
     fields:
       - bits: "31"
