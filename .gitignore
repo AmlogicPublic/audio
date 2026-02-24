@@ -1,3 +1,5 @@
 *.md
+*.html
+*.pdf
 __pycache__/
 tmp/
