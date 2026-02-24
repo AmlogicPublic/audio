@@ -1,0 +1,263 @@
+module: RESAMPLE_ID
+parent_base: audio_top_ee
+
+instances:
+  A:
+    offset_base: 0x350
+    condition: { macro_path: ["resample", "A", "imp"], eq: 1 }
+  B:
+    offset_base: 0x360
+    condition: { macro_path: ["resample", "B", "imp"], eq: 1 }
+
+registers:
+  - name: RSAMP_{X}_CHNUM_ID0
+    offset: 0x00
+    fields:
+      - bits: "31:24"
+        name: ch3_id
+        access: R/W
+        default: "0x00"
+        description: ID of ch3
+      - bits: "23:16"
+        name: ch2_id
+        access: R/W
+        default: "0x00"
+        description: ID of ch2
+      - bits: "15:8"
+        name: ch1_id
+        access: R/W
+        default: "0x00"
+        description: ID of ch1
+      - bits: "7:0"
+        name: ch0_id
+        access: R/W
+        default: "0x00"
+        description: ID of ch0
+
+  - name: RSAMP_{X}_CHNUM_ID1
+    offset: 0x01
+    fields:
+      - bits: "31:24"
+        name: ch7_id
+        access: R/W
+        default: "0x00"
+        description: ID of ch7
+      - bits: "23:16"
+        name: ch6_id
+        access: R/W
+        default: "0x00"
+        description: ID of ch6
+      - bits: "15:8"
+        name: ch5_id
+        access: R/W
+        default: "0x00"
+        description: ID of ch5
+      - bits: "7:0"
+        name: ch4_id
+        access: R/W
+        default: "0x00"
+        description: ID of ch4
+
+  - name: RSAMP_{X}_CHNUM_ID2
+    offset: 0x02
+    fields:
+      - bits: "31:24"
+        name: ch11_id
+        access: R/W
+        default: "0x00"
+        description: ID of ch11
+      - bits: "23:16"
+        name: ch10_id
+        access: R/W
+        default: "0x00"
+        description: ID of ch10
+      - bits: "15:8"
+        name: ch9_id
+        access: R/W
+        default: "0x00"
+        description: ID of ch9
+      - bits: "7:0"
+        name: ch8_id
+        access: R/W
+        default: "0x00"
+        description: ID of ch8
+
+  - name: RSAMP_{X}_CHNUM_ID3
+    offset: 0x03
+    fields:
+      - bits: "31:24"
+        name: ch15_id
+        access: R/W
+        default: "0x00"
+        description: ID of ch15
+      - bits: "23:16"
+        name: ch14_id
+        access: R/W
+        default: "0x00"
+        description: ID of ch14
+      - bits: "15:8"
+        name: ch13_id
+        access: R/W
+        default: "0x00"
+        description: ID of ch13
+      - bits: "7:0"
+        name: ch12_id
+        access: R/W
+        default: "0x00"
+        description: ID of ch12
+
+  - name: RSAMP_{X}_CHNUM_ID4
+    offset: 0x04
+    fields:
+      - bits: "31:24"
+        name: ch19_id
+        access: R/W
+        default: "0x00"
+        description: ID of ch19
+      - bits: "23:16"
+        name: ch18_id
+        access: R/W
+        default: "0x00"
+        description: ID of ch18
+      - bits: "15:8"
+        name: ch17_id
+        access: R/W
+        default: "0x00"
+        description: ID of ch17
+      - bits: "7:0"
+        name: ch16_id
+        access: R/W
+        default: "0x00"
+        description: ID of ch16
+
+  - name: RSAMP_{X}_CHNUM_ID5
+    offset: 0x05
+    fields:
+      - bits: "31:24"
+        name: ch23_id
+        access: R/W
+        default: "0x00"
+        description: ID of ch23
+      - bits: "23:16"
+        name: ch22_id
+        access: R/W
+        default: "0x00"
+        description: ID of ch22
+      - bits: "15:8"
+        name: ch21_id
+        access: R/W
+        default: "0x00"
+        description: ID of ch21
+      - bits: "7:0"
+        name: ch20_id
+        access: R/W
+        default: "0x00"
+        description: ID of ch20
+
+  - name: RSAMP_{X}_CHNUM_ID6
+    offset: 0x06
+    fields:
+      - bits: "31:24"
+        name: ch27_id
+        access: R/W
+        default: "0x00"
+        description: ID of ch27
+      - bits: "23:16"
+        name: ch26_id
+        access: R/W
+        default: "0x00"
+        description: ID of ch26
+      - bits: "15:8"
+        name: ch25_id
+        access: R/W
+        default: "0x00"
+        description: ID of ch25
+      - bits: "7:0"
+        name: ch24_id
+        access: R/W
+        default: "0x00"
+        description: ID of ch24
+
+  - name: RSAMP_{X}_CHNUM_ID7
+    offset: 0x07
+    fields:
+      - bits: "31:24"
+        name: ch31_id
+        access: R/W
+        default: "0x00"
+        description: ID of ch31
+      - bits: "23:16"
+        name: ch30_id
+        access: R/W
+        default: "0x00"
+        description: ID of ch30
+      - bits: "15:8"
+        name: ch29_id
+        access: R/W
+        default: "0x00"
+        description: ID of ch29
+      - bits: "7:0"
+        name: ch28_id
+        access: R/W
+        default: "0x00"
+        description: ID of ch28
+
+  - name: RSAMP_{X}_CHSYNC_CTRL
+    offset: 0x0f
+    fields:
+      - bits: "31"
+        name: bypass_n
+        access: R/W
+        default: "0"
+        description: "0:out=in; 1:sync data by chnum info"
+      - bits: "30"
+        name: sw_reset
+        access: R/W
+        default: "0"
+        description: "1:reset chnum_sync module"
+      - bits: "29"
+        name: mode
+        access: R/W
+        default: "0"
+        description: "0:BUFF_MODE; 1:DROP_MODE"
+      - bits: "28"
+        name: id_sel
+        access: R/W
+        default: "0"
+        description: "0:ID=input valid count; 1:ID=reg_id_***"
+      - bits: "27"
+        name: fix_stable
+        access: R/W
+        default: "0"
+        description: "1:ignore stable info of input; 0:compensate dat by stable info"
+      - bits: "26"
+        name: debug_en0
+        access: R/W
+        default: "0"
+        description: "BUF_MODE only; 1:send chnum info from input; 0:generate new chnum info"
+      - bits: "7:0"
+        name: chnum_max
+        access: R/W
+        default: "0x00"
+        description: "if input is 8ch, set to 7"
+
+chsync_mask:
+  name: RSAMP_CHSYNC_MASK
+  offset: 0x0e
+  base_instance: A
+  fields:
+    - bits: "23:16"
+      name: rsamp_c_stable_mask
+      access: R/W
+      default: "0x00"
+      description: "resample_C stable mask; [3]:out_en changed; [2]:soft_reset; [1]:en_r changed; [0]:en changed"
+    - bits: "15:8"
+      name: rsamp_b_stable_mask
+      access: R/W
+      default: "0x00"
+      description: "resample_B stable mask; [3]:rsamp_en=0; [2]:rsamp_rst=1; [1]:output_en=0; [0]:bypass changed"
+    - bits: "7:0"
+      name: rsamp_a_stable_mask
+      access: R/W
+      default: "0x00"
+      description: "resample_A stable mask; [3]:rsamp_en=0; [2]:rsamp_rst=1; [1]:output_en=0; [0]:bypass changed"

@@ -1,0 +1,337 @@
+module: MIXER
+parent_base: audio_top_ee
+
+instances:
+  A:
+    offset_base: 0x185
+    condition: { macro_path: ["mixer", "imp"], eq: 1 }
+
+registers:
+  - name: MIXER_COEF0
+    offset: 0x00
+    fields:
+      - bits: "31:0"
+        name: coef0
+        access: R/W
+        default: "0x00800000"
+        description: "Ch0_in_a*coef0 + Ch2_in_a*coef1 = ch0_out, same as eqdrc"
+
+  - name: MIXER_COEF1
+    offset: 0x01
+    fields:
+      - bits: "31:0"
+        name: coef1
+        access: R/W
+        default: "0x00000000"
+        description: "Ch0_in_a*coef0 + Ch2_in_a*coef1 = ch0_out"
+
+  - name: MIXER_COEF2
+    offset: 0x02
+    fields:
+      - bits: "31:0"
+        name: coef2
+        access: R/W
+        default: "0x00800000"
+        description: "Ch1_in_a*coef2 + Ch3_in_a*coef3 = ch1_out"
+
+  - name: MIXER_COEF3
+    offset: 0x03
+    fields:
+      - bits: "31:0"
+        name: coef3
+        access: R/W
+        default: "0x00000000"
+        description: "Ch1_in_a*coef2 + Ch3_in_a*coef3 = ch1_out"
+
+  - name: MIXER_THD
+    offset: 0x04
+    fields:
+      - bits: "30:0"
+        name: clip_thd
+        access: R/W
+        default: "0x7fffffff"
+        description: "Clip threshold, same as eqdrc"
+
+  - name: MIXER_CTRL0
+    offset: 0x05
+    fields:
+      - bits: "31"
+        name: reg_mixer_en
+        access: R/W
+        default: "0"
+        description: "Work enable"
+      - bits: "30"
+        name: reg_mc_en
+        access: R/W
+        default: "0"
+        description: "Mixer clip enable, use reqb"
+      - bits: "29"
+        name: sw_rst
+        access: R/W
+        default: "0"
+        description: "SW reset for mixer_clip_top"
+      - bits: "28"
+        name: spdif_mode
+        access: R/W
+        default: "0"
+        description: "Use spdif data [27:4]"
+      - bits: "27"
+        name: save_low
+        access: R/W
+        default: "0"
+        description: "Save [3:0] for spdif mode"
+      - bits: "26:24"
+        name: reqa_ch_sel
+        access: R/W
+        default: "0x0"
+        description: "Select reqa from 8ch; 0:ch0/1; 1:ch2/3; 2:ch4/5; 3:ch6/7"
+      - bits: "22:20"
+        name: bit_wide
+        access: R/W
+        default: "0x0"
+        description: "0:8bit; 1/2:16bit; 3/4:32bit"
+      - bits: "18:16"
+        name: reqa_ch_num
+        access: R/W
+        default: "0x0"
+        description: "reqa channel number, max 8 (8 means 8 channel)"
+      - bits: "15"
+        name: spdif_mode_b
+        access: R/W
+        default: "0"
+        description: "frddrb_req use spdif_mode"
+      - bits: "7"
+        name: reqb_sel_eqdrc
+        access: R/W
+        default: "0"
+        description: "reqb select eqdrc"
+      - bits: "6:4"
+        name: reqb_sel_frddr
+        access: R/W
+        default: "0x0"
+        description: "Reqb select frddr; 0:frddra; 1:frddrb; 2:frddrc; 3:frddrd; 4:frddre"
+      - bits: "3"
+        name: reqa_sel_eqdrc
+        access: R/W
+        default: "0"
+        description: "reqa select eqdrc"
+      - bits: "2:0"
+        name: reqa_sel_frddr
+        access: R/W
+        default: "0x0"
+        description: "Reqa select frddr; 0:frddra; 1:frddrb; 2:frddrc; 3:frddrd; 4:frddre"
+
+  - name: MIXER_CTRL1
+    offset: 0x06
+    fields:
+      - bits: "29"
+        name: rst_afifo_out_in
+        access: R/W
+        default: "0"
+        description: "Output fifo rst for afifo_out_in"
+      - bits: "28"
+        name: rst_afifo_out_out
+        access: R/W
+        default: "0"
+        description: "Output fifo rst for afifo_out_out"
+      - bits: "27"
+        name: mixer_delay_en
+        access: R/W
+        default: "0"
+        description: "Mixer delay enable, need set when data path is frddr->eqdrc->mixer"
+      - bits: "26:24"
+        name: mixer_delay_cnt
+        access: R/W
+        default: "0x0"
+        description: "Mixer delay cycle cnt; 0:100 cycle; 1:200cycle; ... 7:800cycle"
+      - bits: "23:16"
+        name: reg_ack_num
+        access: R/W
+        default: "0x00"
+        description: "reg_ack_num"
+      - bits: "8"
+        name: reg_lane_mask_b
+        access: R/W
+        default: "0"
+        description: "1 means 1 lane (can only set 1:1lane)"
+      - bits: "7:0"
+        name: reg_lane_mask_a
+        access: R/W
+        default: "0x00"
+        description: "0x0f means 4lane; can only set 1:1lane; 3:2lane; 7:3lane; f:4lane"
+
+  - name: MIXER_CTRL2
+    offset: 0x07
+    fields:
+      - bits: "31"
+        name: reqa_rst
+        access: R/W
+        default: "0"
+        description: "Reqa rst"
+      - bits: "30"
+        name: rst_afifo_out
+        access: R/W
+        default: "0"
+        description: "rst_afifo_out"
+      - bits: "29"
+        name: rst_afifo_in
+        access: R/W
+        default: "0"
+        description: "rst_afifo_in"
+      - bits: "28:24"
+        name: slot_num
+        access: R/W
+        default: "0x00"
+        description: "Slot_num, need set 1"
+      - bits: "23:16"
+        name: wait_cnt
+        access: R/W
+        default: "0x00"
+        description: "Wait some time when enable set to 1, then start request data from frddr"
+      - bits: "15:11"
+        name: frddr_msb
+        access: R/W
+        default: "0x00"
+        description: "Frddr_msb, msb position of data"
+      - bits: "10:8"
+        name: frddr_type
+        access: R/W
+        default: "0x0"
+        description: "0:split 64bits to 8 sample(8bit); 1~2:16bit; 3~4:32bit"
+      - bits: "7:0"
+        name: clr_by_init
+        access: R/W
+        default: "0x00"
+        description: "clr_by_init"
+
+  - name: MIXER_CTRL3
+    offset: 0x08
+    fields:
+      - bits: "31"
+        name: reqb_rst
+        access: R/W
+        default: "0"
+        description: "Reqb rst"
+      - bits: "30"
+        name: rst_afifo_out
+        access: R/W
+        default: "0"
+        description: "rst_afifo_out"
+      - bits: "29"
+        name: rst_afifo_in
+        access: R/W
+        default: "0"
+        description: "rst_afifo_in"
+      - bits: "28:24"
+        name: slot_num
+        access: R/W
+        default: "0x00"
+        description: "Slot_num, need set 1"
+      - bits: "23:16"
+        name: wait_cnt
+        access: R/W
+        default: "0x00"
+        description: "Wait some time when enable set to 1, then start request data from frddr"
+      - bits: "15:11"
+        name: frddr_msb
+        access: R/W
+        default: "0x00"
+        description: "Frddr_msb, msb position of data"
+      - bits: "10:8"
+        name: frddr_type
+        access: R/W
+        default: "0x0"
+        description: "0:split 64bits to 8 sample(8bit); 1~2:16bit; 3~4:32bit"
+      - bits: "7:0"
+        name: clr_by_init
+        access: R/W
+        default: "0x00"
+        description: "clr_by_init"
+
+  - name: MIXER_CTRL4
+    offset: 0x09
+    fields:
+      - bits: "20"
+        name: frddr_src_sel2_en
+        access: R/W
+        default: "0"
+        description: "frddr_src_sel2_en"
+      - bits: "19"
+        name: frddr_src_sel2_eq
+        access: R/W
+        default: "0"
+        description: "frddr_src_sel2_eq"
+      - bits: "18:16"
+        name: frddr_src_sel2
+        access: R/W
+        default: "0x0"
+        description: "0:tdmout_a; 1:tdmout_b; 2:tdmout_c; 3:spdifout; 4:spdifout_b"
+      - bits: "12"
+        name: frddr_src_sel1_en
+        access: R/W
+        default: "0"
+        description: "frddr_src_sel1_en"
+      - bits: "11"
+        name: frddr_src_sel1_eq
+        access: R/W
+        default: "0"
+        description: "frddr_src_sel1_eq"
+      - bits: "10:8"
+        name: frddr_src_sel1
+        access: R/W
+        default: "0x0"
+        description: "0:tdmout_a; 1:tdmout_b; 2:tdmout_c; 3:spdifout; 4:spdifout_b"
+      - bits: "4"
+        name: frddr_src_sel0_en
+        access: R/W
+        default: "0"
+        description: "frddr_src_sel0_en"
+      - bits: "3"
+        name: frddr_src_sel0_eq
+        access: R/W
+        default: "0"
+        description: "frddr_src_sel0_eq"
+      - bits: "2:0"
+        name: frddr_src_sel0
+        access: R/W
+        default: "0x0"
+        description: "0:tdmout_a; 1:tdmout_b; 2:tdmout_c; 3:spdifout; 4:spdifout_b"
+
+  - name: MIXER_STATUS1
+    offset: 0x0a
+    fields:
+      - bits: "23"
+        name: overflow_flag
+        access: R
+        default: "0"
+        description: "overflow_flag"
+      - bits: "22"
+        name: frddr_req_b_init_finish
+        access: R
+        default: "0"
+        description: "frddr_req_b_init_finish"
+      - bits: "21"
+        name: frddr_req_a_init_finish
+        access: R
+        default: "0"
+        description: "frddr_req_a_init_finish"
+      - bits: "20:12"
+        name: frddr_req_b_state
+        access: R
+        default: "0x000"
+        description: "frddr_req_b_state"
+      - bits: "11:3"
+        name: frddr_req_a_state
+        access: R
+        default: "0x000"
+        description: "frddr_req_a_state"
+      - bits: "5:2"
+        name: fifo_cnt
+        access: R
+        default: "0x0"
+        description: "fifo cnt"
+      - bits: "1:0"
+        name: eqdrc_states
+        access: R
+        default: "0x0"
+        description: "eqdrc states"

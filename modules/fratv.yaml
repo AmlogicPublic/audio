@@ -1,0 +1,47 @@
+module: FRATV
+parent_base: audio_top_ee
+
+instances:
+  A:
+    offset_base: 0x1d3
+    condition: { macro_path: ["fratv", "imp"], eq: 1 }
+
+registers:
+  - name: FRATV_CTRL0
+    offset: 0x00
+    fields:
+      - bits: "31"
+        name: reg_work_enable
+        access: R/W
+        default: "0"
+        description: "0:disable; 1:enable"
+      - bits: "29"
+        name: reg_rst_afifo_out_n
+        access: R/W
+        default: "0"
+        description: "reset afifo out side; need set to 1 before reg_rst_afifo_in_n"
+      - bits: "28"
+        name: reg_rst_afifo_in_n
+        access: R/W
+        default: "0"
+        description: "reset afifo in side; need set 1 after set reg_rst_afifo_out_n to 1"
+      - bits: "21"
+        name: reg_atv_1ch
+        access: R/W
+        default: "0"
+        description: "0:copy atv 1ch to 2ch; 1:keep atv 1ch only"
+      - bits: "20"
+        name: reg_in_sel
+        access: R/W
+        default: "0"
+        description: "0:select from ATV; 1:select from ADEC"
+      - bits: "19"
+        name: reg_adec_r_first
+        access: R/W
+        default: "0"
+        description: "0:store adec_left ch first; 1:store adec_right ch first"
+      - bits: "5"
+        name: reg_clk_inv
+        access: R/W
+        default: "0"
+        description: "0:capture input by rise edge of clock; 1:capture input by fall edge of clock"

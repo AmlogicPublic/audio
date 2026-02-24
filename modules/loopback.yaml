@@ -1,0 +1,436 @@
+module: LOOPBACK
+parent_base: audio_top_ee
+
+instances:
+  A:
+    offset_base: 0xb0
+    condition: { macro_path: ["loopback", "A", "imp"], eq: 1 }
+  B:
+    offset_base: 0x230
+    condition: { macro_path: ["loopback", "B", "imp"], eq: 1 }
+
+registers:
+  - name: LB_{X}_CTRL0
+    offset: 0x00
+    fields:
+      - bits: "31"
+        name: reg_lb_en
+        access: R/W
+        default: "0"
+        description: "0:disable; 1:enable"
+      - bits: "30"
+        name: reg_lb_mode
+        access: R/W
+        default: "0"
+        description: "0:out rate=in data rate; 1:out rate=loopback data rate"
+      - bits: "29"
+        name: reg_ext_signed
+        access: R/W
+        default: "0"
+        description: "0:extend bits as 0; 1:extend bits as msb"
+      - bits: "28"
+        name: enable_sync_chnum
+        access: R/W
+        default: "0"
+        description: "1:start store data when ch_num can match ID"
+      - bits: "27"
+        name: chnum_sel
+        access: R/W
+        default: "0"
+        description: "0:chnum[4:0] is fixed 0-1-2-...31; 1:chnum[4:0] is valid_cnt"
+      - bits: "17:16"
+        name: reg_sts_sel
+        access: R/W
+        default: "0x0"
+        description: "refer to REG_LB_STATUS"
+      - bits: "15:13"
+        name: reg_dat_sel
+        access: R/W
+        default: "0x0"
+        description: "shift [m:n] to [31:0]; 0:right justified; 1:left justified"
+      - bits: "12:8"
+        name: reg_dat_m_sel
+        access: R/W
+        default: "0x00"
+        description: "the msb position in data"
+      - bits: "7:3"
+        name: reg_dat_n_sel
+        access: R/W
+        default: "0x00"
+        description: "the lsb position in data"
+      - bits: "2:0"
+        name: reg_dat_src_sel
+        access: R/W
+        default: "0x0"
+        description: "[5]:loopbackA out; [4]:pdmin; [3]:spdifin; [2]:tdmin_c; [1]:tdmin_b; [0]:tdmin_a"
+
+  - name: LB_{X}_CTRL1
+    offset: 0x01
+    fields:
+      - bits: "31"
+        name: lb_sel_resample_a
+        access: R/W
+        default: "0"
+        description: "1:select from resample A"
+      - bits: "30"
+        name: lb_sel_resample_b
+        access: R/W
+        default: "0"
+        description: "1:select from resample B; need set lb_sel_resampleA=0"
+      - bits: "29"
+        name: reg_lb_ext_signed
+        access: R/W
+        default: "0"
+        description: "0:extend bits as 0; 1:extend bits as msb"
+      - bits: "28"
+        name: enable_sync_chnum_lb
+        access: R/W
+        default: "0"
+        description: "1:start store data when ch_num can match ID"
+      - bits: "27"
+        name: hold_insertion
+        access: R/W
+        default: "0"
+        description: "1:hold insert data store and insert 0 after original data"
+      - bits: "24:16"
+        name: error_mask
+        access: R/W
+        default: "0x000"
+        description: "error condition which can pull stable signal down"
+      - bits: "15:13"
+        name: reg_lb_sel
+        access: R/W
+        default: "0x0"
+        description: "shift [m:n] to [31:0]; 0:right justified; 1:left justified"
+      - bits: "12:8"
+        name: reg_lb_m_sel
+        access: R/W
+        default: "0x00"
+        description: "the msb position loopback data"
+      - bits: "7:3"
+        name: reg_lb_n_sel
+        access: R/W
+        default: "0x00"
+        description: "the lsb position loopback data"
+      - bits: "0"
+        name: lb_src_sel
+        access: R/W
+        default: "0"
+        description: "1:spdifin_lb; 0:tdmin_lb"
+
+  - name: LB_{X}_CTRL2
+    offset: 0x02
+    fields:
+      - bits: "24:20"
+        name: dat_src_sel
+        access: R/W
+        default: "0x00"
+        description: "0:tdmin_a; 1:tdmin_b; 2:tdmin_c; 3:spdifin; 4:pdmin; 5:fratv; 6:tdmin_lb; 7:loopback_a; 8:frhdmirx_spdif; 9:loopback_b; 10:spdifin_lb; 11:earc_rx_dmac; 12:frhdmirx_dsd; 13:resample_a; 14:resample_b; 15:vad"
+      - bits: "19:16"
+        name: dat_ch_num
+        access: R/W
+        default: "0x0"
+        description: "max channel number of data source; max is 15 (16 ch)"
+      - bits: "15:0"
+        name: dat_ch_mask
+        access: R/W
+        default: "0x0000"
+        description: "16bits match 16 ch, set 1 will sending out"
+
+  - name: LB_{X}_CTRL3
+    offset: 0x03
+    fields:
+      - bits: "24:20"
+        name: lb_src_sel_ext
+        access: R/W
+        default: "0x00"
+        description: "same as dat_src_sel"
+      - bits: "19:16"
+        name: lb_ch_num
+        access: R/W
+        default: "0x0"
+        description: "max channel number of lb source; max is 15 (16 ch)"
+      - bits: "15:0"
+        name: lb_ch_mask
+        access: R/W
+        default: "0x0000"
+        description: "16bits match 16 ch, set 1 will sending out"
+
+  - name: LB_{X}_DAT_ID0
+    offset: 0x04
+    fields:
+      - bits: "31:24"
+        name: data_ch7_id
+        access: R/W
+        default: "0x00"
+        description: data_ch7_id
+      - bits: "23:16"
+        name: data_ch6_id
+        access: R/W
+        default: "0x00"
+        description: data_ch6_id
+      - bits: "15:8"
+        name: data_ch5_id
+        access: R/W
+        default: "0x00"
+        description: data_ch5_id
+      - bits: "7:0"
+        name: data_ch4_id
+        access: R/W
+        default: "0x00"
+        description: data_ch4_id
+
+  - name: LB_{X}_DAT_ID1
+    offset: 0x05
+    fields:
+      - bits: "31:24"
+        name: data_ch3_id
+        access: R/W
+        default: "0x00"
+        description: data_ch3_id
+      - bits: "23:16"
+        name: data_ch2_id
+        access: R/W
+        default: "0x00"
+        description: data_ch2_id
+      - bits: "15:8"
+        name: data_ch1_id
+        access: R/W
+        default: "0x00"
+        description: data_ch1_id
+      - bits: "7:0"
+        name: data_ch0_id
+        access: R/W
+        default: "0x00"
+        description: data_ch0_id
+
+  - name: LB_{X}_DAT_ID2
+    offset: 0x06
+    fields:
+      - bits: "31:24"
+        name: data_ch11_id
+        access: R/W
+        default: "0x00"
+        description: data_ch11_id
+      - bits: "23:16"
+        name: data_ch10_id
+        access: R/W
+        default: "0x00"
+        description: data_ch10_id
+      - bits: "15:8"
+        name: data_ch9_id
+        access: R/W
+        default: "0x00"
+        description: data_ch9_id
+      - bits: "7:0"
+        name: data_ch8_id
+        access: R/W
+        default: "0x00"
+        description: data_ch8_id
+
+  - name: LB_{X}_DAT_ID3
+    offset: 0x07
+    fields:
+      - bits: "31:24"
+        name: data_ch15_id
+        access: R/W
+        default: "0x00"
+        description: data_ch15_id
+      - bits: "23:16"
+        name: data_ch14_id
+        access: R/W
+        default: "0x00"
+        description: data_ch14_id
+      - bits: "15:8"
+        name: data_ch13_id
+        access: R/W
+        default: "0x00"
+        description: data_ch13_id
+      - bits: "7:0"
+        name: data_ch12_id
+        access: R/W
+        default: "0x00"
+        description: data_ch12_id
+
+  - name: LB_{X}_LB_ID0
+    offset: 0x08
+    fields:
+      - bits: "31:24"
+        name: lb_ch7_id
+        access: R/W
+        default: "0x00"
+        description: lb_data_ch7_id
+      - bits: "23:16"
+        name: lb_ch6_id
+        access: R/W
+        default: "0x00"
+        description: lb_data_ch6_id
+      - bits: "15:8"
+        name: lb_ch5_id
+        access: R/W
+        default: "0x00"
+        description: lb_data_ch5_id
+      - bits: "7:0"
+        name: lb_ch4_id
+        access: R/W
+        default: "0x00"
+        description: lb_data_ch4_id
+
+  - name: LB_{X}_LB_ID1
+    offset: 0x09
+    fields:
+      - bits: "31:24"
+        name: lb_ch3_id
+        access: R/W
+        default: "0x00"
+        description: lb_data_ch3_id
+      - bits: "23:16"
+        name: lb_ch2_id
+        access: R/W
+        default: "0x00"
+        description: lb_data_ch2_id
+      - bits: "15:8"
+        name: lb_ch1_id
+        access: R/W
+        default: "0x00"
+        description: lb_data_ch1_id
+      - bits: "7:0"
+        name: lb_ch0_id
+        access: R/W
+        default: "0x00"
+        description: lb_data_ch0_id
+
+  - name: LB_{X}_LB_ID2
+    offset: 0x0a
+    fields:
+      - bits: "31:24"
+        name: lb_ch11_id
+        access: R/W
+        default: "0x00"
+        description: lb_data_ch11_id
+      - bits: "23:16"
+        name: lb_ch10_id
+        access: R/W
+        default: "0x00"
+        description: lb_data_ch10_id
+      - bits: "15:8"
+        name: lb_ch9_id
+        access: R/W
+        default: "0x00"
+        description: lb_data_ch9_id
+      - bits: "7:0"
+        name: lb_ch8_id
+        access: R/W
+        default: "0x00"
+        description: lb_data_ch8_id
+
+  - name: LB_{X}_LB_ID3
+    offset: 0x0b
+    fields:
+      - bits: "31:24"
+        name: lb_ch15_id
+        access: R/W
+        default: "0x00"
+        description: lb_data_ch15_id
+      - bits: "23:16"
+        name: lb_ch14_id
+        access: R/W
+        default: "0x00"
+        description: lb_data_ch14_id
+      - bits: "15:8"
+        name: lb_ch13_id
+        access: R/W
+        default: "0x00"
+        description: lb_data_ch13_id
+      - bits: "7:0"
+        name: lb_ch12_id
+        access: R/W
+        default: "0x00"
+        description: lb_data_ch12_id
+
+  - name: LB_{X}_STS
+    offset: 0x0c
+    fields:
+      - bits: "31:0"
+        name: status
+        access: R
+        default: "0x00000000"
+        description: "by reg_sts_sel: 0:zeros; 1:error/status flags; 2:insert_store_cnt_debug; 3:orig_store_cnt_debug"
+
+  - name: LB_{X}_CHSYNC_CTRL_INSERT
+    offset: 0x0d
+    fields:
+      - bits: "31"
+        name: bypass_n
+        access: R/W
+        default: "0"
+        description: "0:out=in; 1:enable sync mode"
+      - bits: "30"
+        name: sw_reset
+        access: R/W
+        default: "0"
+        description: "1:reset status"
+      - bits: "29"
+        name: mode_sel
+        access: R/W
+        default: "0"
+        description: "0:buf sync mode; 1:drop sync mode"
+      - bits: "28"
+        name: id_sel
+        access: R/W
+        default: "0"
+        description: "0:by int_cnt; 1:by reg_chnum_id"
+      - bits: "27"
+        name: fix_stable
+        access: R/W
+        default: "0"
+        description: "1:will not pull stable low if detect any error"
+      - bits: "26"
+        name: debug_en0
+        access: R/W
+        default: "0"
+        description: "for buf sync mode only; 0:send new chnum; 1:send old chnum from buff"
+      - bits: "7:0"
+        name: chnum_max
+        access: R/W
+        default: "0x00"
+        description: "if receive 8 ch data, set it to 7"
+
+  - name: LB_{X}_CHSYNC_CTRL_ORIG
+    offset: 0x0e
+    fields:
+      - bits: "31"
+        name: bypass_n
+        access: R/W
+        default: "0"
+        description: "0:out=in; 1:enable sync mode"
+      - bits: "30"
+        name: sw_reset
+        access: R/W
+        default: "0"
+        description: "1:reset status"
+      - bits: "29"
+        name: mode_sel
+        access: R/W
+        default: "0"
+        description: "0:buf sync mode; 1:drop sync mode"
+      - bits: "28"
+        name: id_sel
+        access: R/W
+        default: "0"
+        description: "0:by int_cnt; 1:by reg_chnum_id"
+      - bits: "27"
+        name: fix_stable
+        access: R/W
+        default: "0"
+        description: "1:will not pull stable low if detect any error"
+      - bits: "26"
+        name: debug_en0
+        access: R/W
+        default: "0"
+        description: "for buf sync mode only; 0:send new chnum; 1:send old chnum from buff"
+      - bits: "7:0"
+        name: chnum_max
+        access: R/W
+        default: "0x00"
+        description: "if receive 8 ch data, set it to 7"

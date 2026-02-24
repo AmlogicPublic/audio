@@ -1,0 +1,317 @@
+module: FRDDR
+parent_base: audio_top_ee
+
+instances:
+  A:
+    offset_base: 0x70
+    condition: { macro_path: ["frddr", "A", "imp"], eq: 1 }
+  B:
+    offset_base: 0x80
+    condition: { macro_path: ["frddr", "B", "imp"], eq: 1 }
+  C:
+    offset_base: 0x90
+    condition: { macro_path: ["frddr", "C", "imp"], eq: 1 }
+  D:
+    offset_base: 0x220
+    condition: { macro_path: ["frddr", "D", "imp"], eq: 1 }
+  E:
+    offset_base: 0x250
+    condition: { macro_path: ["frddr", "E", "imp"], eq: 1 }
+
+registers:
+  - name: FRDDR_{X}_CTRL0
+    offset: 0x00
+    fields:
+      - bits: "31"
+        name: reg_frddr_en
+        access: R/W
+        default: "0"
+        description: "0:disable; 1:enable"
+      - bits: "30"
+        name: reg_frddr_pp_mode
+        access: R/W
+        default: "0"
+        description: "0:write to one buff; 1:write to two buff"
+      - bits: "26:24"
+        name: reg_frddr_endian
+        access: R/W
+        default: "0x0"
+        description: reg_frddr_endian
+      - bits: "23:16"
+        name: reg_frddr_int_en
+        access: R/W
+        default: "0x00"
+        description: "[21]:fifo overflow write; [20]:fifo overflow read; [19]:int_addr once; [18]:int_addr repeat; [17]:match int_addr; [16]:match finish_addr"
+      - bits: "15:12"
+        name: reg_frddr_ack_dly
+        access: R/W
+        default: "0x0"
+        description: "add delay to frddr ack"
+      - bits: "2"
+        name: reg_mixer_req_sel
+        access: R/W
+        default: "0"
+        description: "1:mixer_req_b(2ch) 0:mixer_req_a(8ch)"
+      - bits: "0"
+        name: ddr_bus_ugt
+        access: R/W
+        default: "0"
+        description: "Ddr bus ugt setting"
+
+  - name: FRDDR_{X}_CTRL1
+    offset: 0x01
+    fields:
+      - bits: "31:24"
+        name: reg_fifo_depth
+        access: R/W
+        default: "0x00"
+        description: "the max depth of fifo"
+      - bits: "23:16"
+        name: reg_fifo_start_wr_th
+        access: R/W
+        default: "0x00"
+        description: "when fifo cnt less than depth-th, start request from DDR"
+      - bits: "12"
+        name: force_finish
+        access: R/W
+        default: "0"
+        description: "0->1: force finish by current address and jump to start_address"
+      - bits: "11:8"
+        name: reg_status_sel
+        access: R/W
+        default: "0x0"
+        description: "control status2 source"
+      - bits: "7:0"
+        name: reg_int_status_clr
+        access: R/W
+        default: "0x00"
+        description: "clear each bits of int_status register"
+
+  - name: FRDDR_{X}_START_ADDR
+    offset: 0x02
+    fields:
+      - bits: "31:0"
+        name: start_addr
+        access: R/W
+        default: "0x00000000"
+        description: "buff_A start address"
+
+  - name: FRDDR_{X}_FINISH_ADDR
+    offset: 0x03
+    fields:
+      - bits: "31:0"
+        name: finish_addr
+        access: R/W
+        default: "0x00000000"
+        description: "buff_A finish address"
+
+  - name: FRDDR_{X}_INT_ADDR
+    offset: 0x04
+    fields:
+      - bits: "31:0"
+        name: int_addr
+        access: R/W
+        default: "0x00000000"
+        description: "usage A: as an address of interrupt; usage B: as a count of interrupt"
+
+  - name: FRDDR_{X}_STATUS1
+    offset: 0x05
+    fields:
+      - bits: "22:20"
+        name: stop_ddr_status
+        access: R
+        default: "0x0"
+        description: stop_ddr status
+      - bits: "19"
+        name: r_selb_true
+        access: R
+        default: "0"
+        description: r_selb_true
+      - bits: "18"
+        name: r_selb
+        access: R
+        default: "0"
+        description: r_selb
+      - bits: "17"
+        name: stop_ddr_done
+        access: R
+        default: "0"
+        description: stop_ddr_done
+      - bits: "16:8"
+        name: fifo_cnt
+        access: R/W
+        default: "0x000"
+        description: "the num in fifo"
+      - bits: "7:0"
+        name: int_status
+        access: R/W
+        default: "0x00"
+        description: "when irq generate, related bit changed to 1, clear by reg_int_status_clr"
+
+  - name: FRDDR_{X}_STATUS2
+    offset: 0x06
+    fields:
+      - bits: "31:0"
+        name: status2
+        access: R/W
+        default: "0x00000000"
+        description: "by reg_status_sel: 0:current ddr read addr; 1:next finish addr; 2~3:count by ddr reply"
+
+  - name: FRDDR_{X}_START_ADDRB
+    offset: 0x07
+    fields:
+      - bits: "31:0"
+        name: start_addrb
+        access: R/W
+        default: "0x00000000"
+        description: "buff_B start address"
+
+  - name: FRDDR_{X}_FINISH_ADDRB
+    offset: 0x08
+    fields:
+      - bits: "31:0"
+        name: finish_addrb
+        access: R/W
+        default: "0x00000000"
+        description: "buff_B finish address"
+
+  - name: FRDDR_{X}_INIT_ADDR
+    offset: 0x09
+    fields:
+      - bits: "31:0"
+        name: init_addr
+        access: R/W
+        default: "0x00000000"
+        description: "initial address, the first ddr address after enable"
+
+  - name: FRDDR_{X}_CTRL2
+    offset: 0x0a
+    fields:
+      - bits: "31:24"
+        name: share_ch_num
+        access: R/W
+        default: "0x00"
+        description: "ch num for share buffer feature; 0 if not share"
+      - bits: "21"
+        name: reg_stop_ddr
+        access: R/W
+        default: "0"
+        description: "0->1: stop sequence"
+      - bits: "20"
+        name: src_sel2_en
+        access: R/W
+        default: "0"
+        description: src_sel2_en
+      - bits: "19"
+        name: src_sel2_eq
+        access: R/W
+        default: "0"
+        description: "1:request from EQDRC; 0:from TDMOUT/SPDIFOUT"
+      - bits: "18:16"
+        name: src_sel2
+        access: R/W
+        default: "0x0"
+        description: "0:tdmout_a; 1:tdmout_b; 2:tdmout_c; 3:spdifout; 4:spdifout_b"
+      - bits: "12"
+        name: src_sel1_en
+        access: R/W
+        default: "0"
+        description: src_sel1_en
+      - bits: "11"
+        name: src_sel1_eq
+        access: R/W
+        default: "0"
+        description: "1:request from EQDRC; 0:from TDMOUT/SPDIFOUT"
+      - bits: "10:8"
+        name: src_sel1
+        access: R/W
+        default: "0x0"
+        description: "0:tdmout_a; 1:tdmout_b; 2:tdmout_c; 3:spdifout; 4:spdifout_b"
+      - bits: "7"
+        name: src_sel2_mixer
+        access: R/W
+        default: "0"
+        description: "1:select request from MIXER"
+      - bits: "6"
+        name: src_sel1_mixer
+        access: R/W
+        default: "0"
+        description: "1:select request from MIXER"
+      - bits: "5"
+        name: src_sel0_mixer
+        access: R/W
+        default: "0"
+        description: "1:select request from MIXER"
+      - bits: "4"
+        name: src_sel0_en
+        access: R/W
+        default: "0"
+        description: src_sel0_en
+      - bits: "3"
+        name: src_sel0_eq
+        access: R/W
+        default: "0"
+        description: "1:request from EQDRC; 0:from TDMOUT/SPDIFOUT"
+      - bits: "2:0"
+        name: src_sel0
+        access: R/W
+        default: "0x0"
+        description: "0:tdmout_a; 1:tdmout_b; 2:tdmout_c; 3:spdifout; 4:spdifout_b"
+
+  - name: FRDDR_{X}_AADDR
+    offset: 0x0b
+    fields:
+      - bits: "21:20"
+        name: int_addr_hi
+        access: R/W
+        default: "0x0"
+        description: "Int_addr[33:32]"
+      - bits: "17:16"
+        name: finish_addrb_hi
+        access: R/W
+        default: "0x0"
+        description: "Finish_addrb[33:32]"
+      - bits: "13:12"
+        name: start_addrb_hi
+        access: R/W
+        default: "0x0"
+        description: "Start_addrb[33:32]"
+      - bits: "9:8"
+        name: finish_addr_hi
+        access: R/W
+        default: "0x0"
+        description: "Finish_addr[33:32]"
+      - bits: "5:4"
+        name: init_addr_hi
+        access: R/W
+        default: "0x0"
+        description: "Init_addr[33:32]"
+      - bits: "1:0"
+        name: start_addr_hi
+        access: R/W
+        default: "0x0"
+        description: "Start_addr[33:32]"
+
+  - name: FRDDR_{X}_STATUS3
+    offset: 0x0c
+    fields:
+      - bits: "13:12"
+        name: next_finish_reply_hi
+        access: R
+        default: "0x0"
+        description: "count by ddr reply, next finish address;[33:32]"
+      - bits: "9:8"
+        name: curr_addr_reply_hi
+        access: R
+        default: "0x0"
+        description: "count by ddr reply, current ddr read address;[33:32]"
+      - bits: "5:4"
+        name: next_finish_hi
+        access: R
+        default: "0x0"
+        description: "next finish address;[33:32]"
+      - bits: "1:0"
+        name: curr_addr_hi
+        access: R
+        default: "0x0"
+        description: "current ddr read address;[33:32]"

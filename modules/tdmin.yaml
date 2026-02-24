@@ -1,0 +1,376 @@
+module: TDMIN
+parent_base: audio_top_ee
+
+instances:
+  A:
+    offset_base: 0xc0
+    ext_offset: 0x260
+    condition: { macro_path: ["tdmin", "A", "imp"], eq: 1 }
+  B:
+    offset_base: 0xd0
+    ext_offset: 0x270
+    condition: { macro_path: ["tdmin", "B", "imp"], eq: 1 }
+  C:
+    offset_base: 0xe0
+    ext_offset: 0x280
+    condition: { macro_path: ["tdmin", "C", "imp"], eq: 1 }
+  LB:
+    offset_base: 0xf0
+    ext_offset: 0x290
+    condition: { macro_path: ["tdmin", "LB", "imp"], eq: 1 }
+
+registers:
+  - name: TDMIN_{X}_CTRL
+    offset: 0x00
+    fields:
+      - bits: "31"
+        name: reg_work_enable
+        access: R/W
+        default: "0"
+        description: "0:disable; 1:enable"
+      - bits: "30"
+        name: reg_i2s_mode
+        access: R/W
+        default: "0"
+        description: "0:tdm mode; 1:i2s mode"
+      - bits: "29"
+        name: reg_rst_afifo_out_n
+        access: R/W
+        default: "0"
+        description: "reset afifo out side; need set to 1 before reg_rst_afifo_in_n"
+      - bits: "28"
+        name: reg_rst_afifo_in_n
+        access: R/W
+        default: "0"
+        description: "reset afifo in side; need set 1 after set reg_rst_afifo_out_n to 1"
+      - bits: "26"
+        name: reg_tdmin_in_resync
+        access: R/W
+        default: "0"
+        description: "force TDMIN stable signal to low, then TDMIN need resync to stable"
+      - bits: "25"
+        name: reg_tdmin_in_rev_ws
+        access: R/W
+        default: "0"
+        description: "revert ws(lrclk); 0:disable; 1:enable"
+      - bits: "24"
+        name: reg_tdmin_in_rev_dat
+        access: R/W
+        default: "0"
+        description: "revert data; 0:disable; 1:enable"
+      - bits: "23:20"
+        name: tdmin_src_sel
+        access: R/W
+        default: "0x0"
+        description: "0:tdmin_a; 1:tdmin_b; 2:tdmin_c; 6:hdmirx; 7:acodec_adc; 12:tdmout_a; 13:tdmout_b; 14:tdmout_c"
+      - bits: "18:16"
+        name: reg_tdmin_in_bit_skew
+        access: R/W
+        default: "0x0"
+        description: "add delay to ws or data for skew modification"
+      - bits: "15:13"
+        name: reg_stable_mask
+        access: R/W
+        default: "0x0"
+        description: "[15]:afifo overflow; [14]:slot_cnt err; [13]:bit_cnt err"
+      - bits: "12:8"
+        name: reg_tdmin_slot_num
+        access: R/W
+        default: "0x00"
+        description: "for I2S fixed 0x1; for TDM max 31 (32 slots)"
+      - bits: "7:6"
+        name: reg_tdmin_chnum_mode
+        access: R/W
+        default: "0x0"
+        description: "0:valid_cnt; 1:cyc_cnt; 2:slot_cnt,cyc_cnt[0]; 3:slot_cnt,cyc_cnt"
+      - bits: "5"
+        name: reg_lsb_first
+        access: R/W
+        default: "0"
+        description: "0:store first bit to data_store[0]; 1:store first bit to data_store[31]"
+      - bits: "4:0"
+        name: reg_tdmin_bit_num
+        access: R/W
+        default: "0x00"
+        description: "bitwidth of each slot; if 16bits set to 15"
+
+  - name: TDMIN_{X}_SWAP0
+    offset: 0x01
+    fields:
+      - bits: "31:28"
+        name: ch7_sel
+        access: R/W
+        default: "0x0"
+        description: "0:lane0 L; 1:lane0 R; 2:lane1 L; ... 15:lane7 R"
+      - bits: "27:24"
+        name: ch6_sel
+        access: R/W
+        default: "0x0"
+        description: ch6_sel
+      - bits: "23:20"
+        name: ch5_sel
+        access: R/W
+        default: "0x0"
+        description: ch5_sel
+      - bits: "19:16"
+        name: ch4_sel
+        access: R/W
+        default: "0x0"
+        description: ch4_sel
+      - bits: "15:12"
+        name: ch3_sel
+        access: R/W
+        default: "0x0"
+        description: ch3_sel
+      - bits: "11:8"
+        name: ch2_sel
+        access: R/W
+        default: "0x0"
+        description: ch2_sel
+      - bits: "7:4"
+        name: ch1_sel
+        access: R/W
+        default: "0x0"
+        description: ch1_sel
+      - bits: "3:0"
+        name: ch0_sel
+        access: R/W
+        default: "0x0"
+        description: ch0_sel
+
+  - name: TDMIN_{X}_MASK0
+    offset: 0x02
+    fields:
+      - bits: "31:0"
+        name: lane0_mask
+        access: R/W
+        default: "0x00000000"
+        description: "mask each channel in lane0, max is 32 ch"
+
+  - name: TDMIN_{X}_MASK1
+    offset: 0x03
+    fields:
+      - bits: "31:0"
+        name: lane1_mask
+        access: R/W
+        default: "0x00000000"
+        description: "mask each channel in lane1, max is 32 ch"
+
+  - name: TDMIN_{X}_MASK2
+    offset: 0x04
+    fields:
+      - bits: "31:0"
+        name: lane2_mask
+        access: R/W
+        default: "0x00000000"
+        description: "mask each channel in lane2, max is 32 ch"
+
+  - name: TDMIN_{X}_MASK3
+    offset: 0x05
+    fields:
+      - bits: "31:0"
+        name: lane3_mask
+        access: R/W
+        default: "0x00000000"
+        description: "mask each channel in lane3, max is 32 ch"
+
+  - name: TDMIN_{X}_STAT
+    offset: 0x06
+    fields:
+      - bits: "31:29"
+        name: afifo_cnt
+        access: R
+        default: "0x0"
+        description: "afifo_cnt[2:0]"
+      - bits: "28:24"
+        name: r_input_slot_cnt_max
+        access: R
+        default: "0x00"
+        description: "the maxnum of slot_cnt"
+      - bits: "23:16"
+        name: r_input_slot_cnt_min
+        access: R
+        default: "0x00"
+        description: "the minnum of slot_cnt"
+      - bits: "14"
+        name: overflow_flag
+        access: R
+        default: "0"
+        description: "overflow flag of afifo"
+      - bits: "13:10"
+        name: max_fifo_cnt
+        access: R
+        default: "0x0"
+        description: "the maxnum of afifo_cnt"
+      - bits: "9:5"
+        name: r_input_bit_cnt_max
+        access: R
+        default: "0x00"
+        description: "the maxnum of bit_cnt"
+      - bits: "4:0"
+        name: r_input_bit_cnt_min
+        access: R
+        default: "0x00"
+        description: "the minnum of bit_cnt"
+
+  - name: TDMIN_{X}_MUTE_VAL
+    offset: 0x07
+    fields:
+      - bits: "31:0"
+        name: mute_val
+        access: R/W
+        default: "0x00000000"
+        description: "will replace received data if set mute = 1"
+
+  - name: TDMIN_{X}_MUTE0
+    offset: 0x08
+    fields:
+      - bits: "31:0"
+        name: lane0_mute
+        access: R/W
+        default: "0x00000000"
+        description: "mute each channel in lane0, max is 32 ch"
+
+  - name: TDMIN_{X}_MUTE1
+    offset: 0x09
+    fields:
+      - bits: "31:0"
+        name: lane1_mute
+        access: R/W
+        default: "0x00000000"
+        description: "mute each channel in lane1, max is 32 ch"
+
+  - name: TDMIN_{X}_MUTE2
+    offset: 0x0a
+    fields:
+      - bits: "31:0"
+        name: lane2_mute
+        access: R/W
+        default: "0x00000000"
+        description: "mute each channel in lane2, max is 32 ch"
+
+  - name: TDMIN_{X}_MUTE3
+    offset: 0x0b
+    fields:
+      - bits: "31:0"
+        name: lane3_mute
+        access: R/W
+        default: "0x00000000"
+        description: "mute each channel in lane3, max is 32 ch"
+
+ext_registers:
+  - name: TDMIN_{X}_SWAP1
+    offset: 0x00
+    fields:
+      - bits: "31:28"
+        name: ch15_sel
+        access: R/W
+        default: "0x0"
+        description: ch15_sel
+      - bits: "27:24"
+        name: ch14_sel
+        access: R/W
+        default: "0x0"
+        description: ch14_sel
+      - bits: "23:20"
+        name: ch13_sel
+        access: R/W
+        default: "0x0"
+        description: ch13_sel
+      - bits: "19:16"
+        name: ch12_sel
+        access: R/W
+        default: "0x0"
+        description: ch12_sel
+      - bits: "15:12"
+        name: ch11_sel
+        access: R/W
+        default: "0x0"
+        description: ch11_sel
+      - bits: "11:8"
+        name: ch10_sel
+        access: R/W
+        default: "0x0"
+        description: ch10_sel
+      - bits: "7:4"
+        name: ch9_sel
+        access: R/W
+        default: "0x0"
+        description: ch9_sel
+      - bits: "3:0"
+        name: ch8_sel
+        access: R/W
+        default: "0x0"
+        description: ch8_sel
+
+  - name: TDMIN_{X}_MASK4
+    offset: 0x01
+    fields:
+      - bits: "31:0"
+        name: lane4_mask
+        access: R/W
+        default: "0x00000000"
+        description: "mask each channel in lane4, max is 32 ch"
+
+  - name: TDMIN_{X}_MASK5
+    offset: 0x02
+    fields:
+      - bits: "31:0"
+        name: lane5_mask
+        access: R/W
+        default: "0x00000000"
+        description: "mask each channel in lane5, max is 32 ch"
+
+  - name: TDMIN_{X}_MASK6
+    offset: 0x03
+    fields:
+      - bits: "31:0"
+        name: lane6_mask
+        access: R/W
+        default: "0x00000000"
+        description: "mask each channel in lane6, max is 32 ch"
+
+  - name: TDMIN_{X}_MASK7
+    offset: 0x04
+    fields:
+      - bits: "31:0"
+        name: lane7_mask
+        access: R/W
+        default: "0x00000000"
+        description: "mask each channel in lane7, max is 32 ch"
+
+  - name: TDMIN_{X}_MUTE4
+    offset: 0x05
+    fields:
+      - bits: "31:0"
+        name: lane4_mute
+        access: R/W
+        default: "0x00000000"
+        description: "mute each channel in lane4, max is 32 ch"
+
+  - name: TDMIN_{X}_MUTE5
+    offset: 0x06
+    fields:
+      - bits: "31:0"
+        name: lane5_mute
+        access: R/W
+        default: "0x00000000"
+        description: "mute each channel in lane5, max is 32 ch"
+
+  - name: TDMIN_{X}_MUTE6
+    offset: 0x07
+    fields:
+      - bits: "31:0"
+        name: lane6_mute
+        access: R/W
+        default: "0x00000000"
+        description: "mute each channel in lane6, max is 32 ch"
+
+  - name: TDMIN_{X}_MUTE7
+    offset: 0x08
+    fields:
+      - bits: "31:0"
+        name: lane7_mute
+        access: R/W
+        default: "0x00000000"
+        description: "mute each channel in lane7, max is 32 ch"

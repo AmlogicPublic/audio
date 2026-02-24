@@ -1,0 +1,97 @@
+module: TOHDMITX
+parent_base: audio_top_ee
+
+instances:
+  A:
+    offset_base: 0x1d1
+    condition: { macro_path: ["tohdmitx", "imp"], eq: 1 }
+
+registers:
+  - name: TOHDMITX_CTRL0
+    offset: 0x00
+    fields:
+      - bits: "31"
+        name: reg_tohdmitx_spdif_en_dat
+        access: R/W
+        default: "0"
+        description: "spdif data enable; 0:disable; 1:enable; step2"
+      - bits: "30"
+        name: reg_tohdmitx_spdif_en_clk
+        access: R/W
+        default: "0"
+        description: "spdif clk enable; 0:disable; 1:enable; step1"
+      - bits: "29"
+        name: reg_tohdmitx_i2s_en_dat
+        access: R/W
+        default: "0"
+        description: "i2s data enable; 0:disable; 1:enable; step2"
+      - bits: "28"
+        name: reg_tohdmitx_i2s_en_clk
+        access: R/W
+        default: "0"
+        description: "i2s clk enable; 0:disable; 1:enable; step1"
+      - bits: "27:20"
+        name: reg_tohdmitx_mclk_div
+        access: R/W
+        default: "0x00"
+        description: "if need div8, set to 7"
+      - bits: "19"
+        name: reg_tohdmitx_mclk_en
+        access: R/W
+        default: "0"
+        description: mclk enable
+      - bits: "18:16"
+        name: reg_tohdmitx_mclk_sel
+        access: R/W
+        default: "0x0"
+        description: "0~5:mst_mclk_a~f"
+      - bits: "13:12"
+        name: dat_sel
+        access: R/W
+        default: "0x0"
+        description: "0:tdmout_a_dat; 1:tdmout_b_dat; 2:tdmout_c_dat"
+      - bits: "10"
+        name: lrclk_inv
+        access: R/W
+        default: "0"
+        description: lrclk_inv
+      - bits: "9:8"
+        name: lrclk_sel
+        access: R/W
+        default: "0x0"
+        description: "0:tdmout_a_lrclk; 1:tdmout_b_lrclk; 2:tdmout_c_lrclk"
+      - bits: "7"
+        name: bclk_cap_inv
+        access: R/W
+        default: "0"
+        description: "use invert bclk to capture dat_o and lrclk_o"
+      - bits: "6"
+        name: bclk_o_inv
+        access: R/W
+        default: "0"
+        description: "final bclk connect to hdmitx will invert"
+      - bits: "5:4"
+        name: bclk_sel
+        access: R/W
+        default: "0x0"
+        description: "0:tdmout_a_bclk; 1:tdmout_b_bclk; 2:tdmout_c_bclk"
+      - bits: "3"
+        name: spdif_clk_cap_inv
+        access: R/W
+        default: "0"
+        description: "use invert spdif_clk to capture spdif_dat"
+      - bits: "2"
+        name: spdif_clk_o_inv
+        access: R/W
+        default: "0"
+        description: "final bclk connect to hdmitx will invert"
+      - bits: "1"
+        name: spdif_sel
+        access: R/W
+        default: "0"
+        description: "0:spdif_out; 1:spdif_out_b"
+      - bits: "0"
+        name: spdif_clk_sel
+        access: R/W
+        default: "0"
+        description: "0:spdif_clk; 1:spdif_clk_b"

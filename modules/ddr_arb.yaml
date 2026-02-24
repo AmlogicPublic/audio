@@ -1,0 +1,233 @@
+module: DDR_ARB
+parent_base: audio_top_ee
+
+instances:
+  A:
+    offset_base: 0xa2
+    condition: { macro_path: ["ddr_arb", "imp"], eq: 1 }
+
+registers:
+  - name: AM2AXI_CTRL0
+    offset: 0x00
+    fields:
+      - bits: "31:28"
+        name: read_cmd_length
+        access: R/W
+        default: "0x3"
+        description: read_cmd_length
+      - bits: "27:24"
+        name: write_cmd_length
+        access: R/W
+        default: "0x3"
+        description: write_cmd_length
+      - bits: "23"
+        name: last_burst_7_force
+        access: R/W
+        default: "0"
+        description: last_burst_7_force
+      - bits: "22"
+        name: last_burst_6_force
+        access: R/W
+        default: "0"
+        description: last_burst_6_force
+      - bits: "21"
+        name: last_burst_5_force
+        access: R/W
+        default: "0"
+        description: last_burst_5_force
+      - bits: "20"
+        name: last_burst_4_force
+        access: R/W
+        default: "0"
+        description: last_burst_4_force
+      - bits: "19"
+        name: last_burst_3_force
+        access: R/W
+        default: "0"
+        description: last_burst_3_force
+      - bits: "18"
+        name: last_burst_2_force
+        access: R/W
+        default: "0"
+        description: last_burst_2_force
+      - bits: "17"
+        name: last_burst_1_force
+        access: R/W
+        default: "0"
+        description: last_burst_1_force
+      - bits: "16"
+        name: last_burst_0_force
+        access: R/W
+        default: "0"
+        description: last_burst_0_force
+      - bits: "11"
+        name: rcmd_len_set_en
+        access: R/W
+        default: "1"
+        description: rcmd_len_set_en
+      - bits: "10"
+        name: wcmd_len_set_en
+        access: R/W
+        default: "1"
+        description: wcmd_len_set_en
+      - bits: "9"
+        name: disable_clk
+        access: R/W
+        default: "0"
+        description: disable clk
+      - bits: "8"
+        name: auto_gate_en
+        access: R/W
+        default: "1"
+        description: enable auto clock gating
+      - bits: "7:0"
+        name: ugt_max
+        access: R/W
+        default: "0xff"
+        description: ugt_max
+
+  - name: AM2AXI_CTRL1
+    offset: 0x01
+    fields:
+      - bits: "31:28"
+        name: read_cmd_length
+        access: R/W
+        default: "0x3"
+        description: read_cmd_length
+      - bits: "27:24"
+        name: write_cmd_length
+        access: R/W
+        default: "0x3"
+        description: write_cmd_length
+      - bits: "23"
+        name: last_burst_7_force
+        access: R/W
+        default: "0"
+        description: last_burst_7_force
+      - bits: "22"
+        name: last_burst_6_force
+        access: R/W
+        default: "0"
+        description: last_burst_6_force
+      - bits: "21"
+        name: last_burst_5_force
+        access: R/W
+        default: "0"
+        description: last_burst_5_force
+      - bits: "20"
+        name: last_burst_4_force
+        access: R/W
+        default: "0"
+        description: last_burst_4_force
+      - bits: "19"
+        name: last_burst_3_force
+        access: R/W
+        default: "0"
+        description: last_burst_3_force
+      - bits: "18"
+        name: last_burst_2_force
+        access: R/W
+        default: "0"
+        description: last_burst_2_force
+      - bits: "17"
+        name: last_burst_1_force
+        access: R/W
+        default: "0"
+        description: last_burst_1_force
+      - bits: "16"
+        name: last_burst_0_force
+        access: R/W
+        default: "0"
+        description: last_burst_0_force
+      - bits: "11"
+        name: rcmd_len_set_en
+        access: R/W
+        default: "1"
+        description: rcmd_len_set_en
+      - bits: "10"
+        name: wcmd_len_set_en
+        access: R/W
+        default: "1"
+        description: wcmd_len_set_en
+      - bits: "9"
+        name: disable_clk
+        access: R/W
+        default: "0"
+        description: disable clk
+      - bits: "8"
+        name: auto_gate_en
+        access: R/W
+        default: "1"
+        description: enable auto clock gating
+      - bits: "7:0"
+        name: ugt_max
+        access: R/W
+        default: "0xff"
+        description: ugt_max
+
+  - name: AXI_ASYNC_CTRL0
+    offset: 0x02
+    fields:
+      - bits: "6"
+        name: rd_req_enable
+        access: R/W
+        default: "1"
+        description: "req_enable (rd_async)"
+      - bits: "5"
+        name: rd_auto_gate_en
+        access: R/W
+        default: "1"
+        description: "auto_gate_enable (rd_async)"
+      - bits: "4"
+        name: rd_disable_clk
+        access: R/W
+        default: "0"
+        description: "disable clk (rd_async)"
+      - bits: "2"
+        name: wr_req_enable
+        access: R/W
+        default: "1"
+        description: "req_enable (wr_async)"
+      - bits: "1"
+        name: wr_auto_gate_en
+        access: R/W
+        default: "1"
+        description: "auto_gate_enable (wr_async)"
+      - bits: "0"
+        name: wr_disable_clk
+        access: R/W
+        default: "0"
+        description: "disable clk (wr_async)"
+
+  - name: AM2AXI_STS
+    offset: 0x07
+    fields:
+      - bits: "1"
+        name: arb_wr_busy
+        access: R
+        default: "0"
+        description: arb_wr_busy
+      - bits: "0"
+        name: arb_rd_busy
+        access: R
+        default: "0"
+        description: arb_rd_busy
+
+  - name: AXI_ASYNC_STS
+    offset: 0x08
+    fields:
+      - bits: "31:28"
+        name: irq_fifo_cnt
+        access: R
+        default: "0x0"
+        description: irq_fifo_cnt
+      - bits: "1"
+        name: rd_async_chan_idle
+        access: R
+        default: "0"
+        description: rd_async_chan_idle
+      - bits: "0"
+        name: wr_async_chan_idle
+        access: R
+        default: "0"
+        description: wr_async_chan_idle

@@ -1,0 +1,188 @@
+module: PCPD_MON
+parent_base: audio_top_ee
+
+instances:
+  A:
+    offset_base: 0x3b0
+    condition: { macro_path: ["pcpd_mon", "A", "imp"], eq: 1 }
+  B:
+    offset_base: 0x3c0
+    condition: { macro_path: ["pcpd_mon", "B", "imp"], eq: 1 }
+
+registers:
+  - name: PCPD_MON_{X}_CTRL0
+    offset: 0x00
+    fields:
+      - bits: "31"
+        name: reg_en
+        access: R/W
+        default: "0"
+        description: "0:disable; 1:enable"
+      - bits: "28:24"
+        name: src_sel
+        access: R/W
+        default: "0x00"
+        description: "0:tdmin_a; 1:tdmin_b; 2:tdmin_c; 3:spdifin; 4:pdmin; 5:fratv; 6:tdmin_lb; 7:loopback_a; 8:frhdmirx_spdif; 9:loopback_b; 10:spdifin_lb; 11:earc_rx_dmac; 12:frhdmirx_dsd; 13:resample_a; 14:resample_b; 15:vad"
+      - bits: "22:20"
+        name: reg_data_type
+        access: R/W
+        default: "0x0"
+        description: "0:combined data[m:n] without gap; 1~4:various 16/32bit formats"
+      - bits: "12:8"
+        name: reg_toddr_m_sel
+        access: R/W
+        default: "0x00"
+        description: "the msb position in data"
+      - bits: "4:0"
+        name: reg_toddr_n_sel
+        access: R/W
+        default: "0x00"
+        description: "the lsb position in data"
+
+  - name: PCPD_MON_{X}_CTRL1
+    offset: 0x01
+    fields:
+      - bits: "31:16"
+        name: pb_val
+        access: R/W
+        default: "0x4E1F"
+        description: PB value
+      - bits: "15:0"
+        name: pa_val
+        access: R/W
+        default: "0xF872"
+        description: PA value
+
+  - name: PCPD_MON_{X}_CTRL2
+    offset: 0x02
+    fields:
+      - bits: "31:0"
+        name: reg_channel_mask
+        access: R/W
+        default: "0xffffffff"
+        description: "set 1 to each bit will ignore data with corresponding channel number"
+
+  - name: PCPD_MON_{X}_CTRL3
+    offset: 0x03
+    fields:
+      - bits: "29:20"
+        name: reg_chnum_mask
+        access: R/W
+        default: "0x000"
+        description: "10 bit chnum mask for input data"
+      - bits: "16"
+        name: reg_pcpd_change_en
+        access: R/W
+        default: "0"
+        description: "pcpd change irq enable"
+      - bits: "8"
+        name: reg_papb_ext_sync
+        access: R/W
+        default: "0"
+        description: "1:add ext 0 sync check for papb; 0:disable"
+      - bits: "7:0"
+        name: reg_papb_ext_mask
+        access: R/W
+        default: "0x00"
+        description: "mask 8 channel 0 sync"
+
+  - name: PCPD_MON_{X}_CTRL4
+    offset: 0x04
+    fields:
+      - bits: "31"
+        name: reg_papb_timeout_en
+        access: R/W
+        default: "0"
+        description: "papb detect timeout irq enable"
+      - bits: "23:0"
+        name: reg_papb_timeout_thd
+        access: R/W
+        default: "0x000000"
+        description: papb timeout threshold
+
+  - name: PCPD_MON_{X}_CTRL5
+    offset: 0x05
+    fields:
+      - bits: "31:28"
+        name: reg_internal_sts_clr
+        access: R/W
+        default: "0x0"
+        description: "3:papb_timeout; 2:pc_change; 1:pc/pd_data; 0:find_pc/pd"
+      - bits: "10:8"
+        name: reg_int_status_clr
+        access: R/W
+        default: "0x0"
+        description: reg_int_status_clr
+      - bits: "6:4"
+        name: reg_int_mode
+        access: R/W
+        default: "0x0"
+        description: "1:level mode; 0:pulse mode"
+      - bits: "2:0"
+        name: reg_int_en
+        access: R/W
+        default: "0x0"
+        description: "2:papb_timeout; 1:pcpd_change; 0:find_pd"
+
+  - name: PCPD_MON_{X}_STAT0
+    offset: 0x08
+    fields:
+      - bits: "31:12"
+        name: r_data_num
+        access: R
+        default: "0x00000"
+        description: "r_data_num[19:0]"
+      - bits: "11"
+        name: r_dat_v
+        access: R
+        default: "0"
+        description: r_dat_v
+      - bits: "10"
+        name: r_data_m_sft_v
+        access: R
+        default: "0"
+        description: r_data_m_sft_v
+      - bits: "8"
+        name: c_match_ext_sync
+        access: R
+        default: "0"
+        description: c_match_ext_sync
+      - bits: "7"
+        name: r_find_pc
+        access: R
+        default: "0"
+        description: r_find_pc
+      - bits: "6"
+        name: r_find_pd
+        access: R
+        default: "0"
+        description: r_find_pd
+      - bits: "5"
+        name: r_pc_change
+        access: R
+        default: "0"
+        description: r_pc_change
+      - bits: "4"
+        name: r_papb_timeout_inc
+        access: R
+        default: "0"
+        description: r_papb_timeout_inc
+      - bits: "2:0"
+        name: r_int_status
+        access: R
+        default: "0x0"
+        description: r_int_status
+
+  - name: PCPD_MON_{X}_STAT1
+    offset: 0x09
+    fields:
+      - bits: "31:16"
+        name: r_pc_data
+        access: R
+        default: "0x0000"
+        description: r_pc_data
+      - bits: "15:0"
+        name: r_pd_data
+        access: R
+        default: "0x0000"
+        description: r_pd_data

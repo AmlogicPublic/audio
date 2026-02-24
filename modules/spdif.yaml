@@ -1,0 +1,971 @@
+module: SPDIF
+parent_base: audio_top_ee
+
+# SPDIF 模块包含 SPDIFIN, SPDIFOUT, SPDIFIN_LB 子模块
+# 每个子模块有 A/B 两个实例
+
+submodules:
+  SPDIFIN:
+    instances:
+      A:
+        offset_base: 0x100
+        condition: { macro_path: ["spdifin", "A", "imp"], eq: 1 }
+      B:
+        offset_base: 0x180
+        condition: { macro_path: ["spdifin", "B", "imp"], eq: 1 }
+    registers:
+      - name: SPDIFIN_{X}_CTRL0
+        offset: 0x00
+        fields:
+          - bits: "31"
+            name: reg_work_enable
+            access: R/W
+            default: "0"
+            description: "0:disable; 1:enable"
+          - bits: "30"
+            name: reg_chnum_sel
+            access: R/W
+            default: "0"
+            description: "0:ch_num=0~383(include frame cnt); 1:ch_num=0~1(only L/R)"
+          - bits: "29"
+            name: reg_rst_afifo_out_n
+            access: R/W
+            default: "0"
+            description: "reset afifo out side"
+          - bits: "28"
+            name: reg_rst_afifo_in_n
+            access: R/W
+            default: "0"
+            description: "reset afifo in side"
+          - bits: "27"
+            name: reg_debug_en
+            access: R/W
+            default: "0"
+            description: "0:disable debug; 1:enable"
+          - bits: "26"
+            name: reg_exception_sts_clr
+            access: R/W
+            default: "0"
+            description: reg_exception_sts_clr
+          - bits: "25"
+            name: reg_findpapb_en
+            access: R/W
+            default: "0"
+            description: "0:disable NonPCM mode; 1:enable"
+          - bits: "24"
+            name: reg_width_sel
+            access: R/W
+            default: "0"
+            description: "0:detect sample mode by max_width; 1:detect by min_width"
+          - bits: "23:12"
+            name: reg_nonpcm2pcm_th
+            access: R/W
+            default: "0x000"
+            description: "when detected NonPcm mode, if long time didn't detect PaPb again, generate interrupt"
+          - bits: "11:8"
+            name: reg_ch_status_sel
+            access: R/W
+            default: "0x0"
+            description: "for STAT1"
+          - bits: "7"
+            name: reg_mute_l
+            access: R/W
+            default: "0"
+            description: "0:disable; 1:mute channel L"
+          - bits: "6"
+            name: reg_mute_r
+            access: R/W
+            default: "0"
+            description: "0:disable; 1:mute channel R"
+          - bits: "5:4"
+            name: reg_spdifin_src_sel
+            access: R/W
+            default: "0x0"
+            description: "0:PAD of spdifin; 1:spdifout"
+          - bits: "3"
+            name: reg_check_valid
+            access: R/W
+            default: "0"
+            description: "0:disable valid check; 1:enable"
+          - bits: "2"
+            name: reg_check_parity
+            access: R/W
+            default: "0"
+            description: "0:disable parity check; 1:enable"
+          - bits: "1"
+            name: reg_invert_data
+            access: R/W
+            default: "0"
+            description: "0:disable; 1:invert [27:4] to [4:27]"
+          - bits: "0"
+            name: reg_spdifin_phase
+            access: R/W
+            default: "0"
+            description: "0:disable invert; 1:enable"
+
+      - name: SPDIFIN_{X}_CTRL1
+        offset: 0x01
+        fields:
+          - bits: "31"
+            name: reg_force_sample_mode
+            access: R/W
+            default: "0"
+            description: "0:auto detect sample mode; 1:force a fixed sample mode"
+          - bits: "30:28"
+            name: reg_sample_mode
+            access: R/W
+            default: "0x0"
+            description: reg_sample_mode
+          - bits: "27:20"
+            name: reg_interrupt_mask
+            access: R/W
+            default: "0x00"
+            description: "mask each interrupt"
+          - bits: "19:0"
+            name: reg_base_timer
+            access: R/W
+            default: "0x00000"
+            description: "define a base timer to detect sample mode changed; need *256"
+
+      - name: SPDIFIN_{X}_CTRL2
+        offset: 0x02
+        fields:
+          - bits: "29:20"
+            name: reg_sample_mode0_timer_th
+            access: R/W
+            default: "0x000"
+            description: reg_sample_mode0_timer_th
+          - bits: "19:10"
+            name: reg_sample_mode1_timer_th
+            access: R/W
+            default: "0x000"
+            description: reg_sample_mode1_timer_th
+          - bits: "9:0"
+            name: reg_sample_mode2_timer_th
+            access: R/W
+            default: "0x000"
+            description: reg_sample_mode2_timer_th
+
+      - name: SPDIFIN_{X}_CTRL3
+        offset: 0x03
+        fields:
+          - bits: "29:20"
+            name: reg_sample_mode3_timer_th
+            access: R/W
+            default: "0x000"
+            description: reg_sample_mode3_timer_th
+          - bits: "19:10"
+            name: reg_sample_mode4_timer_th
+            access: R/W
+            default: "0x000"
+            description: reg_sample_mode4_timer_th
+          - bits: "9:0"
+            name: reg_sample_mode5_timer_th
+            access: R/W
+            default: "0x000"
+            description: reg_sample_mode5_timer_th
+
+      - name: SPDIFIN_{X}_CTRL4
+        offset: 0x04
+        fields:
+          - bits: "31:24"
+            name: reg_sample_mode0_timer
+            access: R/W
+            default: "0x00"
+            description: reg_sample_mode0_timer
+          - bits: "23:16"
+            name: reg_sample_mode1_timer
+            access: R/W
+            default: "0x00"
+            description: reg_sample_mode1_timer
+          - bits: "15:8"
+            name: reg_sample_mode2_timer
+            access: R/W
+            default: "0x00"
+            description: reg_sample_mode2_timer
+          - bits: "7:0"
+            name: reg_sample_mode3_timer
+            access: R/W
+            default: "0x00"
+            description: reg_sample_mode3_timer
+
+      - name: SPDIFIN_{X}_CTRL5
+        offset: 0x05
+        fields:
+          - bits: "31:24"
+            name: reg_sample_mode4_timer
+            access: R/W
+            default: "0x00"
+            description: reg_sample_mode4_timer
+          - bits: "23:16"
+            name: reg_sample_mode5_timer
+            access: R/W
+            default: "0x00"
+            description: reg_sample_mode5_timer
+          - bits: "15:8"
+            name: reg_sample_mode6_timer
+            access: R/W
+            default: "0x00"
+            description: reg_sample_mode6_timer
+
+      - name: SPDIFIN_{X}_CTRL6
+        offset: 0x06
+        fields:
+          - bits: "31:24"
+            name: reg_clr_internal_sts
+            access: R/W
+            default: "0x00"
+            description: "7:valid; 6:parity; 5:ch status; 4:z_cnt; 3:find_nonpcm; 2:pd_data; 1:pc_data; 0:find_papb"
+          - bits: "23:16"
+            name: reg_clr_interrupt
+            access: R/W
+            default: "0x00"
+            description: "clear each bit of irq_status"
+          - bits: "14"
+            name: enable_find_z
+            access: R/W
+            default: "0"
+            description: "enable send out find_z"
+          - bits: "13"
+            name: irq_mode
+            access: R/W
+            default: "0"
+            description: "0:pulse; 1:level"
+          - bits: "12"
+            name: update_sample_mode_filter_en
+            access: R/W
+            default: "0"
+            description: "0:by 1 width; 1:by average of 4 width"
+          - bits: "8"
+            name: reg_papb_ext_sync
+            access: R/W
+            default: "0"
+            description: "1:add ext 0 sync check for papb; 0:disable"
+          - bits: "7:0"
+            name: reg_papb_ext_mask
+            access: R/W
+            default: "0x00"
+            description: "mask 8 channel 0 sync"
+
+      - name: SPDIFIN_{X}_STAT0
+        offset: 0x07
+        fields:
+          - bits: "31"
+            name: valid_bit
+            access: R
+            default: "0"
+            description: Valid bit
+          - bits: "30:28"
+            name: r_sample_mode
+            access: R
+            default: "0x0"
+            description: "current sample mode"
+          - bits: "27:18"
+            name: r_width_min
+            access: R
+            default: "0x000"
+            description: "the min width of two edge"
+          - bits: "17:8"
+            name: r_width_max
+            access: R
+            default: "0x000"
+            description: "the max width of two edge"
+          - bits: "7:0"
+            name: r_interrupt_status
+            access: R
+            default: "0x00"
+            description: "[7]:find PaPb; [6]:valid changed; [5]:nonpcm to pcm; [4]:Pc/Pd changed; [3]:CH status changed; [2]:sample mode changed; [1]:parity error; [0]:overflow"
+
+      - name: SPDIFIN_{X}_STAT1
+        offset: 0x08
+        fields:
+          - bits: "31:0"
+            name: ch_status
+            access: R
+            default: "0x00000000"
+            description: "channel status by reg_ch_status_sel"
+
+      - name: SPDIFIN_{X}_STAT2
+        offset: 0x09
+        fields:
+          - bits: "31:0"
+            name: debug_status
+            access: R
+            default: "0x00000000"
+            description: "debug status by reg_ch_status_sel"
+
+      - name: SPDIFIN_{X}_MUTE_VAL
+        offset: 0x0a
+        fields:
+          - bits: "31:0"
+            name: mute_val
+            access: R/W
+            default: "0x00000000"
+            description: "when muted, the channel value"
+
+      - name: SPDIFIN_{X}_CTRL7
+        offset: 0x0b
+        fields:
+          - bits: "31"
+            name: hold_tri_sample
+            access: R/W
+            default: "0"
+            description: "0:stop capture if received triple 0 or 1"
+          - bits: "30"
+            name: add_ch_r
+            access: R/W
+            default: "0"
+            description: "when unstable, if missed ch_r, add one more ch_r with value 0"
+          - bits: "27:20"
+            name: stable_mask
+            access: R/W
+            default: "0x00"
+            description: "condition of pull stable low"
+          - bits: "19:16"
+            name: stable_zcnt
+            access: R/W
+            default: "0x0"
+            description: "condition to pull stable high"
+          - bits: "15:8"
+            name: stable_cyc_min
+            access: R/W
+            default: "0x00"
+            description: stable_cyc_min
+          - bits: "7:0"
+            name: stable_cyc_max
+            access: R/W
+            default: "0x00"
+            description: stable_cyc_max
+
+  SPDIFOUT:
+    instances:
+      A:
+        offset_base: 0x120
+        condition: { macro_path: ["spdifout", "A", "imp"], eq: 1 }
+      B:
+        offset_base: 0x1a0
+        condition: { macro_path: ["spdifout", "B", "imp"], eq: 1 }
+    registers:
+      - name: SPDIFOUT_{X}_STAT
+        offset: 0x00
+        fields:
+          - bits: "31:0"
+            name: status
+            access: R
+            default: "0x00000000"
+            description: "by reg_sts_sel: 0:fifo_cnt/up_error/fsm_stat; 1:cur_gain_val"
+
+      - name: SPDIFOUT_{X}_GAIN0
+        offset: 0x01
+        fields:
+          - bits: "31:24"
+            name: gain_ch3
+            access: R/W
+            default: "0xFF"
+            description: gain_ch3
+          - bits: "23:16"
+            name: gain_ch2
+            access: R/W
+            default: "0xFF"
+            description: gain_ch2
+          - bits: "15:8"
+            name: gain_ch1
+            access: R/W
+            default: "0xFF"
+            description: gain_ch1
+          - bits: "7:0"
+            name: gain_ch0
+            access: R/W
+            default: "0xFF"
+            description: gain_ch0
+
+      - name: SPDIFOUT_{X}_GAIN1
+        offset: 0x02
+        fields:
+          - bits: "31:24"
+            name: gain_ch7
+            access: R/W
+            default: "0xFF"
+            description: gain_ch7
+          - bits: "23:16"
+            name: gain_ch6
+            access: R/W
+            default: "0xFF"
+            description: gain_ch6
+          - bits: "15:8"
+            name: gain_ch5
+            access: R/W
+            default: "0xFF"
+            description: gain_ch5
+          - bits: "7:0"
+            name: gain_ch4
+            access: R/W
+            default: "0xFF"
+            description: gain_ch4
+
+      - name: SPDIFOUT_{X}_CTRL0
+        offset: 0x03
+        fields:
+          - bits: "31"
+            name: reg_work_enable
+            access: R/W
+            default: "0"
+            description: "0:disable; 1:enable"
+          - bits: "30"
+            name: reg_req_frddr_rst
+            access: R/W
+            default: "0"
+            description: "1:reset REQ_FRDDR in SPDIFOUT"
+          - bits: "29"
+            name: reg_rst_afifo_out_n
+            access: R/W
+            default: "0"
+            description: "reset afifo out side"
+          - bits: "28"
+            name: reg_rst_afifo_in_n
+            access: R/W
+            default: "0"
+            description: "reset afifo in side"
+          - bits: "27"
+            name: reg_hold_start_en
+            access: R/W
+            default: "0"
+            description: "1:add delay to match TDM out when share buff"
+          - bits: "26"
+            name: reg_userdata_sel
+            access: R/W
+            default: "0"
+            description: "0:user data=reg_userdata_set; 1:user data=data[29]"
+          - bits: "25"
+            name: reg_userdata_set
+            access: R/W
+            default: "0"
+            description: reg_userdata_set
+          - bits: "24"
+            name: reg_chdata_sel
+            access: R/W
+            default: "0"
+            description: "0:ch status=reg_chsts0~B; 1:ch status=data[30]"
+          - bits: "23"
+            name: reg_mix_lr
+            access: R/W
+            default: "0"
+            description: "0:disable; 1:L=(L+R)/2; R=(L+R)/2"
+          - bits: "22"
+            name: reg_mute_l
+            access: R/W
+            default: "0"
+            description: "0:disable; 1:ch_l_data=reg_mute_val"
+          - bits: "21"
+            name: reg_mute_r
+            access: R/W
+            default: "0"
+            description: "0:disable; 1:ch_r_data=reg_mute_val"
+          - bits: "20"
+            name: reg_data_sel
+            access: R/W
+            default: "0"
+            description: "0:insert data from 31bits; 1:insert data from 27bits"
+          - bits: "19"
+            name: reg_out_msb_first
+            access: R/W
+            default: "0"
+            description: "0:lsb first; 1:msb first"
+          - bits: "18"
+            name: reg_valid_sel
+            access: R/W
+            default: "0"
+            description: "0:valid flag=reg_valid_set; 1:valid flag=data[28]"
+          - bits: "16"
+            name: reg_parity_mask
+            access: R/W
+            default: "0"
+            description: "initial parity value"
+          - bits: "15:0"
+            name: reg_mask
+            access: R/W
+            default: "0x0000"
+            description: "mask lane L/R"
+
+      - name: SPDIFOUT_{X}_CTRL1
+        offset: 0x04
+        fields:
+          - bits: "27"
+            name: reg_gain_en
+            access: R/W
+            default: "0"
+            description: "0:disable; 1:enable data*gain"
+          - bits: "26:24"
+            name: reg_frddr_sel
+            access: R/W
+            default: "0x0"
+            description: "0:frddr_A; 1:frddr_B; 2:frddr_C; 3:frddr_D; 4:frddr_E"
+          - bits: "23:16"
+            name: reg_wait_cnt
+            access: R/W
+            default: "0x00"
+            description: "wait some time when enable set to 1"
+          - bits: "15:14"
+            name: reg_gain_shift
+            access: R/W
+            default: "0x0"
+            description: "0:data*1; 1:data*2; 2:data*4; 3:data*8"
+          - bits: "12:8"
+            name: reg_frddr_msb
+            access: R/W
+            default: "0x00"
+            description: "msb position of data"
+          - bits: "7"
+            name: reg_force_start
+            access: R/W
+            default: "0"
+            description: "1:needn't ack from FRDDR; for only transmit ch status"
+          - bits: "6:4"
+            name: reg_frddr_type
+            access: R/W
+            default: "0x0"
+            description: "0~4: split 64bits ddr data to different formats"
+          - bits: "3"
+            name: reg_keep_req_ddr_init
+            access: R/W
+            default: "0"
+            description: "set 0 will stop sending data if req_ddr stopped by init_done pull down"
+          - bits: "2"
+            name: reg_sts_sel
+            access: R/W
+            default: "0"
+            description: reg_sts_sel
+          - bits: "1"
+            name: mixer_sel
+            access: R/W
+            default: "0"
+            description: "1:select mixer data"
+          - bits: "0"
+            name: eq_drc_sel
+            access: R/W
+            default: "0"
+            description: "1:select eq_drc data"
+
+      - name: SPDIFOUT_{X}_PREAMB
+        offset: 0x05
+        fields:
+          - bits: "31"
+            name: set_preamble_z
+            access: R/W
+            default: "0"
+            description: "0:preamble Z=0xE8; 1:use reg[7:0]"
+          - bits: "30"
+            name: set_preamble_y
+            access: R/W
+            default: "0"
+            description: "0:preamble Y=0xE4; 1:use reg[15:8]"
+          - bits: "29"
+            name: set_preamble_x
+            access: R/W
+            default: "0"
+            description: "0:preamble X=0xE2; 1:use reg[23:16]"
+          - bits: "23:16"
+            name: preamble_x
+            access: R/W
+            default: "0x00"
+            description: preamble X
+          - bits: "15:8"
+            name: preamble_y
+            access: R/W
+            default: "0x00"
+            description: preamble Y
+          - bits: "7:0"
+            name: preamble_z
+            access: R/W
+            default: "0x00"
+            description: preamble Z
+
+      - name: SPDIFOUT_{X}_SWAP
+        offset: 0x06
+        fields:
+          - bits: "31:16"
+            name: hold_start_cnt
+            access: R/W
+            default: "0x0000"
+            description: "work when CTRL0[27]=1"
+          - bits: "15:8"
+            name: reg_clr_by_init
+            access: R/W
+            default: "0x00"
+            description: "clear status when FRDDR disabled"
+          - bits: "7:4"
+            name: lane0_r_sel
+            access: R/W
+            default: "0x0"
+            description: "lane0 right ch sel"
+          - bits: "3:0"
+            name: lane0_l_sel
+            access: R/W
+            default: "0x0"
+            description: "lane0 left ch sel"
+
+      - name: SPDIFOUT_{X}_CHSTS0
+        offset: 0x07
+        fields:
+          - bits: "31:0"
+            name: ch_a_status_31_0
+            access: R/W
+            default: "0x00000000"
+            description: "channel A status[31:0]"
+
+      - name: SPDIFOUT_{X}_CHSTS1
+        offset: 0x08
+        fields:
+          - bits: "31:0"
+            name: ch_a_status_63_32
+            access: R/W
+            default: "0x00000000"
+            description: "channel A status[63:32]"
+
+      - name: SPDIFOUT_{X}_CHSTS2
+        offset: 0x09
+        fields:
+          - bits: "31:0"
+            name: ch_a_status_95_64
+            access: R/W
+            default: "0x00000000"
+            description: "channel A status[95:64]"
+
+      - name: SPDIFOUT_{X}_CHSTS3
+        offset: 0x0a
+        fields:
+          - bits: "31:0"
+            name: ch_a_status_127_96
+            access: R/W
+            default: "0x00000000"
+            description: "channel A status[127:96]"
+
+      - name: SPDIFOUT_{X}_CHSTS4
+        offset: 0x0b
+        fields:
+          - bits: "31:0"
+            name: ch_a_status_159_128
+            access: R/W
+            default: "0x00000000"
+            description: "channel A status[159:128]"
+
+      - name: SPDIFOUT_{X}_CHSTS5
+        offset: 0x0c
+        fields:
+          - bits: "31:0"
+            name: ch_a_status_191_160
+            access: R/W
+            default: "0x00000000"
+            description: "channel A status[191:160]"
+
+      - name: SPDIFOUT_{X}_CHSTS6
+        offset: 0x0d
+        fields:
+          - bits: "31:0"
+            name: ch_b_status_31_0
+            access: R/W
+            default: "0x00000000"
+            description: "channel B status[31:0]"
+
+      - name: SPDIFOUT_{X}_CHSTS7
+        offset: 0x0e
+        fields:
+          - bits: "31:0"
+            name: ch_b_status_63_32
+            access: R/W
+            default: "0x00000000"
+            description: "channel B status[63:32]"
+
+      - name: SPDIFOUT_{X}_CHSTS8
+        offset: 0x0f
+        fields:
+          - bits: "31:0"
+            name: ch_b_status_95_64
+            access: R/W
+            default: "0x00000000"
+            description: "channel B status[95:64]"
+
+      - name: SPDIFOUT_{X}_CHSTS9
+        offset: 0x10
+        fields:
+          - bits: "31:0"
+            name: ch_b_status_127_96
+            access: R/W
+            default: "0x00000000"
+            description: "channel B status[127:96]"
+
+      - name: SPDIFOUT_{X}_CHSTSA
+        offset: 0x11
+        fields:
+          - bits: "31:0"
+            name: ch_b_status_159_128
+            access: R/W
+            default: "0x00000000"
+            description: "channel B status[159:128]"
+
+      - name: SPDIFOUT_{X}_CHSTSB
+        offset: 0x12
+        fields:
+          - bits: "31:0"
+            name: ch_b_status_191_160
+            access: R/W
+            default: "0x00000000"
+            description: "channel B status[191:160]"
+
+      - name: SPDIFOUT_{X}_MUTE_VAL
+        offset: 0x13
+        fields:
+          - bits: "31:0"
+            name: mute_val
+            access: R/W
+            default: "0x00000000"
+            description: "when muted, the channel value"
+
+      - name: SPDIFOUT_{X}_GAIN2
+        offset: 0x14
+        fields:
+          - bits: "31:24"
+            name: gain_ch11
+            access: R/W
+            default: "0xFF"
+            description: gain_ch11
+          - bits: "23:16"
+            name: gain_ch10
+            access: R/W
+            default: "0xFF"
+            description: gain_ch10
+          - bits: "15:8"
+            name: gain_ch9
+            access: R/W
+            default: "0xFF"
+            description: gain_ch9
+          - bits: "7:0"
+            name: gain_ch8
+            access: R/W
+            default: "0xFF"
+            description: gain_ch8
+
+      - name: SPDIFOUT_{X}_GAIN3
+        offset: 0x15
+        fields:
+          - bits: "31:24"
+            name: gain_ch15
+            access: R/W
+            default: "0xFF"
+            description: gain_ch15
+          - bits: "23:16"
+            name: gain_ch14
+            access: R/W
+            default: "0xFF"
+            description: gain_ch14
+          - bits: "15:8"
+            name: gain_ch13
+            access: R/W
+            default: "0xFF"
+            description: gain_ch13
+          - bits: "7:0"
+            name: gain_ch12
+            access: R/W
+            default: "0xFF"
+            description: gain_ch12
+
+      - name: SPDIFOUT_{X}_GAIN_EN
+        offset: 0x16
+        fields:
+          - bits: "15:0"
+            name: ch_gain_en
+            access: R/W
+            default: "0x0000"
+            description: "ch[n] gain_en; 1:out=in*gain_ch[n]; 0:out=in"
+
+      - name: SPDIFOUT_{X}_GAIN_CTRL
+        offset: 0x17
+        fields:
+          - bits: "31"
+            name: reg_gain_step_chg
+            access: R/W
+            default: "0"
+            description: "0:current_gain follows reg_gain directly; 1:step by step"
+          - bits: "25:24"
+            name: reg_cur_gain_sel
+            access: R/W
+            default: "0x0"
+            description: "0:ch3~0; 1:ch7~4; 2:ch11~8; 3:ch15~12"
+          - bits: "23:16"
+            name: reg_gain_step
+            access: R/W
+            default: "0x00"
+            description: "modified gain value each time"
+          - bits: "15:0"
+            name: reg_gain_updt_timer
+            access: R/W
+            default: "0x0000"
+            description: "the period of each change, unit is FS"
+
+  SPDIFIN_LB:
+    instances:
+      A:
+        offset_base: 0x1f0
+        condition: { macro_path: ["spdifin", "LB_A", "imp"], eq: 1 }
+      B:
+        offset_base: 0x270
+        condition: { macro_path: ["spdifin", "LB_B", "imp"], eq: 1 }
+    registers:
+      - name: SPDIFIN_LB_{X}_CTRL0
+        offset: 0x00
+        fields:
+          - bits: "31"
+            name: reg_work_enable
+            access: R/W
+            default: "0"
+            description: "0:disable; 1:enable"
+          - bits: "30"
+            name: reg_chnum_sel
+            access: R/W
+            default: "0"
+            description: "0:ch_num=0~383(include frame cnt); 1:ch_num=0~1(only L/R)"
+          - bits: "29"
+            name: reg_rst_afifo_out_n
+            access: R/W
+            default: "0"
+            description: "reset afifo out side"
+          - bits: "28"
+            name: reg_rst_afifo_in_n
+            access: R/W
+            default: "0"
+            description: "reset afifo in side"
+          - bits: "26"
+            name: reg_chnum_en
+            access: R/W
+            default: "0"
+            description: "1:start add ch_cnt to ch_num"
+          - bits: "25"
+            name: reg_findpapb_en
+            access: R/W
+            default: "0"
+            description: "0:disable NonPCM mode; 1:enable"
+          - bits: "24"
+            name: reg_clk_inv
+            access: R/W
+            default: "0"
+            description: "0:sample spdif by posedge; 1:sample spdif by negedge"
+          - bits: "23:12"
+            name: reg_nonpcm2pcm_th
+            access: R/W
+            default: "0x000"
+            description: "when detected NonPcm mode, if long time didn't detect PaPb again, generate interrupt"
+          - bits: "11:8"
+            name: reg_ch_status_sel
+            access: R/W
+            default: "0x0"
+            description: "for STAT1"
+          - bits: "7"
+            name: reg_mute_l
+            access: R/W
+            default: "0"
+            description: "0:disable; 1:mute channel L"
+          - bits: "6"
+            name: reg_mute_r
+            access: R/W
+            default: "0"
+            description: "0:disable; 1:mute channel R"
+          - bits: "5:4"
+            name: reg_spdifin_src_sel
+            access: R/W
+            default: "0x0"
+            description: "0:PAD of spdifin; 1:spdifout"
+          - bits: "3"
+            name: reg_check_valid
+            access: R/W
+            default: "0"
+            description: "0:disable valid check; 1:enable"
+          - bits: "2"
+            name: reg_check_parity
+            access: R/W
+            default: "0"
+            description: "0:disable parity check; 1:enable"
+          - bits: "1"
+            name: reg_invert_data
+            access: R/W
+            default: "0"
+            description: "0:disable; 1:invert [27:4] to [4:27]"
+          - bits: "0"
+            name: reg_spdifin_phase
+            access: R/W
+            default: "0"
+            description: "0:disable invert; 1:enable"
+
+      - name: SPDIFIN_LB_{X}_CTRL1
+        offset: 0x01
+        fields:
+          - bits: "27:20"
+            name: reg_interrupt_mask
+            access: R/W
+            default: "0x00"
+            description: "mask each interrupt"
+
+      - name: SPDIFIN_LB_{X}_CTRL6
+        offset: 0x06
+        fields:
+          - bits: "31:24"
+            name: reg_clr_internal_sts
+            access: R/W
+            default: "0x00"
+            description: "clear internal status"
+          - bits: "23:16"
+            name: reg_clr_interrupt
+            access: R/W
+            default: "0x00"
+            description: "clear each bit of irq_status"
+          - bits: "13"
+            name: reg_irq_mode
+            access: R/W
+            default: "0"
+            description: "1:level mode; 0:pulse mode"
+          - bits: "8"
+            name: reg_papb_ext_sync
+            access: R/W
+            default: "0"
+            description: "1:add ext 0 sync check for papb"
+          - bits: "7:0"
+            name: reg_papb_ext_mask
+            access: R/W
+            default: "0x00"
+            description: "mask 8 channel 0 sync"
+
+      - name: SPDIFIN_LB_{X}_STAT0
+        offset: 0x07
+        fields:
+          - bits: "31"
+            name: valid_bit
+            access: R
+            default: "0"
+            description: Valid bit
+          - bits: "11:8"
+            name: afifo_cnt
+            access: R
+            default: "0x0"
+            description: "afifo_cnt[3:0]"
+          - bits: "7:0"
+            name: r_interrupt_status
+            access: R
+            default: "0x00"
+            description: "interrupt status"
+
+      - name: SPDIFIN_LB_{X}_STAT1
+        offset: 0x08
+        fields:
+          - bits: "31:0"
+            name: ch_status
+            access: R
+            default: "0x00000000"
+            description: "channel status by reg_ch_status_sel"
+
+      - name: SPDIFIN_LB_{X}_MUTE_VAL
+        offset: 0x0a
+        fields:
+          - bits: "31:0"
+            name: mute_val
+            access: R/W
+            default: "0x00000000"
+            description: "when muted, the channel value"

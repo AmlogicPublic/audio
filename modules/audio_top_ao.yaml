@@ -11,21 +11,162 @@ voice_params:
 registers:
   - name: EE_AUDIO2_CLK81_CTRL
     offset: 0x0000
+    fields:
+      - bits: "31"
+        name: pclk_div_sel
+        access: R
+        default: "0"
+        description: pclk_div_sel
+      - bits: "24"
+        name: clk_en_b
+        access: R/W
+        default: "0"
+        description: clk_en_b
+      - bits: "23:16"
+        name: clk81_div_b
+        access: R/W
+        default: "0x00"
+        description: clk81_div_b
+      - bits: "15"
+        name: clk_div_sel
+        access: R/W
+        default: "0"
+        description: "0:pclk_div_a; 1:pclk_div_b"
+      - bits: "8"
+        name: clk_en_a
+        access: R/W
+        default: "1"
+        description: clk_en_a
+      - bits: "7:0"
+        name: clk81_div_a
+        access: R/W
+        default: "0x00"
+        description: clk81_div_a
 
   - name: EE_AUDIO2_CLK81_EN
     offset: 0x0001
+    fields:
+      - bits: "31"
+        name: clk_81_div_en
+        access: R/W
+        default: "1"
+        description: clk_81_div_en
 
   - name: EE_AUDIO2_SW_RESET0
     offset: 0x0002
+    fields:
+      - bits: "8"
+        name: sed
+        access: R/W
+        default: "0"
+        description: sed reset
+      - bits: "7"
+        name: irqfifocnt2
+        access: R/W
+        default: "0"
+        description: Irqfifocnt2 reset
+      - bits: "6"
+        name: irqfifocnt1
+        access: R/W
+        default: "0"
+        description: Irqfifocnt1 reset
+      - bits: "5"
+        name: clkrst
+        access: R/W
+        default: "0"
+        description: clkrst reset
+      - bits: "4"
+        name: tovad
+        access: R/W
+        default: "0"
+        description: tovad reset
+      - bits: "3"
+        name: toddrc
+        access: R/W
+        default: "0"
+        description: toddrc reset
+      - bits: "2"
+        name: reserved
+        access: R/W
+        default: "0"
+        description: reserved
+      - bits: "1"
+        name: pdm
+        access: R/W
+        default: "0"
+        description: pdm reset
+      - bits: "0"
+        name: ddr_arb
+        access: R/W
+        default: "0"
+        description: ddr_arb reset
 
   - name: EE_AUDIO2_CLK_GATE_EN0
     offset: 0x0003
+    fields:
+      - bits: "8"
+        name: sed
+        access: R/W
+        default: "0"
+        description: sed clock gate
+      - bits: "7"
+        name: irqfifocnt2
+        access: R/W
+        default: "0"
+        description: Irqfifocnt2 clock gate
+      - bits: "6"
+        name: irqfifocnt1
+        access: R/W
+        default: "0"
+        description: Irqfifocnt1 clock gate
+      - bits: "5"
+        name: clkrst
+        access: R/W
+        default: "0"
+        description: clkrst clock gate
+      - bits: "4"
+        name: tosed
+        access: R/W
+        default: "0"
+        description: tosed clock gate
+      - bits: "3"
+        name: toddrc
+        access: R/W
+        default: "0"
+        description: toddrc clock gate
+      - bits: "2"
+        name: reserved
+        access: R/W
+        default: "0"
+        description: reserved
+      - bits: "1"
+        name: pdm
+        access: R/W
+        default: "0"
+        description: pdm clock gate
+      - bits: "0"
+        name: ddr_arb
+        access: R/W
+        default: "0"
+        description: ddr_arb clock gate
 
   - name: EE_AUDIO2_SECURITY_CTRL0
     offset: 0x0004
+    fields:
+      - bits: "31:0"
+        name: to_ddr_src_sel
+        access: R/W
+        default: "0x00000000"
+        description: the reg_to_ddr_src_sel bit needs to match to_ddr_security bit to pass security test
 
   - name: EE_AUDIO2_SECURITY_CTRL1
     offset: 0x0005
+    fields:
+      - bits: "20"
+        name: to_ddr_security
+        access: R/W
+        default: "0"
+        description: to_ddr_security
 
   - name: EE_AUDIO2_SECURITY_MUTE
     offset: 0x0006
@@ -34,35 +175,254 @@ registers:
   - name: EE_AUDIO2_MCLK_{VOICE}_CTRL
     offset: 0x0010
     voice_param: true
+    fields:
+      - bits: "31"
+        name: clk_en
+        access: R/W
+        default: "0"
+        description: "0:disable; 1:enable"
+      - bits: "30"
+        name: force_oscin
+        access: R/W
+        default: "0"
+        description: "0:disable; 1:force clock source as oscin(24M)"
+      - bits: "27:24"
+        name: clk_sel
+        access: R/W
+        default: "0x0"
+        description: "0~7:i_other_pll_a~h; 8~11:i_slv_mclk_pad0~3"
+      - bits: "15:0"
+        name: clk_div
+        access: R/W
+        default: "0x0000"
+        description: "frequency of mclk = pll/(clk_div+1)"
 
   - name: EE_AUDIO2_{VOICE}_CLK_CTRL
     offset: 0x0011
     voice_param: true
+    fields:
+      - bits: "31"
+        name: clk_en
+        access: R/W
+        default: "0"
+        description: "0:disable; 1:enable"
+      - bits: "30"
+        name: force_oscin
+        access: R/W
+        default: "0"
+        description: "0:disable; 1:force clock source as oscin(24M)"
+      - bits: "27:24"
+        name: clk_sel
+        access: R/W
+        default: "0x0"
+        description: "0~7:i_other_pll_a~h; 8:mst_mclk_vad"
+      - bits: "15:0"
+        name: clk_div
+        access: R/W
+        default: "0x0000"
+        description: "set 7 if need div 8"
 
   - name: EE_AUDIO2_MST_DLY_CTRL0
     offset: 0x0012
+    fields:
+      - bits: "7:4"
+        name: mst_lrclk_a_ph1_dly_sel
+        access: R/W
+        default: "0x0"
+        description: mst_lrclk_a_ph1_dly_sel
+      - bits: "3:0"
+        name: mst_sclk_a_ph1_dly_sel
+        access: R/W
+        default: "0x0"
+        description: mst_sclk_a_ph1_dly_sel
 
   - name: EE_AUDIO2_MST_{VOICE}_SCLK_CTRL0
     offset: 0x0013
     voice_param: true
+    fields:
+      - bits: "31"
+        name: clk_in_en
+        access: R/W
+        default: "0"
+        description: "0:disable; 1:enable"
+      - bits: "30"
+        name: clk_out_en
+        access: R/W
+        default: "0"
+        description: "0:disable; 1:enable"
+      - bits: "29:20"
+        name: sclk_divN
+        access: R/W
+        default: "0x000"
+        description: "frequency of sclk = mclk/(sclk_divN+1)"
+      - bits: "19:10"
+        name: lrclk_hi
+        access: R/W
+        default: "0x000"
+        description: "duty cycle of LRCLK, less than lrclk_div"
+      - bits: "9:0"
+        name: lrclk_divN
+        access: R/W
+        default: "0x000"
+        description: "frequency of lrclk = sclk/(lrclk_divN+1)"
 
   - name: EE_AUDIO2_MST_{VOICE}_SCLK_CTRL1
     offset: 0x0014
     voice_param: true
+    fields:
+      - bits: "31:28"
+        name: sclk_ph0_sel
+        access: R/W
+        default: "0x0"
+        description: "select from sclk_delay_line(depth is 16)"
+      - bits: "27:24"
+        name: lrclk_ph0_sel
+        access: R/W
+        default: "0x0"
+        description: "select from lrclk_delay_line(depth is 16)"
+      - bits: "23:20"
+        name: sclk_ph1_sel
+        access: R/W
+        default: "0x0"
+        description: "select from sclk_delay_line(depth is 16)"
+      - bits: "19:16"
+        name: lrclk_ph1_sel
+        access: R/W
+        default: "0x0"
+        description: "select from lrclk_delay_line(depth is 16)"
+      - bits: "15:12"
+        name: sclk_ph2_sel
+        access: R/W
+        default: "0x0"
+        description: "select from sclk_delay_line(depth is 16)"
+      - bits: "11:8"
+        name: lrclk_ph2_sel
+        access: R/W
+        default: "0x0"
+        description: "select from lrclk_delay_line(depth is 16)"
+      - bits: "5:0"
+        name: clk_inv
+        access: R/W
+        default: "0x00"
+        description: "invert clk; [5]:lrclk_ph2; [4]:sclk_ph2; [3]:lrclk_ph1; [2]:sclk_ph1; [1]:lrclk_ph0; [0]:sclk_ph0"
 
   - name: EE_AUDIO2_CLK_TDMIN_{VOICE}_CTRL
     offset: 0x0015
     voice_param: true
+    fields:
+      - bits: "31"
+        name: clk_in_en
+        access: R/W
+        default: "0"
+        description: "0:disable; 1:enable"
+      - bits: "30"
+        name: clk_out_en
+        access: R/W
+        default: "0"
+        description: "0:disable; 1:enable"
+      - bits: "29"
+        name: sclk_inv
+        access: R/W
+        default: "0"
+        description: "0:not revert; 1:revert clock"
+      - bits: "27:24"
+        name: sclk_sel
+        access: R/W
+        default: "0x0"
+        description: "0:mst_vad_sclk_ph1; 1~5:mst_b~f_sclk_ph1; 6~15:i_slv_sclk_a~j"
+      - bits: "23:20"
+        name: lrclk_sel
+        access: R/W
+        default: "0x0"
+        description: "0:mst_vad_lrclk_ph1; 1~5:mst_b~f_lrclk_ph1; 6~15:i_slv_lrclk_a~j"
 
   - name: EE_AUDIO2_CLK_PDMIN_CTRL0
     offset: 0x0016
+    fields:
+      - bits: "31"
+        name: clk_en
+        access: R/W
+        default: "0"
+        description: "0:disable; 1:enable"
+      - bits: "30"
+        name: force_oscin
+        access: R/W
+        default: "0"
+        description: "0:disable; 1:force clock source as oscin(24M)"
+      - bits: "27:24"
+        name: clk_sel
+        access: R/W
+        default: "0x0"
+        description: "0~7:i_other_pll_a~h; 8:mst_vad_mclk; 9~13:mst_b~f_mclk"
+      - bits: "15:0"
+        name: clk_div
+        access: R/W
+        default: "0x0000"
+        description: "set 7 if need div 8"
 
   - name: EE_AUDIO2_CLK_PDMIN_CTRL1
     offset: 0x0017
+    fields:
+      - bits: "31"
+        name: clk_en
+        access: R/W
+        default: "0"
+        description: "0:disable; 1:enable"
+      - bits: "30"
+        name: force_oscin
+        access: R/W
+        default: "0"
+        description: "0:disable; 1:force clock source as oscin(24M)"
+      - bits: "27:24"
+        name: clk_sel
+        access: R/W
+        default: "0x0"
+        description: "0~7:i_other_pll_a~h; 8:mst_vad_mclk; 9~13:mst_b~f_mclk"
+      - bits: "15:0"
+        name: clk_div
+        access: R/W
+        default: "0x0000"
+        description: "set 7 if need div 8"
 
   - name: EE_AUDIO2_AUD_{VOICE}_PAD_CTRL0
     offset: 0x0018
     voice_param: true
+    fields:
+      - bits: "27"
+        name: mst_lrclk_vad_oen
+        access: R/W
+        default: "0"
+        description: mst_lrclk_vad_oen
+      - bits: "16"
+        name: mst_sclk_vad_oen
+        access: R/W
+        default: "0"
+        description: mst_sclk_vad_oen
+      - bits: "15"
+        name: clk_en
+        access: R/W
+        default: "0"
+        description: clk_en
+      - bits: "14"
+        name: force_osc_clk
+        access: R/W
+        default: "0"
+        description: force_osc_clk
+      - bits: "12"
+        name: mst_mclk_vad_oen
+        access: R/W
+        default: "0"
+        description: mst_mclk_vad_oen
+      - bits: "10:8"
+        name: clk_sel
+        access: R/W
+        default: "0x0"
+        description: clk_sel
+      - bits: "7:0"
+        name: clk_div
+        access: R/W
+        default: "0x00"
+        description: "clk_div (vad_mclk to pad)"
 
   - name: EE_AUDIO2_CLK_PDMIN_CTRL2
     offset: 0x0019
@@ -70,90 +430,522 @@ registers:
   - name: EE_AUDIO2_{TO_VOICE}_CTRL0
     offset: 0x0020
     voice_param: true
+    fields:
+      - bits: "21:20"
+        name: ch_shift
+        access: R/W
+        default: "0x0"
+        description: ch_shift
+      - bits: "17"
+        name: sel_soft_rst
+        access: R/W
+        default: "0"
+        description: sel_soft_rst
+      - bits: "16"
+        name: ch_sel_gate
+        access: R/W
+        default: "0"
+        description: ch_sel_gate
+      - bits: "12:8"
+        name: tovad_src_sel
+        access: R/W
+        default: "0x00"
+        description: "0:tdmin_a; 1:tdmin_b; 2:tdmin_c; 3:spdifin; 4:pdmin; 5:fratv; 6:tdmin_lb; 7:loopback_a; 8:frhdmirx_spdif; 9:loopback_b; 10:spdifin_lb; 11:earc_rx_dmac; 12:frhdmirx_dsd; 13:resample_a; 14:resample_b; 15:vad; 16:pdmin_b; 17:tdmin_lb_b; 18:tdmin_d; 19:tdmin_vad"
+      - bits: "1"
+        name: tosed_v_sel
+        access: R/W
+        default: "0"
+        description: tosed_v_sel
+      - bits: "0"
+        name: to_sed_en
+        access: R/W
+        default: "0"
+        description: to_sed_en
 
   - name: EE_AUDIO2_{TO_VOICE}_CTRL1
     offset: 0x0021
     voice_param: true
+    fields:
+      - bits: "31"
+        name: bypass_n
+        access: R/W
+        default: "0"
+        description: "0:out=in; 1:sync data by chnum info"
+      - bits: "30"
+        name: sw_reset
+        access: R/W
+        default: "0"
+        description: "1:reset chnum_sync module"
+      - bits: "29"
+        name: mode
+        access: R/W
+        default: "0"
+        description: "0:work as BUFF_MODE; 1:work as DROP_MODE"
+      - bits: "28"
+        name: id_se
+        access: R/W
+        default: "0"
+        description: "0:ID=input valid count; 1:ID=reg_id_***"
+      - bits: "27"
+        name: fix_stable
+        access: R/W
+        default: "0"
+        description: "1:ignore stable info of input; 0:compensate dat by stable info"
+      - bits: "26"
+        name: debug_en0
+        access: R/W
+        default: "0"
+        description: "for BUF_MODE only; 1:send chnum info from input; 0:generate new chnum info"
+      - bits: "7:0"
+        name: chnum_max
+        access: R/W
+        default: "0x00"
+        description: "if input is 8ch, set this to 7"
 
   - name: EE_AUDIO2_{TO_VOICE}_CH_EN
     offset: 0x0022
     voice_param: true
+    fields:
+      - bits: "31:0"
+        name: ch_en
+        access: R/W
+        default: "0x00000000"
+        description: "channel enable, 1bit enable 1 channel"
 
   - name: EE_AUDIO2_{TO_VOICE}_CHNUM_ID0
     offset: 0x0023
     voice_param: true
+    fields:
+      - bits: "31:24"
+        name: id_ch3
+        access: R/W
+        default: "0x00"
+        description: ID of ch3
+      - bits: "23:16"
+        name: id_ch2
+        access: R/W
+        default: "0x00"
+        description: ID of ch2
+      - bits: "15:8"
+        name: id_ch1
+        access: R/W
+        default: "0x00"
+        description: ID of ch1
+      - bits: "7:0"
+        name: id_ch0
+        access: R/W
+        default: "0x00"
+        description: ID of ch0
 
   - name: EE_AUDIO2_{TO_VOICE}_CHNUM_ID1
     offset: 0x0024
     voice_param: true
+    fields:
+      - bits: "31:24"
+        name: id_ch7
+        access: R/W
+        default: "0x00"
+        description: ID of ch7
+      - bits: "23:16"
+        name: id_ch6
+        access: R/W
+        default: "0x00"
+        description: ID of ch6
+      - bits: "15:8"
+        name: id_ch5
+        access: R/W
+        default: "0x00"
+        description: ID of ch5
+      - bits: "7:0"
+        name: id_ch4
+        access: R/W
+        default: "0x00"
+        description: ID of ch4
 
   - name: EE_AUDIO2_{TO_VOICE}_CHNUM_ID2
     offset: 0x0025
     voice_param: true
+    fields:
+      - bits: "31:24"
+        name: id_ch11
+        access: R/W
+        default: "0x00"
+        description: ID of ch11
+      - bits: "23:16"
+        name: id_ch10
+        access: R/W
+        default: "0x00"
+        description: ID of ch10
+      - bits: "15:8"
+        name: id_ch9
+        access: R/W
+        default: "0x00"
+        description: ID of ch9
+      - bits: "7:0"
+        name: id_ch8
+        access: R/W
+        default: "0x00"
+        description: ID of ch8
 
   - name: EE_AUDIO2_{TO_VOICE}_CHNUM_ID3
     offset: 0x0026
     voice_param: true
+    fields:
+      - bits: "31:24"
+        name: id_ch15
+        access: R/W
+        default: "0x00"
+        description: ID of ch15
+      - bits: "23:16"
+        name: id_ch14
+        access: R/W
+        default: "0x00"
+        description: ID of ch14
+      - bits: "15:8"
+        name: id_ch13
+        access: R/W
+        default: "0x00"
+        description: ID of ch13
+      - bits: "7:0"
+        name: id_ch12
+        access: R/W
+        default: "0x00"
+        description: ID of ch12
 
   - name: EE_AUDIO2_{TO_VOICE}_CHNUM_ID4
     offset: 0x0027
     voice_param: true
+    fields:
+      - bits: "31:24"
+        name: id_ch19
+        access: R/W
+        default: "0x00"
+        description: ID of ch19
+      - bits: "23:16"
+        name: id_ch18
+        access: R/W
+        default: "0x00"
+        description: ID of ch18
+      - bits: "15:8"
+        name: id_ch17
+        access: R/W
+        default: "0x00"
+        description: ID of ch17
+      - bits: "7:0"
+        name: id_ch16
+        access: R/W
+        default: "0x00"
+        description: ID of ch16
 
   - name: EE_AUDIO2_{TO_VOICE}_CHNUM_ID5
     offset: 0x0028
     voice_param: true
+    fields:
+      - bits: "31:24"
+        name: id_ch23
+        access: R/W
+        default: "0x00"
+        description: ID of ch23
+      - bits: "23:16"
+        name: id_ch22
+        access: R/W
+        default: "0x00"
+        description: ID of ch22
+      - bits: "15:8"
+        name: id_ch21
+        access: R/W
+        default: "0x00"
+        description: ID of ch21
+      - bits: "7:0"
+        name: id_ch20
+        access: R/W
+        default: "0x00"
+        description: ID of ch20
 
   - name: EE_AUDIO2_{TO_VOICE}_CHNUM_ID6
     offset: 0x0029
     voice_param: true
+    fields:
+      - bits: "31:24"
+        name: id_ch27
+        access: R/W
+        default: "0x00"
+        description: ID of ch27
+      - bits: "23:16"
+        name: id_ch26
+        access: R/W
+        default: "0x00"
+        description: ID of ch26
+      - bits: "15:8"
+        name: id_ch25
+        access: R/W
+        default: "0x00"
+        description: ID of ch25
+      - bits: "7:0"
+        name: id_ch24
+        access: R/W
+        default: "0x00"
+        description: ID of ch24
 
   - name: EE_AUDIO2_{TO_VOICE}_CHNUM_ID7
     offset: 0x002a
     voice_param: true
+    fields:
+      - bits: "31:24"
+        name: id_ch31
+        access: R/W
+        default: "0x00"
+        description: ID of ch31
+      - bits: "23:16"
+        name: id_ch30
+        access: R/W
+        default: "0x00"
+        description: ID of ch30
+      - bits: "15:8"
+        name: id_ch29
+        access: R/W
+        default: "0x00"
+        description: ID of ch29
+      - bits: "7:0"
+        name: id_ch28
+        access: R/W
+        default: "0x00"
+        description: ID of ch28
 
   - name: EE_AUDIO2_TODDR_{VOICE}_CTRL0
     offset: 0x0030
     voice_param: true
+    fields:
+      - bits: "31"
+        name: reg_toddr_en
+        access: R/W
+        default: "0"
+        description: "0:disable; 1:enable"
+      - bits: "29"
+        name: reg_ext_signed
+        access: R/W
+        default: "0"
+        description: "0:write to one buff; 1:write to two buff"
+      - bits: "28"
+        name: reg_toddr_endian
+        access: R/W
+        default: "0"
+        description: reg_toddr_endian
+      - bits: "27"
+        name: enable_sync_chnum
+        access: R/W
+        default: "0"
+        description: "1:start store data when first ch"
+      - bits: "26:24"
+        name: reg_toddr_int_en
+        access: R/W
+        default: "0x0"
+        description: reg_toddr_int_en
+      - bits: "23:16"
+        name: int_mask
+        access: R/W
+        default: "0x00"
+        description: "[21]:fifo overflow write; [20]:fifo overflow read; [19]:int_addr once; [18]:int_addr repeat; [17]:match int_addr; [16]:match finish_addr"
+      - bits: "15:13"
+        name: reg_toddr_sel
+        access: R/W
+        default: "0x0"
+        description: "0:combined data[m:n] without gap; 1~4:various 16/32bit formats"
+      - bits: "12:8"
+        name: reg_toddr_m_sel
+        access: R/W
+        default: "0x00"
+        description: "the msb position in data"
+      - bits: "7:3"
+        name: reg_toddr_n_sel
+        access: R/W
+        default: "0x00"
+        description: "the lsb position in data"
+      - bits: "2"
+        name: clr_vad_frame_sync
+        access: R/W
+        default: "0"
+        description: "Clear adr/cnt value captured by vad frame sync"
+      - bits: "1"
+        name: clr_vadflag
+        access: R/W
+        default: "0"
+        description: "Clear adr/cnt value captured by vadflag"
+      - bits: "0"
+        name: ddr_bus_ugt
+        access: R/W
+        default: "0"
+        description: "Ddr bus ugt bit"
 
   - name: EE_AUDIO2_TODDR_{VOICE}_CTRL1
     offset: 0x0031
     voice_param: true
+    fields:
+      - bits: "31"
+        name: reg_lbrst_add_dis
+        access: R/W
+        default: "0"
+        description: "disable the added last burst"
+      - bits: "30:26"
+        name: src_sel
+        access: R/W
+        default: "0x00"
+        description: "0:tdmin_a; 1:tdmin_b; 2:tdmin_c; 3:spdifin; 4:pdmin; 5:fratv; 6:tdmin_lb; 7:loopback_a; 8:frhdmirx_spdif; 9:loopback_b; 10:spdifin_lb; 11:earc_rx_dmac; 12:frhdmirx_dsd; 13:resample_a; 14:resample_b; 15:vad; 16:pdmin_b; 17:tdmin_lb_b; 18:tdmin_d; 19:tdmin_vad"
+      - bits: "25"
+        name: force_finish
+        access: R/W
+        default: "0"
+        description: "0->1: force finish by current address and jump to start_address"
+      - bits: "23:12"
+        name: reg_fifo_start_rd_th
+        access: R/W
+        default: "0x000"
+        description: "when fifo_cnt greater than this, start read from fifo and write to DDR"
+      - bits: "11:8"
+        name: reg_status_sel
+        access: R/W
+        default: "0x0"
+        description: "control status2 source"
+      - bits: "7:0"
+        name: reg_int_status_clr
+        access: R/W
+        default: "0x00"
+        description: "clear each bits of int_status register"
 
   - name: EE_AUDIO2_TODDR_{VOICE}_CTRL2
     offset: 0x0032
     voice_param: true
+    fields:
+      - bits: "31"
+        name: hold_read
+        access: R/W
+        default: "0"
+        description: "hold read, set 1 before toddr_en=1, TODDR will hold all data in FIFO"
+      - bits: "30"
+        name: reg_stop_ddr
+        access: R/W
+        default: "0"
+        description: "0->1: stop write to FIFO, stop sending request to DDR"
+      - bits: "29:28"
+        name: insert_chnum
+        access: R/W
+        default: "0x0"
+        description: "3:replace data[9:0] to chnum[9:0]; 2:replace data[3:0]; 1:replace data[0]; 0:not replace"
+      - bits: "23:16"
+        name: int_mode
+        access: R/W
+        default: "0x00"
+        description: "each bit: 0:pulse mode; 1:level mode"
+      - bits: "11:0"
+        name: hold_read_offset
+        access: R/W
+        default: "0x000"
+        description: "hold read start offset"
 
   - name: EE_AUDIO2_TODDR_{VOICE}_START_ADDR
     offset: 0x0033
     voice_param: true
+    fields:
+      - bits: "31:0"
+        name: start_addr
+        access: R/W
+        default: "0x00000000"
+        description: "buff_A start address, ignore [2:0]"
 
   - name: EE_AUDIO2_TODDR_{VOICE}_INIT_ADDR
     offset: 0x0034
     voice_param: true
+    fields:
+      - bits: "31:0"
+        name: init_addr
+        access: R/W
+        default: "0x00000000"
+        description: "initial address, the first ddr address after enable"
 
   - name: EE_AUDIO2_TODDR_{VOICE}_FINISH_ADDR
     offset: 0x0035
     voice_param: true
+    fields:
+      - bits: "31:0"
+        name: finish_addr
+        access: R/W
+        default: "0x00000000"
+        description: "buff_A finish address, ignore [2:0]"
 
   - name: EE_AUDIO2_TODDR_{VOICE}_START_ADDRB
     offset: 0x0036
     voice_param: true
+    fields:
+      - bits: "31:0"
+        name: start_addrb
+        access: R/W
+        default: "0x00000000"
+        description: "buff_B start address, ignore [2:0]"
 
   - name: EE_AUDIO2_TODDR_{VOICE}_FINISH_ADDRB
     offset: 0x0037
     voice_param: true
+    fields:
+      - bits: "31:0"
+        name: finish_addrb
+        access: R/W
+        default: "0x00000000"
+        description: "buff_B finish address, ignore [2:0]"
 
   - name: EE_AUDIO2_TODDR_{VOICE}_INT_ADDR
     offset: 0x0038
     voice_param: true
+    fields:
+      - bits: "31:0"
+        name: int_addr
+        access: R/W
+        default: "0x00000000"
+        description: "usage A: as an address of interrupt; usage B: as a count of interrupt"
 
   - name: EE_AUDIO2_TODDR_{VOICE}_STATUS1
     offset: 0x0039
     voice_param: true
+    fields:
+      - bits: "26:24"
+        name: stop_ddr_status
+        access: R
+        default: "0x0"
+        description: stop_ddr_status
+      - bits: "23"
+        name: stop_ddr_done
+        access: R
+        default: "0"
+        description: stop_ddr_done
+      - bits: "22"
+        name: sel_b_true
+        access: R
+        default: "0"
+        description: sel_b_true
+      - bits: "21"
+        name: sel_b
+        access: R/W
+        default: "0"
+        description: sel_b
+      - bits: "20:8"
+        name: fifo_cnt
+        access: R/W
+        default: "0x0000"
+        description: "the num in fifo"
+      - bits: "7:0"
+        name: int_status
+        access: R/W
+        default: "0x00"
+        description: "when irq generate, related bit changed to 1, clear by reg_int_status_clr"
 
   - name: EE_AUDIO2_TODDR_{VOICE}_STATUS2
     offset: 0x003a
     voice_param: true
+    fields:
+      - bits: "31:0"
+        name: status2
+        access: R/W
+        default: "0x00000000"
+        description: "by reg_status_sel: 0:current ddr write addr; 1:next finish addr; 2~9:various status"
 
   - name: EE_AUDIO2_TODDR_{VOICE}_AADDR
     offset: 0x003b
@@ -162,162 +954,879 @@ registers:
   - name: EE_AUDIO2_TDMIN_{VOICE}_CTRL
     offset: 0x0040
     voice_param: true
+    fields:
+      - bits: "31"
+        name: reg_work_enable
+        access: R/W
+        default: "0"
+        description: "0:disable; 1:enable"
+      - bits: "30"
+        name: reg_i2s_mode
+        access: R/W
+        default: "0"
+        description: "0:tdm mode; 1:i2s mode"
+      - bits: "29"
+        name: reg_rst_afifo_out_n
+        access: R/W
+        default: "0"
+        description: "reset afifo out side; need set to 1 before reg_rst_afifo_in_n"
+      - bits: "28"
+        name: reg_rst_afifo_in_n
+        access: R/W
+        default: "0"
+        description: "reset afifo in side; need set 1 after set reg_rst_afifo_out_n to 1"
+      - bits: "26"
+        name: reg_tdmin_in_resync
+        access: R/W
+        default: "0"
+        description: "force TDMIN stable signal to low, then TDMIN need resync to stable"
+      - bits: "25"
+        name: reg_tdmin_in_rev_ws
+        access: R/W
+        default: "0"
+        description: "revert ws(lrclk); 0:disable; 1:enable"
+      - bits: "24"
+        name: reg_tdmin_in_rev_dat
+        access: R/W
+        default: "0"
+        description: "revert data; 0:disable; 1:enable"
+      - bits: "23:20"
+        name: tdmin_src_sel
+        access: R/W
+        default: "0x0"
+        description: "0:tdmin_vad; 1:tdmin_b; 2:tdmin_c; 3:tdmin_d; 7:acodec adc; 12~15:tdmout_a~d"
+      - bits: "18:16"
+        name: reg_tdmin_in_bit_skew
+        access: R/W
+        default: "0x0"
+        description: "add delay to ws or data for skew modification"
+      - bits: "15:13"
+        name: reg_stable_mask
+        access: R/W
+        default: "0x0"
+        description: "[15]:afifo overflow pull stable low; [14]:slot_cnt mismatch; [13]:bit_cnt mismatch"
+      - bits: "12:8"
+        name: reg_tdmin_slot_num
+        access: R/W
+        default: "0x00"
+        description: "for I2S fixed 0x1; for TDM max 31 means 32 slots"
+      - bits: "7:6"
+        name: reg_tdmin_chnum_mode
+        access: R/W
+        default: "0x0"
+        description: "0:chnum=valid_cnt; 1:chnum=cyc_cnt; 2:slot_cnt+cyc_cnt; 3:slot_cnt+cyc_cnt"
+      - bits: "5"
+        name: reg_lsb_first
+        access: R/W
+        default: "0"
+        description: "0:store first bit to data_store[0]; 1:store to data_store[31]"
+      - bits: "4:0"
+        name: reg_tdmin_bit_num
+        access: R/W
+        default: "0x00"
+        description: "bitwidth of each slot, if 16bits set to 15"
 
   - name: EE_AUDIO2_TDMIN_{VOICE}_SWAP0
     offset: 0x0041
     voice_param: true
+    fields:
+      - bits: "31:28"
+        name: ch7_sel
+        access: R/W
+        default: "0x0"
+        description: "0~15: lane0~7 left/right channel"
+      - bits: "27:24"
+        name: ch6_sel
+        access: R/W
+        default: "0x0"
+        description: ch6_sel
+      - bits: "23:20"
+        name: ch5_sel
+        access: R/W
+        default: "0x0"
+        description: ch5_sel
+      - bits: "19:16"
+        name: ch4_sel
+        access: R/W
+        default: "0x0"
+        description: ch4_sel
+      - bits: "15:12"
+        name: ch3_sel
+        access: R/W
+        default: "0x0"
+        description: ch3_sel
+      - bits: "11:8"
+        name: ch2_sel
+        access: R/W
+        default: "0x0"
+        description: ch2_sel
+      - bits: "7:4"
+        name: ch1_sel
+        access: R/W
+        default: "0x0"
+        description: ch1_sel
+      - bits: "3:0"
+        name: ch0_sel
+        access: R/W
+        default: "0x0"
+        description: ch0_sel
 
   - name: EE_AUDIO2_TDMIN_{VOICE}_SWAP1
     offset: 0x0042
     voice_param: true
+    fields:
+      - bits: "31:28"
+        name: ch15_sel
+        access: R/W
+        default: "0x0"
+        description: ch15_sel
+      - bits: "27:24"
+        name: ch14_sel
+        access: R/W
+        default: "0x0"
+        description: ch14_sel
+      - bits: "23:20"
+        name: ch13_sel
+        access: R/W
+        default: "0x0"
+        description: ch13_sel
+      - bits: "19:16"
+        name: ch12_sel
+        access: R/W
+        default: "0x0"
+        description: ch12_sel
+      - bits: "15:12"
+        name: ch11_sel
+        access: R/W
+        default: "0x0"
+        description: ch11_sel
+      - bits: "11:8"
+        name: ch10_sel
+        access: R/W
+        default: "0x0"
+        description: ch10_sel
+      - bits: "7:4"
+        name: ch9_sel
+        access: R/W
+        default: "0x0"
+        description: ch9_sel
+      - bits: "3:0"
+        name: ch8_sel
+        access: R/W
+        default: "0x0"
+        description: ch8_sel
 
   - name: EE_AUDIO2_TDMIN_{VOICE}_MUTE_VAL
     offset: 0x0043
     voice_param: true
+    fields:
+      - bits: "31:0"
+        name: mute_val
+        access: R/W
+        default: "0x00000000"
+        description: "will replace received data if set mute=1"
 
   - name: EE_AUDIO2_TDMIN_{VOICE}_STAT
     offset: 0x0044
     voice_param: true
+    fields:
+      - bits: "31:29"
+        name: afifo_cnt
+        access: R
+        default: "0x0"
+        description: "afifo_cnt[2:0]"
+      - bits: "28:24"
+        name: r_input_slot_cnt_max
+        access: R
+        default: "0x00"
+        description: "the maxnum of slot_cnt"
+      - bits: "23:16"
+        name: r_input_slot_cnt_min
+        access: R
+        default: "0x00"
+        description: "the minnum of slot_cnt"
+      - bits: "14"
+        name: overflow_flag
+        access: R
+        default: "0"
+        description: "overflow flag of afifo"
+      - bits: "13:10"
+        name: max_fifo_cnt
+        access: R
+        default: "0x0"
+        description: "the maxnum of afifo_cnt"
+      - bits: "9:5"
+        name: r_input_bit_cnt_max
+        access: R
+        default: "0x00"
+        description: "the maxnum of bit_cnt"
+      - bits: "4:0"
+        name: r_input_bit_cnt_min
+        access: R
+        default: "0x00"
+        description: "the minnum of bit_cnt"
 
   - name: EE_AUDIO2_TDMIN_{VOICE}_MUTE0
     offset: 0x0050
     voice_param: true
+    fields:
+      - bits: "31:0"
+        name: lane0_mute
+        access: R/W
+        default: "0x00000000"
+        description: "mute each channel in lane0, max is 32 ch"
 
   - name: EE_AUDIO2_TDMIN_{VOICE}_MUTE1
     offset: 0x0051
     voice_param: true
+    fields:
+      - bits: "31:0"
+        name: lane1_mute
+        access: R/W
+        default: "0x00000000"
+        description: "mute each channel in lane1, max is 32 ch"
 
   - name: EE_AUDIO2_TDMIN_{VOICE}_MUTE2
     offset: 0x0052
     voice_param: true
+    fields:
+      - bits: "31:0"
+        name: lane2_mute
+        access: R/W
+        default: "0x00000000"
+        description: "mute each channel in lane2, max is 32 ch"
 
   - name: EE_AUDIO2_TDMIN_{VOICE}_MUTE3
     offset: 0x0053
     voice_param: true
+    fields:
+      - bits: "31:0"
+        name: lane3_mute
+        access: R/W
+        default: "0x00000000"
+        description: "mute each channel in lane3, max is 32 ch"
 
   - name: EE_AUDIO2_TDMIN_{VOICE}_MUTE4
     offset: 0x0054
     voice_param: true
+    fields:
+      - bits: "31:0"
+        name: lane4_mute
+        access: R/W
+        default: "0x00000000"
+        description: "mute each channel in lane4, max is 32 ch"
 
   - name: EE_AUDIO2_TDMIN_{VOICE}_MUTE5
     offset: 0x0055
     voice_param: true
+    fields:
+      - bits: "31:0"
+        name: lane5_mute
+        access: R/W
+        default: "0x00000000"
+        description: "mute each channel in lane5, max is 32 ch"
 
   - name: EE_AUDIO2_TDMIN_{VOICE}_MUTE6
     offset: 0x0056
     voice_param: true
+    fields:
+      - bits: "31:0"
+        name: lane6_mute
+        access: R/W
+        default: "0x00000000"
+        description: "mute each channel in lane6, max is 32 ch"
 
   - name: EE_AUDIO2_TDMIN_{VOICE}_MUTE7
     offset: 0x0057
     voice_param: true
+    fields:
+      - bits: "31:0"
+        name: lane7_mute
+        access: R/W
+        default: "0x00000000"
+        description: "mute each channel in lane7, max is 32 ch"
 
   - name: EE_AUDIO2_TDMIN_{VOICE}_MASK0
     offset: 0x0058
     voice_param: true
+    fields:
+      - bits: "31:0"
+        name: lane0_mask
+        access: R/W
+        default: "0x00000000"
+        description: "mask each channel in lane0, max is 32 ch"
 
   - name: EE_AUDIO2_TDMIN_{VOICE}_MASK1
     offset: 0x0059
     voice_param: true
+    fields:
+      - bits: "31:0"
+        name: lane1_mask
+        access: R/W
+        default: "0x00000000"
+        description: "mask each channel in lane1, max is 32 ch"
 
   - name: EE_AUDIO2_TDMIN_{VOICE}_MASK2
     offset: 0x005a
     voice_param: true
+    fields:
+      - bits: "31:0"
+        name: lane2_mask
+        access: R/W
+        default: "0x00000000"
+        description: "mask each channel in lane2, max is 32 ch"
 
   - name: EE_AUDIO2_TDMIN_{VOICE}_MASK3
     offset: 0x005b
     voice_param: true
+    fields:
+      - bits: "31:0"
+        name: lane3_mask
+        access: R/W
+        default: "0x00000000"
+        description: "mask each channel in lane3, max is 32 ch"
 
   - name: EE_AUDIO2_TDMIN_{VOICE}_MASK4
     offset: 0x005c
     voice_param: true
+    fields:
+      - bits: "31:0"
+        name: lane4_mask
+        access: R/W
+        default: "0x00000000"
+        description: "mask each channel in lane4, max is 32 ch"
 
   - name: EE_AUDIO2_TDMIN_{VOICE}_MASK5
     offset: 0x005d
     voice_param: true
+    fields:
+      - bits: "31:0"
+        name: lane5_mask
+        access: R/W
+        default: "0x00000000"
+        description: "mask each channel in lane5, max is 32 ch"
 
   - name: EE_AUDIO2_TDMIN_{VOICE}_MASK6
     offset: 0x005e
     voice_param: true
+    fields:
+      - bits: "31:0"
+        name: lane6_mask
+        access: R/W
+        default: "0x00000000"
+        description: "mask each channel in lane6, max is 32 ch"
 
   - name: EE_AUDIO2_TDMIN_{VOICE}_MASK7
     offset: 0x005f
     voice_param: true
+    fields:
+      - bits: "31:0"
+        name: lane7_mask
+        access: R/W
+        default: "0x00000000"
+        description: "mask each channel in lane7, max is 32 ch"
 
   - name: EE_AUDIO2_{VOICE}_DAT_PAD_CTRL0
     offset: 0x0060
     voice_param: true
+    fields:
+      - bits: "28:24"
+        name: dat_in_bit3_sel
+        access: R/W
+        default: "0x00"
+        description: "tdmin_a dat_in bit3 sel; 0~31: sel TDM_D0~31"
+      - bits: "20:16"
+        name: dat_in_bit2_sel
+        access: R/W
+        default: "0x00"
+        description: "tdmin_a dat_in bit2 sel"
+      - bits: "12:8"
+        name: dat_in_bit1_sel
+        access: R/W
+        default: "0x00"
+        description: "tdmin_a dat_in bit1 sel"
+      - bits: "4:0"
+        name: dat_in_bit0_sel
+        access: R/W
+        default: "0x00"
+        description: "tdmin_a dat_in bit0 sel"
 
   - name: EE_AUDIO2_{VOICE}_DAT_PAD_CTRL1
     offset: 0x0061
     voice_param: true
+    fields:
+      - bits: "28:24"
+        name: dat_in_bit7_sel
+        access: R/W
+        default: "0x00"
+        description: "tdmin_a dat_in bit7 sel"
+      - bits: "20:16"
+        name: dat_in_bit6_sel
+        access: R/W
+        default: "0x00"
+        description: "tdmin_a dat_in bit6 sel"
+      - bits: "12:8"
+        name: dat_in_bit5_sel
+        access: R/W
+        default: "0x00"
+        description: "tdmin_a dat_in bit5 sel"
+      - bits: "4:0"
+        name: dat_in_bit4_sel
+        access: R/W
+        default: "0x00"
+        description: "tdmin_a dat_in bit4 sel"
 
   - name: EE_AUDIO2_TODDR_{VOICE}_CHNUM_ID0
     offset: 0x0070
     voice_param: true
+    fields:
+      - bits: "31:24"
+        name: id_ch3
+        access: R/W
+        default: "0x00"
+        description: ID of ch3
+      - bits: "23:16"
+        name: id_ch2
+        access: R/W
+        default: "0x00"
+        description: ID of ch2
+      - bits: "15:8"
+        name: id_ch1
+        access: R/W
+        default: "0x00"
+        description: ID of ch1
+      - bits: "7:0"
+        name: id_ch0
+        access: R/W
+        default: "0x00"
+        description: ID of ch0
 
   - name: EE_AUDIO2_TODDR_{VOICE}_CHNUM_ID1
     offset: 0x0071
     voice_param: true
+    fields:
+      - bits: "31:24"
+        name: id_ch7
+        access: R/W
+        default: "0x00"
+        description: ID of ch7
+      - bits: "23:16"
+        name: id_ch6
+        access: R/W
+        default: "0x00"
+        description: ID of ch6
+      - bits: "15:8"
+        name: id_ch5
+        access: R/W
+        default: "0x00"
+        description: ID of ch5
+      - bits: "7:0"
+        name: id_ch4
+        access: R/W
+        default: "0x00"
+        description: ID of ch4
 
   - name: EE_AUDIO2_TODDR_{VOICE}_CHNUM_ID2
     offset: 0x0072
     voice_param: true
+    fields:
+      - bits: "31:24"
+        name: id_ch11
+        access: R/W
+        default: "0x00"
+        description: ID of ch11
+      - bits: "23:16"
+        name: id_ch10
+        access: R/W
+        default: "0x00"
+        description: ID of ch10
+      - bits: "15:8"
+        name: id_ch9
+        access: R/W
+        default: "0x00"
+        description: ID of ch9
+      - bits: "7:0"
+        name: id_ch8
+        access: R/W
+        default: "0x00"
+        description: ID of ch8
 
   - name: EE_AUDIO2_TODDR_{VOICE}_CHNUM_ID3
     offset: 0x0073
     voice_param: true
+    fields:
+      - bits: "31:24"
+        name: id_ch15
+        access: R/W
+        default: "0x00"
+        description: ID of ch15
+      - bits: "23:16"
+        name: id_ch14
+        access: R/W
+        default: "0x00"
+        description: ID of ch14
+      - bits: "15:8"
+        name: id_ch13
+        access: R/W
+        default: "0x00"
+        description: ID of ch13
+      - bits: "7:0"
+        name: id_ch12
+        access: R/W
+        default: "0x00"
+        description: ID of ch12
 
   - name: EE_AUDIO2_TODDR_{VOICE}_CHNUM_ID4
     offset: 0x0074
     voice_param: true
+    fields:
+      - bits: "31:24"
+        name: id_ch19
+        access: R/W
+        default: "0x00"
+        description: ID of ch19
+      - bits: "23:16"
+        name: id_ch18
+        access: R/W
+        default: "0x00"
+        description: ID of ch18
+      - bits: "15:8"
+        name: id_ch17
+        access: R/W
+        default: "0x00"
+        description: ID of ch17
+      - bits: "7:0"
+        name: id_ch16
+        access: R/W
+        default: "0x00"
+        description: ID of ch16
 
   - name: EE_AUDIO2_TODDR_{VOICE}_CHNUM_ID5
     offset: 0x0075
     voice_param: true
+    fields:
+      - bits: "31:24"
+        name: id_ch23
+        access: R/W
+        default: "0x00"
+        description: ID of ch23
+      - bits: "23:16"
+        name: id_ch22
+        access: R/W
+        default: "0x00"
+        description: ID of ch22
+      - bits: "15:8"
+        name: id_ch21
+        access: R/W
+        default: "0x00"
+        description: ID of ch21
+      - bits: "7:0"
+        name: id_ch20
+        access: R/W
+        default: "0x00"
+        description: ID of ch20
 
   - name: EE_AUDIO2_TODDR_{VOICE}_CHNUM_ID6
     offset: 0x0076
     voice_param: true
+    fields:
+      - bits: "31:24"
+        name: id_ch27
+        access: R/W
+        default: "0x00"
+        description: ID of ch27
+      - bits: "23:16"
+        name: id_ch26
+        access: R/W
+        default: "0x00"
+        description: ID of ch26
+      - bits: "15:8"
+        name: id_ch25
+        access: R/W
+        default: "0x00"
+        description: ID of ch25
+      - bits: "7:0"
+        name: id_ch24
+        access: R/W
+        default: "0x00"
+        description: ID of ch24
 
   - name: EE_AUDIO2_TODDR_{VOICE}_CHNUM_ID7
     offset: 0x0077
     voice_param: true
+    fields:
+      - bits: "31:24"
+        name: id_ch31
+        access: R/W
+        default: "0x00"
+        description: ID of ch31
+      - bits: "23:16"
+        name: id_ch30
+        access: R/W
+        default: "0x00"
+        description: ID of ch30
+      - bits: "15:8"
+        name: id_ch29
+        access: R/W
+        default: "0x00"
+        description: ID of ch29
+      - bits: "7:0"
+        name: id_ch28
+        access: R/W
+        default: "0x00"
+        description: ID of ch28
 
   - name: EE_AUDIO2_TODDR_{VOICE}_CHSYNC_CTRL
     offset: 0x007f
     voice_param: true
+    fields:
+      - bits: "31"
+        name: bypass_n
+        access: R/W
+        default: "0"
+        description: "0:out=in; 1:sync data by chnum info"
+      - bits: "30"
+        name: sw_reset
+        access: R/W
+        default: "0"
+        description: "1:reset chnum_sync module"
+      - bits: "29"
+        name: mode
+        access: R/W
+        default: "0"
+        description: "0:work as BUFF_MODE; 1:work as DROP_MODE"
+      - bits: "28"
+        name: id_se
+        access: R/W
+        default: "0"
+        description: "0:ID=input valid count; 1:ID=reg_id_***"
+      - bits: "27"
+        name: fix_stable
+        access: R/W
+        default: "0"
+        description: "1:ignore stable info of input; 0:compensate dat by stable info"
+      - bits: "26"
+        name: debug_en0
+        access: R/W
+        default: "0"
+        description: "for BUF_MODE only; 1:send chnum info from input; 0:generate new chnum info"
+      - bits: "7:0"
+        name: chnum_max
+        access: R/W
+        default: "0x00"
+        description: "if input is 8ch, set this to 7"
 
   - name: EE_AUDIO2_{VOICE}_AM2AXI_CTRL0
     offset: 0x0080
     voice_param: true
+    fields:
+      - bits: "31:28"
+        name: read_cmd_length
+        access: R/W
+        default: "0x3"
+        description: read_cmd_length
+      - bits: "27:24"
+        name: write_cmd_length
+        access: R/W
+        default: "0x3"
+        description: write_cmd_length
+      - bits: "23"
+        name: last_burst_7_force
+        access: R/W
+        default: "0"
+        description: Last_burst_7_force
+      - bits: "22"
+        name: last_burst_6_force
+        access: R/W
+        default: "0"
+        description: Last_burst_6_force
+      - bits: "21"
+        name: last_burst_5_force
+        access: R/W
+        default: "0"
+        description: Last_burst_5_force
+      - bits: "20"
+        name: last_burst_4_force
+        access: R/W
+        default: "0"
+        description: Last_burst_4_force
+      - bits: "19"
+        name: last_burst_3_force
+        access: R/W
+        default: "0"
+        description: Last_burst_3_force
+      - bits: "18"
+        name: last_burst_2_force
+        access: R/W
+        default: "0"
+        description: Last_burst_2_force
+      - bits: "17"
+        name: last_burst_1_force
+        access: R/W
+        default: "0"
+        description: Last_burst_1_force
+      - bits: "16"
+        name: last_burst_0_force
+        access: R/W
+        default: "0"
+        description: Last_burst_0_force
+      - bits: "11"
+        name: rcmd_len_set_en
+        access: R/W
+        default: "1"
+        description: rcmd_len_set_en
+      - bits: "10"
+        name: wcmd_len_set_en
+        access: R/W
+        default: "1"
+        description: wcmd_len_set_en
+      - bits: "9"
+        name: disable_clk
+        access: R/W
+        default: "0"
+        description: disable clk
+      - bits: "8"
+        name: auto_clk_gate_en
+        access: R/W
+        default: "1"
+        description: enable auto clock gating
+      - bits: "7:0"
+        name: ugt_max
+        access: R/W
+        default: "0xff"
+        description: ugt_max
 
   - name: EE_AUDIO2_{VOICE}_AXIWR_ASYNC_CTRL0
     offset: 0x0081
     voice_param: true
+    fields:
+      - bits: "6"
+        name: rd_req_enable
+        access: R/W
+        default: "1"
+        description: "req_enable (rd_async)"
+      - bits: "5"
+        name: rd_auto_gate_enable
+        access: R/W
+        default: "1"
+        description: "auto_gate_enable (rd_async)"
+      - bits: "4"
+        name: rd_disable_clk
+        access: R/W
+        default: "0"
+        description: "disable clk (rd_async)"
+      - bits: "2"
+        name: wr_req_enable
+        access: R/W
+        default: "1"
+        description: "req_enable (wr_async)"
+      - bits: "1"
+        name: wr_auto_gate_enable
+        access: R/W
+        default: "1"
+        description: "auto_gate_enable (wr_async)"
+      - bits: "0"
+        name: wr_disable_clk
+        access: R/W
+        default: "0"
+        description: "disable clk (wr_async)"
 
   - name: EE_AUDIO2_{VOICE}_AM2AXI_STAT
     offset: 0x0088
     voice_param: true
+    fields:
+      - bits: "1"
+        name: arb_wr_busy
+        access: R
+        default: "0"
+        description: arb_wr_busy
 
   - name: EE_AUDIO2_{VOICE}_AXIWR_ASYNC_STAT
     offset: 0x0089
     voice_param: true
+    fields:
+      - bits: "31:28"
+        name: irq_fifo_cnt
+        access: R
+        default: "0x0"
+        description: irq_fifo_cnt
+      - bits: "0"
+        name: wr_async_chan_idle
+        access: R
+        default: "0"
+        description: wr_aync_chan_idle
 
   - name: EE_AUDIO2_{VOICE}_PDM_TODDR_CTRL
     offset: 0x008a
     voice_param: true
+    fields:
+      - bits: "31"
+        name: pdm_ee_toddr_en_sts
+        access: R/W
+        default: "1"
+        description: "whether pdm_ee_toddr_en is valid"
+      - bits: "30"
+        name: pdm_ao_toddr_en_sts
+        access: R/W
+        default: "1"
+        description: "whether pdm_ao_toddr_en is valid"
+      - bits: "2"
+        name: pdm_toddr_en_force
+        access: R/W
+        default: "1"
+        description: "1:directly config pdm save path; 0:wait sed toddr fifo reach threshold"
+      - bits: "1"
+        name: pdm_ee_toddr_en
+        access: R/W
+        default: "1"
+        description: "pdm->toddr_audio->ddr/sram path enable"
+      - bits: "0"
+        name: pdm_ao_toddr_en
+        access: R/W
+        default: "1"
+        description: "pdm->toddr_sed->psram/sram path enable"
 
   - name: EE_AUDIO2_EXCEPTION_IRQ_STS0
     offset: 0x0090
+    fields:
+      - bits: "11:0"
+        name: irq_sts
+        access: R
+        default: "0x000"
+        description: "[8:6]:irq_tdmin_vad; [5:4]:irq_pdm; [3:2]:irq_vad; [1:0]:irq_toddr_vad"
 
   - name: EE_AUDIO2_EXCEPTION_IRQ_MASK0
     offset: 0x0091
+    fields:
+      - bits: "11:0"
+        name: irq_mask
+        access: R/W
+        default: "0x000"
+        description: "irq mask"
 
   - name: EE_AUDIO2_EXCEPTION_IRQ_MODE0
     offset: 0x0092
+    fields:
+      - bits: "11:0"
+        name: irq_mode
+        access: R/W
+        default: "0x000"
+        description: "each bit: 0:pulse irq; 1:level irq"
 
   - name: EE_AUDIO2_EXCEPTION_IRQ_CLR0
     offset: 0x0093
+    fields:
+      - bits: "11:0"
+        name: irq_clr
+        access: R/W
+        default: "0x000"
+        description: "each bit can clear each sts bit"
 
   - name: EE_AUDIO2_EXCEPTION_IRQ_INV0
     offset: 0x0094
+    fields:
+      - bits: "11:0"
+        name: irq_inv
+        access: R/W
+        default: "0x000"
+        description: "each bit can invert irq"
