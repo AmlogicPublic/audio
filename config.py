@@ -2,10 +2,76 @@
 Audio Spec 配置 - 人类编辑区
 """
 
-CHIP = "C5"
+CHIP = "A9"
 
 # ============================================================================
-# 1. 宏定义（对应 macro.hpp，0=off, 1=on, 数值=参数）
+# 1. 模块树结构 - 手动定义层级
+# ============================================================================
+MODULE_TREE = {
+    "audio_ao_top": {
+        "_addr": 0xFFAE1000,
+        "Input": {
+            "pdm": {"A": 0xFFAE2000, "B": 0xFFAE2400},
+        },
+        "Voice": {
+            "sed": 0xFFAC0000,
+            "vad": 0xFE331800,
+            "to_voice": "_parent",  # in_ao=1 时在这里
+        },
+    },
+    "audio_ee_top": {
+        "_addr": 0xFFAE0000,
+        "Input": {
+            "tdmin": "_parent",
+            "spdifin": "_parent",
+            "spdifin_lb": "_parent",
+            "frhdmirx": "_parent",
+            "fratv": "_parent",
+            "earcrx": {
+                "CMDC": 0xFFAE5800,
+                "DMAC": 0xFFAE5C00,
+                "TOP":  0xFFAE5E00,
+            },
+        },
+        "Output": {
+            "tdmout": "_parent",
+            "spdifout": "_parent",
+            "earctx": {
+                "CMDC": 0xFFAE5000,
+                "DMAC": 0xFFAE5400,
+                "TOP":  0xFFAE5600,
+            },
+            "tohdmitx": "_parent",
+        },
+        "InputProcessing": {
+            "resample": {"A": 0xFFAE3000, "B": 0xFFAE3400, "C": 0xFFAE3800},
+            "resample_id": "_parent",
+            "loopback": "_parent",
+        },
+        "OutputProcessing": {
+            "mixer": "_parent",
+            "eq_drc": 0xFFAE4000,
+        },
+        "IOProcessing": {
+            "toacodec": "_parent",
+        },
+        "Mem2MemProcessing": {
+            "acc_wrapper": {"ASRC": 0xFFAE8400, "EQDRC": 0xFFAE8800},
+        },
+        "DMA": {
+            "toddr": "_parent",
+            "frddr": "_parent",
+            "ddr_arb": "_parent",
+        },
+        "Misc": {
+            "locker": {"A": 0xFFAE6000, "B": 0xFFAE6400},
+            "pcpd_mon": "_parent",
+        },
+    },
+}
+
+# ============================================================================
+# 2. 宏定义（对应 macro.hpp，0=off, 1=on, 数值=参数）
 # ============================================================================
 MACROS = {
     #  soundbar(A series and some T series need 32 ch support)
@@ -22,8 +88,10 @@ MACROS = {
     "spdifin": {
         "A": {"imp": 1},
         "B": {"imp": 1},
-        "LB_A": {"imp": 1},
-        "LB_B": {"imp": 1},
+    },
+    "spdifin_lb": {
+        "A": {"imp": 1},
+        "B": {"imp": 1},
     },
     "pdm": {
         "A": {"imp": 1, "chan_num": 8},
@@ -33,8 +101,13 @@ MACROS = {
         "A": {"imp": 1, "dsdin_imp": 0},
         "B": {"imp": 1, "dsdin_imp": 0},
     },
+    "frhdmirx": {  # HDMI RX 前端
+        "A": {"imp": 1},
+        "B": {"imp": 1},
+    },
     "earcrx": {"imp": 1},
     "atv": {"imp": 1},
+    "fratv": {"imp": 1},
 
     # ── 输出设备 ──
     "tdmout": {
@@ -51,6 +124,8 @@ MACROS = {
         "A": {"imp": 1},
         "B": {"imp": 1}
     },
+    "tohdmitx": {"imp": 1},
+    "toacodec": {"imp": 1},
     "earctx": {"imp": 1},
 
     # ── 输入处理 ──
@@ -63,6 +138,12 @@ MACROS = {
         "B": {"imp": 1, "dw": 24, "chnum": 32},
         "C": {"imp": 1, "dw": 24, "chnum": 32},
     },
+    "resample_id": {
+        "A": {"imp": 1},
+        "B": {"imp": 1},
+        "C": {"imp": 1},
+    },
+    "to_voice": {"A": {"imp": 1}},  # TOSED/TOVAD
 
     # ── 输出处理 ──
     "eqdrc": {
@@ -110,47 +191,29 @@ MACROS = {
 }
 
 # ============================================================================
-# 2. 模块基地址（完整地址，模块是最小单位）
+# 3. 从 MODULE_TREE 提取地址表
 # ============================================================================
-MODULES = {
-    # 主控制模块
-    "audio_top_ee":        0xFFAE0000,
-    "audio_top_ao":        0xFFAE1000,
 
-    # Voice模块 (根据宏配置使用不同算法实现)
-    "sed":                 0xFFAC0000,  # SED算法(神经网络)
-    "vad":                 0xFE331800,  # VAD算法(传统谱熵)
 
-    # PDM 实例
-    "pdm_a":               0xFFAE2000,
-    "pdm_b":               0xFFAE2400,
+def _extract_addrs(node, prefix=""):
+    """递归提取所有地址"""
+    result = {}
+    for key, val in node.items():
+        if key.startswith("_"):
+            if key == "_addr":
+                result[prefix.rstrip("_").lower()] = val
+            continue
+        full = f"{prefix}{key}" if prefix else key
+        if isinstance(val, int):
+            result[full.lower()] = val
+        elif val == "_parent":
+            pass  # 在父模块内部，无独立地址
+        elif isinstance(val, dict):
+            result.update(_extract_addrs(val, f"{full}_"))
+    return result
 
-    # Resample 实例
-    "resample_a":          0xFFAE3000,
-    "resample_b":          0xFFAE3400,
-    "resample_c":          0xFFAE3800,
 
-    # EQ/DRC
-    "eq_drc":              0xFFAE4000,
-
-    # eARC TX
-    "earctx_cmdc":         0xFFAE5000,
-    "earctx_dmac":         0xFFAE5400,
-    "earctx_top":          0xFFAE5600,
-
-    # eARC RX
-    "earcrx_cmdc":         0xFFAE5800,
-    "earcrx_dmac":         0xFFAE5C00,
-    "earcrx_top":          0xFFAE5E00,
-
-    # Locker 实例
-    "locker_a":            0xFFAE6000,
-    "locker_b":            0xFFAE6400,
-
-    # ACC Wrappers
-    "acc_wrapper_asrc":    0xFFAE8400,
-    "acc_wrapper_eqdrc":   0xFFAE8800,
-}
+MODULES = _extract_addrs(MODULE_TREE)
 
 
 # ============================================================================
