@@ -102,6 +102,10 @@ MACROS = {
     "pcpd_mon": {"A": {"imp": 1}, "B": {"imp": 0}},
     "pwr_domain": {"imp": 1},
     "ddr_arb": {"imp": 0},
+    "acc_wrapper": {
+        "ASRC": {"imp": 0},   # ACC for ASRC
+        "EQDRC": {"imp": 0},  # ACC for EQ/DRC
+    },
 }
 
 # ============================================================================
@@ -142,9 +146,9 @@ MODULES = {
     "locker_a":            0xFFAE6000,
     "locker_b":            0xFFAE6400,
     
-    # Wrappers
-    "asrc_wrapper":        0xFFAE8400,
-    "eqdrc_wrapper":       0xFFAE8800,
+    # ACC Wrappers
+    "acc_wrapper_asrc":    0xFFAE8400,
+    "acc_wrapper_eqdrc":   0xFFAE8800,
 }
 
 

@@ -1,0 +1,474 @@
+module: ACC_WRAPPER
+
+instances:
+  ASRC:
+  EQDRC:
+    rename_rules:
+      - pattern: "^EE_AUDIO_ACC_WRAPPER_"
+        replacement: "EE_AUDIO_EQDRC_WRAPPER_"
+
+registers:
+  - name: EE_AUDIO_ACC_WRAPPER_TOP_CTL0
+    offset: 0x0000
+    description: ACC wrapper top control 0
+    fields:
+      - bits: "31"
+        name: reg_start_en
+        access: R/W
+        default: "0"
+        description: write 1 to start ACC function, will auto clear to 0
+      - bits: "30"
+        name: reg_sf_rst
+        access: R/W
+        default: "0"
+        description: soft reset
+      - bits: "29"
+        name: reg_cfg_load
+        access: R/W
+        default: "0"
+        description: enable/rst/ack_num/req_sel etc need to load at the same time when used dynamically
+      - bits: "28:14"
+        name: reserved
+        access: R/W
+        default: "0"
+        description: reserved
+      - bits: "13:11"
+        name: reg_data_type
+        access: R/W
+        default: "0"
+        description: "0=split 64bits to 8 samples 8bit left-justified, 1=4 samples 16bit left-justified, 2=4 samples 16bit right-justified, 3=2 samples 32bit left-justified, 4=2 samples 32bit right-justified"
+      - bits: "10:6"
+        name: reg_data_msb
+        access: R/W
+        default: "0"
+        description: msb position of data
+      - bits: "5:3"
+        name: reg_frddr_source
+        access: R/W
+        default: "0"
+        description: "0=frddr_ACC (mem->ACC config), 1=asrc/eq toddr (ACC->ACC config), 2-4=NC"
+      - bits: "2"
+        name: reg_afifo_in_rst
+        access: R/W
+        default: "0"
+        description: reset afifo in side (set to 0 then set to 1)
+      - bits: "1"
+        name: reg_afifo_out_rst
+        access: R/W
+        default: "0"
+        description: reset afifo out side
+      - bits: "0"
+        name: req_acc_en
+        access: R/W
+        default: "0"
+        description: acc module enable (0=bypass acc)
+
+  - name: EE_AUDIO_ACC_WRAPPER_TOP_CTL1
+    offset: 0x0001
+    description: ACC wrapper top control 1
+    fields:
+      - bits: "31:30"
+        name: reserved
+        access: R/W
+        default: "0"
+        description: reserved
+      - bits: "29:20"
+        name: reg_outstanding_sample_limit
+        access: R/W
+        default: "0"
+        description: allowed number of outstanding samples in ACC (recommend set to 1)
+      - bits: "19:16"
+        name: reg_channel_total
+        access: R/W
+        default: "0"
+        description: number of ch per sample point (in original raw data)
+      - bits: "15"
+        name: ch16_en
+        access: R/W
+        default: "0"
+        description: enable ch16 data for ACC core
+      - bits: "14"
+        name: ch15_en
+        access: R/W
+        default: "0"
+        description: enable ch15 data for ACC core
+      - bits: "13"
+        name: ch14_en
+        access: R/W
+        default: "0"
+        description: enable ch14 data for ACC core
+      - bits: "12"
+        name: ch13_en
+        access: R/W
+        default: "0"
+        description: enable ch13 data for ACC core
+      - bits: "11"
+        name: ch12_en
+        access: R/W
+        default: "0"
+        description: enable ch12 data for ACC core
+      - bits: "10"
+        name: ch11_en
+        access: R/W
+        default: "0"
+        description: enable ch11 data for ACC core
+      - bits: "9"
+        name: ch10_en
+        access: R/W
+        default: "0"
+        description: enable ch10 data for ACC core
+      - bits: "8"
+        name: ch9_en
+        access: R/W
+        default: "0"
+        description: enable ch9 data for ACC core
+      - bits: "7"
+        name: ch8_en
+        access: R/W
+        default: "0"
+        description: enable ch8 data for ACC core
+      - bits: "6"
+        name: ch7_en
+        access: R/W
+        default: "0"
+        description: enable ch7 data for ACC core
+      - bits: "5"
+        name: ch6_en
+        access: R/W
+        default: "0"
+        description: enable ch6 data for ACC core
+      - bits: "4"
+        name: ch5_en
+        access: R/W
+        default: "0"
+        description: enable ch5 data for ACC core
+      - bits: "3"
+        name: ch4_en
+        access: R/W
+        default: "0"
+        description: enable ch4 data for ACC core
+      - bits: "2"
+        name: ch3_en
+        access: R/W
+        default: "0"
+        description: enable ch3 data for ACC core
+      - bits: "1"
+        name: ch2_en
+        access: R/W
+        default: "0"
+        description: enable ch2 data for ACC core
+      - bits: "0"
+        name: ch1_en
+        access: R/W
+        default: "0"
+        description: enable ch1 data for ACC core
+
+  - name: EE_AUDIO_ACC_WRAPPER_TOP_CTL2
+    offset: 0x0002
+    description: ACC wrapper top control 2
+    fields:
+      - bits: "31"
+        name: reg_ini_done_rst
+        access: R/W
+        default: "0"
+        description: when enable will auto rst at init_done negedge (starve clear function)
+      - bits: "30"
+        name: reg_ignore_lut_table_finish
+        access: R/W
+        default: "0"
+        description: "DEBUG: set to 1 if acc supports <1 outstanding sample, may render incorrect 1st sample output"
+      - bits: "29"
+        name: reg_ignore_outstanding_limit
+        access: R/W
+        default: "0"
+        description: "DEBUG: set to 0 if processed-data-out and original_substitute_data have FIXED sample phase diff"
+      - bits: "28"
+        name: reg_ignore_output_sampling_input_done
+        access: R/W
+        default: "0"
+        description: "DEBUG: set to 0 if processed-data-out and original_substitute_data have 0 sample phase diff"
+      - bits: "27"
+        name: reg_end_strategy
+        access: R/W
+        default: "0"
+        description: "DEBUG: 0=wrapper hold strategy (default), 1=send end to ACC core (not tested)"
+      - bits: "26"
+        name: reg_ignore_auto_sample_lock
+        access: R/W
+        default: "0"
+        description: "DEBUG: for asrc(sample rate!=1), use total_chan=num chan_en, ignore auto sample lock"
+      - bits: "25:20"
+        name: reserved
+        access: R/W
+        default: "0"
+        description: reserved
+      - bits: "19:12"
+        name: reg_ack_num
+        access: R/W
+        default: "0"
+        description: for calculated 1st_ack, discard first few dat_in before 1st_ack (needed for channel-sync)
+      - bits: "11"
+        name: reg_req_sel2_en
+        access: R/W
+        default: "0"
+        description: req_sel2 enable
+      - bits: "10:8"
+        name: reg_req_sel2
+        access: R/W
+        default: "0"
+        description: "0=toddr_ACC, 1=peer ACC (eq/resample), 2=tdmout_a, 3=tdmout_b, 4=spdifout, 5-7=NC"
+      - bits: "7"
+        name: reg_req_sel1_en
+        access: R/W
+        default: "0"
+        description: req_sel1 enable
+      - bits: "6:4"
+        name: reg_req_sel1
+        access: R/W
+        default: "0"
+        description: "0=toddr_ACC, 1=peer ACC, 2=tdmout_a, 3=tdmout_b, 4=spdifout, 5-7=NC"
+      - bits: "3"
+        name: reg_req_sel0_en
+        access: R/W
+        default: "0"
+        description: req_sel0 enable
+      - bits: "2:0"
+        name: reg_req_sel0
+        access: R/W
+        default: "0"
+        description: "0=toddr_ACC, 1=peer ACC, 2=tdmout_a, 3=tdmout_b, 4=spdifout, 5-7=NC"
+
+  - name: EE_AUDIO_ACC_WRAPPER_TOP_CTL3
+    offset: 0x0003
+    description: ACC wrapper top control 3 - channel select for ch1-8
+    fields:
+      - bits: "31:28"
+        name: ch8_sel
+        access: R/W
+        default: "0"
+        description: ACC core ch8 select (DDR ch1~ch16)
+      - bits: "27:24"
+        name: ch7_sel
+        access: R/W
+        default: "0"
+        description: ACC core ch7 select (DDR ch1~ch16)
+      - bits: "23:20"
+        name: ch6_sel
+        access: R/W
+        default: "0"
+        description: ACC core ch6 select (DDR ch1~ch16)
+      - bits: "19:16"
+        name: ch5_sel
+        access: R/W
+        default: "0"
+        description: ACC core ch5 select (DDR ch1~ch16)
+      - bits: "15:12"
+        name: ch4_sel
+        access: R/W
+        default: "0"
+        description: ACC core ch4 select (DDR ch1~ch16)
+      - bits: "11:8"
+        name: ch3_sel
+        access: R/W
+        default: "0"
+        description: ACC core ch3 select (DDR ch1~ch16)
+      - bits: "7:4"
+        name: ch2_sel
+        access: R/W
+        default: "0"
+        description: ACC core ch2 select (DDR ch1~ch16)
+      - bits: "3:0"
+        name: ch1_sel
+        access: R/W
+        default: "0"
+        description: ACC core ch1 select (DDR ch1~ch16)
+
+  - name: EE_AUDIO_ACC_WRAPPER_TOP_CTL4
+    offset: 0x0004
+    description: ACC wrapper top control 4 - channel select for ch9-16
+    fields:
+      - bits: "31:28"
+        name: ch16_sel
+        access: R/W
+        default: "0"
+        description: ACC core ch16 select (DDR ch1~ch16)
+      - bits: "27:24"
+        name: ch15_sel
+        access: R/W
+        default: "0"
+        description: ACC core ch15 select (DDR ch1~ch16)
+      - bits: "23:20"
+        name: ch14_sel
+        access: R/W
+        default: "0"
+        description: ACC core ch14 select (DDR ch1~ch16)
+      - bits: "19:16"
+        name: ch13_sel
+        access: R/W
+        default: "0"
+        description: ACC core ch13 select (DDR ch1~ch16)
+      - bits: "15:12"
+        name: ch12_sel
+        access: R/W
+        default: "0"
+        description: ACC core ch12 select (DDR ch1~ch16)
+      - bits: "11:8"
+        name: ch11_sel
+        access: R/W
+        default: "0"
+        description: ACC core ch11 select (DDR ch1~ch16)
+      - bits: "7:4"
+        name: ch10_sel
+        access: R/W
+        default: "0"
+        description: ACC core ch10 select (DDR ch1~ch16)
+      - bits: "3:0"
+        name: ch9_sel
+        access: R/W
+        default: "0"
+        description: ACC core ch9 select (DDR ch1~ch16)
+
+  - name: EE_AUDIO_ACC_WRAPPER_STAT0
+    offset: 0x0010
+    description: ACC wrapper status 0
+    fields:
+      - bits: "31:28"
+        name: ch_num_o_acc
+        access: R
+        default: "0"
+        description: channel number output acc
+      - bits: "27"
+        name: o_frddr_acc_req
+        access: R
+        default: "0"
+        description: frddr acc request
+      - bits: "26"
+        name: o_acc_ack
+        access: R
+        default: "0"
+        description: acc ack
+      - bits: "25"
+        name: o_acc_1st_ack
+        access: R
+        default: "0"
+        description: acc 1st ack
+      - bits: "24"
+        name: o_acc_init_done
+        access: R
+        default: "0"
+        description: acc init done
+      - bits: "23"
+        name: acc_valid_in_acc
+        access: R
+        default: "0"
+        description: acc valid in acc
+      - bits: "22"
+        name: acc_ack_in_acc
+        access: R
+        default: "0"
+        description: acc ack in acc
+      - bits: "21"
+        name: acc_valid_out_acc
+        access: R
+        default: "0"
+        description: acc valid out acc
+      - bits: "20"
+        name: acc_ack_out_acc
+        access: R
+        default: "0"
+        description: acc ack out acc
+      - bits: "19"
+        name: acc_valid_in
+        access: R
+        default: "0"
+        description: acc valid in
+      - bits: "18"
+        name: acc_ack_in
+        access: R
+        default: "0"
+        description: acc ack in
+      - bits: "17"
+        name: acc_valid_out
+        access: R
+        default: "0"
+        description: acc valid out
+      - bits: "16"
+        name: acc_ack_out
+        access: R
+        default: "0"
+        description: acc ack out
+      - bits: "15"
+        name: fm_input_format_enough_dat
+        access: R
+        default: "0"
+        description: input format enough data
+      - bits: "14"
+        name: fm_input_format_sample_shift
+        access: R
+        default: "0"
+        description: input format sample shift
+      - bits: "13"
+        name: fm_output_format_sample_raw_dat
+        access: R
+        default: "0"
+        description: output format sample raw data
+      - bits: "12"
+        name: fm_output_format_sample_shift
+        access: R
+        default: "0"
+        description: output format sample shift
+      - bits: "11"
+        name: fm_input_format_shift_halt
+        access: R
+        default: "0"
+        description: input format shift halt
+      - bits: "10"
+        name: fm_output_format_shift_halt
+        access: R
+        default: "0"
+        description: output format shift halt
+      - bits: "9"
+        name: r_frddr_init_done
+        access: R
+        default: "0"
+        description: frddr init done
+      - bits: "8"
+        name: frddr_start
+        access: R
+        default: "0"
+        description: frddr start
+      - bits: "7:4"
+        name: afifo_in_cnt
+        access: R
+        default: "0"
+        description: afifo in count
+      - bits: "3:0"
+        name: afifo_out_cnt
+        access: R
+        default: "0"
+        description: afifo out count
+
+  - name: EE_AUDIO_ACC_WRAPPER_STAT1
+    offset: 0x0011
+    description: ACC wrapper status 1
+    fields:
+      - bits: "31:27"
+        name: sample_phase_diff
+        access: R
+        default: "0"
+        description: sample phase difference
+      - bits: "26:20"
+        name: reserved
+        access: R
+        default: "0"
+        description: reserved
+      - bits: "19:10"
+        name: tofifo_dat_buf_valid_num
+        access: R
+        default: "0"
+        description: to fifo data buffer valid number
+      - bits: "9:0"
+        name: frddr_dat_buf_valid_num
+        access: R
+        default: "0"
+        description: frddr data buffer valid number

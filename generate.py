@@ -29,9 +29,10 @@ MODULE_GATE = {
     "earcrx_top":    ("earcrx", "imp"),
     "locker_a":      ("locker", "A", "imp"),
     "locker_b":      ("locker", "B", "imp"),
-    "asrc_wrapper":  None,   # C5 不支持
-    "eqdrc_wrapper": None,   # C5 不支持
-    "sed":           ("voice", "algo"),  # sed 模块条件特殊
+    "acc_wrapper_asrc":  ("acc_wrapper", "ASRC", "imp"),
+    "acc_wrapper_eqdrc": ("acc_wrapper", "EQDRC", "imp"),
+    "sed":           ("voice", "algo"),  # voice.algo == "sed" 时激活
+    "vad":           ("voice", "algo"),  # voice.algo == "vad" 时激活
 }
 
 # ============================================================================
@@ -117,9 +118,11 @@ def is_active(mod_name):
     gate = MODULE_GATE.get(mod_name)
     if gate is None:
         return False
-    # sed 模块特殊处理：检查 algo == "sed"
+    # voice 模块互斥：sed 和 vad 只能激活一个
     if mod_name == "sed":
-        return get_macro("voice", "algo") == "sed"
+        return get_macro("voice", "imp") and get_macro("voice", "algo") == "sed"
+    if mod_name == "vad":
+        return get_macro("voice", "imp") and get_macro("voice", "algo") == "vad"
     return get_macro(*gate)
 
 
