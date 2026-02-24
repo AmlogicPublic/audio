@@ -1,8 +1,8 @@
 module: SED
 
 module_condition:
-  macro_path: ["voice", "algo"]
-  equals: "sed"
+  macro_path: ["sed", "imp"]
+  eq: 1
 
 registers:
   - name: SED_VERSION

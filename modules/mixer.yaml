@@ -4,7 +4,7 @@ parent_base: audio_top_ee
 instances:
   A:
     offset_base: 0x185
-    condition: { macro_path: ["mixer", "imp"], eq: 1 }
+    condition: { macro_path: ["mixer", "A", "imp"], eq: 1 }
 
 registers:
   - name: MIXER_COEF0

@@ -1,8 +1,8 @@
 module: VAD
 
 module_condition:
-  macro_path: ["voice", "algo"]
-  equals: "vad"
+  macro_path: ["vad", "imp"]
+  eq: 1
 
 registers:
   - name: VAD_TOP_CTRL0

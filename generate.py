@@ -164,7 +164,8 @@ def load_all_yaml():
                         "registers", []), icfg.get("offset_base", 0), iid)
 
         for iid, icfg in data.get("instances", {}).items():
-            if icfg and check_cond(icfg.get("condition")):
+            icfg = icfg or {}
+            if check_cond(icfg.get("condition")):
                 YAML_CACHE[f"{mod_name}_{iid}".lower()] = (
                     data.get("registers", []), icfg.get("offset_base", 0), iid)
 
@@ -226,7 +227,7 @@ def build_tree() -> list[Module]:
                 regs, offset = get_module_info(full_name)
                 children.append(Module(full_name, addr=addr,
                                 offset=offset, active=imp, regs=regs))
-            children.sort(key=lambda m: (not m.active, m.offset, m.name))
+            children.sort(key=lambda m: (not m.active, m.name))
             return Module(key, children=children)
 
         addr = val.get("_addr", 0)
@@ -402,6 +403,8 @@ def render_html(tree: list[Module]) -> str:
         <button onclick="expandAll()">Expand All</button>
         <button onclick="collapseAll()">Collapse All</button></div>'''
 
+    top_img = '<img src="../media/top.png" alt="Audio Top Architecture" style="max-width:100%;margin:20px 0">'
+
     sections = [
         ("Address Map", '<div class="tree">' + "".join(tree_html(n)
          for n in tree) + '</div>'),
@@ -411,7 +414,7 @@ def render_html(tree: list[Module]) -> str:
         ("Macro Parameters", macro_html()),
     ]
 
-    body = f"<h1>{CHIP} Audio Register Specification</h1>{toolbar}"
+    body = f"<h1>{CHIP} Audio Register Specification</h1>{top_img}{toolbar}"
     for title, content in sections:
         body += f"<h2>{title}</h2>{content}<hr>"
 
@@ -514,8 +517,10 @@ def macro_md() -> str:
 
 def render_md(tree: list[Module]) -> str:
     addr_map = "```\n" + "".join(tree_md(n) for n in tree) + "```\n"
+    top_img = "![Audio Top Architecture](../media/top.png)\n\n"
     return "\n".join([
         f"# {CHIP} Audio Register Specification\n",
+        top_img,
         "## Address Map\n", addr_map,
         "## Register Details\n", "".join(regs_md(n) for n in tree),
         clk_md(), macro_md(),

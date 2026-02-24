@@ -36,6 +36,10 @@ MODULE_TREE = {
             },
             "spdifin":    {"A": {"imp": 1}, "B": {"imp": 0}},
             "spdifin_lb": {"A": {"imp": 0}, "B": {"imp": 0}},
+            "pdm": {
+                "A": {"_addr": 0xFFAE2000, "imp": 0, "chan_num": 8},
+                "B": {"_addr": 0xFFAE2400, "imp": 0, "chan_num": 8},
+            },
             "frhdmirx":   {"A": {"imp": 0}, "B": {"imp": 0}},
             "fratv":      {"imp": 0},
             "earcrx": {
@@ -72,7 +76,7 @@ MODULE_TREE = {
             "loopback":    {"A": {"imp": 1, "ch": 16}, "B": {"imp": 0, "ch": 0}},
         },
         "OutputProcessing": {
-            "mixer":  {"imp": 1},
+            "mixer":  {"A": {"imp": 1}},
             "eq_drc": {"_addr": 0xFFAE4000, "imp": 1, "ch": 16, "static": 1, "arch": "reg"},
         },
         "IOProcessing": {
@@ -83,6 +87,10 @@ MODULE_TREE = {
                 "ASRC":  {"_addr": 0xFFAE8400, "imp": 0},
                 "EQDRC": {"_addr": 0xFFAE8800, "imp": 0},
             },
+        },
+        "Voice": {
+            "sed": {"_addr": 0xFFAC0000, "imp": 0},
+            "vad": {"_addr": 0xFE331800, "imp": 0},
         },
         "DMA": {
             "toddr": {
@@ -115,7 +123,7 @@ CLK_INPUTS = {
     "other_pll": {
         "a": "Oscin_clk(24M)",
         "b": "Hifi0_pll_clk",
-        "c": "1'b0",
+        "c": "Hifi1_pll_clk",
         "d": "Cts_rtc_clk",
         "e": "1'b0",
         "f": "Fclk_div3",
@@ -128,10 +136,10 @@ CLK_INPUTS = {
         "c": "1'b0",
         "d": "1'b0",
         "e": "1'b0",
-        "f": "1'b0",
+        "f": "Hdmirx_aud_sck",
         "g": "Wifi_beacon_i",
         "h": "1'b0",
         "i": "1'b0",
-        "j": "Acodec_ADC",
+        "j": "1'b0",
     },
 }
