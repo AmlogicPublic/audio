@@ -1,101 +1,521 @@
 module: SED
 
+module_condition:
+  macro_path: ["voice", "algo"]
+  equals: "sed"
+
 registers:
-  - name: SED_VERSION_ADDR
+  - name: SED_VERSION
     offset: 0x0000
+    description: SED version register
+    fields:
+      - bits: "31:8"
+        name: reserved
+        access: R/W
+        default: "0"
+        description: reserved
+      - bits: "7:0"
+        name: version
+        access: R
+        default: "0x01"
+        description: SED version
 
-  - name: SED_SYS_CFG_REG0
+  - name: SED_SYS_CFG0
     offset: 0x0004
+    description: SED system config 0
+    fields:
+      - bits: "31:1"
+        name: reserved
+        access: R/W
+        default: "0"
+        description: reserved
+      - bits: "0"
+        name: clk_en
+        access: R/W
+        default: "0"
+        description: Turn on SED clock
 
-  - name: SED_SYS_CFG_REG1
+  - name: SED_SYS_CFG1
     offset: 0x0005
+    description: SED system config 1
+    fields:
+      - bits: "31:24"
+        name: reserved
+        access: R/W
+        default: "0"
+        description: reserved
+      - bits: "23:16"
+        name: clk_div_frac
+        access: R/W
+        default: "0"
+        description: Fraction of clk divider ratio
+      - bits: "15:0"
+        name: clk_div_int
+        access: R/W
+        default: "0x0002"
+        description: "Integer of clk divider ratio, min 2. SED_clk = src_clk / int.frac"
 
   - name: SED_CMD_CHAIN
     offset: 0x0010
+    description: SED CMD chain control
+    fields:
+      - bits: "31"
+        name: pending
+        access: R/W
+        default: "0"
+        description: Set 1 to start CMD chain, cleared when done
+      - bits: "30:29"
+        name: reserved
+        access: R/W
+        default: "0"
+        description: reserved
+      - bits: "28"
+        name: run_imm
+        access: R/W
+        default: "0"
+        description: Run CMD immediately
+      - bits: "27:20"
+        name: run_skip
+        access: R/W
+        default: "0"
+        description: Skip frames after CMD chain done
+      - bits: "19:12"
+        name: run_num
+        access: R/W
+        default: "0"
+        description: CMD chain run times triggered by power flag. Stop if IRQ set.
+      - bits: "11:0"
+        name: chain_addr
+        access: R/W
+        default: "0"
+        description: CMD chain address in weight memory, unit 16 bytes
 
   - name: SED_IRQ_EN
     offset: 0x0011
+    description: SED IRQ enable
+    fields:
+      - bits: "31"
+        name: cmd_done_en
+        access: R/W
+        default: "0"
+        description: Enable CMD chain done IRQ
+      - bits: "30"
+        name: pow_trig_en
+        access: R/W
+        default: "0"
+        description: Enable power trigger IRQ
+      - bits: "29"
+        name: feat_29_255_en
+        access: R/W
+        default: "0"
+        description: Enable feature 29~255 combined IRQ
+      - bits: "28:0"
+        name: feat_0_28_en
+        access: R/W
+        default: "0"
+        description: Enable feature 0~28 IRQ
 
   - name: SED_IRQ_STS
     offset: 0x0012
+    description: SED IRQ status, write 1 to clear
+    fields:
+      - bits: "31"
+        name: cmd_done_sts
+        access: R/W
+        default: "0"
+        description: CMD chain done IRQ status
+      - bits: "30"
+        name: pow_trig_sts
+        access: R/W
+        default: "0"
+        description: Power trigger IRQ status
+      - bits: "29"
+        name: feat_29_255_sts
+        access: R/W
+        default: "0"
+        description: Feature 29~255 combined IRQ status
+      - bits: "28:0"
+        name: feat_0_28_sts
+        access: R/W
+        default: "0"
+        description: Feature 0~28 IRQ status
 
   - name: SED_TIMELOG
     offset: 0x0013
+    description: SED time stamp log, unit ms, start when 10ms data ready
+    fields:
+      - bits: "31:30"
+        name: ts_last_6_part
+        access: R
+        default: "0"
+        description: Time stamp last-6 (partial)
+      - bits: "29:25"
+        name: ts_last_5
+        access: R
+        default: "0"
+        description: Time stamp last-5
+      - bits: "24:20"
+        name: ts_last_4
+        access: R
+        default: "0"
+        description: Time stamp last-4
+      - bits: "19:15"
+        name: ts_last_3
+        access: R
+        default: "0"
+        description: Time stamp last-3
+      - bits: "14:10"
+        name: ts_last_2
+        access: R
+        default: "0"
+        description: Time stamp last-2
+      - bits: "9:5"
+        name: ts_last_1
+        access: R
+        default: "0"
+        description: Time stamp last-1
+      - bits: "4:0"
+        name: ts_last
+        access: R
+        default: "0"
+        description: Time stamp last
 
   - name: SED_CMD_CFG0
     offset: 0x0040
+    description: CMD instruction bits[31:0]
+    fields:
+      - bits: "31:0"
+        name: cmd_cfg0
+        access: R/W
+        default: "0"
+        description: CMD instruction [31:0]
 
   - name: SED_CMD_CFG1
     offset: 0x0041
+    description: CMD instruction bits[63:32]
+    fields:
+      - bits: "31:0"
+        name: cmd_cfg1
+        access: R/W
+        default: "0"
+        description: CMD instruction [63:32]
 
   - name: SED_CMD_CFG2
     offset: 0x0042
+    description: CMD instruction bits[95:64]
+    fields:
+      - bits: "31:0"
+        name: cmd_cfg2
+        access: R/W
+        default: "0"
+        description: CMD instruction [95:64]
 
   - name: SED_CMD_CFG3
     offset: 0x0043
+    description: CMD instruction bits[127:96]
+    fields:
+      - bits: "31:0"
+        name: cmd_cfg3
+        access: R/W
+        default: "0"
+        description: CMD instruction [127:96]
 
   - name: SED_DSM_COEF0
     offset: 0x0080
+    description: Down sample coefficient 0
+    fields:
+      - bits: "31:0"
+        name: dsm_coef0
+        access: R/W
+        default: "0"
+        description: Down sample coefficient 0
 
   - name: SED_DSM_COEF1
     offset: 0x0081
+    description: Down sample coefficient 1
+    fields:
+      - bits: "31:0"
+        name: dsm_coef1
+        access: R/W
+        default: "0"
+        description: Down sample coefficient 1
 
   - name: SED_DSM_COEF2
     offset: 0x0082
+    description: Down sample coefficient 2
+    fields:
+      - bits: "31:0"
+        name: dsm_coef2
+        access: R/W
+        default: "0"
+        description: Down sample coefficient 2
 
   - name: SED_DSM_COEF3
     offset: 0x0083
+    description: Down sample coefficient 3
+    fields:
+      - bits: "31:0"
+        name: dsm_coef3
+        access: R/W
+        default: "0"
+        description: Down sample coefficient 3
 
   - name: SED_DSM_COEF4
     offset: 0x0084
+    description: Down sample coefficient 4
+    fields:
+      - bits: "31:0"
+        name: dsm_coef4
+        access: R/W
+        default: "0"
+        description: Down sample coefficient 4
 
   - name: SED_DSM_COEF5
     offset: 0x0085
+    description: Down sample coefficient 5
+    fields:
+      - bits: "31:0"
+        name: dsm_coef5
+        access: R/W
+        default: "0"
+        description: Down sample coefficient 5
 
   - name: SED_DSM_COEF6
     offset: 0x0086
+    description: Down sample coefficient 6
+    fields:
+      - bits: "31:0"
+        name: dsm_coef6
+        access: R/W
+        default: "0"
+        description: Down sample coefficient 6
 
   - name: SED_DSM_COEF7
     offset: 0x0087
+    description: Down sample coefficient 7
+    fields:
+      - bits: "31:0"
+        name: dsm_coef7
+        access: R/W
+        default: "0"
+        description: Down sample coefficient 7
 
   - name: SED_DSM_COEF8
     offset: 0x0088
+    description: Down sample coefficient 8
+    fields:
+      - bits: "31:0"
+        name: dsm_coef8
+        access: R/W
+        default: "0"
+        description: Down sample coefficient 8
 
   - name: SED_DSM_COEF9
     offset: 0x0089
+    description: Down sample coefficient 9
+    fields:
+      - bits: "31:0"
+        name: dsm_coef9
+        access: R/W
+        default: "0"
+        description: Down sample coefficient 9
 
   - name: SED_DSM_COEFA
     offset: 0x008a
+    description: Down sample coefficient A
+    fields:
+      - bits: "31:0"
+        name: dsm_coefa
+        access: R/W
+        default: "0"
+        description: Down sample coefficient A
 
   - name: SED_DSM_COEFB
     offset: 0x008b
+    description: Down sample coefficient B
+    fields:
+      - bits: "31:0"
+        name: dsm_coefb
+        access: R/W
+        default: "0"
+        description: Down sample coefficient B
 
   - name: SED_DSM_COEFC
     offset: 0x008c
+    description: Down sample coefficient C
+    fields:
+      - bits: "31:0"
+        name: dsm_coefc
+        access: R/W
+        default: "0"
+        description: Down sample coefficient C
 
   - name: SED_CFG_REG0
     offset: 0x0090
+    description: SED config register 0
+    fields:
+      - bits: "31:20"
+        name: reserved
+        access: R/W
+        default: "0"
+        description: reserved
+      - bits: "19"
+        name: win_len_sel
+        access: R/W
+        default: "0"
+        description: "0: win_length=400, 1: win_length=512"
+      - bits: "18"
+        name: hop_len_sel
+        access: R/W
+        default: "0"
+        description: "0: hop_length=160, 1: hop_length=320"
+      - bits: "17:16"
+        name: dsrate
+        access: R/W
+        default: "0"
+        description: "Down sample rate. 0:16K, 1:48K triple, 2:96K sixfold"
+      - bits: "15:10"
+        name: reserved2
+        access: R/W
+        default: "0"
+        description: reserved
+      - bits: "9:1"
+        name: pre_emph_coef
+        access: R/W
+        default: "0"
+        description: Pre-emphasis coefficient [9:1]
+      - bits: "0"
+        name: start_audio
+        access: R/W
+        default: "0"
+        description: Start receive audio data
 
   - name: SED_CFG_REG1
     offset: 0x0091
+    description: SED config register 1
+    fields:
+      - bits: "31:16"
+        name: sclk_khz
+        access: R/W
+        default: "0x007d"
+        description: SED clock frequency in KHz
+      - bits: "15:8"
+        name: discard_win_len
+        access: R/W
+        default: "0x7f"
+        description: SED discard window length/2
+      - bits: "7:0"
+        name: time_win_len
+        access: R/W
+        default: "0x7f"
+        description: SED time window length
 
   - name: SED_POW_CTRL0
     offset: 0x0092
+    description: SED power control 0
+    fields:
+      - bits: "31:26"
+        name: reserved
+        access: R/W
+        default: "0"
+        description: reserved
+      - bits: "25:24"
+        name: pow_old_avglen
+        access: R/W
+        default: "0"
+        description: Power old average length
+      - bits: "23:22"
+        name: reserved2
+        access: R/W
+        default: "0"
+        description: reserved
+      - bits: "21:16"
+        name: pow_diff_dist
+        access: R/W
+        default: "0"
+        description: Power diff distance
+      - bits: "15:0"
+        name: pow_rampup_thr
+        access: R/W
+        default: "0"
+        description: Power ramp up threshold
 
   - name: SED_POW_CTRL1
     offset: 0x0093
+    description: SED power control 1
+    fields:
+      - bits: "31:16"
+        name: pow_cur_thr_high
+        access: R/W
+        default: "0"
+        description: Power current threshold high
+      - bits: "15:0"
+        name: pow_cur_thr
+        access: R/W
+        default: "0"
+        description: Power current threshold
 
   - name: SED_POW_CTRL2
     offset: 0x0094
+    description: SED power control 2
+    fields:
+      - bits: "31:16"
+        name: pow_end_addr
+        access: R/W
+        default: "0"
+        description: Power end address
+      - bits: "15:0"
+        name: pow_start_addr
+        access: R/W
+        default: "0"
+        description: Power start address
 
   - name: SED_LOG_CTRL0
     offset: 0x0095
+    description: SED log control 0
+    fields:
+      - bits: "31:16"
+        name: reserved
+        access: R/W
+        default: "0"
+        description: reserved
+      - bits: "15:0"
+        name: log_input_min
+        access: R/W
+        default: "0"
+        description: Minus value for log2 calculation
 
   - name: SED_LOG_CTRL1
     offset: 0x0096
+    description: SED log control 1
+    fields:
+      - bits: "31:16"
+        name: log2_scale
+        access: R/W
+        default: "0"
+        description: log2 scale (16bit bfloat16)
+      - bits: "15:0"
+        name: log2_zero_pt
+        access: R/W
+        default: "0"
+        description: log2 zero point (16bit integer)
 
   - name: SED_NN_CTRL0
     offset: 0x0097
+    description: SED NN control 0
+    fields:
+      - bits: "31:0"
+        name: nn_ctrl0
+        access: R/W
+        default: "0"
+        description: NN control register
 
   - name: SED_MEL_COEF_BASE_ADR
     offset: 0x1200
+    description: MEL coefficient base address in memory
+    fields:
+      - bits: "31:0"
+        name: mel_coef_base
+        access: R/W
+        default: "0"
+        description: MEL coefficient base address

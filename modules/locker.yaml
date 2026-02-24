@@ -12,79 +12,366 @@ instances:
 registers:
   - name: AUD_LOCK_EN
     offset: 0x0000
+    description: Audio lock enable
+    fields:
+      - bits: "31:1"
+        name: reserved
+        access: R/W
+        default: "0"
+        description: reserved
+      - bits: "0"
+        name: lock_en
+        access: R/W
+        default: "0"
+        description: "Audio lock enable. 0=disable, 1=enable"
 
   - name: AUD_LOCK_SW_RESET
     offset: 0x0001
+    description: Software reset
+    fields:
+      - bits: "31:1"
+        name: reserved
+        access: R/W
+        default: "0"
+        description: reserved
+      - bits: "0"
+        name: sw_reset
+        access: R/W
+        default: "0"
+        description: Software reset. 1=generate reset pulse
 
   - name: AUD_LOCK_SW_LATCH
     offset: 0x0002
+    description: Software latch control
+    fields:
+      - bits: "31:4"
+        name: reserved
+        access: R/W
+        default: "0"
+        description: reserved
+      - bits: "3"
+        name: omclk2ref_sw_latch
+        access: R/W
+        default: "0"
+        description: omclk2ref software latch. 1=generate latch pulse
+      - bits: "2"
+        name: ref2omclk_sw_latch
+        access: R/W
+        default: "0"
+        description: ref2omclk software latch. 1=generate latch pulse
+      - bits: "1"
+        name: ref2imclk_sw_latch
+        access: R/W
+        default: "0"
+        description: ref2imclk software latch. 1=generate latch pulse
+      - bits: "0"
+        name: imclk2ref_sw_latch
+        access: R/W
+        default: "0"
+        description: imclk2ref software latch. 1=generate latch pulse
 
   - name: AUD_LOCK_HW_LATCH
     offset: 0x0003
+    description: Hardware latch enable
+    fields:
+      - bits: "31:4"
+        name: reserved
+        access: R/W
+        default: "0"
+        description: reserved
+      - bits: "3"
+        name: omclk2ref_hw_latch
+        access: R/W
+        default: "0"
+        description: omclk2ref hardware latch enable
+      - bits: "2"
+        name: ref2omclk_hw_latch
+        access: R/W
+        default: "0"
+        description: ref2omclk hardware latch enable
+      - bits: "1"
+        name: ref2imclk_hw_latch
+        access: R/W
+        default: "0"
+        description: ref2imclk hardware latch enable
+      - bits: "0"
+        name: imclk2ref_hw_latch
+        access: R/W
+        default: "0"
+        description: imclk2ref hardware latch enable
 
   - name: AUD_LOCK_REFCLK_SRC
     offset: 0x0004
+    description: Reference clock source select
+    fields:
+      - bits: "31:2"
+        name: reserved
+        access: R/W
+        default: "0"
+        description: reserved
+      - bits: "1:0"
+        name: refclk_src_sel
+        access: R/W
+        default: "0"
+        description: "Ref clk source. 0=pclk, 1=oscinclk, 2/3=reserved"
 
   - name: AUD_LOCK_REFCLK_LAT_INT
     offset: 0x0005
+    description: Reference clock latch interval
+    fields:
+      - bits: "31:0"
+        name: refclk_lat_int
+        access: R/W
+        default: "0"
+        description: Number of ref clock cycles to latch imclk/omclk
 
   - name: AUD_LOCK_IMCLK_LAT_INT
     offset: 0x0006
+    description: IMCLK latch interval
+    fields:
+      - bits: "31:0"
+        name: imclk_lat_int
+        access: R/W
+        default: "0"
+        description: Number of imclk cycles to latch reference clock
 
   - name: AUD_LOCK_OMCLK_LAT_INT
     offset: 0x0007
+    description: OMCLK latch interval
+    fields:
+      - bits: "31:0"
+        name: omclk_lat_int
+        access: R/W
+        default: "0"
+        description: Number of omclk cycles to latch reference clock
 
   - name: AUD_LOCK_REFCLK_DS_INT
     offset: 0x0008
+    description: Reference clock downsample
+    fields:
+      - bits: "31:10"
+        name: reserved
+        access: R/W
+        default: "0"
+        description: reserved
+      - bits: "9:0"
+        name: refclk_ds_step
+        access: R/W
+        default: "0"
+        description: Downsample step for ref clock (module=x+1)
 
   - name: AUD_LOCK_IMCLK_DS_INT
     offset: 0x0009
+    description: IMCLK downsample
+    fields:
+      - bits: "31:10"
+        name: reserved
+        access: R/W
+        default: "0"
+        description: reserved
+      - bits: "9:0"
+        name: imclk_ds_step
+        access: R/W
+        default: "0"
+        description: Downsample step for imclk (module=x+1)
 
   - name: AUD_LOCK_OMCLK_DS_INT
     offset: 0x000a
+    description: OMCLK downsample
+    fields:
+      - bits: "31:10"
+        name: reserved
+        access: R/W
+        default: "0"
+        description: reserved
+      - bits: "9:0"
+        name: omclk_ds_step
+        access: R/W
+        default: "0"
+        description: Downsample step for omclk (module=x+1)
 
   - name: AUD_LOCK_INT_CLR
     offset: 0x000b
+    description: Interrupt clear
+    fields:
+      - bits: "31:2"
+        name: reserved
+        access: R/W
+        default: "0"
+        description: reserved
+      - bits: "1"
+        name: int_sts_clr
+        access: R/W
+        default: "0"
+        description: Clear interrupt status
+      - bits: "0"
+        name: int_clr
+        access: R/W
+        default: "0"
+        description: Clear interrupt
 
   - name: AUD_LOCK_GCLK_CTRL
     offset: 0x000c
+    description: Clock gating control
+    fields:
+      - bits: "31:4"
+        name: reserved
+        access: R/W
+        default: "0"
+        description: reserved
+      - bits: "3:2"
+        name: module_clk_gate
+        access: R/W
+        default: "0"
+        description: Module clock gate control
+      - bits: "1"
+        name: reg_clk_gate
+        access: R/W
+        default: "0"
+        description: Register clock gate control
+      - bits: "0"
+        name: reserved2
+        access: R/W
+        default: "0"
+        description: reserved
 
   - name: AUD_LOCK_INT_CTRL
     offset: 0x000d
+    description: Interrupt control
+    fields:
+      - bits: "31:4"
+        name: reserved
+        access: R/W
+        default: "0"
+        description: reserved
+      - bits: "3"
+        name: omclk_state_int_mask
+        access: R/W
+        default: "0"
+        description: Interrupt mask for omclk_state
+      - bits: "2:0"
+        name: int_ctrl
+        access: R/W
+        default: "0"
+        description: Interrupt control
 
   - name: RO_REF2IMCLK_CNT_L
     offset: 0x0010
+    description: ref2imclk counter low
+    fields:
+      - bits: "31:0"
+        name: cnt_l
+        access: R
+        default: "0"
+        description: Counter low 32 bits
 
   - name: RO_REF2IMCLK_CNT_H
     offset: 0x0011
+    description: ref2imclk counter high
+    fields:
+      - bits: "31:0"
+        name: cnt_h
+        access: R
+        default: "0"
+        description: Counter high bits
 
   - name: RO_REF2OMCLK_CNT_L
     offset: 0x0012
+    description: ref2omclk counter low
+    fields:
+      - bits: "31:0"
+        name: cnt_l
+        access: R
+        default: "0"
+        description: Counter low 32 bits
 
   - name: RO_REF2OMCLK_CNT_H
     offset: 0x0013
+    description: ref2omclk counter high
+    fields:
+      - bits: "31:0"
+        name: cnt_h
+        access: R
+        default: "0"
+        description: Counter high bits
 
   - name: RO_IMCLK2REF_CNT_L
     offset: 0x0014
+    description: imclk2ref counter low
+    fields:
+      - bits: "31:0"
+        name: cnt_l
+        access: R
+        default: "0"
+        description: Counter low 32 bits
 
   - name: RO_IMCLK2REF_CNT_H
     offset: 0x0015
+    description: imclk2ref counter high
+    fields:
+      - bits: "31:0"
+        name: cnt_h
+        access: R
+        default: "0"
+        description: Counter high bits
 
   - name: RO_OMCLK2REF_CNT_L
     offset: 0x0016
+    description: omclk2ref counter low
+    fields:
+      - bits: "31:0"
+        name: cnt_l
+        access: R
+        default: "0"
+        description: Counter low 32 bits
 
   - name: RO_OMCLK2REF_CNT_H
     offset: 0x0017
+    description: omclk2ref counter high
+    fields:
+      - bits: "31:0"
+        name: cnt_h
+        access: R
+        default: "0"
+        description: Counter high bits
 
   - name: RO_REFCLK_PKG_CNT
     offset: 0x0018
+    description: Reference clock package counter
+    fields:
+      - bits: "31:0"
+        name: pkg_cnt
+        access: R
+        default: "0"
+        description: Package counter
 
   - name: RO_IMCLK_PKG_CNT
     offset: 0x0019
+    description: IMCLK package counter
+    fields:
+      - bits: "31:0"
+        name: pkg_cnt
+        access: R
+        default: "0"
+        description: Package counter
 
   - name: RO_OMCLK_PKG_CNT
     offset: 0x001a
+    description: OMCLK package counter
+    fields:
+      - bits: "31:0"
+        name: pkg_cnt
+        access: R
+        default: "0"
+        description: Package counter
 
   - name: RO_AUD_LOCK_INT_STATUS
     offset: 0x001b
+    description: Interrupt status
+    fields:
+      - bits: "31:0"
+        name: int_status
+        access: R
+        default: "0"
+        description: Interrupt status register
 

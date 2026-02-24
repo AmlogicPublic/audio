@@ -17,103 +17,521 @@ instances:
 registers:
   - name: RESAMPLE_CTRL0
     offset: 0x0000
+    description: Resample control 0
+    fields:
+      - bits: "31:3"
+        name: reserved
+        access: R/W
+        default: "0"
+        description: reserved
+      - bits: "2"
+        name: lock_rst
+        access: R/W
+        default: "0"
+        description: Phase_lock module software reset
+      - bits: "1"
+        name: rsamp_rst
+        access: R/W
+        default: "0"
+        description: Resample_core module software reset
+      - bits: "0"
+        name: sw_rst
+        access: R/W
+        default: "0"
+        description: Resample_top module software reset
 
   - name: RESAMPLE_CTRL1
     offset: 0x0001
+    description: Resample control 1
+    fields:
+      - bits: "31:26"
+        name: reserved
+        access: R/W
+        default: "0"
+        description: reserved
+      - bits: "25"
+        name: rsamp_rst_sel
+        access: R/W
+        default: "0"
+        description: "1: use HW reset, 0: use SW reg_rsamp_rst"
+      - bits: "24"
+        name: module_bypass
+        access: R/W
+        default: "0"
+        description: "1: bypass, input direct output, 0: work"
+      - bits: "23:18"
+        name: gclk_ctrl
+        access: R/W
+        default: "0"
+        description: Clock gate control
+      - bits: "17:13"
+        name: in_msb
+        access: R/W
+        default: "0x17"
+        description: Input MSB position
+      - bits: "12"
+        name: output_en
+        access: R/W
+        default: "0"
+        description: Output enable for source switch
+      - bits: "11"
+        name: rsamp_en
+        access: R/W
+        default: "0"
+        description: "Resample module enable. 1=enable, 0=disable"
+      - bits: "10"
+        name: filt_en
+        access: R/W
+        default: "0"
+        description: "AA filter enable. 1=enable, 0=disable"
+      - bits: "9"
+        name: post_en
+        access: R/W
+        default: "0"
+        description: "Compensation filter enable. 1=enable, 0=disable"
+      - bits: "8"
+        name: inp_mux_mode
+        access: R/W
+        default: "0"
+        description: Input mux mode
+      - bits: "7:4"
+        name: reserved2
+        access: R/W
+        default: "0"
+        description: reserved
+      - bits: "3:0"
+        name: inp_mux
+        access: R/W
+        default: "0"
+        description: Input mux select
 
   - name: RESAMPLE_CTRL2
     offset: 0x0002
+    description: Resample control 2
+    fields:
+      - bits: "31:30"
+        name: reserved
+        access: R/W
+        default: "0"
+        description: reserved
+      - bits: "29:24"
+        name: chx_size
+        access: R/W
+        default: "0x02"
+        description: Channel number setting
+      - bits: "23:18"
+        name: reserved2
+        access: R/W
+        default: "0"
+        description: reserved
+      - bits: "17:16"
+        name: scl_step
+        access: R/W
+        default: "0"
+        description: "Scale step. 0: 1/1, 1: 1/2, 2: 1/4"
+      - bits: "15:8"
+        name: filt_tap
+        access: R/W
+        default: "0x3f"
+        description: AA filter tap number
+      - bits: "7:0"
+        name: intp_tap
+        access: R/W
+        default: "0x3f"
+        description: Interpolation filter tap number
 
   - name: RESAMPLE_PHSINIT
     offset: 0x0003
+    description: Phase initial value
+    fields:
+      - bits: "31:28"
+        name: reserved
+        access: R/W
+        default: "0"
+        description: reserved
+      - bits: "27:0"
+        name: init_phs
+        access: R/W
+        default: "0"
+        description: Initial phase for accumulator
 
   - name: RESAMPLE_PHSSTEP
     offset: 0x0004
+    description: Phase step value
+    fields:
+      - bits: "31"
+        name: reserved
+        access: R/W
+        default: "0"
+        description: reserved
+      - bits: "30:0"
+        name: rsamp_step
+        access: R/W
+        default: "0x8000000"
+        description: "Step size for accumulator. Fs_in/down_ratio/Fs_out*2^28"
 
   - name: RESAMPLE_SHIFT
     offset: 0x0005
+    description: Shift control
+    fields:
+      - bits: "31:24"
+        name: rsft_iir
+        access: R/W
+        default: "0x17"
+        description: Compensation IIR filter shift bits
+      - bits: "23:16"
+        name: rsft_blnd
+        access: R/W
+        default: "0x15"
+        description: Blending shift bits
+      - bits: "15:8"
+        name: rsft_sinc
+        access: R/W
+        default: "0x1f"
+        description: Interpolation filter shift bits
+      - bits: "7:0"
+        name: rsft_aa
+        access: R/W
+        default: "0x1f"
+        description: Anti-alias filter shift bits
 
   - name: RESAMPLE_ADJ_CTRL0
     offset: 0x0006
+    description: Adjust control 0
+    fields:
+      - bits: "31:3"
+        name: reserved
+        access: R/W
+        default: "0"
+        description: reserved
+      - bits: "2"
+        name: adj_out_inv
+        access: R/W
+        default: "0"
+        description: Adjustment direction
+      - bits: "1"
+        name: adj_force_en
+        access: R/W
+        default: "0"
+        description: "Force adjustment value enable. 1=enable, 0=disable"
+      - bits: "0"
+        name: adj_en
+        access: R/W
+        default: "0"
+        description: "Auto adjusting module enable. 1=enable, 0=disable"
 
   - name: RESAMPLE_ADJ_CTRL1
     offset: 0x0007
+    description: Adjust control 1
+    fields:
+      - bits: "31:16"
+        name: adj_odet_step
+        access: R/W
+        default: "0x0008"
+        description: Output detection step
+      - bits: "15:0"
+        name: adj_kmax
+        access: R/W
+        default: "0x8000"
+        description: Maximum value after loop filter
 
   - name: RESAMPLE_ADJ_SFT
     offset: 0x0008
+    description: Adjust shift control
+    fields:
+      - bits: "31:30"
+        name: reserved
+        access: R/W
+        default: "0"
+        description: reserved
+      - bits: "29"
+        name: adj_dif_sel
+        access: R/W
+        default: "0"
+        description: Input data select for adjustment
+      - bits: "28:24"
+        name: adj_ki
+        access: R/W
+        default: "0x09"
+        description: Loop filter KI value
+      - bits: "23:21"
+        name: reserved2
+        access: R/W
+        default: "0"
+        description: reserved
+      - bits: "20:16"
+        name: adj_kp
+        access: R/W
+        default: "0x01"
+        description: Loop filter KP value
+      - bits: "15:13"
+        name: reserved3
+        access: R/W
+        default: "0"
+        description: reserved
+      - bits: "12:8"
+        name: adj_ki_sft
+        access: R/W
+        default: "0x06"
+        description: Shift value after KI multiplier
+      - bits: "7:6"
+        name: reserved4
+        access: R/W
+        default: "0"
+        description: reserved
+      - bits: "5:0"
+        name: adj_out_sft
+        access: R/W
+        default: "0x0c"
+        description: Adjustment output shift value
 
   - name: RESAMPLE_ADJ_IDET_LEN
     offset: 0x0009
+    description: Adjust input detection length
+    fields:
+      - bits: "31:0"
+        name: adj_idet_len
+        access: R/W
+        default: "0x00002710"
+        description: Detection length for adjustment
 
   - name: RESAMPLE_ADJ_FORCE
     offset: 0x000a
+    description: Adjust force error
+    fields:
+      - bits: "31:0"
+        name: adj_force_err
+        access: R/W
+        default: "0x00000008"
+        description: Forcing error value
 
   - name: RESAMPLE_ADJ_KI_FORCE
     offset: 0x000b
+    description: Adjust KI force value
+    fields:
+      - bits: "31:0"
+        name: adj_ki_force
+        access: R/W
+        default: "0"
+        description: Forcing value for KI adjustment
 
   - name: RESAMPLE_WATCHDOG_THRD
     offset: 0x000c
+    description: Watchdog threshold
+    fields:
+      - bits: "31:0"
+        name: watchdog_thrd
+        access: R/W
+        default: "0"
+        description: Watchdog threshold value
 
   - name: RESAMPLE_DBG_INFO
     offset: 0x000d
+    description: Debug info
+    fields:
+      - bits: "31:0"
+        name: dbg_info
+        access: R/W
+        default: "0"
+        description: Debug info
 
   - name: RESAMPLE_AOUT_FORCE
     offset: 0x000e
+    description: Audio out force
+    fields:
+      - bits: "31:0"
+        name: aout_force
+        access: R/W
+        default: "0"
+        description: Audio output force value
 
   - name: RESAMPLE_IRQ_CTRL
     offset: 0x000f
+    description: IRQ control
+    fields:
+      - bits: "31:0"
+        name: irq_ctrl
+        access: R/W
+        default: "0"
+        description: IRQ control
 
   - name: RESAMPLE_RO_STATUS
     offset: 0x0010
+    description: Read-only status
+    fields:
+      - bits: "31:0"
+        name: ro_status
+        access: R
+        default: "0"
+        description: "Status: din_chx_chk_err, is_idle_st, rsamp_fifo_over_cnt[7:0]"
 
   - name: RESAMPLE_RO_ADJ_FREQ
     offset: 0x0011
+    description: Adjustment frequency
+    fields:
+      - bits: "31:0"
+        name: ro_adj_freq
+        access: R
+        default: "0"
+        description: Adjustment frequency report
 
   - name: RESAMPLE_RO_ADJ_DIFF_BAK
     offset: 0x0012
+    description: Adjustment diff backup
+    fields:
+      - bits: "31:0"
+        name: ro_adj_diff_bak
+        access: R
+        default: "0"
+        description: Difference for comparator
 
   - name: RESAMPLE_RO_ADJ_DIFF_DLT
     offset: 0x0013
+    description: Adjustment diff delta
+    fields:
+      - bits: "31:0"
+        name: ro_adj_diff_dlt
+        access: R
+        default: "0"
+        description: Difference delta
 
   - name: RESAMPLE_RO_ADJ_PHS_ERR
     offset: 0x0014
+    description: Adjustment phase error
+    fields:
+      - bits: "31:0"
+        name: ro_adj_phs_err
+        access: R
+        default: "0"
+        description: Detection phase error
 
   - name: RESAMPLE_RO_ADJ_KI_OUT
     offset: 0x0015
+    description: Adjustment KI output
+    fields:
+      - bits: "31:0"
+        name: ro_adj_ki_out
+        access: R
+        default: "0"
+        description: Output of integration branch
 
   - name: RESAMPLE_RO_IN_CNT
     offset: 0x0016
+    description: Input counter
+    fields:
+      - bits: "31:0"
+        name: ro_in_cnt
+        access: R
+        default: "0"
+        description: Counter of input data
 
   - name: RESAMPLE_RO_OUT_CNT
     offset: 0x0017
+    description: Output counter
+    fields:
+      - bits: "31:0"
+        name: ro_out_cnt
+        access: R
+        default: "0"
+        description: Counter of output data
 
   - name: RESAMPLE_RO_ADJ_PHS_ERR_VAR
     offset: 0x0018
+    description: Adjustment phase error variance
+    fields:
+      - bits: "31:0"
+        name: ro_adj_phs_err_var
+        access: R
+        default: "0"
+        description: Phase error variance
 
   - name: RESAMPLE_POST_COEF0
     offset: 0x0020
+    description: Post compensation coefficient 0
+    fields:
+      - bits: "31:0"
+        name: post_coef0
+        access: R/W
+        default: "0"
+        description: Compensation filter coefficient 0
 
   - name: RESAMPLE_POST_COEF1
     offset: 0x0021
+    description: Post compensation coefficient 1
+    fields:
+      - bits: "31:0"
+        name: post_coef1
+        access: R/W
+        default: "0"
+        description: Compensation filter coefficient 1
 
   - name: RESAMPLE_POST_COEF2
     offset: 0x0022
+    description: Post compensation coefficient 2
+    fields:
+      - bits: "31:0"
+        name: post_coef2
+        access: R/W
+        default: "0"
+        description: Compensation filter coefficient 2
 
   - name: RESAMPLE_POST_COEF3
     offset: 0x0023
+    description: Post compensation coefficient 3
+    fields:
+      - bits: "31:0"
+        name: post_coef3
+        access: R/W
+        default: "0"
+        description: Compensation filter coefficient 3
 
   - name: RESAMPLE_POST_COEF4
     offset: 0x0024
+    description: Post compensation coefficient 4
+    fields:
+      - bits: "31:0"
+        name: post_coef4
+        access: R/W
+        default: "0"
+        description: Compensation filter coefficient 4
 
   - name: RESAMPLE_AA_COEF_ADDR
     offset: 0x0030
+    description: AA coefficient address
+    fields:
+      - bits: "31:0"
+        name: aa_coef_addr
+        access: R/W
+        default: "0"
+        description: AA coefficient address
 
   - name: RESAMPLE_AA_COEF_DATA
     offset: 0x0031
+    description: AA coefficient data
+    fields:
+      - bits: "31:0"
+        name: aa_coef_data
+        access: R/W
+        default: "0"
+        description: AA coefficient data
 
   - name: RESAMPLE_SINC_COEF_ADDR
     offset: 0x0040
+    description: SINC coefficient address
+    fields:
+      - bits: "31:0"
+        name: sinc_coef_addr
+        access: R/W
+        default: "0"
+        description: SINC coefficient address
 
   - name: RESAMPLE_SINC_COEF_DATA
     offset: 0x0041
+    description: SINC coefficient data
+    fields:
+      - bits: "31:0"
+        name: sinc_coef_data
+        access: R/W
+        default: "0"
+        description: SINC coefficient data
 

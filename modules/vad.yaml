@@ -1,179 +1,901 @@
 module: VAD
 
+module_condition:
+  macro_path: ["voice", "algo"]
+  equals: "vad"
+
 registers:
   - name: VAD_TOP_CTRL0
     offset: 0x0000
+    description: VAD top control 0
+    fields:
+      - bits: "31"
+        name: vad_en
+        access: R/W
+        default: "0"
+        description: VAD enable
+      - bits: "30"
+        name: dec_fir_en
+        access: R/W
+        default: "0"
+        description: Decimation FIR enable
+      - bits: "29"
+        name: pre_emp_en
+        access: R/W
+        default: "0"
+        description: Pre-emphasis enable
+      - bits: "28"
+        name: pre_ram_en
+        access: R/W
+        default: "0"
+        description: Pre RAM enable
+      - bits: "27"
+        name: frame_his_en
+        access: R/W
+        default: "0"
+        description: Frame history enable
+      - bits: "26"
+        name: frame_his_save_en
+        access: R/W
+        default: "0"
+        description: Frame history save enable
+      - bits: "25:24"
+        name: reserved1
+        access: R/W
+        default: "0"
+        description: reserved
+      - bits: "23"
+        name: ceps_ceps_en
+        access: R/W
+        default: "0"
+        description: Cepstrum cepstrum enable
+      - bits: "22"
+        name: ceps_spec_en
+        access: R/W
+        default: "0"
+        description: Cepstrum spectrum enable
+      - bits: "21"
+        name: post_dec_en
+        access: R/W
+        default: "0"
+        description: Post decimation enable
+      - bits: "20"
+        name: two_channel_en
+        access: R/W
+        default: "0"
+        description: Two channel enable
+      - bits: "19:11"
+        name: reserved2
+        access: R/W
+        default: "0"
+        description: reserved
+      - bits: "10"
+        name: soft_rst
+        access: R/W
+        default: "0"
+        description: Soft reset
+      - bits: "9"
+        name: dec_fir_soft_rst
+        access: R/W
+        default: "0"
+        description: Decimation FIR soft reset
+      - bits: "8"
+        name: pre_emp_soft_rst
+        access: R/W
+        default: "0"
+        description: Pre-emphasis soft reset
+      - bits: "7"
+        name: proc_soft_rst
+        access: R/W
+        default: "0"
+        description: Process soft reset
+      - bits: "6"
+        name: frame_his_soft_rst
+        access: R/W
+        default: "0"
+        description: Frame history soft reset
+      - bits: "5"
+        name: frame_his_save_soft_rst
+        access: R/W
+        default: "0"
+        description: Frame history save soft reset
+      - bits: "4"
+        name: ceps_win_soft_rst
+        access: R/W
+        default: "0"
+        description: Cepstrum window soft reset
+      - bits: "3"
+        name: ceps_fft_soft_rst
+        access: R/W
+        default: "0"
+        description: Cepstrum FFT soft reset
+      - bits: "2"
+        name: ceps_ceps_soft_rst
+        access: R/W
+        default: "0"
+        description: Cepstrum cepstrum soft reset
+      - bits: "1"
+        name: ceps_spec_soft_rst
+        access: R/W
+        default: "0"
+        description: Cepstrum spectrum soft reset
+      - bits: "0"
+        name: post_dec_soft_rst
+        access: R/W
+        default: "0"
+        description: Post decimation soft reset
 
   - name: VAD_TOP_CTRL1
     offset: 0x0001
+    description: VAD top control 1
+    fields:
+      - bits: "31:30"
+        name: vad_clk_gate
+        access: R/W
+        default: "0"
+        description: VAD clock gate
+      - bits: "29:28"
+        name: prepare_clk_gate
+        access: R/W
+        default: "0"
+        description: Prepare clock gate
+      - bits: "27:26"
+        name: proc_clk_gate
+        access: R/W
+        default: "0"
+        description: Process clock gate
+      - bits: "25:24"
+        name: frame_his_clk_gate
+        access: R/W
+        default: "0"
+        description: Frame history clock gate
+      - bits: "23:22"
+        name: ceps_ceps_clk_gate
+        access: R/W
+        default: "0"
+        description: Cepstrum cepstrum clock gate
+      - bits: "21:20"
+        name: ceps_spec_clk_gate
+        access: R/W
+        default: "0"
+        description: Cepstrum spectrum clock gate
+      - bits: "19:18"
+        name: ch_sel1_clk_gate
+        access: R/W
+        default: "0"
+        description: Channel select 1 clock gate
+      - bits: "17:16"
+        name: ch_sel0_clk_gate
+        access: R/W
+        default: "0"
+        description: Channel select 0 clock gate
+      - bits: "15:8"
+        name: reserved
+        access: R/W
+        default: "0"
+        description: reserved
+      - bits: "7"
+        name: vad_sw_reset
+        access: R/W
+        default: "0"
+        description: VAD software reset
+      - bits: "6"
+        name: prepare_sw_reset
+        access: R/W
+        default: "0"
+        description: Prepare software reset
+      - bits: "5"
+        name: proc_sw_reset
+        access: R/W
+        default: "0"
+        description: Process software reset
+      - bits: "4"
+        name: frame_his_sw_reset
+        access: R/W
+        default: "0"
+        description: Frame history software reset
+      - bits: "3"
+        name: ceps_win_sw_reset
+        access: R/W
+        default: "0"
+        description: Cepstrum window software reset
+      - bits: "2"
+        name: ceps_ceps_sw_reset
+        access: R/W
+        default: "0"
+        description: Cepstrum cepstrum software reset
+      - bits: "1"
+        name: ceps_spec_sw_reset
+        access: R/W
+        default: "0"
+        description: Cepstrum spectrum software reset
+      - bits: "0"
+        name: post_dec_sw_reset
+        access: R/W
+        default: "0"
+        description: Post decimation software reset
 
   - name: VAD_TOP_CTRL2
     offset: 0x0002
+    description: VAD top control 2
+    fields:
+      - bits: "31:26"
+        name: reserved1
+        access: R/W
+        default: "0"
+        description: reserved
+      - bits: "25:24"
+        name: ch1_shift
+        access: R/W
+        default: "0"
+        description: "Channel 1 shift: 0=0, 1=1, 2=2, 3=3"
+      - bits: "23:10"
+        name: reserved2
+        access: R/W
+        default: "0"
+        description: reserved
+      - bits: "9:8"
+        name: ch0_shift
+        access: R/W
+        default: "0"
+        description: "Channel 0 shift: 0=0, 1=1, 2=2, 3=3"
+      - bits: "7:0"
+        name: reserved3
+        access: R/W
+        default: "0"
+        description: reserved
 
   - name: VAD_FIR_CTRL
     offset: 0x0003
+    description: VAD FIR control
+    fields:
+      - bits: "31:30"
+        name: reserved1
+        access: R/W
+        default: "0"
+        description: reserved
+      - bits: "29:24"
+        name: dec_filter_order
+        access: R/W
+        default: "0"
+        description: Decimation filter order
+      - bits: "23:16"
+        name: reserved2
+        access: R/W
+        default: "0"
+        description: reserved
+      - bits: "15:8"
+        name: dec_filter_depthm1
+        access: R/W
+        default: "0"
+        description: Decimation filter depth minus 1 (>= filter pipe + order)
+      - bits: "7:4"
+        name: reserved3
+        access: R/W
+        default: "0"
+        description: reserved
+      - bits: "3:0"
+        name: dec_rate
+        access: R/W
+        default: "0"
+        description: Decimation rate minus 1 (0~11)
 
   - name: VAD_FIR_EMP
     offset: 0x0004
+    description: VAD FIR pre-emphasis
+    fields:
+      - bits: "31:10"
+        name: reserved
+        access: R/W
+        default: "0"
+        description: reserved
+      - bits: "9:0"
+        name: pre_emp_coef
+        access: R/W
+        default: "0"
+        description: Pre-emphasis coefficient (float unsigned)
 
   - name: VAD_FIR_COEF0
     offset: 0x0005
+    description: VAD FIR coefficient 0
+    fields:
+      - bits: "31:16"
+        name: dec_coef_0
+        access: R/W
+        default: "0"
+        description: Decimation coefficient 0 (8.1.1.7)
+      - bits: "15:0"
+        name: dec_coef_1
+        access: R/W
+        default: "0"
+        description: Decimation coefficient 1 (8.1.1.7)
 
   - name: VAD_FIR_COEF1
     offset: 0x0006
+    description: VAD FIR coefficient 1
+    fields:
+      - bits: "31:16"
+        name: dec_coef_2
+        access: R/W
+        default: "0"
+        description: Decimation coefficient 2 (8.1.1.7)
+      - bits: "15:0"
+        name: dec_coef_3
+        access: R/W
+        default: "0"
+        description: Decimation coefficient 3 (8.1.1.7)
 
   - name: VAD_FIR_COEF2
     offset: 0x0007
+    description: VAD FIR coefficient 2
+    fields:
+      - bits: "31:16"
+        name: dec_coef_4
+        access: R/W
+        default: "0"
+        description: Decimation coefficient 4 (8.1.1.7)
+      - bits: "15:0"
+        name: dec_coef_5
+        access: R/W
+        default: "0"
+        description: Decimation coefficient 5 (8.1.1.7)
 
   - name: VAD_FIR_COEF3
     offset: 0x0008
+    description: VAD FIR coefficient 3
+    fields:
+      - bits: "31:16"
+        name: dec_coef_6
+        access: R/W
+        default: "0"
+        description: Decimation coefficient 6 (8.1.1.7)
+      - bits: "15:0"
+        name: dec_coef_7
+        access: R/W
+        default: "0"
+        description: Decimation coefficient 7 (8.1.1.7)
 
   - name: VAD_FIR_COEF4
     offset: 0x0009
+    description: VAD FIR coefficient 4
+    fields:
+      - bits: "31:16"
+        name: dec_coef_8
+        access: R/W
+        default: "0"
+        description: Decimation coefficient 8 (8.1.1.7)
+      - bits: "15:0"
+        name: dec_coef_9
+        access: R/W
+        default: "0"
+        description: Decimation coefficient 9 (8.1.1.7)
 
   - name: VAD_FIR_COEF5
     offset: 0x000a
+    description: VAD FIR coefficient 5
+    fields:
+      - bits: "31:16"
+        name: dec_coef_10
+        access: R/W
+        default: "0"
+        description: Decimation coefficient 10 (8.1.1.7)
+      - bits: "15:0"
+        name: dec_coef_11
+        access: R/W
+        default: "0"
+        description: Decimation coefficient 11 (8.1.1.7)
 
   - name: VAD_FIR_COEF6
     offset: 0x000b
+    description: VAD FIR coefficient 6
+    fields:
+      - bits: "31:16"
+        name: dec_coef_12
+        access: R/W
+        default: "0"
+        description: Decimation coefficient 12 (8.1.1.7)
+      - bits: "15:0"
+        name: dec_coef_13
+        access: R/W
+        default: "0"
+        description: Decimation coefficient 13 (8.1.1.7)
 
   - name: VAD_FIR_COEF7
     offset: 0x000c
+    description: VAD FIR coefficient 7
+    fields:
+      - bits: "31:16"
+        name: dec_coef_14
+        access: R/W
+        default: "0"
+        description: Decimation coefficient 14 (8.1.1.7)
+      - bits: "15:0"
+        name: dec_coef_15
+        access: R/W
+        default: "0"
+        description: Decimation coefficient 15 (8.1.1.7)
 
   - name: VAD_FIR_COEF8
     offset: 0x000d
+    description: VAD FIR coefficient 8
+    fields:
+      - bits: "31:16"
+        name: dec_coef_16
+        access: R/W
+        default: "0"
+        description: Decimation coefficient 16 (8.1.1.7)
+      - bits: "15:0"
+        name: dec_coef_17
+        access: R/W
+        default: "0"
+        description: Decimation coefficient 17 (8.1.1.7)
 
   - name: VAD_FIR_COEF9
     offset: 0x000e
+    description: VAD FIR coefficient 9
+    fields:
+      - bits: "31:16"
+        name: dec_coef_18
+        access: R/W
+        default: "0"
+        description: Decimation coefficient 18 (8.1.1.7)
+      - bits: "15:0"
+        name: dec_coef_19
+        access: R/W
+        default: "0"
+        description: Decimation coefficient 19 (8.1.1.7)
 
   - name: VAD_FIR_COEF10
     offset: 0x000f
+    description: VAD FIR coefficient 10
+    fields:
+      - bits: "31:16"
+        name: dec_coef_20
+        access: R/W
+        default: "0"
+        description: Decimation coefficient 20 (8.1.1.7)
+      - bits: "15:0"
+        name: dec_coef_21
+        access: R/W
+        default: "0"
+        description: Decimation coefficient 21 (8.1.1.7)
 
   - name: VAD_FIR_COEF11
     offset: 0x0010
+    description: VAD FIR coefficient 11
+    fields:
+      - bits: "31:16"
+        name: dec_coef_22
+        access: R/W
+        default: "0"
+        description: Decimation coefficient 22 (8.1.1.7)
+      - bits: "15:0"
+        name: dec_coef_23
+        access: R/W
+        default: "0"
+        description: Decimation coefficient 23 (8.1.1.7)
 
   - name: VAD_FIR_COEF12
     offset: 0x0011
+    description: VAD FIR coefficient 12
+    fields:
+      - bits: "31:16"
+        name: dec_coef_24
+        access: R/W
+        default: "0"
+        description: Decimation coefficient 24 (8.1.1.7)
+      - bits: "15:0"
+        name: dec_coef_25
+        access: R/W
+        default: "0"
+        description: Decimation coefficient 25 (8.1.1.7)
 
   - name: VAD_FRAME_CTRL0
     offset: 0x0012
+    description: VAD frame control 0
+    fields:
+      - bits: "31:0"
+        name: frame_ctrl0
+        access: R/W
+        default: "0"
+        description: Frame control 0
 
   - name: VAD_FRAME_CTRL1
     offset: 0x0013
+    description: VAD frame control 1
+    fields:
+      - bits: "31:0"
+        name: frame_ctrl1
+        access: R/W
+        default: "0"
+        description: Frame control 1
 
   - name: VAD_FRAME_CTRL2
     offset: 0x0014
+    description: VAD frame control 2
+    fields:
+      - bits: "31:0"
+        name: frame_ctrl2
+        access: R/W
+        default: "0"
+        description: Frame control 2
 
   - name: VAD_CEP_CTRL0
     offset: 0x0015
+    description: VAD cepstrum control 0
+    fields:
+      - bits: "31:0"
+        name: cep_ctrl0
+        access: R/W
+        default: "0"
+        description: Cepstrum control 0
 
   - name: VAD_CEP_CTRL1
     offset: 0x0016
+    description: VAD cepstrum control 1
+    fields:
+      - bits: "31:0"
+        name: cep_ctrl1
+        access: R/W
+        default: "0"
+        description: Cepstrum control 1
 
   - name: VAD_CEP_CTRL2
     offset: 0x0017
+    description: VAD cepstrum control 2
+    fields:
+      - bits: "31:0"
+        name: cep_ctrl2
+        access: R/W
+        default: "0"
+        description: Cepstrum control 2
 
   - name: VAD_CEP_CTRL3
     offset: 0x0018
+    description: VAD cepstrum control 3
+    fields:
+      - bits: "31:0"
+        name: cep_ctrl3
+        access: R/W
+        default: "0"
+        description: Cepstrum control 3
 
   - name: VAD_CEP_CTRL4
     offset: 0x0019
+    description: VAD cepstrum control 4
+    fields:
+      - bits: "31:0"
+        name: cep_ctrl4
+        access: R/W
+        default: "0"
+        description: Cepstrum control 4
 
   - name: VAD_CEP_CTRL5
     offset: 0x001a
+    description: VAD cepstrum control 5
+    fields:
+      - bits: "31:0"
+        name: cep_ctrl5
+        access: R/W
+        default: "0"
+        description: Cepstrum control 5
 
   - name: VAD_DEC_CTRL
     offset: 0x001b
+    description: VAD decimation control
+    fields:
+      - bits: "31:0"
+        name: dec_ctrl
+        access: R/W
+        default: "0"
+        description: Decimation control
 
   - name: VAD_TOP_STS0
     offset: 0x001c
+    description: VAD top status 0
+    fields:
+      - bits: "31:0"
+        name: sts0
+        access: R
+        default: "0"
+        description: Status 0
 
   - name: VAD_TOP_STS1
     offset: 0x001d
+    description: VAD top status 1
+    fields:
+      - bits: "31:0"
+        name: sts1
+        access: R
+        default: "0"
+        description: Status 1
 
   - name: VAD_TOP_STS2
     offset: 0x001e
+    description: VAD top status 2
+    fields:
+      - bits: "31:0"
+        name: sts2
+        access: R
+        default: "0"
+        description: Status 2
 
   - name: VAD_FIR_STS0
     offset: 0x001f
+    description: VAD FIR status 0
+    fields:
+      - bits: "31:0"
+        name: fir_sts0
+        access: R
+        default: "0"
+        description: FIR status 0
 
   - name: VAD_FIR_STS1
     offset: 0x0020
+    description: VAD FIR status 1
+    fields:
+      - bits: "31:0"
+        name: fir_sts1
+        access: R
+        default: "0"
+        description: FIR status 1
 
   - name: VAD_POW_STS0
     offset: 0x0021
+    description: VAD power status 0
+    fields:
+      - bits: "31:0"
+        name: pow_sts0
+        access: R
+        default: "0"
+        description: Power status 0
 
   - name: VAD_POW_STS1
     offset: 0x0022
+    description: VAD power status 1
+    fields:
+      - bits: "31:0"
+        name: pow_sts1
+        access: R
+        default: "0"
+        description: Power status 1
 
   - name: VAD_POW_STS2
     offset: 0x0023
+    description: VAD power status 2
+    fields:
+      - bits: "31:0"
+        name: pow_sts2
+        access: R
+        default: "0"
+        description: Power status 2
 
   - name: VAD_FFT_STS0
     offset: 0x0024
+    description: VAD FFT status 0
+    fields:
+      - bits: "31:0"
+        name: fft_sts0
+        access: R
+        default: "0"
+        description: FFT status 0
 
   - name: VAD_FFT_STS1
     offset: 0x0025
+    description: VAD FFT status 1
+    fields:
+      - bits: "31:0"
+        name: fft_sts1
+        access: R
+        default: "0"
+        description: FFT status 1
 
   - name: VAD_SPE_STS0
     offset: 0x0026
+    description: VAD spectrum entropy status 0
+    fields:
+      - bits: "31:0"
+        name: spe_sts0
+        access: R
+        default: "0"
+        description: Spectrum entropy status 0
 
   - name: VAD_SPE_STS1
     offset: 0x0027
+    description: VAD spectrum entropy status 1
+    fields:
+      - bits: "31:0"
+        name: spe_sts1
+        access: R
+        default: "0"
+        description: Spectrum entropy status 1
 
   - name: VAD_SPE_STS2
     offset: 0x0028
+    description: VAD spectrum entropy status 2
+    fields:
+      - bits: "31:0"
+        name: spe_sts2
+        access: R
+        default: "0"
+        description: Spectrum entropy status 2
 
   - name: VAD_SPE_STS3
     offset: 0x0029
+    description: VAD spectrum entropy status 3
+    fields:
+      - bits: "31:0"
+        name: spe_sts3
+        access: R
+        default: "0"
+        description: Spectrum entropy status 3
 
   - name: VAD_DEC_STS0
     offset: 0x002a
+    description: VAD decimation status 0
+    fields:
+      - bits: "31:0"
+        name: dec_sts0
+        access: R
+        default: "0"
+        description: Decimation status 0
 
   - name: VAD_DEC_STS1
     offset: 0x002b
+    description: VAD decimation status 1
+    fields:
+      - bits: "31:0"
+        name: dec_sts1
+        access: R
+        default: "0"
+        description: Decimation status 1
 
   - name: VAD_LUT_CTRL
     offset: 0x002c
+    description: VAD LUT control
+    fields:
+      - bits: "31:0"
+        name: lut_ctrl
+        access: R/W
+        default: "0"
+        description: LUT control
 
   - name: VAD_LUT_WR
     offset: 0x002d
+    description: VAD LUT write
+    fields:
+      - bits: "31:0"
+        name: lut_wr
+        access: R/W
+        default: "0"
+        description: LUT write data
 
   - name: VAD_LUT_RD
     offset: 0x002e
+    description: VAD LUT read
+    fields:
+      - bits: "31:0"
+        name: lut_rd
+        access: R
+        default: "0"
+        description: LUT read data
 
   - name: VAD_IN_SEL0
     offset: 0x002f
+    description: VAD input select 0
+    fields:
+      - bits: "31:0"
+        name: in_sel0
+        access: R/W
+        default: "0"
+        description: Input select 0
 
   - name: VAD_IN_SEL1
     offset: 0x0030
+    description: VAD input select 1
+    fields:
+      - bits: "31:0"
+        name: in_sel1
+        access: R/W
+        default: "0"
+        description: Input select 1
 
   - name: VAD_TO_DDR
     offset: 0x0031
+    description: VAD to DDR control
+    fields:
+      - bits: "31:0"
+        name: to_ddr
+        access: R/W
+        default: "0"
+        description: To DDR control
 
   - name: VAD_SYNC_CTRL0
     offset: 0x0032
+    description: VAD sync control 0
+    fields:
+      - bits: "31:0"
+        name: sync_ctrl0
+        access: R/W
+        default: "0"
+        description: Sync control 0
 
   - name: VAD_SYNC_CHNUM_ID0
     offset: 0x0033
+    description: VAD sync channel number ID 0
+    fields:
+      - bits: "31:0"
+        name: chnum_id0
+        access: R/W
+        default: "0"
+        description: Channel number ID 0
 
   - name: VAD_SYNC_CHNUM_ID1
     offset: 0x0034
+    description: VAD sync channel number ID 1
+    fields:
+      - bits: "31:0"
+        name: chnum_id1
+        access: R/W
+        default: "0"
+        description: Channel number ID 1
 
   - name: VAD_SYNC_CHNUM_ID2
     offset: 0x0035
+    description: VAD sync channel number ID 2
+    fields:
+      - bits: "31:0"
+        name: chnum_id2
+        access: R/W
+        default: "0"
+        description: Channel number ID 2
 
   - name: VAD_SYNC_CHNUM_ID3
     offset: 0x0036
+    description: VAD sync channel number ID 3
+    fields:
+      - bits: "31:0"
+        name: chnum_id3
+        access: R/W
+        default: "0"
+        description: Channel number ID 3
 
   - name: VAD_SYNC_CHNUM_ID4
     offset: 0x0037
+    description: VAD sync channel number ID 4
+    fields:
+      - bits: "31:0"
+        name: chnum_id4
+        access: R/W
+        default: "0"
+        description: Channel number ID 4
 
   - name: VAD_SYNC_CHNUM_ID5
     offset: 0x0038
+    description: VAD sync channel number ID 5
+    fields:
+      - bits: "31:0"
+        name: chnum_id5
+        access: R/W
+        default: "0"
+        description: Channel number ID 5
 
   - name: VAD_SYNC_CHNUM_ID6
     offset: 0x0039
+    description: VAD sync channel number ID 6
+    fields:
+      - bits: "31:0"
+        name: chnum_id6
+        access: R/W
+        default: "0"
+        description: Channel number ID 6
 
   - name: VAD_SYNC_CHNUM_ID7
     offset: 0x003a
+    description: VAD sync channel number ID 7
+    fields:
+      - bits: "31:0"
+        name: chnum_id7
+        access: R/W
+        default: "0"
+        description: Channel number ID 7

@@ -1,297 +1,3167 @@
 module: EARCRX
 
+module_condition:
+  macro_path: ["earcrx", "imp"]
+  eq: 1
+
 sections:
   CMDC:
     registers:
       - name: EARC_RX_CMDC_TOP_CTRL0
         offset: 0x0000
+        description: CMDC top control 0
+        fields:
+          - bits: "31"
+            name: idle2_int
+            access: R/W
+            default: "0"
+            description: idle2 interrupt enable
+          - bits: "30"
+            name: idle1_int
+            access: R/W
+            default: "0"
+            description: idle1 interrupt enable
+          - bits: "29"
+            name: disc2_int
+            access: R/W
+            default: "0"
+            description: disc2 interrupt enable
+          - bits: "28"
+            name: disc1_int
+            access: R/W
+            default: "0"
+            description: disc1 interrupt enable
+          - bits: "27"
+            name: earc_int
+            access: R/W
+            default: "0"
+            description: earc interrupt enable
+          - bits: "26"
+            name: hb_status_int
+            access: R/W
+            default: "0"
+            description: heartbeat status interrupt enable
+          - bits: "25"
+            name: losthb_int
+            access: R/W
+            default: "0"
+            description: lost heartbeat interrupt enable
+          - bits: "24"
+            name: timeout_int
+            access: R/W
+            default: "0"
+            description: timeout interrupt enable
+          - bits: "23"
+            name: status_ch_int
+            access: R/W
+            default: "0"
+            description: status change interrupt enable
+          - bits: "22"
+            name: int_rec_invalid_id
+            access: R/W
+            default: "0"
+            description: receive invalid id interrupt enable
+          - bits: "21"
+            name: int_rec_invalid_offset
+            access: R/W
+            default: "0"
+            description: receive invalid offset interrupt enable
+          - bits: "20"
+            name: int_rec_unexp
+            access: R/W
+            default: "0"
+            description: receive unexpected interrupt enable
+          - bits: "19"
+            name: int_rec_ecc_err
+            access: R/W
+            default: "0"
+            description: receive ECC error interrupt enable
+          - bits: "18"
+            name: int_rec_parity_err
+            access: R/W
+            default: "0"
+            description: receive parity error interrupt enable
+          - bits: "17"
+            name: int_recv_packet
+            access: R/W
+            default: "0"
+            description: receive packet interrupt enable
+          - bits: "16"
+            name: int_rec_time_out
+            access: R/W
+            default: "0"
+            description: receive timeout interrupt enable
+          - bits: "15"
+            name: cmdc_debug0
+            access: R/W
+            default: "0"
+            description: cmdc debug 0
+          - bits: "14"
+            name: cmdc_debug1
+            access: R/W
+            default: "0"
+            description: cmdc debug 1
+          - bits: "13"
+            name: cmdc_debug2
+            access: R/W
+            default: "0"
+            description: cmdc debug 2
+          - bits: "12:7"
+            name: reserved1
+            access: R/W
+            default: "0"
+            description: reserved
+          - bits: "6"
+            name: mute_select
+            access: R/W
+            default: "0"
+            description: "1: use bit5, 0: earc off"
+          - bits: "5"
+            name: mute_contrl
+            access: R/W
+            default: "0"
+            description: value of manual mute control
+          - bits: "4:0"
+            name: reserved2
+            access: R/W
+            default: "0"
+            description: reserved
 
       - name: EARC_RX_CMDC_TOP_CTRL1
         offset: 0x0001
+        description: CMDC top control 1
+        fields:
+          - bits: "31:13"
+            name: reserved1
+            access: R/W
+            default: "0"
+            description: reserved
+          - bits: "12:8"
+            name: reg_scan_reg
+            access: R/W
+            default: "0"
+            description: scan register
+          - bits: "7:5"
+            name: reserved2
+            access: R/W
+            default: "0"
+            description: reserved
+          - bits: "4:0"
+            name: reg_top_soft_rst
+            access: R/W
+            default: "0"
+            description: top soft reset
 
       - name: EARC_RX_CMDC_TOP_CTRL2
         offset: 0x0002
+        description: CMDC top control 2 - interrupt reset
+        fields:
+          - bits: "31"
+            name: reset_idle2_int
+            access: R/W
+            default: "0"
+            description: reset idle2 interrupt
+          - bits: "30"
+            name: reset_idle1_int
+            access: R/W
+            default: "0"
+            description: reset idle1 interrupt
+          - bits: "29"
+            name: reset_disc2_int
+            access: R/W
+            default: "0"
+            description: reset disc2 interrupt
+          - bits: "28"
+            name: reset_disc1_int
+            access: R/W
+            default: "0"
+            description: reset disc1 interrupt
+          - bits: "27"
+            name: reset_earc_int
+            access: R/W
+            default: "0"
+            description: reset earc interrupt
+          - bits: "26"
+            name: reset_hb_status_int
+            access: R/W
+            default: "0"
+            description: reset heartbeat status interrupt
+          - bits: "25"
+            name: reset_losthb_int
+            access: R/W
+            default: "0"
+            description: reset lost heartbeat interrupt
+          - bits: "24"
+            name: reset_timeout_int
+            access: R/W
+            default: "0"
+            description: reset timeout interrupt
+          - bits: "23"
+            name: reset_status_ch_int
+            access: R/W
+            default: "0"
+            description: reset status change interrupt
+          - bits: "22"
+            name: reset_int_rec_invalid_id
+            access: R/W
+            default: "0"
+            description: reset receive invalid id interrupt
+          - bits: "21"
+            name: reset_int_rec_invalid_offset
+            access: R/W
+            default: "0"
+            description: reset receive invalid offset interrupt
+          - bits: "20"
+            name: reset_int_rec_unexp
+            access: R/W
+            default: "0"
+            description: reset receive unexpected interrupt
+          - bits: "19"
+            name: reset_int_rec_ecc_err
+            access: R/W
+            default: "0"
+            description: reset receive ECC error interrupt
+          - bits: "18"
+            name: reset_int_rec_parity_err
+            access: R/W
+            default: "0"
+            description: reset receive parity error interrupt
+          - bits: "17"
+            name: reset_int_recv_packet
+            access: R/W
+            default: "0"
+            description: reset receive packet interrupt
+          - bits: "16"
+            name: reset_int_rec_time_out
+            access: R/W
+            default: "0"
+            description: reset receive timeout interrupt
+          - bits: "15:0"
+            name: reserved
+            access: R/W
+            default: "0"
+            description: reserved
 
       - name: EARC_RX_CMDC_TIMER_CTRL0
         offset: 0x0003
+        description: CMDC timer control 0
+        fields:
+          - bits: "31:0"
+            name: ro_cmdc_status0
+            access: R
+            default: "0"
+            description: CMDC status 0 (read only)
 
       - name: EARC_RX_CMDC_TIMER_CTRL1
         offset: 0x0004
+        description: CMDC timer control 1
+        fields:
+          - bits: "31:0"
+            name: ro_cmdc_status0
+            access: R
+            default: "0"
+            description: CMDC status 0 (read only)
 
       - name: EARC_RX_CMDC_TIMER_CTRL2
         offset: 0x0005
+        description: CMDC timer control 2
+        fields:
+          - bits: "31:0"
+            name: ro_cmdc_status0
+            access: R
+            default: "0"
+            description: CMDC status 0 (read only)
 
       - name: EARC_RX_CMDC_TIMER_CTRL3
         offset: 0x0006
+        description: CMDC timer control 3
+        fields:
+          - bits: "31:0"
+            name: ro_cmdc_status0
+            access: R
+            default: "0"
+            description: CMDC status 0 (read only)
 
       - name: EARC_RX_CMDC_VSM_CTRL0
         offset: 0x0007
+        description: VSM control 0
+        fields:
+          - bits: "31"
+            name: sw_state_update
+            access: R/W
+            default: "0"
+            description: software state update
+          - bits: "30:28"
+            name: sw_state
+            access: R/W
+            default: "0"
+            description: software state
+          - bits: "27"
+            name: arc_initiated
+            access: R/W
+            default: "0"
+            description: ARC initiated
+          - bits: "26"
+            name: arc_terminated
+            access: R/W
+            default: "0"
+            description: ARC terminated
+          - bits: "25"
+            name: arc_enable
+            access: R/W
+            default: "0"
+            description: ARC enable
+          - bits: "24"
+            name: man_hpd
+            access: R/W
+            default: "0"
+            description: manual HPD
+          - bits: "23:22"
+            name: hpd_sel
+            access: R/W
+            default: "0"
+            description: HPD select
+          - bits: "21:20"
+            name: hpd_sel_earc
+            access: R/W
+            default: "0"
+            description: HPD select for eARC
+          - bits: "19"
+            name: comma_cnt_rst
+            access: R/W
+            default: "0"
+            description: comma count reset
+          - bits: "18"
+            name: timeout_status_rst
+            access: R/W
+            default: "0"
+            description: timeout status reset
+          - bits: "17"
+            name: losthb_status_rst
+            access: R/W
+            default: "0"
+            description: lost heartbeat status reset
+          - bits: "16"
+            name: force_rst
+            access: R/W
+            default: "0"
+            description: force reset
+          - bits: "15"
+            name: auto_state
+            access: R/W
+            default: "0"
+            description: auto state
+          - bits: "14"
+            name: cmdc_state_en
+            access: R/W
+            default: "0"
+            description: CMDC state enable
+          - bits: "13:0"
+            name: reserved
+            access: R/W
+            default: "0"
+            description: reserved
 
       - name: EARC_RX_CMDC_VSM_CTRL1
         offset: 0x0008
+        description: VSM control 1 - idle done timing
+        fields:
+          - bits: "31:12"
+            name: max_count_th
+            access: R/W
+            default: "0"
+            description: max count threshold for idle done timing
+          - bits: "11:8"
+            name: reserved
+            access: R/W
+            default: "0"
+            description: reserved
+          - bits: "7"
+            name: reg_soft_rst
+            access: R/W
+            default: "0"
+            description: soft reset
+          - bits: "6:4"
+            name: time_sel
+            access: R/W
+            default: "0"
+            description: time select
+          - bits: "3:2"
+            name: soft_rst_sel
+            access: R/W
+            default: "0"
+            description: soft reset select
+          - bits: "1:0"
+            name: enable_ctrl
+            access: R/W
+            default: "0"
+            description: enable control
 
       - name: EARC_RX_CMDC_VSM_CTRL2
         offset: 0x0009
+        description: VSM control 2 - comma off done timing
+        fields:
+          - bits: "31:12"
+            name: max_count_th
+            access: R/W
+            default: "0"
+            description: max count threshold for comma off done timing
+          - bits: "11:8"
+            name: reserved
+            access: R/W
+            default: "0"
+            description: reserved
+          - bits: "7"
+            name: reg_soft_rst
+            access: R/W
+            default: "0"
+            description: soft reset
+          - bits: "6:4"
+            name: time_sel
+            access: R/W
+            default: "0"
+            description: time select
+          - bits: "3:2"
+            name: soft_rst_sel
+            access: R/W
+            default: "0"
+            description: soft reset select
+          - bits: "1:0"
+            name: enable_ctrl
+            access: R/W
+            default: "0"
+            description: enable control
 
       - name: EARC_RX_CMDC_VSM_CTRL3
         offset: 0x000a
+        description: VSM control 3 - earc timeout timing
+        fields:
+          - bits: "31:12"
+            name: max_count_th
+            access: R/W
+            default: "0"
+            description: max count threshold for earc timeout timing
+          - bits: "11:8"
+            name: reserved
+            access: R/W
+            default: "0"
+            description: reserved
+          - bits: "7"
+            name: reg_soft_rst
+            access: R/W
+            default: "0"
+            description: soft reset
+          - bits: "6:4"
+            name: time_sel
+            access: R/W
+            default: "0"
+            description: time select
+          - bits: "3:2"
+            name: soft_rst_sel
+            access: R/W
+            default: "0"
+            description: soft reset select
+          - bits: "1:0"
+            name: enable_ctrl
+            access: R/W
+            default: "0"
+            description: enable control
 
       - name: EARC_RX_CMDC_VSM_CTRL4
         offset: 0x000b
+        description: VSM control 4 - heartbeat lost timing
+        fields:
+          - bits: "31:12"
+            name: max_count_th
+            access: R/W
+            default: "0"
+            description: max count threshold for heartbeat lost timing
+          - bits: "11:8"
+            name: reserved
+            access: R/W
+            default: "0"
+            description: reserved
+          - bits: "7"
+            name: reg_soft_rst
+            access: R/W
+            default: "0"
+            description: soft reset
+          - bits: "6:4"
+            name: time_sel
+            access: R/W
+            default: "0"
+            description: time select
+          - bits: "3:2"
+            name: soft_rst_sel
+            access: R/W
+            default: "0"
+            description: soft reset select
+          - bits: "1:0"
+            name: enable_ctrl
+            access: R/W
+            default: "0"
+            description: enable control
 
       - name: EARC_RX_CMDC_VSM_CTRL5
         offset: 0x000c
+        description: VSM control 5 - in earc heartbeat detect timing
+        fields:
+          - bits: "31:16"
+            name: reserved1
+            access: R/W
+            default: "0"
+            description: reserved
+          - bits: "15:8"
+            name: status_soft
+            access: R/W
+            default: "0"
+            description: status soft value
+          - bits: "7"
+            name: reg_soft_rst
+            access: R/W
+            default: "0"
+            description: soft reset
+          - bits: "6"
+            name: status_rst
+            access: R/W
+            default: "0"
+            description: status reset
+          - bits: "5:4"
+            name: reserved2
+            access: R/W
+            default: "0"
+            description: reserved
+          - bits: "3:2"
+            name: soft_rst_sel
+            access: R/W
+            default: "0"
+            description: soft reset select
+          - bits: "1:0"
+            name: enable_ctrl
+            access: R/W
+            default: "0"
+            description: enable control
 
       - name: EARC_RX_CMDC_VSM_CTRL6
         offset: 0x000d
+        description: VSM control 6 - HPD control
+        fields:
+          - bits: "31:17"
+            name: reserved
+            access: R/W
+            default: "0"
+            description: reserved
+          - bits: "16"
+            name: cntl_hpd_sel
+            access: R/W
+            default: "0"
+            description: HPD select control
+          - bits: "15:4"
+            name: cntl_hpd_valid_width
+            access: R/W
+            default: "0"
+            description: HPD valid width
+          - bits: "3:0"
+            name: cntl_hpd_glitch_width
+            access: R/W
+            default: "0"
+            description: HPD glitch width
 
       - name: EARC_RX_CMDC_VSM_CTRL7
         offset: 0x000e
+        description: VSM control 7
+        fields:
+          - bits: "31:0"
+            name: vsm_ctrl7
+            access: R/W
+            default: "0"
+            description: VSM control 7
 
       - name: EARC_RX_CMDC_VSM_CTRL8
         offset: 0x000f
+        description: VSM control 8
+        fields:
+          - bits: "31:0"
+            name: vsm_ctrl8
+            access: R/W
+            default: "0"
+            description: VSM control 8
 
       - name: EARC_RX_CMDC_VSM_CTRL9
         offset: 0x0010
+        description: VSM control 9
+        fields:
+          - bits: "31:0"
+            name: vsm_ctrl9
+            access: R/W
+            default: "0"
+            description: VSM control 9
 
       - name: EARC_RX_CMDC_SENDER_CTRL0
         offset: 0x0011
+        description: Sender control 0
+        fields:
+          - bits: "31:2"
+            name: reserved
+            access: R/W
+            default: "0"
+            description: reserved
+          - bits: "1"
+            name: hb_chg_conf_auto
+            access: R/W
+            default: "0"
+            description: heartbeat change config auto
+          - bits: "0"
+            name: hb_chg_auto
+            access: R/W
+            default: "1"
+            description: heartbeat change auto
 
       - name: EARC_RX_CMDC_PACKET_CTRL0
         offset: 0x0012
+        description: Packet control 0
+        fields:
+          - bits: "31"
+            name: packet_mode_enable
+            access: R/W
+            default: "0"
+            description: packet mode enable
+          - bits: "30"
+            name: free_enable
+            access: R/W
+            default: "0"
+            description: free enable
+          - bits: "29"
+            name: soft_rst_man
+            access: R/W
+            default: "0"
+            description: soft reset manual
+          - bits: "28:24"
+            name: ready_th
+            access: R/W
+            default: "0"
+            description: ready threshold
+          - bits: "23:20"
+            name: reserved1
+            access: R/W
+            default: "0"
+            description: reserved
+          - bits: "19:8"
+            name: send_pre_th
+            access: R/W
+            default: "0"
+            description: send preamble threshold
+          - bits: "7:5"
+            name: reserved2
+            access: R/W
+            default: "0"
+            description: reserved
+          - bits: "4"
+            name: sw_state_update
+            access: R/W
+            default: "0"
+            description: software state update
+          - bits: "3:0"
+            name: sw_state
+            access: R/W
+            default: "0"
+            description: software state
 
       - name: EARC_RX_CMDC_PACKET_CTRL1
         offset: 0x0013
+        description: Packet control 1
+        fields:
+          - bits: "31"
+            name: ecc_endian
+            access: R/W
+            default: "0"
+            description: ECC endian for send
+          - bits: "30"
+            name: pre_reg_st
+            access: R/W
+            default: "0"
+            description: preamble register start
+          - bits: "29:21"
+            name: reserved1
+            access: R/W
+            default: "0"
+            description: reserved
+          - bits: "20:16"
+            name: post_th
+            access: R/W
+            default: "0"
+            description: post threshold
+          - bits: "15:14"
+            name: reserved2
+            access: R/W
+            default: "0"
+            description: reserved
+          - bits: "13:8"
+            name: pre_th
+            access: R/W
+            default: "0"
+            description: preamble threshold
+          - bits: "7:0"
+            name: post_flag
+            access: R/W
+            default: "0"
+            description: post flag
 
       - name: EARC_RX_CMDC_PACKET_CTRL2
         offset: 0x0014
+        description: Packet control 2
+        fields:
+          - bits: "31:0"
+            name: pre_flag
+            access: R/W
+            default: "0"
+            description: preamble flag (unsigned)
 
       - name: EARC_RX_CMDC_PACKET_CTRL3
         offset: 0x0015
+        description: Packet control 3
+        fields:
+          - bits: "31"
+            name: cmdc_en
+            access: R/W
+            default: "0"
+            description: CMDC enable
+          - bits: "30"
+            name: cmdc_parity_mask
+            access: R/W
+            default: "0"
+            description: CMDC parity mask
+          - bits: "29"
+            name: timeout_en
+            access: R/W
+            default: "0"
+            description: timeout enable
+          - bits: "28"
+            name: ecc_check_en
+            access: R/W
+            default: "0"
+            description: ECC check enable
+          - bits: "27"
+            name: rev_debug_en
+            access: R/W
+            default: "0"
+            description: receive debug enable
+          - bits: "26:16"
+            name: reserved
+            access: R/W
+            default: "0"
+            description: reserved
+          - bits: "15:0"
+            name: timeout_th
+            access: R/W
+            default: "0"
+            description: timeout threshold
 
       - name: EARC_RX_CMDC_PACKET_CTRL4
         offset: 0x0016
+        description: Packet control 4
+        fields:
+          - bits: "31"
+            name: ack_ignore
+            access: R/W
+            default: "0"
+            description: ACK ignore
+          - bits: "30"
+            name: cmdc_tail_check_mask
+            access: R/W
+            default: "0"
+            description: CMDC tail check mask
+          - bits: "29:20"
+            name: reserved
+            access: R/W
+            default: "0"
+            description: reserved
+          - bits: "19:0"
+            name: cmdc_packet_head
+            access: R/W
+            default: "0"
+            description: CMDC packet head
 
       - name: EARC_RX_CMDC_PACKET_CTRL5
         offset: 0x0017
+        description: Packet control 5
+        fields:
+          - bits: "31:24"
+            name: rev_debug_mask
+            access: R/W
+            default: "0"
+            description: receive debug mask
+          - bits: "23:20"
+            name: reserved
+            access: R/W
+            default: "0"
+            description: reserved
+          - bits: "19:0"
+            name: cmdc_packet_head_mask
+            access: R/W
+            default: "0"
+            description: CMDC packet head mask
 
       - name: EARC_RX_CMDC_PACKET_CTRL6
         offset: 0x0018
+        description: Packet control 6
+        fields:
+          - bits: "31:20"
+            name: recv_pre_threshold
+            access: R/W
+            default: "0"
+            description: receive preamble threshold
+          - bits: "19:9"
+            name: reserved
+            access: R/W
+            default: "0"
+            description: reserved
+          - bits: "8"
+            name: rec_packet_d
+            access: R/W
+            default: "0"
+            description: receive packet D
+          - bits: "7"
+            name: rec_parity_err_cnt
+            access: R/W
+            default: "0"
+            description: receive parity error count
+          - bits: "6"
+            name: rec_ecc_err_cnt
+            access: R/W
+            default: "0"
+            description: receive ECC error count
+          - bits: "5"
+            name: rec_unexp_cnt
+            access: R/W
+            default: "0"
+            description: receive unexpected count
+          - bits: "4"
+            name: rec_invalid_offset_cnt
+            access: R/W
+            default: "0"
+            description: receive invalid offset count
+          - bits: "3"
+            name: rec_invalid_id_cnt
+            access: R/W
+            default: "0"
+            description: receive invalid id count
+          - bits: "2"
+            name: rec_timeout_cnt
+            access: R/W
+            default: "0"
+            description: receive timeout count
+          - bits: "1"
+            name: rec_w_cnt
+            access: R/W
+            default: "0"
+            description: receive write count
+          - bits: "0"
+            name: rec_r_cnt
+            access: R/W
+            default: "0"
+            description: receive read count
 
       - name: EARC_RX_CMDC_BIPHASE_CTRL0
         offset: 0x0019
+        description: Biphase control 0
+        fields:
+          - bits: "31:24"
+            name: reg_tns
+            access: R/W
+            default: "7"
+            description: TNS register
+          - bits: "23:16"
+            name: delay_th
+            access: R/W
+            default: "0"
+            description: delay threshold
+          - bits: "15:10"
+            name: reserved
+            access: R/W
+            default: "0"
+            description: reserved
+          - bits: "9"
+            name: send_ack_en
+            access: R/W
+            default: "0"
+            description: send ACK enable
+          - bits: "8"
+            name: sq_val_en
+            access: R/W
+            default: "0"
+            description: SQ value enable
+          - bits: "7"
+            name: biphase_send_soft_rst
+            access: R/W
+            default: "0"
+            description: biphase send soft reset
+          - bits: "6"
+            name: comma_soft_rst
+            access: R/W
+            default: "0"
+            description: comma soft reset
+          - bits: "5"
+            name: fifo_rst
+            access: R/W
+            default: "0"
+            description: FIFO reset
+          - bits: "4"
+            name: receiver_no_sender
+            access: R/W
+            default: "0"
+            description: receiver no sender
+          - bits: "3"
+            name: sender_free
+            access: R/W
+            default: "0"
+            description: sender free
+          - bits: "2"
+            name: receiver_send
+            access: R/W
+            default: "0"
+            description: receiver send
+          - bits: "1"
+            name: receiver_earc
+            access: R/W
+            default: "0"
+            description: receiver eARC
+          - bits: "0"
+            name: receiver_free
+            access: R/W
+            default: "0"
+            description: receiver free
 
       - name: EARC_RX_CMDC_BIPHASE_CTRL1
         offset: 0x001a
+        description: Biphase control 1
+        fields:
+          - bits: "31:16"
+            name: reserved
+            access: R/W
+            default: "0"
+            description: reserved
+          - bits: "15"
+            name: ack_val_en
+            access: R/W
+            default: "0"
+            description: ACK value enable for send
+          - bits: "14:8"
+            name: reserved2
+            access: R/W
+            default: "0"
+            description: reserved
+          - bits: "7:0"
+            name: width
+            access: R/W
+            default: "0"
+            description: width for send
 
       - name: EARC_RX_CMDC_BIPHASE_CTRL2
         offset: 0x001b
+        description: Biphase control 2
+        fields:
+          - bits: "31"
+            name: ack_val_en
+            access: R/W
+            default: "0"
+            description: ACK value enable for send
+          - bits: "30:20"
+            name: reserved
+            access: R/W
+            default: "0"
+            description: reserved
+          - bits: "19:16"
+            name: ack_rate
+            access: R/W
+            default: "0"
+            description: ACK rate for comma send
+          - bits: "15:0"
+            name: width
+            access: R/W
+            default: "0"
+            description: width for comma send
 
       - name: EARC_RX_CMDC_BIPHASE_CTRL3
         offset: 0x001c
+        description: Biphase control 3
+        fields:
+          - bits: "31:0"
+            name: biphase_ctrl3
+            access: R/W
+            default: "0"
+            description: biphase control 3
 
       - name: EARC_RX_CMDC_DEVICE_ID_CTRL
         offset: 0x001d
+        description: Device ID control
+        fields:
+          - bits: "31"
+            name: apb_write
+            access: R/W
+            default: "0"
+            description: APB write
+          - bits: "30"
+            name: apb_read
+            access: R/W
+            default: "0"
+            description: APB read
+          - bits: "29"
+            name: apb_w_r_done
+            access: R/W
+            default: "0"
+            description: APB write/read done
+          - bits: "28"
+            name: apb_w_r_reset
+            access: R/W
+            default: "0"
+            description: APB write/read reset
+          - bits: "27:16"
+            name: reserved
+            access: R/W
+            default: "0"
+            description: reserved
+          - bits: "15:8"
+            name: apb_w_r_id
+            access: R/W
+            default: "0"
+            description: APB write/read ID
+          - bits: "7:0"
+            name: apb_w_r_start_addr
+            access: R/W
+            default: "0"
+            description: APB write/read start address
 
       - name: EARC_RX_CMDC_DEVICE_WDATA
         offset: 0x001e
+        description: Device write data
+        fields:
+          - bits: "31:8"
+            name: reserved
+            access: R/W
+            default: "0"
+            description: reserved
+          - bits: "7:0"
+            name: apb_write_data
+            access: R/W
+            default: "0"
+            description: APB write data
 
       - name: EARC_RX_CMDC_DEVICE_RDATA
         offset: 0x001f
+        description: Device read data
+        fields:
+          - bits: "31:8"
+            name: reserved
+            access: R/W
+            default: "0"
+            description: reserved
+          - bits: "7:0"
+            name: apb_read_data
+            access: R/W
+            default: "0"
+            description: APB read data
 
       - name: EARC_RX_ANA_CTRL0
         offset: 0x0020
+        description: Analog control 0
+        fields:
+          - bits: "31:0"
+            name: ana_ctrl0
+            access: R/W
+            default: "0"
+            description: analog control 0
 
       - name: EARC_RX_ANA_CTRL1
         offset: 0x0021
+        description: Analog control 1
+        fields:
+          - bits: "31:0"
+            name: ana_ctrl1
+            access: R/W
+            default: "0"
+            description: analog control 1
 
       - name: EARC_RX_ANA_CTRL2
         offset: 0x0022
+        description: Analog control 2
+        fields:
+          - bits: "31:0"
+            name: ana_ctrl2
+            access: R/W
+            default: "0"
+            description: analog control 2
 
       - name: EARC_RX_ANA_CTRL3
         offset: 0x0023
+        description: Analog control 3
+        fields:
+          - bits: "31:0"
+            name: ana_ctrl3
+            access: R/W
+            default: "0"
+            description: analog control 3
 
       - name: EARC_RX_ANA_CTRL4
         offset: 0x0024
+        description: Analog control 4
+        fields:
+          - bits: "31:0"
+            name: ana_ctrl4
+            access: R/W
+            default: "0"
+            description: analog control 4
 
       - name: EARC_RX_ANA_CTRL5
         offset: 0x0025
+        description: Analog control 5
+        fields:
+          - bits: "31:0"
+            name: ana_ctrl5
+            access: R/W
+            default: "0"
+            description: analog control 5
 
       - name: EARC_RX_ANA_STAT0
         offset: 0x0026
+        description: Analog status 0
+        fields:
+          - bits: "31:0"
+            name: ro_ana_status0
+            access: R
+            default: "0"
+            description: analog status 0 (read only)
 
       - name: EARC_RX_CMDC_STATUS0
         offset: 0x0027
+        description: CMDC status 0
+        fields:
+          - bits: "31:0"
+            name: ro_cmdc_status0
+            access: R
+            default: "0"
+            description: CMDC status 0 (read only)
 
       - name: EARC_RX_CMDC_STATUS1
         offset: 0x0028
+        description: CMDC status 1
+        fields:
+          - bits: "31:0"
+            name: ro_cmdc_status1
+            access: R
+            default: "0"
+            description: CMDC status 1 (read only)
 
       - name: EARC_RX_CMDC_STATUS2
         offset: 0x0029
+        description: CMDC status 2
+        fields:
+          - bits: "31:0"
+            name: ro_cmdc_status2
+            access: R
+            default: "0"
+            description: CMDC status 2 (read only)
 
       - name: EARC_RX_CMDC_STATUS3
         offset: 0x002a
+        description: CMDC status 3
+        fields:
+          - bits: "31:0"
+            name: ro_cmdc_status3
+            access: R
+            default: "0"
+            description: CMDC status 3 (read only)
 
       - name: EARC_RX_CMDC_STATUS4
         offset: 0x002b
+        description: CMDC status 4
+        fields:
+          - bits: "31:0"
+            name: ro_cmdc_status4
+            access: R
+            default: "0"
+            description: CMDC status 4 (read only)
 
       - name: EARC_RX_CMDC_STATUS5
         offset: 0x002c
+        description: CMDC status 5
+        fields:
+          - bits: "31:0"
+            name: ro_cmdc_status5
+            access: R
+            default: "0"
+            description: CMDC status 5 (read only)
 
       - name: EARC_RX_CMDC_STATUS6
         offset: 0x002d
+        description: CMDC status 6
+        fields:
+          - bits: "31"
+            name: ro_idle2_int
+            access: R
+            default: "0"
+            description: idle2 interrupt status
+          - bits: "30"
+            name: ro_idle1_int
+            access: R
+            default: "0"
+            description: idle1 interrupt status
+          - bits: "29"
+            name: ro_disc2_int
+            access: R
+            default: "0"
+            description: disc2 interrupt status
+          - bits: "28"
+            name: ro_disc1_int
+            access: R
+            default: "0"
+            description: disc1 interrupt status
+          - bits: "27"
+            name: ro_earc_int
+            access: R
+            default: "0"
+            description: earc interrupt status
+          - bits: "26"
+            name: ro_hb_status_int
+            access: R
+            default: "0"
+            description: heartbeat status interrupt
+          - bits: "25"
+            name: ro_losthb_int
+            access: R
+            default: "0"
+            description: lost heartbeat interrupt status
+          - bits: "24"
+            name: ro_timeout_int
+            access: R
+            default: "0"
+            description: timeout interrupt status
+          - bits: "23"
+            name: ro_status_ch_int
+            access: R
+            default: "0"
+            description: status change interrupt status
+          - bits: "22"
+            name: ro_int_rec_invalid_id
+            access: R
+            default: "0"
+            description: receive invalid id interrupt status
+          - bits: "21"
+            name: ro_int_rec_invalid_offset
+            access: R
+            default: "0"
+            description: receive invalid offset interrupt status
+          - bits: "20"
+            name: ro_int_rec_unexp
+            access: R
+            default: "0"
+            description: receive unexpected interrupt status
+          - bits: "19"
+            name: ro_int_rec_ecc_err
+            access: R
+            default: "0"
+            description: receive ECC error interrupt status
+          - bits: "18"
+            name: ro_int_rec_parity_err
+            access: R
+            default: "0"
+            description: receive parity error interrupt status
+          - bits: "17"
+            name: ro_int_recv_packet
+            access: R
+            default: "0"
+            description: receive packet interrupt status
+          - bits: "16"
+            name: ro_int_rec_time_out
+            access: R
+            default: "0"
+            description: receive timeout interrupt status
+          - bits: "15:0"
+            name: reserved
+            access: R
+            default: "0"
+            description: reserved
 
   DMAC:
     registers:
       - name: EARCRX_DMAC_TOP_CTRL0
         offset: 0x0000
+        description: DMAC top control 0
+        fields:
+          - bits: "31"
+            name: top_work_en
+            access: R/W
+            default: "0"
+            description: top work enable
+          - bits: "30"
+            name: top_soft_rst
+            access: R/W
+            default: "0"
+            description: top soft reset
+          - bits: "29:23"
+            name: reserved1
+            access: R/W
+            default: "0"
+            description: reserved
+          - bits: "22:20"
+            name: dmac_debug_sel
+            access: R/W
+            default: "0"
+            description: dmac debug select
+          - bits: "19"
+            name: reserved2
+            access: R/W
+            default: "0"
+            description: reserved
+          - bits: "18:17"
+            name: dmac_valid_sel
+            access: R/W
+            default: "0"
+            description: "dmac valid sel: 1x=auto&valid, 01=auto, 00=valid"
+          - bits: "16"
+            name: dmac_sync_without_clk
+            access: R/W
+            default: "0"
+            description: dmac sync without clk
+          - bits: "15"
+            name: rst_n_soft_reset_scan
+            access: R/W
+            default: "0"
+            description: rst_n soft reset scan reg
+          - bits: "14"
+            name: reserved3
+            access: R/W
+            default: "0"
+            description: reserved
+          - bits: "13"
+            name: rst_n_sync_clk_slow_scan
+            access: R/W
+            default: "0"
+            description: rst_n sync clk_slow scan reg
+          - bits: "12"
+            name: rst_n_sync_clk_analog_scan
+            access: R/W
+            default: "0"
+            description: rst_n sync clk_analog scan reg
+          - bits: "11"
+            name: clk_slow_auto_gate
+            access: R/W
+            default: "0"
+            description: clk_slow auto gate
+          - bits: "10"
+            name: clk_analog_auto_gate
+            access: R/W
+            default: "0"
+            description: clk_analog auto gate
+          - bits: "9:0"
+            name: reserved4
+            access: R/W
+            default: "0"
+            description: reserved
 
       - name: EARCRX_DMAC_SYNC_CTRL0
         offset: 0x0001
+        description: DMAC sync control 0
+        fields:
+          - bits: "31"
+            name: dmac_sync_en
+            access: R/W
+            default: "0"
+            description: dmac sync module work enable
+          - bits: "30"
+            name: afifo_out_rst
+            access: R/W
+            default: "0"
+            description: afifo out reset
+          - bits: "29"
+            name: afifo_in_rst
+            access: R/W
+            default: "0"
+            description: afifo in reset
+          - bits: "28:17"
+            name: reserved1
+            access: R/W
+            default: "0"
+            description: reserved
+          - bits: "16"
+            name: data_from_analog_delay_en
+            access: R/W
+            default: "0"
+            description: data from analog delay enable
+          - bits: "15"
+            name: reserved2
+            access: R/W
+            default: "0"
+            description: reserved
+          - bits: "14:12"
+            name: delay_cycles
+            access: R/W
+            default: "0"
+            description: delay cycles
+          - bits: "11"
+            name: reserved3
+            access: R/W
+            default: "0"
+            description: reserved
+          - bits: "10:8"
+            name: valid_last_0_clear
+            access: R/W
+            default: "0"
+            description: valid last how many 0 will clear
+          - bits: "7"
+            name: reserved4
+            access: R/W
+            default: "0"
+            description: reserved
+          - bits: "6:4"
+            name: valid_last_1_set
+            access: R/W
+            default: "0"
+            description: valid last how may 1 will set
+          - bits: "3:2"
+            name: dmac_valid_sel
+            access: R/W
+            default: "0"
+            description: "dmac valid sel: 1x=&, 01=auto, 00=data_v"
+          - bits: "1"
+            name: reserved5
+            access: R/W
+            default: "0"
+            description: reserved
+          - bits: "0"
+            name: dmac_data_invert
+            access: R/W
+            default: "0"
+            description: dmac data invert
 
       - name: EARCRX_DMAC_SYNC_STAT0
         offset: 0x0002
+        description: DMAC sync status 0
+        fields:
+          - bits: "31:30"
+            name: reserved1
+            access: R
+            default: "0"
+            description: reserved
+          - bits: "29"
+            name: r_unstable_t0_st
+            access: R
+            default: "0"
+            description: unstable t0 status
+          - bits: "28"
+            name: r_unstable_t1_st
+            access: R
+            default: "0"
+            description: unstable t1 status
+          - bits: "27"
+            name: r_unstable_t2_st
+            access: R
+            default: "0"
+            description: unstable t2 status
+          - bits: "26"
+            name: r_auto_stable_cnt_en
+            access: R
+            default: "0"
+            description: auto stable count enable
+          - bits: "25:10"
+            name: r_auto_stable_cnt
+            access: R
+            default: "0"
+            description: auto stable count
+          - bits: "9"
+            name: o_dmacrx
+            access: R
+            default: "0"
+            description: dmac rx output
+          - bits: "8"
+            name: o_dmacrx_valid
+            access: R
+            default: "0"
+            description: dmac rx valid
+          - bits: "7:4"
+            name: fifo_cnt
+            access: R
+            default: "0"
+            description: fifo count
+          - bits: "3"
+            name: fifo_inready
+            access: R
+            default: "0"
+            description: fifo in ready
+          - bits: "2"
+            name: r_data_valid
+            access: R
+            default: "0"
+            description: data valid
+          - bits: "1"
+            name: r_earc_data_buf
+            access: R
+            default: "0"
+            description: earc data buffer
+          - bits: "0"
+            name: r_earc_data_v_buf
+            access: R
+            default: "0"
+            description: earc data valid buffer
 
       - name: EARCRX_SPDIFIN_SAMPLE_CTRL0
         offset: 0x0003
+        description: SPDIF in sample control 0
+        fields:
+          - bits: "31"
+            name: spdif_sample_en
+            access: R/W
+            default: "0"
+            description: spdif in sample enable
+          - bits: "30"
+            name: spdif_invert
+            access: R/W
+            default: "0"
+            description: spdif in invert
+          - bits: "29"
+            name: debug_single_en
+            access: R/W
+            default: "0"
+            description: debug single enable
+          - bits: "28"
+            name: detect_mode
+            access: R/W
+            default: "0"
+            description: "0=detect by max_width, 1=detect by min_width"
+          - bits: "27:23"
+            name: reserved
+            access: R/W
+            default: "0"
+            description: reserved
+          - bits: "22:20"
+            name: value
+            access: R/W
+            default: "0"
+            description: value
+          - bits: "19:0"
+            name: base_timer
+            access: R/W
+            default: "0"
+            description: base timer to detect sample mode change
 
       - name: EARCRX_SPDIFIN_SAMPLE_CTRL1
         offset: 0x0004
+        description: SPDIF in sample control 1
+        fields:
+          - bits: "31"
+            name: force_sample_mode
+            access: R/W
+            default: "0"
+            description: "0=auto detect, 1=force fixed sample mode"
+          - bits: "30"
+            name: reserved
+            access: R/W
+            default: "0"
+            description: reserved
+          - bits: "29:20"
+            name: mode0_th
+            access: R/W
+            default: "0"
+            description: mode0 threshold time
+          - bits: "19:10"
+            name: mode1_th
+            access: R/W
+            default: "0"
+            description: mode1 threshold time
+          - bits: "9:0"
+            name: mode2_th
+            access: R/W
+            default: "0"
+            description: mode2 threshold time
 
       - name: EARCRX_SPDIFIN_SAMPLE_CTRL2
         offset: 0x0005
+        description: SPDIF in sample control 2
+        fields:
+          - bits: "31:30"
+            name: reserved
+            access: R/W
+            default: "0"
+            description: reserved
+          - bits: "29:20"
+            name: mode3_th
+            access: R/W
+            default: "0"
+            description: mode3 threshold time
+          - bits: "19:10"
+            name: mode4_th
+            access: R/W
+            default: "0"
+            description: mode4 threshold time
+          - bits: "9:0"
+            name: mode5_th
+            access: R/W
+            default: "0"
+            description: mode5 threshold time
 
       - name: EARCRX_SPDIFIN_SAMPLE_CTRL3
         offset: 0x0006
+        description: SPDIF in sample control 3
+        fields:
+          - bits: "31:24"
+            name: mode0_sample_time
+            access: R/W
+            default: "0"
+            description: mode0 sample time
+          - bits: "23:16"
+            name: mode1_sample_time
+            access: R/W
+            default: "0"
+            description: mode1 sample time
+          - bits: "15:8"
+            name: mode2_sample_time
+            access: R/W
+            default: "0"
+            description: mode2 sample time
+          - bits: "7:0"
+            name: mode3_sample_time
+            access: R/W
+            default: "0"
+            description: mode3 sample time
 
       - name: EARCRX_SPDIFIN_SAMPLE_CTRL4
         offset: 0x0007
+        description: SPDIF in sample control 4
+        fields:
+          - bits: "31:24"
+            name: mode4_sample_time
+            access: R/W
+            default: "0"
+            description: mode4 sample time
+          - bits: "23:16"
+            name: mode5_sample_time
+            access: R/W
+            default: "0"
+            description: mode5 sample time
+          - bits: "15:8"
+            name: mode6_sample_time
+            access: R/W
+            default: "0"
+            description: mode6 sample time
+          - bits: "7:0"
+            name: reserved
+            access: R/W
+            default: "0"
+            description: reserved
 
       - name: EARCRX_SPDIFIN_SAMPLE_CTRL5
         offset: 0x0008
+        description: SPDIF in sample control 5
+        fields:
+          - bits: "31"
+            name: dmac_sqout_filter_en
+            access: R/W
+            default: "0"
+            description: dmac sqout filter enable
+          - bits: "30"
+            name: dmac_sqout_invert
+            access: R/W
+            default: "0"
+            description: dmac sqout invert
+          - bits: "29:27"
+            name: dmac_sqout_filter_tick_sel
+            access: R/W
+            default: "0"
+            description: "filter tick sel: 0=sys_clk, 1=1us, 2=10us, 3=100us, 4=1ms"
+          - bits: "26:24"
+            name: dmac_sqout_filter_sel
+            access: R/W
+            default: "0"
+            description: dmac sqout filter select
+          - bits: "23:20"
+            name: reserved
+            access: R/W
+            default: "0"
+            description: reserved
+          - bits: "19:0"
+            name: dmac_sqout_filter_tick
+            access: R/W
+            default: "0"
+            description: dmac sqout filter tick
 
       - name: EARCRX_SPDIFIN_SAMPLE_STAT0
         offset: 0x0009
+        description: SPDIF in sample status 0
+        fields:
+          - bits: "31"
+            name: reserved1
+            access: R
+            default: "0"
+            description: reserved
+          - bits: "30:28"
+            name: sample_mode
+            access: R
+            default: "0"
+            description: sample mode
+          - bits: "27:18"
+            name: min_width_timer
+            access: R
+            default: "0"
+            description: min width timer
+          - bits: "17:8"
+            name: max_width_timer
+            access: R
+            default: "0"
+            description: max width timer
+          - bits: "7"
+            name: spdif_sqout_buf2
+            access: R
+            default: "0"
+            description: spdif sqout buf 2
+          - bits: "6"
+            name: spdif_sqout
+            access: R
+            default: "0"
+            description: spdif sqout
+          - bits: "5:0"
+            name: reserved2
+            access: R
+            default: "0"
+            description: reserved
 
       - name: EARCRX_SPDIFIN_SAMPLE_STAT1
         offset: 0x000a
+        description: SPDIF in sample status 1
+        fields:
+          - bits: "31:27"
+            name: reserved1
+            access: R
+            default: "0"
+            description: reserved
+          - bits: "26:16"
+            name: r_width_min
+            access: R
+            default: "0"
+            description: width min when debug_en valid
+          - bits: "15:11"
+            name: reserved2
+            access: R
+            default: "0"
+            description: reserved
+          - bits: "10:0"
+            name: r_width_max
+            access: R
+            default: "0"
+            description: width max when debug_en valid
 
       - name: EARCRX_SPDIFIN_MUTE_VAL
         offset: 0x000b
+        description: SPDIF in mute value
+        fields:
+          - bits: "31:0"
+            name: mute_val
+            access: R/W
+            default: "0"
+            description: spdif in mute value
 
       - name: EARCRX_SPDIFIN_CTRL0
         offset: 0x000c
+        description: SPDIF in control 0
+        fields:
+          - bits: "31"
+            name: spdifin_en
+            access: R/W
+            default: "0"
+            description: spdifin work enable
+          - bits: "30"
+            name: ch_num_mode
+            access: R/W
+            default: "0"
+            description: "0=ch_num 0~383, 1=ch_num 0~1"
+          - bits: "29:28"
+            name: reserved1
+            access: R/W
+            default: "0"
+            description: reserved
+          - bits: "27"
+            name: debug_en
+            access: R/W
+            default: "0"
+            description: debug enable
+          - bits: "26"
+            name: start_add_ch_cnt
+            access: R/W
+            default: "0"
+            description: start add ch_cnt to ch_num
+          - bits: "25"
+            name: papb_check_en
+            access: R/W
+            default: "0"
+            description: papb check enable
+          - bits: "24"
+            name: nonpcm2pcm_th_en
+            access: R/W
+            default: "0"
+            description: nonpcm2pcm threshold enable
+          - bits: "23:12"
+            name: papb_timeout_th
+            access: R/W
+            default: "0"
+            description: PaPb timeout threshold, generate irq if not detected
+          - bits: "11:8"
+            name: stat_sel
+            access: R/W
+            default: "0"
+            description: for stat1/stat2 select
+          - bits: "7"
+            name: mute_ch_l
+            access: R/W
+            default: "0"
+            description: mute channel L
+          - bits: "6"
+            name: mute_ch_r
+            access: R/W
+            default: "0"
+            description: mute channel R
+          - bits: "5:4"
+            name: reserved2
+            access: R/W
+            default: "0"
+            description: reserved
+          - bits: "3"
+            name: valid_check_en
+            access: R/W
+            default: "0"
+            description: valid check enable
+          - bits: "2"
+            name: parity_check_en
+            access: R/W
+            default: "0"
+            description: parity check enable
+          - bits: "1"
+            name: spdif_data_invert
+            access: R/W
+            default: "0"
+            description: spdif data invert
+          - bits: "0"
+            name: reserved3
+            access: R/W
+            default: "0"
+            description: reserved
 
       - name: EARCRX_SPDIFIN_CTRL1
         offset: 0x000d
+        description: SPDIF in control 1
+        fields:
+          - bits: "31:24"
+            name: internal_irq_clr
+            access: R/W
+            default: "0"
+            description: internal irq status clear
+          - bits: "23:12"
+            name: mute_block_check_th
+            access: R/W
+            default: "0"
+            description: mute block check time threshold
+          - bits: "11:9"
+            name: mute_block_check_tick_sel
+            access: R/W
+            default: "0"
+            description: mute block check tick select
+          - bits: "8"
+            name: ext_0_sync_check
+            access: R/W
+            default: "0"
+            description: ext 0 sync check for papb
+          - bits: "7:0"
+            name: sync_0_mask
+            access: R/W
+            default: "0"
+            description: sync 0 mask
 
       - name: EARCRX_SPDIFIN_CTRL2
         offset: 0x000e
+        description: SPDIF in control 2
+        fields:
+          - bits: "31:24"
+            name: mute_bit_chst
+            access: R/W
+            default: "0"
+            description: mute bit in channel status
+          - bits: "23:19"
+            name: mute_min_block_num
+            access: R/W
+            default: "0"
+            description: mute min block number to declare
+          - bits: "18"
+            name: mute_bit_chst_lr
+            access: R/W
+            default: "0"
+            description: mute bit in channel status L or R
+          - bits: "17"
+            name: mute_block_num_check_en
+            access: R/W
+            default: "0"
+            description: mute block number check enable
+          - bits: "16"
+            name: auto_clear_cps_chst
+            access: R/W
+            default: "0"
+            description: auto clear compress mode when channel status not compress
+          - bits: "15"
+            name: auto_clear_cps_nonpcm2pcm
+            access: R/W
+            default: "0"
+            description: auto clear compress mode when nonpcm2pcm
+          - bits: "14"
+            name: auto_change_earc_arc
+            access: R/W
+            default: "0"
+            description: auto change earc/arc
+          - bits: "13"
+            name: user_lr_chst_papb
+            access: R/W
+            default: "0"
+            description: use L or R channel status to check papb
+          - bits: "12"
+            name: data_valid_mode
+            access: R/W
+            default: "0"
+            description: "0=data valid after 1 block, 1=in 1st block after papb"
+          - bits: "11"
+            name: start_write_toddr_sel
+            access: R/W
+            default: "0"
+            description: "start write toddr: 1=from papb check, 0=from preamble Z"
+          - bits: "10"
+            name: auto_reset_format_change
+            access: R/W
+            default: "0"
+            description: auto reset will detect format change
+          - bits: "9"
+            name: compress_b_pcpd_sel
+            access: R/W
+            default: "0"
+            description: "compress B pcpd select: 1=next 4th subframe, 0=next subframe"
+          - bits: "8:4"
+            name: papb_msb_pos
+            access: R/W
+            default: "0"
+            description: papb msb position in data
+          - bits: "3"
+            name: arc_spdif_on_force_en
+            access: R/W
+            default: "0"
+            description: when in arc mode, spdif on force enable
+          - bits: "2"
+            name: arc_spdif_on_force_val
+            access: R/W
+            default: "0"
+            description: force value
+          - bits: "1"
+            name: earc_mode_force_en
+            access: R/W
+            default: "0"
+            description: earc mode force enable
+          - bits: "0"
+            name: earc_mode_force_val
+            access: R/W
+            default: "0"
+            description: force value
 
       - name: EARCRX_SPDIFIN_CTRL3
         offset: 0x000f
+        description: SPDIF in control 3
+        fields:
+          - bits: "31:16"
+            name: earc_pa_val
+            access: R/W
+            default: "0"
+            description: earc mode pa value
+          - bits: "15:0"
+            name: earc_pb_val
+            access: R/W
+            default: "0"
+            description: earc mode pb value
 
       - name: EARCRX_SPDIFIN_STAT0
         offset: 0x0010
+        description: SPDIF in status 0
+        fields:
+          - bits: "31"
+            name: r_valid_bit0
+            access: R
+            default: "0"
+            description: valid bit 0
+          - bits: "30"
+            name: r_spdifin_cps
+            access: R
+            default: "0"
+            description: spdifin compress
+          - bits: "29"
+            name: r_spdif_out_valid_mask
+            access: R
+            default: "0"
+            description: spdif out valid mask
+          - bits: "28:19"
+            name: reserved
+            access: R
+            default: "0"
+            description: reserved
+          - bits: "18"
+            name: r_spdif_lr_flag
+            access: R
+            default: "0"
+            description: spdif L/R flag
+          - bits: "17"
+            name: r_spdifin_v
+            access: R
+            default: "0"
+            description: spdifin valid
+          - bits: "16"
+            name: r_chst_mute
+            access: R
+            default: "0"
+            description: channel status mute
+          - bits: "15:13"
+            name: r_data_rdy
+            access: R
+            default: "0"
+            description: data ready
+          - bits: "12"
+            name: c_spdifin_sel
+            access: R
+            default: "0"
+            description: spdifin select
+          - bits: "11"
+            name: c_spdifin_valid_sel
+            access: R
+            default: "0"
+            description: spdifin valid select
+          - bits: "10"
+            name: c_sample_stable_sel
+            access: R
+            default: "0"
+            description: sample stable select
+          - bits: "9"
+            name: c_earc_mode
+            access: R
+            default: "0"
+            description: earc mode
+          - bits: "8"
+            name: r_spdifin_en
+            access: R
+            default: "0"
+            description: spdifin enable
+          - bits: "7"
+            name: r_dmacrx_en
+            access: R
+            default: "0"
+            description: dmacrx enable
+          - bits: "6"
+            name: c_find_papb
+            access: R
+            default: "0"
+            description: find papb
+          - bits: "5"
+            name: c_valid_change
+            access: R
+            default: "0"
+            description: valid change
+          - bits: "4"
+            name: c_find_nonpcm2pcm
+            access: R
+            default: "0"
+            description: find nonpcm to pcm
+          - bits: "3"
+            name: c_pcpd_change
+            access: R
+            default: "0"
+            description: pcpd change
+          - bits: "2"
+            name: c_ch_status_change
+            access: R
+            default: "0"
+            description: channel status change
+          - bits: "1"
+            name: i_sample_mode_change
+            access: R
+            default: "0"
+            description: sample mode change
+          - bits: "0"
+            name: r_parity_err
+            access: R
+            default: "0"
+            description: parity error
 
       - name: EARCRX_SPDIFIN_STAT1
         offset: 0x0011
+        description: SPDIF in status 1
+        fields:
+          - bits: "31:0"
+            name: stat1
+            access: R
+            default: "0"
+            description: channel status or pcpd data based on stat_sel
 
       - name: EARCRX_SPDIFIN_STAT2
         offset: 0x0012
+        description: SPDIF in status 2
+        fields:
+          - bits: "31:0"
+            name: stat2
+            access: R
+            default: "0"
+            description: z_width or frame_cnt based on stat_sel
 
       - name: EARCRX_DMAC_UBIT_CTRL0
         offset: 0x0013
+        description: DMAC user bit control 0
+        fields:
+          - bits: "31"
+            name: ubit_decode_en
+            access: R/W
+            default: "0"
+            description: dmac user bit decode enable
+          - bits: "30:24"
+            name: iu_sync_val
+            access: R/W
+            default: "0"
+            description: iu sync value
+          - bits: "23:16"
+            name: fifo_thd
+            access: R/W
+            default: "0"
+            description: generate irq when fifo level pass threshold
+          - bits: "15"
+            name: max_dist_lost
+            access: R/W
+            default: "0"
+            description: max distance between IUs to set lost
+          - bits: "14"
+            name: iu_sync_code_en
+            access: R/W
+            default: "0"
+            description: "iu sync code enable: 0=all iu to fifo, 1=only sync iu packet"
+          - bits: "13:12"
+            name: channel_sel
+            access: R/W
+            default: "0"
+            description: "00=off, 01=L userbit, 10=R userbit, 11=LR userbit"
+          - bits: "11:8"
+            name: max_dist_val
+            access: R/W
+            default: "0"
+            description: max distance between IUs value
+          - bits: "7"
+            name: fifo_thd_irq_en
+            access: R/W
+            default: "0"
+            description: fifo threshold irq enable
+          - bits: "6"
+            name: lost_init_fifo
+            access: R/W
+            default: "0"
+            description: when lost, initial fifo
+          - bits: "5"
+            name: fifo_init
+            access: R/W
+            default: "0"
+            description: fifo initial
+          - bits: "4:0"
+            name: ubit_pos
+            access: R/W
+            default: "0"
+            description: user bit position in data
 
       - name: EARCRX_IU_RDATA
         offset: 0x0014
+        description: IU read data
+        fields:
+          - bits: "31:8"
+            name: reserved
+            access: R/W
+            default: "0"
+            description: reserved
+          - bits: "7:0"
+            name: iu_data
+            access: R
+            default: "0"
+            description: iu data (read only)
 
       - name: EARCRX_DMAC_UBIT_STAT0
         offset: 0x0015
+        description: DMAC user bit status 0
+        fields:
+          - bits: "31:0"
+            name: ubit_stat0
+            access: R
+            default: "0"
+            description: user bit status 0
 
       - name: EARCRX_ERR_CORRECT_CTRL0
         offset: 0x0016
+        description: Error correct control 0
+        fields:
+          - bits: "31"
+            name: err_corrt_en
+            access: R/W
+            default: "0"
+            description: err correct work enable
+          - bits: "30"
+            name: reserved1
+            access: R/W
+            default: "0"
+            description: reserved
+          - bits: "29"
+            name: afifo_out_rst
+            access: R/W
+            default: "0"
+            description: reset afifo out side
+          - bits: "28"
+            name: afifo_in_rst
+            access: R/W
+            default: "0"
+            description: reset afifo in side
+          - bits: "27"
+            name: lr_check
+            access: R/W
+            default: "0"
+            description: lr check
+          - bits: "26:10"
+            name: reserved2
+            access: R/W
+            default: "0"
+            description: reserved
+          - bits: "9"
+            name: mute_bch_data_en
+            access: R/W
+            default: "0"
+            description: mute left/right data
+          - bits: "8"
+            name: mute_bch_err_en
+            access: R/W
+            default: "0"
+            description: disable bch error irq
+          - bits: "7"
+            name: reserved3
+            access: R/W
+            default: "0"
+            description: reserved
+          - bits: "6"
+            name: bch_out_16bit_msb
+            access: R/W
+            default: "0"
+            description: bch output 16bit data msb is 27 or 19
+          - bits: "5"
+            name: bch_out_data_rev
+            access: R/W
+            default: "0"
+            description: bch output data reverse
+          - bits: "4"
+            name: bch_in_ecc_msb_lsb
+            access: R/W
+            default: "0"
+            description: bch input ecc msb/lsb
+          - bits: "3"
+            name: bch_in_ecc_rev
+            access: R/W
+            default: "0"
+            description: bch input ecc reverse
+          - bits: "2"
+            name: bch_in_data_rev
+            access: R/W
+            default: "0"
+            description: bch input data reverse
+          - bits: "1"
+            name: compress_mode
+            access: R/W
+            default: "0"
+            description: "0=off, 1=compress audio mode"
+          - bits: "0"
+            name: force_work_mode_en
+            access: R/W
+            default: "0"
+            description: force work mode enable
 
       - name: EARCRX_ERR_CORRECT_STAT0
         offset: 0x0017
+        description: Error correct status 0
+        fields:
+          - bits: "31:0"
+            name: err_corrt_stat0
+            access: R
+            default: "0"
+            description: error correct status 0
 
       - name: EARCRX_ANA_RST_CTRL0
         offset: 0x0018
+        description: Analog reset control 0
+        fields:
+          - bits: "31"
+            name: ana_rst_check_en
+            access: R/W
+            default: "0"
+            description: analog reset check work enable
+          - bits: "30"
+            name: ana_rst_from_reg_en
+            access: R/W
+            default: "0"
+            description: analog reset from register enable
+          - bits: "29"
+            name: soft_rst_val
+            access: R/W
+            default: "0"
+            description: soft reset value
+          - bits: "28"
+            name: ana_rst_work_en_sel
+            access: R/W
+            default: "0"
+            description: "analog reset work enable: 0=from bit31, 1=from bit31 & top_work_en"
+          - bits: "27"
+            name: reserved
+            access: R/W
+            default: "0"
+            description: reserved
+          - bits: "26:23"
+            name: new_format_hold_rst
+            access: R/W
+            default: "0"
+            description: when new format data in, hold reset after N posedge
+          - bits: "22:20"
+            name: div2_hold_tick_sel
+            access: R/W
+            default: "0"
+            description: earcrx_div2 hold threshold tick select
+          - bits: "19:0"
+            name: div2_hold_th
+            access: R/W
+            default: "0"
+            description: earcrx_div2 hold threshold
 
       - name: EARCRX_ANA_RST_CTRL1
         offset: 0x0019
+        description: Analog reset control 1
+        fields:
+          - bits: "31"
+            name: filter_en1
+            access: R/W
+            default: "0"
+            description: filter enable 1
+          - bits: "30:28"
+            name: filter_sel1
+            access: R/W
+            default: "0"
+            description: filter select 1
+          - bits: "27:25"
+            name: filter_tick_sel1
+            access: R/W
+            default: "0"
+            description: "filter tick sel: 0=sys_clk, 1=1us, 2=10us, 3=100us, 4=1ms"
+          - bits: "24:16"
+            name: filter_tick_time1
+            access: R/W
+            default: "0"
+            description: filter tick time 1
+          - bits: "15"
+            name: filter_en2
+            access: R/W
+            default: "0"
+            description: filter enable 2
+          - bits: "14:12"
+            name: filter_sel2
+            access: R/W
+            default: "0"
+            description: filter select 2
+          - bits: "11:9"
+            name: filter_tick_sel2
+            access: R/W
+            default: "0"
+            description: "filter tick sel: 0=sys_clk, 1=1us, 2=10us, 3=100us, 4=1ms"
+          - bits: "8:0"
+            name: filter_tick_time2
+            access: R/W
+            default: "0"
+            description: filter tick time 2
 
       - name: EARCRX_SPDIFIN_CTRL4
         offset: 0x0020
+        description: SPDIF in control 4
+        fields:
+          - bits: "31"
+            name: reserved1
+            access: R/W
+            default: "0"
+            description: reserved
+          - bits: "30"
+            name: add_ch_r
+            access: R/W
+            default: "0"
+            description: add right channel when stop at left channel send out
+          - bits: "29"
+            name: reg_bc_val0_en
+            access: R/W
+            default: "0"
+            description: when auto add last R channel data, flag in chnum
+          - bits: "28:20"
+            name: unstable_mask_en
+            access: R/W
+            default: "0"
+            description: unstable mask enable for various error types
+          - bits: "19:16"
+            name: stable_zcnt
+            access: R/W
+            default: "0"
+            description: stable after received N preamble Z
+          - bits: "15:0"
+            name: reserved2
+            access: R/W
+            default: "0"
+            description: reserved
 
       - name: EARCRX_SPDIFIN_CTRL5
         offset: 0x0021
+        description: SPDIF in control 5
+        fields:
+          - bits: "31"
+            name: stable_timeout_clr
+            access: R/W
+            default: "0"
+            description: stable timeout status clear
+          - bits: "30:28"
+            name: reserved1
+            access: R/W
+            default: "0"
+            description: reserved
+          - bits: "27:16"
+            name: stable_timeout_th
+            access: R/W
+            default: "0"
+            description: stable timeout check threshold
+          - bits: "15"
+            name: reserved2
+            access: R/W
+            default: "0"
+            description: reserved
+          - bits: "14:12"
+            name: stable_timeout_tick_sel
+            access: R/W
+            default: "0"
+            description: stable timeout threshold tick select
+          - bits: "11"
+            name: stable_timeout_check_en
+            access: R/W
+            default: "0"
+            description: stable timeout check enable
+          - bits: "10:9"
+            name: reserved3
+            access: R/W
+            default: "0"
+            description: reserved
+          - bits: "8:0"
+            name: unstable_int_mask
+            access: R/W
+            default: "0"
+            description: unstable interrupt mask
 
       - name: EARCRX_SPDIFIN_CTRL6
         offset: 0x0022
+        description: SPDIF in control 6
+        fields:
+          - bits: "31:28"
+            name: reserved1
+            access: R/W
+            default: "0"
+            description: reserved
+          - bits: "27"
+            name: chnum_mult_mode
+            access: R/W
+            default: "0"
+            description: "1=mult channel mode, 0=original mode"
+          - bits: "26"
+            name: chnum_max_force
+            access: R/W
+            default: "0"
+            description: "1=force max ch num by register, 0=decode from ch status"
+          - bits: "25:20"
+            name: chnum_max_val
+            access: R/W
+            default: "0"
+            description: max channel number value (set as max channel - 1)
+          - bits: "19:17"
+            name: reserved2
+            access: R/W
+            default: "0"
+            description: reserved
+          - bits: "16"
+            name: check_time_en
+            access: R/W
+            default: "0"
+            description: check time enable, count bit number in set check time
+          - bits: "15:0"
+            name: check_time_th
+            access: R/W
+            default: "0"
+            description: check time threshold
 
       - name: EARCRX_DMAC_SYNC_CTRL1
         offset: 0x0023
+        description: DMAC sync control 1
+        fields:
+          - bits: "31:19"
+            name: reserved
+            access: R/W
+            default: "0"
+            description: reserved
+          - bits: "18"
+            name: dmac_valid_auto_neg_irq_en
+            access: R/W
+            default: "0"
+            description: dmac valid auto neg irq enable
+          - bits: "17"
+            name: dmac_valid_auto_stable_clr
+            access: R/W
+            default: "0"
+            description: dmac valid auto stable state clear
+          - bits: "16"
+            name: dmac_valid_auto_stable_en
+            access: R/W
+            default: "0"
+            description: dmac valid auto stable check enable
+          - bits: "15:0"
+            name: dmac_valid_auto_stable_th
+            access: R/W
+            default: "0"
+            description: dmac valid auto stable set threshold
 
       - name: EARCRX_SPDIFIN_SAMPLE_CTRL6
         offset: 0x0024
+        description: SPDIF in sample control 6
+        fields:
+          - bits: "31:18"
+            name: reserved
+            access: R/W
+            default: "0"
+            description: reserved
+          - bits: "17"
+            name: hold_tri_sample
+            access: R/W
+            default: "0"
+            description: hold sample after 000 or 111
+          - bits: "16"
+            name: sample_mode_filter_en
+            access: R/W
+            default: "0"
+            description: use average value of min/max width
+          - bits: "15:8"
+            name: stable_cycle_min_pct
+            access: R/W
+            default: "0"
+            description: stable cycle min percent (N/256)
+          - bits: "7:0"
+            name: stable_cycle_max_pct
+            access: R/W
+            default: "0"
+            description: stable cycle max percent (N/256)
 
       - name: EARCRX_DMAC_SYNC_CTRL2
         offset: 0x0025
+        description: DMAC sync control 2
+        fields:
+          - bits: "31"
+            name: unstable_t0_err_clr
+            access: R/W
+            default: "0"
+            description: unstable t0 error clear
+          - bits: "30:20"
+            name: reserved
+            access: R/W
+            default: "0"
+            description: reserved
+          - bits: "19"
+            name: unstable_t0_check_en
+            access: R/W
+            default: "0"
+            description: unstable t0 check enable
+          - bits: "18:16"
+            name: unstable_t0_tick_sel
+            access: R/W
+            default: "0"
+            description: "tick sel: 0=dmac_clk, 1=1us, 2=10us, 3=100us, 4=1ms"
+          - bits: "15:0"
+            name: unstable_t0_thd
+            access: R/W
+            default: "0"
+            description: unstable t0 threshold
 
       - name: EARCRX_DMAC_SYNC_CTRL3
         offset: 0x0026
+        description: DMAC sync control 3
+        fields:
+          - bits: "31"
+            name: unstable_t1_err_clr
+            access: R/W
+            default: "0"
+            description: unstable t1 error clear
+          - bits: "30:20"
+            name: reserved
+            access: R/W
+            default: "0"
+            description: reserved
+          - bits: "19"
+            name: unstable_t1_check_en
+            access: R/W
+            default: "0"
+            description: unstable t1 check enable
+          - bits: "18:16"
+            name: unstable_t1_tick_sel
+            access: R/W
+            default: "0"
+            description: "tick sel: 0=dmac_clk, 1=1us, 2=10us, 3=100us, 4=1ms"
+          - bits: "15:0"
+            name: unstable_t1_thd
+            access: R/W
+            default: "0"
+            description: unstable t1 threshold
 
       - name: EARCRX_DMAC_SYNC_CTRL4
         offset: 0x0027
+        description: DMAC sync control 4
+        fields:
+          - bits: "31"
+            name: unstable_t2_err_clr
+            access: R/W
+            default: "0"
+            description: unstable t2 error clear
+          - bits: "30:20"
+            name: reserved
+            access: R/W
+            default: "0"
+            description: reserved
+          - bits: "19"
+            name: unstable_t2_check_en
+            access: R/W
+            default: "0"
+            description: unstable t2 check enable
+          - bits: "18:16"
+            name: unstable_t2_tick_sel
+            access: R/W
+            default: "0"
+            description: "tick sel: 0=dmac_clk, 1=1us, 2=10us, 3=100us, 4=1ms"
+          - bits: "15:0"
+            name: unstable_t2_thd
+            access: R/W
+            default: "0"
+            description: unstable t2 threshold
 
       - name: EARCRX_DMAC_SYNC_STAT1
         offset: 0x0028
+        description: DMAC sync status 1
+        fields:
+          - bits: "31"
+            name: r_unstable_t0_check
+            access: R
+            default: "0"
+            description: unstable t0 check status
+          - bits: "30:16"
+            name: reserved
+            access: R
+            default: "0"
+            description: reserved
+          - bits: "15:0"
+            name: r_unstable_t0_cnt
+            access: R
+            default: "0"
+            description: unstable t0 count
 
       - name: EARCRX_DMAC_SYNC_STAT2
         offset: 0x0029
+        description: DMAC sync status 2
+        fields:
+          - bits: "31"
+            name: r_unstable_t1_check
+            access: R
+            default: "0"
+            description: unstable t1 check status
+          - bits: "30:16"
+            name: reserved
+            access: R
+            default: "0"
+            description: reserved
+          - bits: "15:0"
+            name: r_unstable_t1_cnt
+            access: R
+            default: "0"
+            description: unstable t1 count
 
       - name: EARCRX_DMAC_SYNC_STAT3
         offset: 0x002a
+        description: DMAC sync status 3
+        fields:
+          - bits: "31:19"
+            name: reserved
+            access: R
+            default: "0"
+            description: reserved
+          - bits: "18"
+            name: earc_data_v_slow
+            access: R
+            default: "0"
+            description: earc data valid slow
+          - bits: "17"
+            name: earc_data_v_auto_slow
+            access: R
+            default: "0"
+            description: earc data valid auto slow
+          - bits: "16"
+            name: earrx_dmacrx_sqout_slow
+            access: R
+            default: "0"
+            description: earcrx dmacrx sqout slow
+          - bits: "15:0"
+            name: r_unstable_t2_cnt
+            access: R
+            default: "0"
+            description: unstable t2 count
 
   TOP:
     registers:
       - name: EARCRX_TOP_CTRL0
         offset: 0x0000
+        description: Top control 0
+        fields:
+          - bits: "31:10"
+            name: reserved
+            access: R/W
+            default: "0"
+            description: reserved
+          - bits: "9:8"
+            name: top_debug_sel
+            access: R/W
+            default: "0"
+            description: top debug select
+          - bits: "7"
+            name: spdif_rx_en_force_en
+            access: R/W
+            default: "0"
+            description: force spdif_rx_en to reg value
+          - bits: "6"
+            name: spdif_rx_en_force_val
+            access: R/W
+            default: "0"
+            description: spdif rx enable force value
+          - bits: "5"
+            name: spdif_rx_sqen_force_en
+            access: R/W
+            default: "0"
+            description: force spdif_rx_sqen to reg value
+          - bits: "4"
+            name: spdif_rx_sqen_force_val
+            access: R/W
+            default: "0"
+            description: spdif rx sqen force value
+          - bits: "3"
+            name: dmacrx_en_force_en
+            access: R/W
+            default: "0"
+            description: force dmacrx_en to reg value
+          - bits: "2"
+            name: dmacrx_en_force_val
+            access: R/W
+            default: "0"
+            description: dmacrx enable force value
+          - bits: "1"
+            name: dmacrx_sqen_force_en
+            access: R/W
+            default: "0"
+            description: force dmacrx_sqen to reg value
+          - bits: "0"
+            name: dmacrx_sqen_force_val
+            access: R/W
+            default: "0"
+            description: dmacrx sqen force value
 
       - name: EARCRX_DMAC_INT_MASK
         offset: 0x0001
+        description: DMAC interrupt mask
+        fields:
+          - bits: "31:30"
+            name: reserved
+            access: R/W
+            default: "0"
+            description: reserved
+          - bits: "29:0"
+            name: dmac_int_mask
+            access: R/W
+            default: "0"
+            description: dmac interrupt mask
 
       - name: EARCRX_DMAC_INT_PENDING
         offset: 0x0002
+        description: DMAC interrupt pending
+        fields:
+          - bits: "31:30"
+            name: reserved
+            access: R
+            default: "0"
+            description: reserved
+          - bits: "29:0"
+            name: dmac_int_pending
+            access: R
+            default: "0"
+            description: dmac interrupt pending status
 
       - name: EARCRX_CMDC_INT_MASK
         offset: 0x0003
+        description: CMDC interrupt mask
+        fields:
+          - bits: "31:16"
+            name: reserved
+            access: R/W
+            default: "0"
+            description: reserved
+          - bits: "15:0"
+            name: cmdc_int_mask
+            access: R/W
+            default: "0"
+            description: cmdc interrupt mask
 
       - name: EARCRX_CMDC_INT_PENDING
         offset: 0x0004
+        description: CMDC interrupt pending
+        fields:
+          - bits: "31:16"
+            name: reserved
+            access: R
+            default: "0"
+            description: reserved
+          - bits: "15:0"
+            name: cmdc_int_pending
+            access: R
+            default: "0"
+            description: cmdc interrupt pending status
 
       - name: EARCRX_ANA_CTRL0
         offset: 0x0005
+        description: Analog control 0
+        fields:
+          - bits: "31"
+            name: earcrx_en_d2a
+            access: R/W
+            default: "0"
+            description: earcrx enable D2A
+          - bits: "30"
+            name: reserved1
+            access: R/W
+            default: "0"
+            description: reserved
+          - bits: "29:25"
+            name: earcrx_cmdcrx_reftrim
+            access: R/W
+            default: "0"
+            description: cmdcrx reference trim
+          - bits: "24:20"
+            name: earcrx_idr_trim
+            access: R/W
+            default: "0"
+            description: idr trim
+          - bits: "19:15"
+            name: earcrx_rterm_trim
+            access: R/W
+            default: "0"
+            description: rterm trim
+          - bits: "14:12"
+            name: earcrx_cmdctx_ack_hystrim
+            access: R/W
+            default: "0"
+            description: cmdctx ack hysteresis trim
+          - bits: "11:7"
+            name: earcrx_cmdctx_ack_reftrim
+            access: R/W
+            default: "0"
+            description: cmdctx ack reference trim
+          - bits: "6"
+            name: earcrx_cmdcrx_vrefon_sel
+            access: R/W
+            default: "0"
+            description: cmdcrx vref on select
+          - bits: "5:4"
+            name: earcrx_cmdcrx_rcfilter_sel
+            access: R/W
+            default: "0"
+            description: cmdcrx RC filter select
+          - bits: "3"
+            name: reserved2
+            access: R/W
+            default: "0"
+            description: reserved
+          - bits: "2:0"
+            name: earcrx_cmdcrx_hystrim
+            access: R/W
+            default: "0"
+            description: cmdcrx hysteresis trim
 
       - name: EARCRX_ANA_CTRL1
         offset: 0x0006
+        description: Analog control 1
+        fields:
+          - bits: "31:26"
+            name: reserved1
+            access: R/W
+            default: "0"
+            description: reserved
+          - bits: "25:24"
+            name: earcrx_output_reserve
+            access: R/W
+            default: "0"
+            description: output reserve
+          - bits: "23:16"
+            name: earcrx_reserv
+            access: R/W
+            default: "0"
+            description: reserve
+          - bits: "15:12"
+            name: reserved2
+            access: R/W
+            default: "0"
+            description: reserved
+          - bits: "11"
+            name: earcrx_rxcom_on_sel
+            access: R/W
+            default: "0"
+            description: rxcom on select
+          - bits: "10"
+            name: earcrx_rterm_on
+            access: R/W
+            default: "0"
+            description: rterm on
+          - bits: "9"
+            name: earcrx_cmdcrx_spdif_dat_invsel
+            access: R/W
+            default: "0"
+            description: cmdcrx spdif data invert select
+          - bits: "8"
+            name: earcrx_dmac_out_invsel
+            access: R/W
+            default: "0"
+            description: dmac out invert select
+          - bits: "7:4"
+            name: earcrx_cmdcrx_spdif_sqcon
+            access: R/W
+            default: "0"
+            description: cmdcrx spdif sqcon
+          - bits: "3:0"
+            name: earcrx_dmacrx_sqcon
+            access: R/W
+            default: "0"
+            description: dmacrx sqcon
 
       - name: EARCRX_ANA_STAT0
         offset: 0x0007
+        description: Analog status 0
+        fields:
+          - bits: "31:0"
+            name: ana_stat0
+            access: R
+            default: "0"
+            description: analog status 0
 
       - name: EARCRX_PLL_CTRL0
         offset: 0x0008
+        description: PLL control 0
+        fields:
+          - bits: "31:30"
+            name: reserved1
+            access: R/W
+            default: "0"
+            description: reserved
+          - bits: "29"
+            name: pll_self_reset
+            access: R/W
+            default: "0"
+            description: pll self reset
+          - bits: "28"
+            name: pll_en
+            access: R/W
+            default: "0"
+            description: pll enable
+          - bits: "27"
+            name: pll_sel
+            access: R/W
+            default: "0"
+            description: pll select
+          - bits: "26:21"
+            name: reserved2
+            access: R/W
+            default: "0"
+            description: reserved
+          - bits: "20:16"
+            name: pll_afc_in
+            access: R/W
+            default: "0"
+            description: pll afc in
+          - bits: "15"
+            name: pll_afc_bypass
+            access: R/W
+            default: "0"
+            description: pll afc bypass
+          - bits: "14:12"
+            name: pll_od
+            access: R/W
+            default: "0"
+            description: pll output divider
+          - bits: "11:2"
+            name: reserved3
+            access: R/W
+            default: "0"
+            description: reserved
+          - bits: "1"
+            name: pll_digital_rstn_sel
+            access: R/W
+            default: "0"
+            description: pll digital reset_n select
+          - bits: "0"
+            name: pll_dmacrx_sqout_rstn_sel
+            access: R/W
+            default: "0"
+            description: pll dmacrx sqout reset_n select
 
       - name: EARCRX_PLL_CTRL1
         offset: 0x0009
+        description: PLL control 1
+        fields:
+          - bits: "31:30"
+            name: reserved1
+            access: R/W
+            default: "0"
+            description: reserved
+          - bits: "29"
+            name: pll_lk_rstn
+            access: R/W
+            default: "0"
+            description: pll lock reset_n
+          - bits: "28:27"
+            name: pll_lkw_sel
+            access: R/W
+            default: "0"
+            description: pll lock window select
+          - bits: "26:25"
+            name: reserved2
+            access: R/W
+            default: "0"
+            description: reserved
+          - bits: "24"
+            name: pll_dead_time_adj
+            access: R/W
+            default: "0"
+            description: pll dead time adjust
+          - bits: "23:21"
+            name: pll_iea_adj
+            access: R/W
+            default: "0"
+            description: pll iea adjust
+          - bits: "20:19"
+            name: reserved3
+            access: R/W
+            default: "0"
+            description: reserved
+          - bits: "18:17"
+            name: pll_bias_adj
+            access: R/W
+            default: "0"
+            description: pll bias adjust
+          - bits: "16"
+            name: reserved4
+            access: R/W
+            default: "0"
+            description: reserved
+          - bits: "15:12"
+            name: pll_icp_adj
+            access: R/W
+            default: "0"
+            description: pll icp adjust
+          - bits: "11:0"
+            name: reserved5
+            access: R/W
+            default: "0"
+            description: reserved
 
       - name: EARCRX_PLL_CTRL2
         offset: 0x000a
+        description: PLL control 2
+        fields:
+          - bits: "31:12"
+            name: reserved1
+            access: R/W
+            default: "0"
+            description: reserved
+          - bits: "11"
+            name: pll_lock_f
+            access: R/W
+            default: "0"
+            description: pll lock force
+          - bits: "10"
+            name: reserved2
+            access: R/W
+            default: "0"
+            description: reserved
+          - bits: "9:8"
+            name: pll_lock_long
+            access: R/W
+            default: "0"
+            description: pll lock long
+          - bits: "7:3"
+            name: reserved3
+            access: R/W
+            default: "0"
+            description: reserved
+          - bits: "2"
+            name: pll_ldo_ref_sel
+            access: R/W
+            default: "0"
+            description: pll ldo reference select
+          - bits: "1:0"
+            name: pll_ldo_ref_adj
+            access: R/W
+            default: "0"
+            description: pll ldo reference adjust
 
       - name: EARCRX_PLL_CTRL3
         offset: 0x000b
+        description: PLL control 3
+        fields:
+          - bits: "31:8"
+            name: reserved
+            access: R/W
+            default: "0"
+            description: reserved
+          - bits: "7:0"
+            name: pll_reve
+            access: R/W
+            default: "0"
+            description: pll reserve
 
       - name: EARCRX_PLL_STAT0
         offset: 0x000c
-
+        description: PLL status 0
+        fields:
+          - bits: "31"
+            name: reserved1
+            access: R
+            default: "0"
+            description: reserved
+          - bits: "30"
+            name: pll_afc_done
+            access: R
+            default: "0"
+            description: pll afc done
+          - bits: "29"
+            name: reserved2
+            access: R
+            default: "0"
+            description: reserved
+          - bits: "28:24"
+            name: pll_div_afc_out
+            access: R
+            default: "0"
+            description: pll div afc out
+          - bits: "23:0"
+            name: reserved3
+            access: R
+            default: "0"
+            description: reserved

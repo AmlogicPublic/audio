@@ -10,52 +10,446 @@ instances:
 registers:
   - name: PDM_CTRL
     offset: 0x0000
+    description: PDM control register
+    fields:
+      - bits: "31"
+        name: pdm_en
+        access: R/W
+        default: "0"
+        description: PDM enable
+      - bits: "30"
+        name: dclk_inv
+        access: R/W
+        default: "0"
+        description: Invert the PDM_DCLK
+      - bits: "29"
+        name: out_mode
+        access: R/W
+        default: "0"
+        description: "Output mode. 1: 24bits, 0: 32bits"
+      - bits: "28"
+        name: bypass_mode
+        access: R/W
+        default: "0"
+        description: "Bypass mode. 1: bypass all filter, 0: normal"
+      - bits: "27:20"
+        name: mute_mask
+        access: R/W
+        default: "0"
+        description: "PDM mute mask[7:0], bit[n] mutes ch_n"
+      - bits: "19"
+        name: train_en
+        access: R/W
+        default: "0"
+        description: "Train enable. 1: check value of capture data"
+      - bits: "18"
+        name: train_clr
+        access: R/W
+        default: "0"
+        description: "Train clear. 1: clear training status"
+      - bits: "17"
+        name: chnum_sel
+        access: R/W
+        default: "0"
+        description: "Chnum select. 0: valid_cnt, 1: mask_cnt"
+      - bits: "16"
+        name: afifo_rst
+        access: R/W
+        default: "0"
+        description: PDM AFIFO soft reset. Write 1 to reset
+      - bits: "15:8"
+        name: chan_rst
+        access: R/W
+        default: "0"
+        description: "PDM channel reset. 0: reset, 1: normal"
+      - bits: "7:0"
+        name: chan_en
+        access: R/W
+        default: "0"
+        description: PDM channel enable. Each bit for one channel
 
   - name: PDM_HCIC_CTRL1
     offset: 0x0001
+    description: HCIC filter control 1
+    fields:
+      - bits: "31"
+        name: hcic_en
+        access: R/W
+        default: "0"
+        description: "HCIC filter enable. 1: use sinc filter, 0: bypass"
+      - bits: "30"
+        name: reserved
+        access: R/W
+        default: "0"
+        description: reserved
+      - bits: "29:24"
+        name: hcic_gain_shift
+        access: R/W
+        default: "0"
+        description: HCIC final gain shift parameter
+      - bits: "23:16"
+        name: hcic_gain_mult
+        access: R/W
+        default: "0"
+        description: HCIC final gain multiplier
+      - bits: "15:9"
+        name: reserved2
+        access: R/W
+        default: "0"
+        description: reserved
+      - bits: "8:4"
+        name: hcic_ds_rate
+        access: R/W
+        default: "0"
+        description: HCIC down sample rate
+      - bits: "3:0"
+        name: hcic_stage
+        access: R/W
+        default: "0"
+        description: HCIC stage number. Must be 3~9
 
   - name: PDM_HCIC_CTRL2
     offset: 0x0002
+    description: HCIC filter control 2
+    fields:
+      - bits: "31:0"
+        name: hcic_ctrl2
+        access: R/W
+        default: "0"
+        description: HCIC control 2
 
   - name: PDM_F1_CTRL
     offset: 0x0003
+    description: Filter 1 control
+    fields:
+      - bits: "31"
+        name: f1_en
+        access: R/W
+        default: "0"
+        description: Filter 1 enable
+      - bits: "30:18"
+        name: reserved
+        access: R/W
+        default: "0"
+        description: reserved
+      - bits: "17:16"
+        name: f1_round_mode
+        access: R/W
+        default: "0"
+        description: "F1 round mode. 0: bit49, 1: bit50, 2: bit51"
+      - bits: "15:12"
+        name: f1_ds_rate
+        access: R/W
+        default: "0"
+        description: Filter 1 down sample rate
+      - bits: "11:9"
+        name: reserved2
+        access: R/W
+        default: "0"
+        description: reserved
+      - bits: "8:0"
+        name: f1_stage
+        access: R/W
+        default: "0"
+        description: Filter 1 stage number
 
   - name: PDM_F2_CTRL
     offset: 0x0004
+    description: Filter 2 control
+    fields:
+      - bits: "31"
+        name: f2_en
+        access: R/W
+        default: "0"
+        description: Filter 2 enable
+      - bits: "30:18"
+        name: reserved
+        access: R/W
+        default: "0"
+        description: reserved
+      - bits: "17:16"
+        name: f2_round_mode
+        access: R/W
+        default: "0"
+        description: "F2 round mode. 0: bit21, 1: bit22, 2: bit23"
+      - bits: "15:12"
+        name: f2_ds_rate
+        access: R/W
+        default: "0"
+        description: Filter 2 down sample rate
+      - bits: "11:9"
+        name: reserved2
+        access: R/W
+        default: "0"
+        description: reserved
+      - bits: "8:0"
+        name: f2_stage
+        access: R/W
+        default: "0"
+        description: Filter 2 stage number
 
   - name: PDM_F3_CTRL
     offset: 0x0005
+    description: Filter 3 control
+    fields:
+      - bits: "31"
+        name: f3_en
+        access: R/W
+        default: "0"
+        description: Filter 3 enable
+      - bits: "30:18"
+        name: reserved
+        access: R/W
+        default: "0"
+        description: reserved
+      - bits: "17:16"
+        name: f3_round_mode
+        access: R/W
+        default: "0"
+        description: "F3 round mode. 0: bit21, 1: bit22, 2: bit23"
+      - bits: "15:12"
+        name: f3_ds_rate
+        access: R/W
+        default: "0"
+        description: Filter 3 down sample rate
+      - bits: "11:9"
+        name: reserved2
+        access: R/W
+        default: "0"
+        description: reserved
+      - bits: "8:0"
+        name: f3_stage
+        access: R/W
+        default: "0"
+        description: Filter 3 stage number
 
   - name: PDM_HPF_CTRL
     offset: 0x0006
+    description: High pass filter control
+    fields:
+      - bits: "31"
+        name: hpf_en
+        access: R/W
+        default: "0"
+        description: High pass filter enable
+      - bits: "30:21"
+        name: reserved
+        access: R/W
+        default: "0"
+        description: reserved
+      - bits: "20:16"
+        name: hpf_shift
+        access: R/W
+        default: "0"
+        description: HPF shift steps (6~19)
+      - bits: "15:0"
+        name: hpf_out_factor
+        access: R/W
+        default: "0"
+        description: HPF output factor
 
   - name: PDM_CHAN_CTRL
     offset: 0x0007
+    description: Channel 0-3 sample pointer control
+    fields:
+      - bits: "31:24"
+        name: chan3_ptr
+        access: R/W
+        default: "0"
+        description: Chan3 sample pointer vs PDM_DCLK rise edge
+      - bits: "23:16"
+        name: chan2_ptr
+        access: R/W
+        default: "0"
+        description: Chan2 sample pointer vs PDM_DCLK rise edge
+      - bits: "15:8"
+        name: chan1_ptr
+        access: R/W
+        default: "0"
+        description: Chan1 sample pointer vs PDM_DCLK rise edge
+      - bits: "7:0"
+        name: chan0_ptr
+        access: R/W
+        default: "0"
+        description: Chan0 sample pointer vs PDM_DCLK rise edge
 
   - name: PDM_CHAN_CTRL1
     offset: 0x0008
+    description: Channel 4-7 sample pointer control
+    fields:
+      - bits: "31:24"
+        name: chan7_ptr
+        access: R/W
+        default: "0"
+        description: Chan7 sample pointer vs PDM_DCLK rise edge
+      - bits: "23:16"
+        name: chan6_ptr
+        access: R/W
+        default: "0"
+        description: Chan6 sample pointer vs PDM_DCLK rise edge
+      - bits: "15:8"
+        name: chan5_ptr
+        access: R/W
+        default: "0"
+        description: Chan5 sample pointer vs PDM_DCLK rise edge
+      - bits: "7:0"
+        name: chan4_ptr
+        access: R/W
+        default: "0"
+        description: Chan4 sample pointer vs PDM_DCLK rise edge
 
   - name: PDM_COEFF_ADDR
     offset: 0x0009
+    description: Coefficient address
+    fields:
+      - bits: "31:9"
+        name: reserved
+        access: R/W
+        default: "0"
+        description: reserved
+      - bits: "8:0"
+        name: coeff_addr
+        access: R/W
+        default: "0"
+        description: Address for coefficient data R/W
 
   - name: PDM_COEFF_DATA
     offset: 0x000a
+    description: Coefficient data
+    fields:
+      - bits: "31:0"
+        name: coeff_data
+        access: R/W
+        default: "0"
+        description: Write/read data to coefficient memory
 
   - name: PDM_CLKG_CTRL
     offset: 0x000b
+    description: Clock gating control
+    fields:
+      - bits: "31:7"
+        name: reserved
+        access: R/W
+        default: "0"
+        description: reserved
+      - bits: "6"
+        name: filt_ctrl_clkg
+        access: R/W
+        default: "0"
+        description: filt_ctrl module auto clock gating
+      - bits: "5"
+        name: sinc_fifo_clkg
+        access: R/W
+        default: "0"
+        description: sinc fifo module auto clock gating
+      - bits: "4"
+        name: filter_clkg
+        access: R/W
+        default: "0"
+        description: filter module auto clock gating
+      - bits: "3"
+        name: apb_clkg
+        access: R/W
+        default: "0"
+        description: apb module auto clock gating
+      - bits: "2"
+        name: coeff_mem_clkg
+        access: R/W
+        default: "0"
+        description: coefficient memory module auto clock gating
+      - bits: "1"
+        name: chan_clkg
+        access: R/W
+        default: "0"
+        description: each channel module auto clock gating
+      - bits: "0"
+        name: pdm_clk_clkg
+        access: R/W
+        default: "0"
+        description: cts_pdm_clk auto clock gating
 
   - name: PDM_STS
     offset: 0x000c
+    description: PDM status register
+    fields:
+      - bits: "31:16"
+        name: reserved
+        access: R
+        default: "0"
+        description: reserved
+      - bits: "15:12"
+        name: afifo_cnt
+        access: R
+        default: "0"
+        description: AFIFO count value
+      - bits: "11:4"
+        name: train_result
+        access: R
+        default: "0"
+        description: "Train result of 8 channels. 1: diff, 0: same"
+      - bits: "3:2"
+        name: reserved2
+        access: R
+        default: "0"
+        description: reserved
+      - bits: "1"
+        name: hpf_overflow
+        access: R
+        default: "0"
+        description: HPF output overflow. PCLK too slow
+      - bits: "0"
+        name: hcic_overflow
+        access: R
+        default: "0"
+        description: HCIC output overflow. CTS_PDM_CLK too slow
 
   - name: PDM_MUTE_VALUE
     offset: 0x000d
+    description: Mute value register
+    fields:
+      - bits: "31:0"
+        name: mute_value
+        access: R/W
+        default: "0"
+        description: Mute value when mute_mask=1
 
   - name: PDM_MASK_NUM
     offset: 0x000e
+    description: Mask number for power on invalid data
+    fields:
+      - bits: "31:16"
+        name: reserved
+        access: R/W
+        default: "0"
+        description: reserved
+      - bits: "15:0"
+        name: mask_num
+        access: R/W
+        default: "0"
+        description: Mask invalid data count during filter init
 
   - name: PDM_CHAN_CTRL2
     offset: 0x000f
+    description: Channel control 2
+    fields:
+      - bits: "31:8"
+        name: reserved
+        access: R/W
+        default: "0"
+        description: reserved
+      - bits: "7:0"
+        name: filter_start_ptr
+        access: R/W
+        default: "0"
+        description: Start filter pointer vs PDM_DCLK rise edge
 
   - name: PDM_HPF_GAIN_CTRL
     offset: 0x0010
+    description: HPF gain control
+    fields:
+      - bits: "31:0"
+        name: hpf_gain_ctrl
+        access: R/W
+        default: "0"
+        description: HPF gain control
 

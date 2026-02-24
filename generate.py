@@ -31,6 +31,7 @@ MODULE_GATE = {
     "locker_b":      ("locker", "B", "imp"),
     "asrc_wrapper":  None,   # C5 不支持
     "eqdrc_wrapper": None,   # C5 不支持
+    "sed":           ("voice", "algo"),  # sed 模块条件特殊
 }
 
 # ============================================================================
@@ -48,11 +49,77 @@ def get_macro(*path):
     return node if not isinstance(node, dict) else node.get("imp", 0)
 
 
+def check_condition(cond):
+    """检查单个条件"""
+    if not cond:
+        return True
+    path = cond.get("macro_path", [])
+    node = MACROS
+    for p in path:
+        if not isinstance(node, dict) or p not in node:
+            return False
+        node = node[p]
+    if "equals" in cond:
+        return node == cond["equals"]
+    if "eq" in cond:
+        return node == cond["eq"]
+    if "ne" in cond:
+        return node != cond["ne"]
+    return bool(node)
+
+
+def parse_bits(bits_str):
+    """解析 bits 字符串，返回 (high, low)"""
+    bits_str = str(bits_str)
+    if ":" in bits_str:
+        parts = bits_str.split(":")
+        return int(parts[0]), int(parts[1])
+    return int(bits_str), int(bits_str)
+
+
+def render_fields(fields):
+    """渲染 bit field 表格"""
+    if not fields:
+        return ""
+    
+    lines = ["| Bits | Name | Access | Default | Description |",
+             "|------|------|--------|---------|-------------|"]
+    
+    covered = set()
+    parsed_fields = []
+    
+    for f in fields:
+        high, low = parse_bits(f["bits"])
+        for b in range(low, high + 1):
+            covered.add(b)
+        cond = f.get("condition")
+        active = check_condition(cond)
+        parsed_fields.append({
+            "high": high,
+            "low": low,
+            "name": f["name"] if active else "reserved",
+            "access": f.get("access", "R/W") if active else "R/W",
+            "default": f.get("default", "0") if active else "0",
+            "description": f.get("description", "") if active else "reserved",
+        })
+    
+    parsed_fields.sort(key=lambda x: -x["high"])
+    
+    for f in parsed_fields:
+        bits_str = f"{f['high']}:{f['low']}" if f["high"] != f["low"] else str(f["high"])
+        lines.append(f"| {bits_str} | {f['name']} | {f['access']} | {f['default']} | {f['description']} |")
+    
+    return "\n".join(lines)
+
+
 def is_active(mod_name):
     """模块是否启用"""
     gate = MODULE_GATE.get(mod_name)
     if gate is None:
         return False
+    # sed 模块特殊处理：检查 algo == "sed"
+    if mod_name == "sed":
+        return get_macro("voice", "algo") == "sed"
     return get_macro(*gate)
 
 
@@ -117,6 +184,14 @@ def apply_rename_rules(reg_name, rules):
     return reg_name
 
 
+def check_module_condition(data):
+    """检查模块级条件"""
+    mod_cond = data.get("module_condition")
+    if not mod_cond:
+        return True
+    return check_condition(mod_cond)
+
+
 def gen_module_regs(yaml_path):
     """生成单个模块的寄存器章节"""
     data = yaml.safe_load(yaml_path.read_text())
@@ -130,6 +205,12 @@ def gen_module_regs(yaml_path):
         mod_key = module_name.lower()
         lines = [f"### {module_name}", ""]
         
+        # 检查模块级条件
+        if not check_module_condition(data):
+            lines.append(f"*Not present in {CHIP}*")
+            all_lines.extend(lines)
+            return "\n".join(all_lines)
+        
         if mod_key in MODULE_GATE and not is_active(mod_key):
             lines.append(f"*Not present in {CHIP}*")
         else:
@@ -139,10 +220,28 @@ def gen_module_regs(yaml_path):
                 if isinstance(offsets, dict):
                     for idx, off in offsets.items():
                         n = rname.replace("{IDX}", idx)
-                        lines.append(f"- `{n}` @ 10'h{off:03X}")
+                        lines.append(f"#### {n} @ 10'h{off:03X}")
+                        lines.append("")
+                        desc = reg.get("description", "")
+                        if desc:
+                            lines.append(desc)
+                            lines.append("")
+                        fields = reg.get("fields")
+                        if fields:
+                            lines.append(render_fields(fields))
+                            lines.append("")
                 else:
                     off = reg.get("offset", 0)
-                    lines.append(f"- `{rname}` @ 10'h{off:03X}")
+                    lines.append(f"#### {rname} @ 10'h{off:03X}")
+                    lines.append("")
+                    desc = reg.get("description", "")
+                    if desc:
+                        lines.append(desc)
+                        lines.append("")
+                    fields = reg.get("fields")
+                    if fields:
+                        lines.append(render_fields(fields))
+                        lines.append("")
         
         all_lines.extend(lines)
     else:
@@ -165,10 +264,28 @@ def gen_module_regs(yaml_path):
                     if isinstance(offsets, dict):
                         for idx, off in offsets.items():
                             n = rname.replace("{IDX}", idx)
-                            lines.append(f"- `{n}` @ 10'h{off:03X}")
+                            lines.append(f"#### {n} @ 10'h{off:03X}")
+                            lines.append("")
+                            desc = reg.get("description", "")
+                            if desc:
+                                lines.append(desc)
+                                lines.append("")
+                            fields = reg.get("fields")
+                            if fields:
+                                lines.append(render_fields(fields))
+                                lines.append("")
                     else:
                         off = reg.get("offset", 0)
-                        lines.append(f"- `{rname}` @ 10'h{off:03X}")
+                        lines.append(f"#### {rname} @ 10'h{off:03X}")
+                        lines.append("")
+                        desc = reg.get("description", "")
+                        if desc:
+                            lines.append(desc)
+                            lines.append("")
+                        fields = reg.get("fields")
+                        if fields:
+                            lines.append(render_fields(fields))
+                            lines.append("")
             
             all_lines.extend(lines)
             all_lines.append("")
