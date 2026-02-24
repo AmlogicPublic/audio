@@ -452,4 +452,3 @@ registers:
         access: R/W
         default: "0"
         description: HPF gain control
-

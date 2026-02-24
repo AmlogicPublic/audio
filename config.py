@@ -68,7 +68,8 @@ MACROS = {
     "eqdrc": {
         "imp": 1,
         "ch_in": 0,
-        "static_coeff": 0  # TV: use dynamic coeff; STB: use static coeff
+        "static": 1,  # 0=dynamic coeff, 1=static coeff
+        "arch": "reg",  # "ram" or "reg"
     },
     "mixer": {"imp": 1},
 

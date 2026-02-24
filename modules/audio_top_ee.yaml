@@ -2316,4 +2316,3 @@ registers:
 
   - name: EE_AUDIO_FRHDMIRX_B_STAT2
     offset: 0x03fc
-

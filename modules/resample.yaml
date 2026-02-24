@@ -534,4 +534,3 @@ registers:
         access: R/W
         default: "0"
         description: SINC coefficient data
-

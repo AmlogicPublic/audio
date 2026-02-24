@@ -374,4 +374,3 @@ registers:
         access: R
         default: "0"
         description: Interrupt status register
-

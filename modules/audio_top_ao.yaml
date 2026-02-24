@@ -5,8 +5,8 @@ module: AUDIO_TOP_AO
 # {TO_VOICE} 会被替换为: TOSED 或 TOVAD
 voice_params:
   placeholders:
-    - VOICE      # 直接用算法名: sed->SED, vad->VAD
-    - TO_VOICE   # 带TO前缀: sed->TOSED, vad->TOVAD
+    - VOICE # 直接用算法名: sed->SED, vad->VAD
+    - TO_VOICE # 带TO前缀: sed->TOSED, vad->TOVAD
 
 registers:
   - name: EE_AUDIO2_CLK81_CTRL
@@ -321,4 +321,3 @@ registers:
 
   - name: EE_AUDIO2_EXCEPTION_IRQ_INV0
     offset: 0x0094
-

@@ -192,9 +192,69 @@ def apply_rename_rules(reg_name, rules):
 def check_module_condition(data):
     """检查模块级条件"""
     mod_cond = data.get("module_condition")
-    if not mod_cond:
-        return True
-    return check_condition(mod_cond)
+    if mod_cond and not check_condition(mod_cond):
+        return False
+    
+    arch_cond = data.get("arch_condition")
+    if arch_cond and not check_condition(arch_cond):
+        return False
+    
+    return True
+
+
+def render_register(reg, lines, rename_rules=None):
+    """渲染单个寄存器"""
+    rname = reg["name"]
+    
+    # 应用重命名规则
+    if rename_rules:
+        rname = apply_rename_rules(rname, rename_rules)
+    
+    offsets = reg.get("offsets")
+    
+    # 处理 voice_param 参数化
+    if reg.get("voice_param"):
+        voice_algo = get_macro("voice", "algo")
+        if isinstance(voice_algo, str):
+            algo_upper = voice_algo.upper()
+            n = rname.replace("{VOICE}", algo_upper)
+            n = n.replace("{TO_VOICE}", f"TO{algo_upper}")
+            off = reg.get("offset", 0)
+            lines.append(f"#### {n} @ 10'h{off:03X}")
+            lines.append("")
+            desc = reg.get("description", "")
+            if desc:
+                lines.append(desc)
+                lines.append("")
+            fields = reg.get("fields")
+            if fields:
+                lines.append(render_fields(fields))
+                lines.append("")
+    elif isinstance(offsets, dict):
+        for idx, off in offsets.items():
+            n = rname.replace("{IDX}", idx)
+            lines.append(f"#### {n} @ 10'h{off:03X}")
+            lines.append("")
+            desc = reg.get("description", "")
+            if desc:
+                lines.append(desc)
+                lines.append("")
+            fields = reg.get("fields")
+            if fields:
+                lines.append(render_fields(fields))
+                lines.append("")
+    else:
+        off = reg.get("offset", 0)
+        lines.append(f"#### {rname} @ 10'h{off:03X}")
+        lines.append("")
+        desc = reg.get("description", "")
+        if desc:
+            lines.append(desc)
+            lines.append("")
+        fields = reg.get("fields")
+        if fields:
+            lines.append(render_fields(fields))
+            lines.append("")
 
 
 def gen_module_regs(yaml_path):
@@ -202,9 +262,40 @@ def gen_module_regs(yaml_path):
     data = yaml.safe_load(yaml_path.read_text())
     module_name = data["module"]
     instances = data.get("instances", {})
+    sections = data.get("sections", {})
 
     all_lines = []
 
+    # 处理 sections 结构（如 EARCTX/EARCRX）
+    if sections:
+        # 检查模块级条件
+        if not check_module_condition(data):
+            for section_name in sections.keys():
+                inst_key = f"{module_name.lower()}_{section_name.lower()}"
+                lines = [f"### {module_name}_{section_name}", ""]
+                lines.append(f"*Not present in {CHIP}*")
+                all_lines.extend(lines)
+                all_lines.append("")
+            return "\n".join(all_lines)
+        
+        # 遍历每个 section（如 CMDC, DMAC, TOP）
+        for section_name, section_data in sections.items():
+            inst_key = f"{module_name.lower()}_{section_name.lower()}"
+            lines = [f"### {module_name}_{section_name}", ""]
+            
+            if inst_key in MODULE_GATE and not is_active(inst_key):
+                lines.append(f"*Not present in {CHIP}*")
+            elif inst_key not in MODULES:
+                lines.append(f"*Not defined in MODULES*")
+            else:
+                for reg in section_data.get("registers", []):
+                    render_register(reg, lines)
+            
+            all_lines.extend(lines)
+            all_lines.append("")
+        
+        return "\n".join(all_lines)
+    
     # 如果没有实例定义，当作单例模块
     if not instances:
         mod_key = module_name.lower()
@@ -220,33 +311,7 @@ def gen_module_regs(yaml_path):
             lines.append(f"*Not present in {CHIP}*")
         else:
             for reg in data.get("registers", []):
-                rname = reg["name"]
-                offsets = reg.get("offsets")
-                if isinstance(offsets, dict):
-                    for idx, off in offsets.items():
-                        n = rname.replace("{IDX}", idx)
-                        lines.append(f"#### {n} @ 10'h{off:03X}")
-                        lines.append("")
-                        desc = reg.get("description", "")
-                        if desc:
-                            lines.append(desc)
-                            lines.append("")
-                        fields = reg.get("fields")
-                        if fields:
-                            lines.append(render_fields(fields))
-                            lines.append("")
-                else:
-                    off = reg.get("offset", 0)
-                    lines.append(f"#### {rname} @ 10'h{off:03X}")
-                    lines.append("")
-                    desc = reg.get("description", "")
-                    if desc:
-                        lines.append(desc)
-                        lines.append("")
-                    fields = reg.get("fields")
-                    if fields:
-                        lines.append(render_fields(fields))
-                        lines.append("")
+                render_register(reg, lines)
 
         all_lines.extend(lines)
     else:
@@ -260,38 +325,9 @@ def gen_module_regs(yaml_path):
             elif inst_key not in MODULES:
                 lines.append(f"*Not defined in MODULES*")
             else:
-                rename_rules = inst_cfg.get(
-                    "rename_rules") if inst_cfg else None
+                rename_rules = inst_cfg.get("rename_rules") if inst_cfg else None
                 for reg in data.get("registers", []):
-                    rname = reg["name"]
-                    rname = apply_rename_rules(rname, rename_rules)
-
-                    offsets = reg.get("offsets")
-                    if isinstance(offsets, dict):
-                        for idx, off in offsets.items():
-                            n = rname.replace("{IDX}", idx)
-                            lines.append(f"#### {n} @ 10'h{off:03X}")
-                            lines.append("")
-                            desc = reg.get("description", "")
-                            if desc:
-                                lines.append(desc)
-                                lines.append("")
-                            fields = reg.get("fields")
-                            if fields:
-                                lines.append(render_fields(fields))
-                                lines.append("")
-                    else:
-                        off = reg.get("offset", 0)
-                        lines.append(f"#### {rname} @ 10'h{off:03X}")
-                        lines.append("")
-                        desc = reg.get("description", "")
-                        if desc:
-                            lines.append(desc)
-                            lines.append("")
-                        fields = reg.get("fields")
-                        if fields:
-                            lines.append(render_fields(fields))
-                            lines.append("")
+                    render_register(reg, lines, rename_rules)
 
             all_lines.extend(lines)
             all_lines.append("")
