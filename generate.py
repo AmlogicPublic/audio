@@ -308,9 +308,10 @@ def regs_html(node: Module, base_addr=0) -> str:
             <summary style="border-left:3px solid {color}"><b>{node.name}</b></summary>
             <div class="group-content">{inner}</div></details>'''
 
+    if not node.active:
+        return f'<div class="module-inactive">{node.name} <span class="inactive-label">- Not in {CHIP}</span></div>'
+
     if not node.regs:
-        if not node.active:
-            return f'<div class="module-inactive">{node.name} <span class="inactive-label">- Not in {CHIP}</span></div>'
         return ""
 
     regs_inner = ""
