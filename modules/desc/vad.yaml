@@ -2,7 +2,8 @@ module: vad
 display_name: "Voice Activity Detector"
 condition:
   any_of:
-    - "vad.imp"
+    - "audio_ao_top.Voice.vad.imp"
+    - "audio_ee_top.Voice.vad.imp"
 
 overview: |
   The Voice Activity Detector (VAD) is a low-power hardware module designed to detect human voice

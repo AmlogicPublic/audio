@@ -2,7 +2,8 @@ module: sed
 display_name: "Sound Event Detector"
 condition:
   any_of:
-    - "sed.imp"
+    - "audio_ao_top.Voice.sed.imp"
+    - "audio_ee_top.Voice.sed.imp"
 
 overview: |
   The Sound Event Detector (SED) is a dedicated neural network accelerator for audio classification,

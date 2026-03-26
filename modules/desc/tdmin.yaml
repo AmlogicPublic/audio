@@ -5,6 +5,9 @@ condition:
     - "tdmin.A.imp"
     - "tdmin.B.imp"
     - "tdmin.C.imp"
+    - "tdmin.D.imp"
+    - "tdmin.LB_A.imp"
+    - "tdmin.LB_B.imp"
 
 overview: |
   TDM Input (TDMIN) is a configurable serial audio receiver supporting both TDM (Time Division Multiplexing)

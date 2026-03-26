@@ -5,6 +5,7 @@ condition:
     - "tdmout.A.imp"
     - "tdmout.B.imp"
     - "tdmout.C.imp"
+    - "tdmout.D.imp"
 
 overview: |
   TDM Output (TDMOUT) is a configurable serial audio transmitter supporting both TDM and I2S modes.

@@ -653,11 +653,12 @@ def render_regs_md_with_images(node, depth=0, base_addr=0) -> str:
             lines.append(md_img(f"REG_{r.name}.png", alt=r.name) + "\n\n")
 
         if r.fields:
-            lines.append("| Bits | Name | Access | Default | Description |\n")
-            lines.append("|:----:|:-----|:------:|:-------:|:------------|\n")
+            lines.append('<table class="reg-tbl">\n')
+            lines.append("<thead><tr><th>Bits</th><th>Name</th><th>Access</th><th>Default</th><th>Description</th></tr></thead>\n")
+            lines.append("<tbody>\n")
             for f in r.fields:
-                lines.append(f"| {f.bits} | {f.name} | {f.access} | {f.default} | {f.desc} |\n")
-            lines.append("\n")
+                lines.append(f"<tr><td>{f.bits}</td><td>{f.name}</td><td>{f.access}</td><td>{f.default}</td><td>{f.desc}</td></tr>\n")
+            lines.append("</tbody></table>\n\n")
         elif r.desc:
             lines.append(f"{r.desc}\n\n")
 
@@ -783,8 +784,7 @@ img {
 
 table {
     border-collapse: collapse;
-    width: 100%;
-    table-layout: fixed;
+    width: auto;
     margin: 8px 0 14px;
     font-size: 0.82rem;
 }
@@ -803,25 +803,34 @@ th {
     white-space: nowrap;
 }
 
-th:nth-child(1) { width: 60px; }
-th:nth-child(2) { width: 180px; }
-th:nth-child(3) { width: 60px; }
-th:nth-child(4) { width: 80px; }
-th:nth-child(5) { width: auto; }
-
-td:first-child {
-    text-align: center;
-    white-space: nowrap;
+table.reg-tbl {
+    width: 182mm;
+    max-width: 182mm;
+    table-layout: fixed;
 }
 
-td:nth-child(2) {
+table.reg-tbl th:nth-child(1) { width: 12mm; }
+table.reg-tbl th:nth-child(2) { width: 30mm; }
+table.reg-tbl th:nth-child(3) { width: 12mm; }
+table.reg-tbl th:nth-child(4) { width: 16mm; }
+table.reg-tbl th:nth-child(5) { width: 112mm; }
+
+table.reg-tbl td {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+table.reg-tbl td:nth-child(1) {
+    text-align: center;
+}
+
+table.reg-tbl td:nth-child(2) {
     font-weight: 500;
 }
 
-td:nth-child(3),
-td:nth-child(4) {
+table.reg-tbl td:nth-child(3),
+table.reg-tbl td:nth-child(4) {
     text-align: center;
-    white-space: nowrap;
 }
 
 .reg-hdr {
