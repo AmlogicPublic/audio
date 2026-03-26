@@ -1,0 +1,118 @@
+module: tdmout
+display_name: "TDM Output Interface"
+condition:
+  any_of:
+    - "tdmout.A.imp"
+    - "tdmout.B.imp"
+    - "tdmout.C.imp"
+
+overview: |
+  TDM Output (TDMOUT) is a configurable serial audio transmitter supporting both TDM and I2S modes.
+  It fetches PCM samples from FRDDR (via internal request/acknowledge protocol) and serializes them
+  onto parallel data lanes synchronized to an external or internally generated bit clock (`tdm_sclk`).
+
+  Each TDMOUT instance supports up to `{pad_num}` parallel output lanes for multi-channel audio playback.
+  The module can also source data from EQ/DRC or Mixer blocks for post-processing before output.
+
+features: |
+  - Dual mode operation: TDM mode (up to 32 slots/frame) and I2S mode (2 slots/frame).
+  - Supports up to `{pad_num}` parallel output lanes per instance.
+  - Configurable bit width: 8/16/24/32 bits per slot (`reg_tdmout_bit_num`).
+  - Selectable data source: FRDDR (A-E), EQ/DRC output, or Mixer output.
+  - Per-channel 8-bit digital gain with smooth step change (fade in/out).
+  - Per-channel mask and mute control across all lanes.
+  - Full channel remapping via SWAP registers (any DDR channel → any output slot).
+  - Optional L/R channel mixing (`reg_tdm_lr_mix`).
+  - Programmable output gain shift (1x/2x/4x/8x) via `reg_gain_shift`.
+  - WS (LRCLK) and DATA polarity inversion for codec compatibility.
+  - MSB-first or LSB-first serial bit order.
+  - Initial bit/slot counter values for phase alignment with external systems.
+  - AFIFO for clock domain crossing (`sysclk` → `tdm_sclk`).
+
+block_diagram:
+  images:
+    - tdmout_0.png
+  description: "TDM Output Interface Block Diagram"
+
+function_description: |
+  **Data Flow Pipeline:**
+
+  1. **Sample Fetch** (operates at `sysclk`):
+     - FRDDR request engine pulls 64-bit words from DDR via internal handshake.
+     - Data is unpacked according to `reg_frddr_type` (8/16/32-bit samples).
+     - `reg_frddr_msb` defines the MSB position within the packed word.
+     - Optional data path through EQ/DRC (`eq_drc_sel`) or Mixer (`mixer_sel`).
+
+  2. **Channel Processing**:
+     - SWAP matrix routes DDR channels to output slot positions.
+     - Per-channel gain applied: `out = in × gain_ch[n] / 256` (gain_ch = 0x00~0xFF).
+     - Gain can change smoothly via `reg_gain_step` at `reg_gain_updt_timer` intervals.
+     - MASK suppresses specific channels; MUTE replaces data with `mute_val`.
+     - Optional L/R mixing averages adjacent channel pairs.
+
+  3. **AFIFO Crossing**:
+     - Samples cross from `sysclk` domain to `tdm_sclk` domain.
+     - AFIFO reset sequence: `rst_afifo_out_n = 1`, then `rst_afifo_in_n = 1`.
+
+  4. **Serialization** (operates at `tdm_sclk`):
+     - LRCLK edge detection triggers frame boundary and resets counters.
+     - Initial counters can be preset via `reg_tdm_init_bitnum`/`reg_tdm_init_slotnum`.
+     - Parallel samples are shifted out bit-by-bit (MSB or LSB first).
+     - `reg_wait_cnt` adds startup delay before first data request.
+
+  **Key Configuration Parameters:**
+
+  | Register | Function |
+  |----------|----------|
+  | `reg_tdmout_slot_num` | Slots per frame minus 1 (I2S: 1, TDM: up to 31) |
+  | `reg_tdmout_bit_num` | Bits per slot minus 1 (e.g., 31 for 32-bit) |
+  | `reg_frddr_sel` | FRDDR source: 0=A, 1=B, 2=C, 3=D, 4=E |
+  | `reg_frddr_type` | Pack format: 0=8×8bit, 1-2=16bit, 3-4=32bit |
+  | `eq_drc_sel` | 1=use EQ/DRC output instead of FRDDR |
+  | `mixer_sel` | 1=use Mixer output instead of FRDDR |
+  | `GAIN0-3` | Per-channel gain (0x00=mute, 0xFF=unity) |
+  | `GAIN_CTRL` | Smooth gain transition: step size and update period |
+  | `SWAP0/SWAP1` | Channel remapping: `chX_sel` selects source channel |
+  | `MASK0-7` | Per-lane channel enable bitmask |
+  | `MUTE0-7` | Per-lane channel mute bitmask |
+
+  **Gain Calculation:**
+  - `output = input × gain_ch[n] >> 8` (0xFF = unity, 0x80 = -6dB, 0x00 = mute)
+  - `reg_gain_shift` provides additional 0/6/12/18 dB boost.
+
+application_notes:
+  - title: "I2S Stereo Playback (16-bit)"
+    steps: |
+      - Configure FRDDR_A with audio buffer address and enable.
+      - Set `reg_frddr_sel = 0` to select FRDDR_A.
+      - Set `reg_frddr_type = 1` for 16-bit samples.
+      - Set `reg_tdmout_slot_num = 1`, `reg_tdmout_bit_num = 15`.
+      - Configure SWAP0: ch0_sel=0 (L), ch1_sel=1 (R).
+      - Set MASK0 = 0x3 to enable ch0/ch1.
+      - Reset AFIFO: `rst_afifo_out_n = 1`, then `rst_afifo_in_n = 1`.
+      - Set `reg_wait_cnt` for proper startup timing.
+      - Enable `reg_work_enable = 1`.
+
+  - title: "TDM 8-Channel Playback (32-bit)"
+    steps: |
+      - Configure FRDDR with 8-channel interleaved data.
+      - Set `reg_frddr_type = 3` for 32-bit samples.
+      - Set `reg_tdmout_slot_num = 7`, `reg_tdmout_bit_num = 31`.
+      - Configure lane mask: MASK0 = 0xFF (8 channels).
+      - Enable after FRDDR prefetch completes.
+
+  - title: "Playback with EQ/DRC Processing"
+    steps: |
+      - Configure FRDDR and EQ/DRC module.
+      - Set `eq_drc_sel = 1` in TDMOUT_CTRL1.
+      - EQ/DRC output will be serialized instead of raw FRDDR data.
+      - Useful for speaker protection or room correction.
+
+  - title: "Smooth Volume Fade"
+    steps: |
+      - Set target gain in GAIN0-3 registers.
+      - Configure `reg_gain_step = 1` (1 LSB per update).
+      - Set `reg_gain_updt_timer` for fade duration (units = sample period).
+      - Set `reg_gain_step_chg = 1` to enable smooth ramping.
+      - Gain will gradually transition without clicks.
+

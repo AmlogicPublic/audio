@@ -3,15 +3,16 @@ parent_base: audio_top_ee
 
 instances:
   A:
-    offset_base: 0x200
+    offset_base0: 0x200
     condition: { macro_path: ["hdmirx", "A", "imp"], eq: 1 }
   B:
-    offset_base: 0x260
+    offset_base0: 0x260
     condition: { macro_path: ["hdmirx", "B", "imp"], eq: 1 }
 
-registers:
+registers0:
   - name: FRHDMIRX_{X}_CTRL0
     offset: 0x00
+    description: HDMI-RX audio front-end control register
     fields:
       - bits: "31"
         name: reg_work_enable
@@ -96,6 +97,7 @@ registers:
 
   - name: FRHDMIRX_{X}_CTRL1
     offset: 0x01
+    description: HDMI-RX audio front-end control register
     fields:
       - bits: "31"
         name: enable_auto_mute
@@ -110,6 +112,7 @@ registers:
 
   - name: FRHDMIRX_{X}_CTRL2
     offset: 0x02
+    description: HDMI-RX audio front-end control register
     fields:
       - bits: "31"
         name: dsd_work_enable
@@ -179,6 +182,7 @@ registers:
 
   - name: FRHDMIRX_{X}_CTRL3
     offset: 0x03
+    description: HDMI-RX audio front-end control register
     fields:
       - bits: "30:28"
         name: ch7_sel
@@ -223,6 +227,7 @@ registers:
 
   - name: FRHDMIRX_{X}_CTRL4
     offset: 0x04
+    description: HDMI-RX audio front-end control register
     fields:
       - bits: "31:24"
         name: reg_clr_internal_sts
@@ -247,6 +252,7 @@ registers:
 
   - name: FRHDMIRX_{X}_CTRL5
     offset: 0x05
+    description: HDMI-RX audio front-end control register
     fields:
       - bits: "27:20"
         name: stable_mask
@@ -271,6 +277,7 @@ registers:
 
   - name: FRHDMIRX_{X}_STAT0
     offset: 0x06
+    description: HDMI-RX audio front-end status register
     fields:
       - bits: "31"
         name: valid_bit
@@ -285,6 +292,7 @@ registers:
 
   - name: FRHDMIRX_{X}_STAT1
     offset: 0x07
+    description: HDMI-RX audio front-end status register
     fields:
       - bits: "31:0"
         name: ch_status
@@ -294,6 +302,7 @@ registers:
 
   - name: FRHDMIRX_{X}_STAT2
     offset: 0x08
+    description: HDMI-RX audio front-end status register
     fields:
       - bits: "31:0"
         name: debug_status
@@ -303,6 +312,7 @@ registers:
 
   - name: FRHDMIRX_{X}_MUTE_VAL
     offset: 0x09
+    description: HDMI-RX audio mute value register
     fields:
       - bits: "31:0"
         name: mute_val

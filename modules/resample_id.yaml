@@ -3,15 +3,16 @@ parent_base: audio_top_ee
 
 instances:
   A:
-    offset_base: 0x350
+    offset_base0: 0x350
     condition: { macro_path: ["resample", "A", "imp"], eq: 1 }
   B:
-    offset_base: 0x360
+    offset_base0: 0x360
     condition: { macro_path: ["resample", "B", "imp"], eq: 1 }
 
-registers:
+registers0:
   - name: RSAMP_{X}_CHNUM_ID0
     offset: 0x00
+    description: resample channel ID register
     fields:
       - bits: "31:24"
         name: ch3_id
@@ -36,6 +37,7 @@ registers:
 
   - name: RSAMP_{X}_CHNUM_ID1
     offset: 0x01
+    description: resample channel ID register
     fields:
       - bits: "31:24"
         name: ch7_id
@@ -60,6 +62,7 @@ registers:
 
   - name: RSAMP_{X}_CHNUM_ID2
     offset: 0x02
+    description: resample channel ID register
     fields:
       - bits: "31:24"
         name: ch11_id
@@ -84,6 +87,7 @@ registers:
 
   - name: RSAMP_{X}_CHNUM_ID3
     offset: 0x03
+    description: resample channel ID register
     fields:
       - bits: "31:24"
         name: ch15_id
@@ -108,6 +112,7 @@ registers:
 
   - name: RSAMP_{X}_CHNUM_ID4
     offset: 0x04
+    description: resample channel ID register
     fields:
       - bits: "31:24"
         name: ch19_id
@@ -132,6 +137,7 @@ registers:
 
   - name: RSAMP_{X}_CHNUM_ID5
     offset: 0x05
+    description: resample channel ID register
     fields:
       - bits: "31:24"
         name: ch23_id
@@ -156,6 +162,7 @@ registers:
 
   - name: RSAMP_{X}_CHNUM_ID6
     offset: 0x06
+    description: resample channel ID register
     fields:
       - bits: "31:24"
         name: ch27_id
@@ -180,6 +187,7 @@ registers:
 
   - name: RSAMP_{X}_CHNUM_ID7
     offset: 0x07
+    description: resample channel ID register
     fields:
       - bits: "31:24"
         name: ch31_id
@@ -204,6 +212,7 @@ registers:
 
   - name: RSAMP_{X}_CHSYNC_CTRL
     offset: 0x0f
+    description: resample channel sync control register
     fields:
       - bits: "31"
         name: bypass_n

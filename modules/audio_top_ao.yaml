@@ -8,9 +8,10 @@ voice_params:
     - VOICE # 直接用算法名: sed->SED, vad->VAD
     - TO_VOICE # 带TO前缀: sed->TOSED, vad->TOVAD
 
-registers:
+registers0:
   - name: EE_AUDIO2_CLK81_CTRL
     offset: 0x0000
+    description: audio top clock-81 control register
     fields:
       - bits: "31"
         name: pclk_div_sel
@@ -45,6 +46,7 @@ registers:
 
   - name: EE_AUDIO2_CLK81_EN
     offset: 0x0001
+    description: audio top clock-81 enable register
     fields:
       - bits: "31"
         name: clk_81_div_en
@@ -54,6 +56,7 @@ registers:
 
   - name: EE_AUDIO2_SW_RESET0
     offset: 0x0002
+    description: software reset control register
     fields:
       - bits: "8"
         name: sed
@@ -103,6 +106,7 @@ registers:
 
   - name: EE_AUDIO2_CLK_GATE_EN0
     offset: 0x0003
+    description: clock gate enable register
     fields:
       - bits: "8"
         name: sed
@@ -152,6 +156,7 @@ registers:
 
   - name: EE_AUDIO2_SECURITY_CTRL0
     offset: 0x0004
+    description: security control register
     fields:
       - bits: "31:0"
         name: to_ddr_src_sel
@@ -161,6 +166,7 @@ registers:
 
   - name: EE_AUDIO2_SECURITY_CTRL1
     offset: 0x0005
+    description: security control register
     fields:
       - bits: "20"
         name: to_ddr_security
@@ -170,10 +176,12 @@ registers:
 
   - name: EE_AUDIO2_SECURITY_MUTE
     offset: 0x0006
+    description: security mute control register
 
   # Voice相关寄存器（名称根据algo参数化）
   - name: EE_AUDIO2_MCLK_{VOICE}_CTRL
     offset: 0x0010
+    description: master clock control register
     voice_param: true
     fields:
       - bits: "31"
@@ -199,6 +207,7 @@ registers:
 
   - name: EE_AUDIO2_{VOICE}_CLK_CTRL
     offset: 0x0011
+    description: ee_audio2_voice_clk_ctrl register
     voice_param: true
     fields:
       - bits: "31"
@@ -224,6 +233,7 @@ registers:
 
   - name: EE_AUDIO2_MST_DLY_CTRL0
     offset: 0x0012
+    description: master interface delay control register
     fields:
       - bits: "7:4"
         name: mst_lrclk_a_ph1_dly_sel
@@ -238,6 +248,7 @@ registers:
 
   - name: EE_AUDIO2_MST_{VOICE}_SCLK_CTRL0
     offset: 0x0013
+    description: master serial clock control register
     voice_param: true
     fields:
       - bits: "31"
@@ -268,6 +279,7 @@ registers:
 
   - name: EE_AUDIO2_MST_{VOICE}_SCLK_CTRL1
     offset: 0x0014
+    description: master serial clock control register
     voice_param: true
     fields:
       - bits: "31:28"
@@ -308,6 +320,7 @@ registers:
 
   - name: EE_AUDIO2_CLK_TDMIN_{VOICE}_CTRL
     offset: 0x0015
+    description: TDM input clock control register
     voice_param: true
     fields:
       - bits: "31"
@@ -338,6 +351,7 @@ registers:
 
   - name: EE_AUDIO2_CLK_PDMIN_CTRL0
     offset: 0x0016
+    description: PDM input clock control register
     fields:
       - bits: "31"
         name: clk_en
@@ -362,6 +376,7 @@ registers:
 
   - name: EE_AUDIO2_CLK_PDMIN_CTRL1
     offset: 0x0017
+    description: PDM input clock control register
     fields:
       - bits: "31"
         name: clk_en
@@ -386,6 +401,7 @@ registers:
 
   - name: EE_AUDIO2_AUD_{VOICE}_PAD_CTRL0
     offset: 0x0018
+    description: ee_audio2_aud_voice_pad_ctrl0 register
     voice_param: true
     fields:
       - bits: "27"
@@ -426,9 +442,11 @@ registers:
 
   - name: EE_AUDIO2_CLK_PDMIN_CTRL2
     offset: 0x0019
+    description: PDM input clock control register
 
   - name: EE_AUDIO2_{TO_VOICE}_CTRL0
     offset: 0x0020
+    description: to-voice path control register
     voice_param: true
     fields:
       - bits: "21:20"
@@ -464,6 +482,7 @@ registers:
 
   - name: EE_AUDIO2_{TO_VOICE}_CTRL1
     offset: 0x0021
+    description: to-voice path control register
     voice_param: true
     fields:
       - bits: "31"
@@ -504,6 +523,7 @@ registers:
 
   - name: EE_AUDIO2_{TO_VOICE}_CH_EN
     offset: 0x0022
+    description: ee_audio2_to_voice_ch_en register
     voice_param: true
     fields:
       - bits: "31:0"
@@ -514,6 +534,7 @@ registers:
 
   - name: EE_AUDIO2_{TO_VOICE}_CHNUM_ID0
     offset: 0x0023
+    description: ee_audio2_to_voice_chnum_id0 register
     voice_param: true
     fields:
       - bits: "31:24"
@@ -539,6 +560,7 @@ registers:
 
   - name: EE_AUDIO2_{TO_VOICE}_CHNUM_ID1
     offset: 0x0024
+    description: ee_audio2_to_voice_chnum_id1 register
     voice_param: true
     fields:
       - bits: "31:24"
@@ -564,6 +586,7 @@ registers:
 
   - name: EE_AUDIO2_{TO_VOICE}_CHNUM_ID2
     offset: 0x0025
+    description: ee_audio2_to_voice_chnum_id2 register
     voice_param: true
     fields:
       - bits: "31:24"
@@ -589,6 +612,7 @@ registers:
 
   - name: EE_AUDIO2_{TO_VOICE}_CHNUM_ID3
     offset: 0x0026
+    description: ee_audio2_to_voice_chnum_id3 register
     voice_param: true
     fields:
       - bits: "31:24"
@@ -614,6 +638,7 @@ registers:
 
   - name: EE_AUDIO2_{TO_VOICE}_CHNUM_ID4
     offset: 0x0027
+    description: ee_audio2_to_voice_chnum_id4 register
     voice_param: true
     fields:
       - bits: "31:24"
@@ -639,6 +664,7 @@ registers:
 
   - name: EE_AUDIO2_{TO_VOICE}_CHNUM_ID5
     offset: 0x0028
+    description: ee_audio2_to_voice_chnum_id5 register
     voice_param: true
     fields:
       - bits: "31:24"
@@ -664,6 +690,7 @@ registers:
 
   - name: EE_AUDIO2_{TO_VOICE}_CHNUM_ID6
     offset: 0x0029
+    description: ee_audio2_to_voice_chnum_id6 register
     voice_param: true
     fields:
       - bits: "31:24"
@@ -689,6 +716,7 @@ registers:
 
   - name: EE_AUDIO2_{TO_VOICE}_CHNUM_ID7
     offset: 0x002a
+    description: ee_audio2_to_voice_chnum_id7 register
     voice_param: true
     fields:
       - bits: "31:24"
@@ -714,6 +742,7 @@ registers:
 
   - name: EE_AUDIO2_TODDR_{VOICE}_CTRL0
     offset: 0x0030
+    description: TODDR control register
     voice_param: true
     fields:
       - bits: "31"
@@ -779,6 +808,7 @@ registers:
 
   - name: EE_AUDIO2_TODDR_{VOICE}_CTRL1
     offset: 0x0031
+    description: TODDR control register
     voice_param: true
     fields:
       - bits: "31"
@@ -814,6 +844,7 @@ registers:
 
   - name: EE_AUDIO2_TODDR_{VOICE}_CTRL2
     offset: 0x0032
+    description: TODDR control register
     voice_param: true
     fields:
       - bits: "31"
@@ -844,6 +875,7 @@ registers:
 
   - name: EE_AUDIO2_TODDR_{VOICE}_START_ADDR
     offset: 0x0033
+    description: TODDR start address register
     voice_param: true
     fields:
       - bits: "31:0"
@@ -854,6 +886,7 @@ registers:
 
   - name: EE_AUDIO2_TODDR_{VOICE}_INIT_ADDR
     offset: 0x0034
+    description: TODDR initial address register
     voice_param: true
     fields:
       - bits: "31:0"
@@ -864,6 +897,7 @@ registers:
 
   - name: EE_AUDIO2_TODDR_{VOICE}_FINISH_ADDR
     offset: 0x0035
+    description: TODDR finish address register
     voice_param: true
     fields:
       - bits: "31:0"
@@ -874,6 +908,7 @@ registers:
 
   - name: EE_AUDIO2_TODDR_{VOICE}_START_ADDRB
     offset: 0x0036
+    description: TODDR buffer-B start address register
     voice_param: true
     fields:
       - bits: "31:0"
@@ -884,6 +919,7 @@ registers:
 
   - name: EE_AUDIO2_TODDR_{VOICE}_FINISH_ADDRB
     offset: 0x0037
+    description: TODDR buffer-B finish address register
     voice_param: true
     fields:
       - bits: "31:0"
@@ -894,6 +930,7 @@ registers:
 
   - name: EE_AUDIO2_TODDR_{VOICE}_INT_ADDR
     offset: 0x0038
+    description: TODDR interrupt address/count register
     voice_param: true
     fields:
       - bits: "31:0"
@@ -904,6 +941,7 @@ registers:
 
   - name: EE_AUDIO2_TODDR_{VOICE}_STATUS1
     offset: 0x0039
+    description: TODDR status register
     voice_param: true
     fields:
       - bits: "26:24"
@@ -939,6 +977,7 @@ registers:
 
   - name: EE_AUDIO2_TODDR_{VOICE}_STATUS2
     offset: 0x003a
+    description: TODDR status register
     voice_param: true
     fields:
       - bits: "31:0"
@@ -949,10 +988,12 @@ registers:
 
   - name: EE_AUDIO2_TODDR_{VOICE}_AADDR
     offset: 0x003b
+    description: TODDR address high-bits register
     voice_param: true
 
   - name: EE_AUDIO2_TDMIN_{VOICE}_CTRL
     offset: 0x0040
+    description: TDM input control register
     voice_param: true
     fields:
       - bits: "31"
@@ -1028,6 +1069,7 @@ registers:
 
   - name: EE_AUDIO2_TDMIN_{VOICE}_SWAP0
     offset: 0x0041
+    description: TDM input lane swap register
     voice_param: true
     fields:
       - bits: "31:28"
@@ -1073,6 +1115,7 @@ registers:
 
   - name: EE_AUDIO2_TDMIN_{VOICE}_SWAP1
     offset: 0x0042
+    description: TDM input lane swap register
     voice_param: true
     fields:
       - bits: "31:28"
@@ -1118,6 +1161,7 @@ registers:
 
   - name: EE_AUDIO2_TDMIN_{VOICE}_MUTE_VAL
     offset: 0x0043
+    description: TDM input mute value register
     voice_param: true
     fields:
       - bits: "31:0"
@@ -1128,6 +1172,7 @@ registers:
 
   - name: EE_AUDIO2_TDMIN_{VOICE}_STAT
     offset: 0x0044
+    description: TDM input status register
     voice_param: true
     fields:
       - bits: "31:29"
@@ -1168,6 +1213,7 @@ registers:
 
   - name: EE_AUDIO2_TDMIN_{VOICE}_MUTE0
     offset: 0x0050
+    description: TDM input mute-pattern register
     voice_param: true
     fields:
       - bits: "31:0"
@@ -1178,6 +1224,7 @@ registers:
 
   - name: EE_AUDIO2_TDMIN_{VOICE}_MUTE1
     offset: 0x0051
+    description: TDM input mute-pattern register
     voice_param: true
     fields:
       - bits: "31:0"
@@ -1188,6 +1235,7 @@ registers:
 
   - name: EE_AUDIO2_TDMIN_{VOICE}_MUTE2
     offset: 0x0052
+    description: TDM input mute-pattern register
     voice_param: true
     fields:
       - bits: "31:0"
@@ -1198,6 +1246,7 @@ registers:
 
   - name: EE_AUDIO2_TDMIN_{VOICE}_MUTE3
     offset: 0x0053
+    description: TDM input mute-pattern register
     voice_param: true
     fields:
       - bits: "31:0"
@@ -1208,6 +1257,7 @@ registers:
 
   - name: EE_AUDIO2_TDMIN_{VOICE}_MUTE4
     offset: 0x0054
+    description: TDM input mute-pattern register
     voice_param: true
     fields:
       - bits: "31:0"
@@ -1218,6 +1268,7 @@ registers:
 
   - name: EE_AUDIO2_TDMIN_{VOICE}_MUTE5
     offset: 0x0055
+    description: TDM input mute-pattern register
     voice_param: true
     fields:
       - bits: "31:0"
@@ -1228,6 +1279,7 @@ registers:
 
   - name: EE_AUDIO2_TDMIN_{VOICE}_MUTE6
     offset: 0x0056
+    description: TDM input mute-pattern register
     voice_param: true
     fields:
       - bits: "31:0"
@@ -1238,6 +1290,7 @@ registers:
 
   - name: EE_AUDIO2_TDMIN_{VOICE}_MUTE7
     offset: 0x0057
+    description: TDM input mute-pattern register
     voice_param: true
     fields:
       - bits: "31:0"
@@ -1248,6 +1301,7 @@ registers:
 
   - name: EE_AUDIO2_TDMIN_{VOICE}_MASK0
     offset: 0x0058
+    description: TDM input channel mask register
     voice_param: true
     fields:
       - bits: "31:0"
@@ -1258,6 +1312,7 @@ registers:
 
   - name: EE_AUDIO2_TDMIN_{VOICE}_MASK1
     offset: 0x0059
+    description: TDM input channel mask register
     voice_param: true
     fields:
       - bits: "31:0"
@@ -1268,6 +1323,7 @@ registers:
 
   - name: EE_AUDIO2_TDMIN_{VOICE}_MASK2
     offset: 0x005a
+    description: TDM input channel mask register
     voice_param: true
     fields:
       - bits: "31:0"
@@ -1278,6 +1334,7 @@ registers:
 
   - name: EE_AUDIO2_TDMIN_{VOICE}_MASK3
     offset: 0x005b
+    description: TDM input channel mask register
     voice_param: true
     fields:
       - bits: "31:0"
@@ -1288,6 +1345,7 @@ registers:
 
   - name: EE_AUDIO2_TDMIN_{VOICE}_MASK4
     offset: 0x005c
+    description: TDM input channel mask register
     voice_param: true
     fields:
       - bits: "31:0"
@@ -1298,6 +1356,7 @@ registers:
 
   - name: EE_AUDIO2_TDMIN_{VOICE}_MASK5
     offset: 0x005d
+    description: TDM input channel mask register
     voice_param: true
     fields:
       - bits: "31:0"
@@ -1308,6 +1367,7 @@ registers:
 
   - name: EE_AUDIO2_TDMIN_{VOICE}_MASK6
     offset: 0x005e
+    description: TDM input channel mask register
     voice_param: true
     fields:
       - bits: "31:0"
@@ -1318,6 +1378,7 @@ registers:
 
   - name: EE_AUDIO2_TDMIN_{VOICE}_MASK7
     offset: 0x005f
+    description: TDM input channel mask register
     voice_param: true
     fields:
       - bits: "31:0"
@@ -1328,6 +1389,7 @@ registers:
 
   - name: EE_AUDIO2_{VOICE}_DAT_PAD_CTRL0
     offset: 0x0060
+    description: TDM data pad control register
     voice_param: true
     fields:
       - bits: "28:24"
@@ -1353,6 +1415,7 @@ registers:
 
   - name: EE_AUDIO2_{VOICE}_DAT_PAD_CTRL1
     offset: 0x0061
+    description: TDM data pad control register
     voice_param: true
     fields:
       - bits: "28:24"
@@ -1378,6 +1441,7 @@ registers:
 
   - name: EE_AUDIO2_TODDR_{VOICE}_CHNUM_ID0
     offset: 0x0070
+    description: TODDR channel ID register
     voice_param: true
     fields:
       - bits: "31:24"
@@ -1403,6 +1467,7 @@ registers:
 
   - name: EE_AUDIO2_TODDR_{VOICE}_CHNUM_ID1
     offset: 0x0071
+    description: TODDR channel ID register
     voice_param: true
     fields:
       - bits: "31:24"
@@ -1428,6 +1493,7 @@ registers:
 
   - name: EE_AUDIO2_TODDR_{VOICE}_CHNUM_ID2
     offset: 0x0072
+    description: TODDR channel ID register
     voice_param: true
     fields:
       - bits: "31:24"
@@ -1453,6 +1519,7 @@ registers:
 
   - name: EE_AUDIO2_TODDR_{VOICE}_CHNUM_ID3
     offset: 0x0073
+    description: TODDR channel ID register
     voice_param: true
     fields:
       - bits: "31:24"
@@ -1478,6 +1545,7 @@ registers:
 
   - name: EE_AUDIO2_TODDR_{VOICE}_CHNUM_ID4
     offset: 0x0074
+    description: TODDR channel ID register
     voice_param: true
     fields:
       - bits: "31:24"
@@ -1503,6 +1571,7 @@ registers:
 
   - name: EE_AUDIO2_TODDR_{VOICE}_CHNUM_ID5
     offset: 0x0075
+    description: TODDR channel ID register
     voice_param: true
     fields:
       - bits: "31:24"
@@ -1528,6 +1597,7 @@ registers:
 
   - name: EE_AUDIO2_TODDR_{VOICE}_CHNUM_ID6
     offset: 0x0076
+    description: TODDR channel ID register
     voice_param: true
     fields:
       - bits: "31:24"
@@ -1553,6 +1623,7 @@ registers:
 
   - name: EE_AUDIO2_TODDR_{VOICE}_CHNUM_ID7
     offset: 0x0077
+    description: TODDR channel ID register
     voice_param: true
     fields:
       - bits: "31:24"
@@ -1578,6 +1649,7 @@ registers:
 
   - name: EE_AUDIO2_TODDR_{VOICE}_CHSYNC_CTRL
     offset: 0x007f
+    description: TODDR control register
     voice_param: true
     fields:
       - bits: "31"
@@ -1618,6 +1690,7 @@ registers:
 
   - name: EE_AUDIO2_{VOICE}_AM2AXI_CTRL0
     offset: 0x0080
+    description: ee_audio2_voice_am2axi_ctrl0 register
     voice_param: true
     fields:
       - bits: "31:28"
@@ -1698,6 +1771,7 @@ registers:
 
   - name: EE_AUDIO2_{VOICE}_AXIWR_ASYNC_CTRL0
     offset: 0x0081
+    description: ee_audio2_voice_axiwr_async_ctrl0 register
     voice_param: true
     fields:
       - bits: "6"
@@ -1733,6 +1807,7 @@ registers:
 
   - name: EE_AUDIO2_{VOICE}_AM2AXI_STAT
     offset: 0x0088
+    description: ee_audio2_voice_am2axi_stat register
     voice_param: true
     fields:
       - bits: "1"
@@ -1743,6 +1818,7 @@ registers:
 
   - name: EE_AUDIO2_{VOICE}_AXIWR_ASYNC_STAT
     offset: 0x0089
+    description: ee_audio2_voice_axiwr_async_stat register
     voice_param: true
     fields:
       - bits: "31:28"
@@ -1758,6 +1834,7 @@ registers:
 
   - name: EE_AUDIO2_{VOICE}_PDM_TODDR_CTRL
     offset: 0x008a
+    description: ee_audio2_voice_pdm_toddr_ctrl register
     voice_param: true
     fields:
       - bits: "31"
@@ -1788,6 +1865,7 @@ registers:
 
   - name: EE_AUDIO2_EXCEPTION_IRQ_STS0
     offset: 0x0090
+    description: exception interrupt status register
     fields:
       - bits: "11:0"
         name: irq_sts
@@ -1797,6 +1875,7 @@ registers:
 
   - name: EE_AUDIO2_EXCEPTION_IRQ_MASK0
     offset: 0x0091
+    description: exception interrupt mask register
     fields:
       - bits: "11:0"
         name: irq_mask
@@ -1806,6 +1885,7 @@ registers:
 
   - name: EE_AUDIO2_EXCEPTION_IRQ_MODE0
     offset: 0x0092
+    description: exception interrupt mode register
     fields:
       - bits: "11:0"
         name: irq_mode
@@ -1815,6 +1895,7 @@ registers:
 
   - name: EE_AUDIO2_EXCEPTION_IRQ_CLR0
     offset: 0x0093
+    description: exception interrupt clear register
     fields:
       - bits: "11:0"
         name: irq_clr
@@ -1824,6 +1905,7 @@ registers:
 
   - name: EE_AUDIO2_EXCEPTION_IRQ_INV0
     offset: 0x0094
+    description: exception interrupt invert register
     fields:
       - bits: "11:0"
         name: irq_inv

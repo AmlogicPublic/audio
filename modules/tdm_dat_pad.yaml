@@ -1,0 +1,709 @@
+module: TDM_DAT_PAD
+parent_base: audio_top_ee
+offset_base0: 0x390
+
+registers0:
+  - name: DAT_PAD_CTRL0
+    offset: 0x00
+    description: TDM data pad control register
+    fields:
+      - bits: "28:24"
+        name: tdmin_a_dat_bit3_sel
+        access: R/W
+        default: "0x00"
+        description: "tdmin_a dat_in bit3 sel; 0~31: sel TDM_D0~TDM_D31"
+      - bits: "20:16"
+        name: tdmin_a_dat_bit2_sel
+        access: R/W
+        default: "0x00"
+        description: "tdmin_a dat_in bit2 sel; 0~31: sel TDM_D0~TDM_D31"
+      - bits: "12:8"
+        name: tdmin_a_dat_bit1_sel
+        access: R/W
+        default: "0x00"
+        description: "tdmin_a dat_in bit1 sel; 0~31: sel TDM_D0~TDM_D31"
+      - bits: "4:0"
+        name: tdmin_a_dat_bit0_sel
+        access: R/W
+        default: "0x00"
+        description: "tdmin_a dat_in bit0 sel; 0~31: sel TDM_D0~TDM_D31"
+
+  - name: DAT_PAD_CTRL1
+    offset: 0x01
+    description: TDM data pad control register
+    fields:
+      - bits: "28:24"
+        name: tdmin_a_dat_bit7_sel
+        access: R/W
+        default: "0x00"
+        description: "tdmin_a dat_in bit7 sel"
+      - bits: "20:16"
+        name: tdmin_a_dat_bit6_sel
+        access: R/W
+        default: "0x00"
+        description: "tdmin_a dat_in bit6 sel"
+      - bits: "12:8"
+        name: tdmin_a_dat_bit5_sel
+        access: R/W
+        default: "0x00"
+        description: "tdmin_a dat_in bit5 sel"
+      - bits: "4:0"
+        name: tdmin_a_dat_bit4_sel
+        access: R/W
+        default: "0x00"
+        description: "tdmin_a dat_in bit4 sel"
+
+  - name: DAT_PAD_CTRL2
+    offset: 0x02
+    description: TDM data pad control register
+    fields:
+      - bits: "28:24"
+        name: tdmin_b_dat_bit3_sel
+        access: R/W
+        default: "0x00"
+        description: "tdmin_b dat_in bit3 sel; 0~31: sel TDM_D0~TDM_D31"
+      - bits: "20:16"
+        name: tdmin_b_dat_bit2_sel
+        access: R/W
+        default: "0x00"
+        description: "tdmin_b dat_in bit2 sel; 0~31: sel TDM_D0~TDM_D31"
+      - bits: "12:8"
+        name: tdmin_b_dat_bit1_sel
+        access: R/W
+        default: "0x00"
+        description: "tdmin_b dat_in bit1 sel; 0~31: sel TDM_D0~TDM_D31"
+      - bits: "4:0"
+        name: tdmin_b_dat_bit0_sel
+        access: R/W
+        default: "0x00"
+        description: "tdmin_b dat_in bit0 sel; 0~31: sel TDM_D0~TDM_D31"
+
+  - name: DAT_PAD_CTRL3
+    offset: 0x03
+    description: TDM data pad control register
+    fields:
+      - bits: "28:24"
+        name: tdmin_b_dat_bit7_sel
+        access: R/W
+        default: "0x00"
+        description: "tdmin_b dat_in bit7 sel"
+      - bits: "20:16"
+        name: tdmin_b_dat_bit6_sel
+        access: R/W
+        default: "0x00"
+        description: "tdmin_b dat_in bit6 sel"
+      - bits: "12:8"
+        name: tdmin_b_dat_bit5_sel
+        access: R/W
+        default: "0x00"
+        description: "tdmin_b dat_in bit5 sel"
+      - bits: "4:0"
+        name: tdmin_b_dat_bit4_sel
+        access: R/W
+        default: "0x00"
+        description: "tdmin_b dat_in bit4 sel"
+
+  - name: DAT_PAD_CTRL4
+    offset: 0x04
+    description: TDM data pad control register
+    fields:
+      - bits: "28:24"
+        name: tdmin_c_dat_bit3_sel
+        access: R/W
+        default: "0x00"
+        description: "tdmin_c dat_in bit3 sel; 0~31: sel TDM_D0~TDM_D31"
+      - bits: "20:16"
+        name: tdmin_c_dat_bit2_sel
+        access: R/W
+        default: "0x00"
+        description: "tdmin_c dat_in bit2 sel; 0~31: sel TDM_D0~TDM_D31"
+      - bits: "12:8"
+        name: tdmin_c_dat_bit1_sel
+        access: R/W
+        default: "0x00"
+        description: "tdmin_c dat_in bit1 sel; 0~31: sel TDM_D0~TDM_D31"
+      - bits: "4:0"
+        name: tdmin_c_dat_bit0_sel
+        access: R/W
+        default: "0x00"
+        description: "tdmin_c dat_in bit0 sel; 0~31: sel TDM_D0~TDM_D31"
+
+  - name: DAT_PAD_CTRL5
+    offset: 0x05
+    description: TDM data pad control register
+    fields:
+      - bits: "28:24"
+        name: tdmin_c_dat_bit7_sel
+        access: R/W
+        default: "0x00"
+        description: "tdmin_c dat_in bit7 sel"
+      - bits: "20:16"
+        name: tdmin_c_dat_bit6_sel
+        access: R/W
+        default: "0x00"
+        description: "tdmin_c dat_in bit6 sel"
+      - bits: "12:8"
+        name: tdmin_c_dat_bit5_sel
+        access: R/W
+        default: "0x00"
+        description: "tdmin_c dat_in bit5 sel"
+      - bits: "4:0"
+        name: tdmin_c_dat_bit4_sel
+        access: R/W
+        default: "0x00"
+        description: "tdmin_c dat_in bit4 sel"
+
+  - name: DAT_PAD_CTRL6
+    offset: 0x06
+    description: TDM data pad control register
+    fields:
+      - bits: "28:24"
+        name: tdm_d3_out_src_sel
+        access: R/W
+        default: "0x00"
+        description: "TDM_D3 out src sel; 0~7:tdmout_a lane0~7; 8~15:tdmout_b lane0~7; 16~23:tdmout_c lane0~7"
+      - bits: "20:16"
+        name: tdm_d2_out_src_sel
+        access: R/W
+        default: "0x00"
+        description: "TDM_D2 out src sel"
+      - bits: "12:8"
+        name: tdm_d1_out_src_sel
+        access: R/W
+        default: "0x00"
+        description: "TDM_D1 out src sel"
+      - bits: "4:0"
+        name: tdm_d0_out_src_sel
+        access: R/W
+        default: "0x00"
+        description: "TDM_D0 out src sel"
+
+  - name: DAT_PAD_CTRL7
+    offset: 0x07
+    description: TDM data pad control register
+    fields:
+      - bits: "28:24"
+        name: tdm_d7_out_src_sel
+        access: R/W
+        default: "0x00"
+        description: "TDM_D7 out src sel"
+      - bits: "20:16"
+        name: tdm_d6_out_src_sel
+        access: R/W
+        default: "0x00"
+        description: "TDM_D6 out src sel"
+      - bits: "12:8"
+        name: tdm_d5_out_src_sel
+        access: R/W
+        default: "0x00"
+        description: "TDM_D5 out src sel"
+      - bits: "4:0"
+        name: tdm_d4_out_src_sel
+        access: R/W
+        default: "0x00"
+        description: "TDM_D4 out src sel"
+
+  - name: DAT_PAD_CTRL8
+    offset: 0x08
+    description: TDM data pad control register
+    fields:
+      - bits: "28:24"
+        name: tdm_d11_out_src_sel
+        access: R/W
+        default: "0x00"
+        description: "TDM_D11 out src sel"
+      - bits: "20:16"
+        name: tdm_d10_out_src_sel
+        access: R/W
+        default: "0x00"
+        description: "TDM_D10 out src sel"
+      - bits: "12:8"
+        name: tdm_d9_out_src_sel
+        access: R/W
+        default: "0x00"
+        description: "TDM_D9 out src sel"
+      - bits: "4:0"
+        name: tdm_d8_out_src_sel
+        access: R/W
+        default: "0x00"
+        description: "TDM_D8 out src sel"
+
+  - name: DAT_PAD_CTRL9
+    offset: 0x09
+    description: TDM data pad control register
+    fields:
+      - bits: "28:24"
+        name: tdm_d15_out_src_sel
+        access: R/W
+        default: "0x00"
+        description: "TDM_D15 out src sel"
+      - bits: "20:16"
+        name: tdm_d14_out_src_sel
+        access: R/W
+        default: "0x00"
+        description: "TDM_D14 out src sel"
+      - bits: "12:8"
+        name: tdm_d13_out_src_sel
+        access: R/W
+        default: "0x00"
+        description: "TDM_D13 out src sel"
+      - bits: "4:0"
+        name: tdm_d12_out_src_sel
+        access: R/W
+        default: "0x00"
+        description: "TDM_D12 out src sel"
+
+  - name: DAT_PAD_CTRLA
+    offset: 0x0a
+    description: TDM data pad control register
+    fields:
+      - bits: "28:24"
+        name: tdm_d19_out_src_sel
+        access: R/W
+        default: "0x00"
+        description: "TDM_D19 out src sel"
+      - bits: "20:16"
+        name: tdm_d18_out_src_sel
+        access: R/W
+        default: "0x00"
+        description: "TDM_D18 out src sel"
+      - bits: "12:8"
+        name: tdm_d17_out_src_sel
+        access: R/W
+        default: "0x00"
+        description: "TDM_D17 out src sel"
+      - bits: "4:0"
+        name: tdm_d16_out_src_sel
+        access: R/W
+        default: "0x00"
+        description: "TDM_D16 out src sel"
+
+  - name: DAT_PAD_CTRLB
+    offset: 0x0b
+    description: TDM data pad control register
+    fields:
+      - bits: "28:24"
+        name: tdm_d23_out_src_sel
+        access: R/W
+        default: "0x00"
+        description: "TDM_D23 out src sel"
+      - bits: "20:16"
+        name: tdm_d22_out_src_sel
+        access: R/W
+        default: "0x00"
+        description: "TDM_D22 out src sel"
+      - bits: "12:8"
+        name: tdm_d21_out_src_sel
+        access: R/W
+        default: "0x00"
+        description: "TDM_D21 out src sel"
+      - bits: "4:0"
+        name: tdm_d20_out_src_sel
+        access: R/W
+        default: "0x00"
+        description: "TDM_D20 out src sel"
+
+  - name: DAT_PAD_CTRLC
+    offset: 0x0c
+    description: TDM data pad control register
+    fields:
+      - bits: "28:24"
+        name: tdm_d27_out_src_sel
+        access: R/W
+        default: "0x00"
+        description: "TDM_D27 out src sel"
+      - bits: "20:16"
+        name: tdm_d26_out_src_sel
+        access: R/W
+        default: "0x00"
+        description: "TDM_D26 out src sel"
+      - bits: "12:8"
+        name: tdm_d25_out_src_sel
+        access: R/W
+        default: "0x00"
+        description: "TDM_D25 out src sel"
+      - bits: "4:0"
+        name: tdm_d24_out_src_sel
+        access: R/W
+        default: "0x00"
+        description: "TDM_D24 out src sel"
+
+  - name: DAT_PAD_CTRLD
+    offset: 0x0d
+    description: TDM data pad control register
+    fields:
+      - bits: "28:24"
+        name: tdm_d31_out_src_sel
+        access: R/W
+        default: "0x00"
+        description: "TDM_D31 out src sel"
+      - bits: "20:16"
+        name: tdm_d30_out_src_sel
+        access: R/W
+        default: "0x00"
+        description: "TDM_D30 out src sel"
+      - bits: "12:8"
+        name: tdm_d29_out_src_sel
+        access: R/W
+        default: "0x00"
+        description: "TDM_D29 out src sel"
+      - bits: "4:0"
+        name: tdm_d28_out_src_sel
+        access: R/W
+        default: "0x00"
+        description: "TDM_D28 out src sel"
+
+  - name: DAT_PAD_CTRLE
+    offset: 0x0e
+    description: TDM data pad control register
+    fields:
+      - bits: "31"
+        name: tdm_d31_oen_sel
+        access: R/W
+        default: "0"
+        description: "TDM_D31 oen sel; 0:reg_oen_val bit31; 1:from TDMOUT"
+      - bits: "30"
+        name: tdm_d30_oen_sel
+        access: R/W
+        default: "0"
+        description: "TDM_D30 oen sel; 0:reg_oen_val bit30; 1:from TDMOUT"
+      - bits: "29"
+        name: tdm_d29_oen_sel
+        access: R/W
+        default: "0"
+        description: "TDM_D29 oen sel; 0:reg_oen_val bit29; 1:from TDMOUT"
+      - bits: "28"
+        name: tdm_d28_oen_sel
+        access: R/W
+        default: "0"
+        description: "TDM_D28 oen sel; 0:reg_oen_val bit28; 1:from TDMOUT"
+      - bits: "27"
+        name: tdm_d27_oen_sel
+        access: R/W
+        default: "0"
+        description: "TDM_D27 oen sel; 0:reg_oen_val bit27; 1:from TDMOUT"
+      - bits: "26"
+        name: tdm_d26_oen_sel
+        access: R/W
+        default: "0"
+        description: "TDM_D26 oen sel; 0:reg_oen_val bit26; 1:from TDMOUT"
+      - bits: "25"
+        name: tdm_d25_oen_sel
+        access: R/W
+        default: "0"
+        description: "TDM_D25 oen sel; 0:reg_oen_val bit25; 1:from TDMOUT"
+      - bits: "24"
+        name: tdm_d24_oen_sel
+        access: R/W
+        default: "0"
+        description: "TDM_D24 oen sel; 0:reg_oen_val bit24; 1:from TDMOUT"
+      - bits: "23"
+        name: tdm_d23_oen_sel
+        access: R/W
+        default: "0"
+        description: "TDM_D23 oen sel; 0:reg_oen_val bit23; 1:from TDMOUT"
+      - bits: "22"
+        name: tdm_d22_oen_sel
+        access: R/W
+        default: "0"
+        description: "TDM_D22 oen sel; 0:reg_oen_val bit22; 1:from TDMOUT"
+      - bits: "21"
+        name: tdm_d21_oen_sel
+        access: R/W
+        default: "0"
+        description: "TDM_D21 oen sel; 0:reg_oen_val bit21; 1:from TDMOUT"
+      - bits: "20"
+        name: tdm_d20_oen_sel
+        access: R/W
+        default: "0"
+        description: "TDM_D20 oen sel; 0:reg_oen_val bit20; 1:from TDMOUT"
+      - bits: "19"
+        name: tdm_d19_oen_sel
+        access: R/W
+        default: "0"
+        description: "TDM_D19 oen sel; 0:reg_oen_val bit19; 1:from TDMOUT"
+      - bits: "18"
+        name: tdm_d18_oen_sel
+        access: R/W
+        default: "0"
+        description: "TDM_D18 oen sel; 0:reg_oen_val bit18; 1:from TDMOUT"
+      - bits: "17"
+        name: tdm_d17_oen_sel
+        access: R/W
+        default: "0"
+        description: "TDM_D17 oen sel; 0:reg_oen_val bit17; 1:from TDMOUT"
+      - bits: "16"
+        name: tdm_d16_oen_sel
+        access: R/W
+        default: "0"
+        description: "TDM_D16 oen sel; 0:reg_oen_val bit16; 1:from TDMOUT"
+      - bits: "15"
+        name: tdm_d15_oen_sel
+        access: R/W
+        default: "0"
+        description: "TDM_D15 oen sel; 0:reg_oen_val bit15; 1:from TDMOUT"
+      - bits: "14"
+        name: tdm_d14_oen_sel
+        access: R/W
+        default: "0"
+        description: "TDM_D14 oen sel; 0:reg_oen_val bit14; 1:from TDMOUT"
+      - bits: "13"
+        name: tdm_d13_oen_sel
+        access: R/W
+        default: "0"
+        description: "TDM_D13 oen sel; 0:reg_oen_val bit13; 1:from TDMOUT"
+      - bits: "12"
+        name: tdm_d12_oen_sel
+        access: R/W
+        default: "0"
+        description: "TDM_D12 oen sel; 0:reg_oen_val bit12; 1:from TDMOUT"
+      - bits: "11"
+        name: tdm_d11_oen_sel
+        access: R/W
+        default: "0"
+        description: "TDM_D11 oen sel; 0:reg_oen_val bit11; 1:from TDMOUT"
+      - bits: "10"
+        name: tdm_d10_oen_sel
+        access: R/W
+        default: "0"
+        description: "TDM_D10 oen sel; 0:reg_oen_val bit10; 1:from TDMOUT"
+      - bits: "9"
+        name: tdm_d9_oen_sel
+        access: R/W
+        default: "0"
+        description: "TDM_D9 oen sel; 0:reg_oen_val bit9; 1:from TDMOUT"
+      - bits: "8"
+        name: tdm_d8_oen_sel
+        access: R/W
+        default: "0"
+        description: "TDM_D8 oen sel; 0:reg_oen_val bit8; 1:from TDMOUT"
+      - bits: "7"
+        name: tdm_d7_oen_sel
+        access: R/W
+        default: "0"
+        description: "TDM_D7 oen sel; 0:reg_oen_val bit7; 1:from TDMOUT"
+      - bits: "6"
+        name: tdm_d6_oen_sel
+        access: R/W
+        default: "0"
+        description: "TDM_D6 oen sel; 0:reg_oen_val bit6; 1:from TDMOUT"
+      - bits: "5"
+        name: tdm_d5_oen_sel
+        access: R/W
+        default: "0"
+        description: "TDM_D5 oen sel; 0:reg_oen_val bit5; 1:from TDMOUT"
+      - bits: "4"
+        name: tdm_d4_oen_sel
+        access: R/W
+        default: "0"
+        description: "TDM_D4 oen sel; 0:reg_oen_val bit4; 1:from TDMOUT"
+      - bits: "3"
+        name: tdm_d3_oen_sel
+        access: R/W
+        default: "0"
+        description: "TDM_D3 oen sel; 0:reg_oen_val bit3; 1:from TDMOUT"
+      - bits: "2"
+        name: tdm_d2_oen_sel
+        access: R/W
+        default: "0"
+        description: "TDM_D2 oen sel; 0:reg_oen_val bit2; 1:from TDMOUT"
+      - bits: "1"
+        name: tdm_d1_oen_sel
+        access: R/W
+        default: "0"
+        description: "TDM_D1 oen sel; 0:reg_oen_val bit1; 1:from TDMOUT"
+      - bits: "0"
+        name: tdm_d0_oen_sel
+        access: R/W
+        default: "0"
+        description: "TDM_D0 oen sel; 0:reg_oen_val bit0; 1:from TDMOUT"
+
+  - name: DAT_PAD_CTRLF
+    offset: 0x0f
+    description: TDM data pad control register
+    fields:
+      - bits: "31:0"
+        name: reg_oen_val
+        access: R/W
+        default: "0x00000000"
+        description: "reg_oen_val; 0:output; 1:input; bit31~0:TDM_D31~TDM_D0"
+
+  - name: MCLK_PAD_CTRL0
+    offset: 0x10
+    description: master clock control register
+    fields:
+      - bits: "31"
+        name: mclk_pad_1_en
+        access: R/W
+        default: "0"
+        description: "mclk_pad_1 enable"
+      - bits: "30"
+        name: mclk_pad_1_force_xtal
+        access: R/W
+        default: "0"
+        description: "mclk_pad_1 force to xtal"
+      - bits: "26:24"
+        name: mclk_pad_1_sel
+        access: R/W
+        default: "0x0"
+        description: "mclk_pad_1 sel; 0~5:mclk_a~f"
+      - bits: "23:16"
+        name: mclk_pad_1_div
+        access: R/W
+        default: "0x00"
+        description: "mclk_pad_1 div; mclk_pad will div by mclk source; set 7 if need div8"
+      - bits: "15"
+        name: mclk_pad_0_en
+        access: R/W
+        default: "0"
+        description: "mclk_pad_0 enable"
+      - bits: "14"
+        name: mclk_pad_0_force_xtal
+        access: R/W
+        default: "0"
+        description: "mclk_pad_0 force to xtal"
+      - bits: "10:8"
+        name: mclk_pad_0_sel
+        access: R/W
+        default: "0x0"
+        description: "mclk_pad_0 sel; 0~5:mclk_a~f"
+      - bits: "7:0"
+        name: mclk_pad_0_div
+        access: R/W
+        default: "0x00"
+        description: "mclk_pad_0 div; mclk_pad will div by mclk source; set 7 if need div8"
+
+  - name: MCLK_PAD_CTRL1
+    offset: 0x11
+    description: master clock control register
+    fields:
+      - bits: "15"
+        name: mclk_pad_2_en
+        access: R/W
+        default: "0"
+        description: "mclk_pad_2 enable"
+      - bits: "14"
+        name: mclk_pad_2_force_xtal
+        access: R/W
+        default: "0"
+        description: "mclk_pad_2 force to xtal"
+      - bits: "10:8"
+        name: mclk_pad_2_sel
+        access: R/W
+        default: "0x0"
+        description: "mclk_pad_2 sel; 0~5:mclk_a~f"
+      - bits: "7:0"
+        name: mclk_pad_2_div
+        access: R/W
+        default: "0x00"
+        description: "mclk_pad_2 div; mclk_pad will div by mclk source; set 7 if need div8"
+
+  - name: SCLK_PAD_CTRL0
+    offset: 0x12
+    description: serial clock pad control register
+    fields:
+      - bits: "23"
+        name: sclk_pad_4_oen
+        access: R/W
+        default: "0"
+        description: "sclk_pad_4 oen; 0:pad work as output; 1:pad work as input"
+      - bits: "22:20"
+        name: sclk_pad_4_sel
+        access: R/W
+        default: "0x0"
+        description: "sclk_pad_4 sel(when output); 0~5:mst_sclk_a~f; 6:hdmirx_debug_sclk"
+      - bits: "19"
+        name: sclk_pad_3_oen
+        access: R/W
+        default: "0"
+        description: "sclk_pad_3 oen; 0:pad work as output; 1:pad work as input"
+      - bits: "18:16"
+        name: sclk_pad_3_sel
+        access: R/W
+        default: "0x0"
+        description: "sclk_pad_3 sel(when output); 0~5:mst_sclk_a~f"
+      - bits: "11"
+        name: sclk_pad_2_oen
+        access: R/W
+        default: "0"
+        description: "sclk_pad_2 oen; 0:pad work as output; 1:pad work as input"
+      - bits: "10:8"
+        name: sclk_pad_2_sel
+        access: R/W
+        default: "0x0"
+        description: "sclk_pad_2 sel(when output); 0~5:mst_sclk_a~f"
+      - bits: "7"
+        name: sclk_pad_1_oen
+        access: R/W
+        default: "0"
+        description: "sclk_pad_1 oen; 0:pad work as output; 1:pad work as input"
+      - bits: "6:4"
+        name: sclk_pad_1_sel
+        access: R/W
+        default: "0x0"
+        description: "sclk_pad_1 sel(when output); 0~5:mst_sclk_a~f"
+      - bits: "3"
+        name: sclk_pad_0_oen
+        access: R/W
+        default: "0"
+        description: "sclk_pad_0 oen; 0:pad work as output; 1:pad work as input"
+      - bits: "2:0"
+        name: sclk_pad_0_sel
+        access: R/W
+        default: "0x0"
+        description: "sclk_pad_0 sel(when output); 0~5:mst_sclk_a~f"
+
+  - name: SCLK_PAD_CTRL1
+    offset: 0x13
+    description: serial clock pad control register
+    fields:
+      - bits: "19"
+        name: lrclk_pad_4_oen
+        access: R/W
+        default: "0"
+        description: "lrclk_pad_4 oen; 0:pad work as output; 1:pad work as input"
+      - bits: "18:16"
+        name: lrclk_pad_4_sel
+        access: R/W
+        default: "0x0"
+        description: "lrclk_pad_4 sel(when output); 0~5:mst_lrclk_a~f"
+      - bits: "15"
+        name: lrclk_pad_3_oen
+        access: R/W
+        default: "0"
+        description: "lrclk_pad_3 oen; 0:pad work as output; 1:pad work as input"
+      - bits: "14:12"
+        name: lrclk_pad_3_sel
+        access: R/W
+        default: "0x0"
+        description: "lrclk_pad_3 sel(when output); 0~5:mst_lrclk_a~f"
+      - bits: "11"
+        name: lrclk_pad_2_oen
+        access: R/W
+        default: "0"
+        description: "lrclk_pad_2 oen; 0:pad work as output; 1:pad work as input"
+      - bits: "10:8"
+        name: lrclk_pad_2_sel
+        access: R/W
+        default: "0x0"
+        description: "lrclk_pad_2 sel(when output); 0~5:mst_lrclk_a~f"
+      - bits: "7"
+        name: lrclk_pad_1_oen
+        access: R/W
+        default: "0"
+        description: "lrclk_pad_1 oen; 0:pad work as output; 1:pad work as input"
+      - bits: "6:4"
+        name: lrclk_pad_1_sel
+        access: R/W
+        default: "0x0"
+        description: "lrclk_pad_1 sel(when output); 0~5:mst_lrclk_a~f"
+      - bits: "3"
+        name: lrclk_pad_0_oen
+        access: R/W
+        default: "0"
+        description: "lrclk_pad_0 oen; 0:pad work as output; 1:pad work as input"
+      - bits: "2:0"
+        name: lrclk_pad_0_sel
+        access: R/W
+        default: "0x0"
+        description: "lrclk_pad_0 sel(when output); 0~5:mst_lrclk_a~f"

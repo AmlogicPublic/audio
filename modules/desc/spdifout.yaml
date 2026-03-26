@@ -1,0 +1,144 @@
+module: spdifout
+display_name: "SPDIF Output Interface"
+condition:
+  any_of:
+    - "spdifout.A.imp"
+    - "spdifout.B.imp"
+
+overview: |
+  SPDIF Output (SPDIFOUT) is a bi-phase mark encoder that transmits digital audio data compliant with
+  IEC60958 (S/PDIF consumer) standard. It fetches PCM samples from FRDDR and encodes them with preambles,
+  channel status, and parity bits for transmission to external DACs, AVRs, or soundbars.
+
+  The module supports both PCM and compressed audio passthrough (IEC61937), with full control over
+  channel status bits for proper identification of audio format, sample rate, and copy protection.
+  Data can optionally be routed through EQ/DRC or Mixer before encoding.
+
+features: |
+  - IEC60958 compliant bi-phase mark encoding.
+  - Full 192-bit channel status programming (2 channels × 192 bits each via CHSTS0-B registers).
+  - Customizable preamble patterns (Z/X/Y) for non-standard requirements.
+  - Per-channel 8-bit digital gain with smooth step transitions.
+  - Selectable data source: FRDDR (A-E), EQ/DRC output, or Mixer output.
+  - Per-channel (L/R) mute control with programmable mute value.
+  - User data bit injection from register or audio data MSB.
+  - Validity bit control from register or audio data.
+  - L/R channel mixing option.
+  - AFIFO for clock domain crossing (`sysclk` → `spdifout_clk`).
+  - Optional delay for synchronized startup with TDMOUT (shared buffer mode).
+  - Lane L/R swap capability.
+
+block_diagram:
+  images:
+    - spdifout_0.png
+  description: "SPDIF Output Interface Block Diagram"
+
+function_description: |
+  **Bi-Phase Mark Encoding:**
+
+  The encoder converts parallel PCM samples into serial bi-phase mark format:
+  - Each bit cell has a transition at the boundary.
+  - Logic '1' adds an additional transition at mid-cell.
+  - Logic '0' has no mid-cell transition.
+
+  **Frame Structure (per IEC60958):**
+
+  Each subframe (32 bits total):
+  - Preamble (4 bits): Z (block start, ch A), X (ch A), Y (ch B)
+  - Audio sample (24 bits) or 20-bit + 4 aux
+  - Validity bit (V): 0 = valid audio
+  - User data bit (U): from register or data[29]
+  - Channel status bit (C): from CHSTS registers
+  - Parity bit (P): auto-calculated for even parity
+
+  192 frames = 1 block (channel status repeats every 192 frames).
+
+  **Data Path:**
+
+  1. **Fetch Stage** (at `sysclk`):
+     - FRDDR request pulls 64-bit words from DDR.
+     - Unpacked to L/R samples per `reg_frddr_type`.
+     - Optional routing through EQ/DRC (`eq_drc_sel`) or Mixer (`mixer_sel`).
+
+  2. **Processing**:
+     - Per-channel gain applied (if `reg_gain_en = 1`).
+     - Optional L/R mixing (`reg_mix_lr = 1`): output = (L+R)/2.
+     - Mute replaces samples with `mute_val`.
+
+  3. **AFIFO Crossing**:
+     - Samples buffered for clock domain transfer.
+     - `hold_start_en` adds startup delay for TDMOUT synchronization.
+
+  4. **Encoding** (at `spdifout_clk`):
+     - Preambles generated per frame position (Z/X/Y).
+     - Channel status bits inserted from CHSTS registers.
+     - Parity calculated and appended.
+     - Bi-phase mark serialization to output.
+
+  **Key Registers:**
+
+  | Register | Function |
+  |----------|----------|
+  | `reg_work_enable` | Master enable |
+  | `reg_frddr_sel` | FRDDR source: 0=A, 1=B, 2=C, 3=D, 4=E |
+  | `eq_drc_sel` | 1=use EQ/DRC output |
+  | `mixer_sel` | 1=use Mixer output |
+  | `reg_mute_l/r` | Mute left/right channel |
+  | `reg_mix_lr` | 1=mix L and R to mono |
+  | `reg_chdata_sel` | 0=use CHSTS registers, 1=use data[30] |
+  | `reg_userdata_sel` | 0=use `reg_userdata_set`, 1=use data[29] |
+  | `CHSTS0-5` | Channel A status (192 bits total) |
+  | `CHSTS6-B` | Channel B status (192 bits total) |
+  | `GAIN0-3` | Per-channel gain (0xFF = unity) |
+  | `PREAMB` | Custom preamble patterns (optional override) |
+
+  **Channel Status Format (IEC60958):**
+
+  | Bits | Description |
+  |------|-------------|
+  | 0 | Consumer/Professional (0=consumer) |
+  | 1 | Audio/Data (0=PCM audio) |
+  | 2 | Copyright |
+  | 3-5 | Pre-emphasis |
+  | 6-7 | Mode |
+  | 8-15 | Category code |
+  | 16-19 | Source number |
+  | 20-23 | Channel number |
+  | 24-27 | Sample frequency |
+  | 28-29 | Clock accuracy |
+  | 32-35 | Word length (max) |
+  | 36-39 | Original sample frequency |
+
+application_notes:
+  - title: "SPDIF Stereo PCM Playback (48kHz, 16-bit)"
+    steps: |
+      - Configure FRDDR_A with stereo PCM buffer.
+      - Set `reg_frddr_sel = 0`, `reg_frddr_type = 1` (16-bit).
+      - Program CHSTS0 for consumer PCM, 48kHz, no pre-emphasis.
+      - Typical CHSTS0 = 0x00100004 (48kHz, PCM, consumer).
+      - Reset AFIFO sequence.
+      - Set `reg_wait_cnt` for proper startup.
+      - Enable `reg_work_enable = 1`.
+
+  - title: "Compressed Audio Passthrough (AC3/DTS)"
+    steps: |
+      - Configure FRDDR for raw IEC61937 stream.
+      - Set channel status bit 1 = 1 (non-audio).
+      - Use `reg_chdata_sel = 1` to embed status from data[30].
+      - SPDIF receiver will detect compressed stream and pass to decoder.
+
+  - title: "Synchronized Playback with TDMOUT (Shared Buffer)"
+    steps: |
+      - Configure FRDDR shared between TDMOUT and SPDIFOUT.
+      - Set `reg_hold_start_en = 1` in SPDIFOUT.
+      - Configure `hold_start_cnt` for proper alignment.
+      - Both outputs will start simultaneously.
+      - Useful for headphone jack (TDMOUT) + optical out (SPDIFOUT) scenarios.
+
+  - title: "Playback with EQ/DRC Processing"
+    steps: |
+      - Configure FRDDR and EQ/DRC module.
+      - Set `eq_drc_sel = 1` in SPDIFOUT_CTRL1.
+      - SPDIF will transmit EQ/DRC processed audio.
+      - Channel status reflects final sample rate.
+

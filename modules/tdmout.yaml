@@ -3,21 +3,22 @@ parent_base: audio_top_ee
 
 instances:
   A:
-    offset_base: 0x140
-    ext_offset: 0x2a0
+    offset_base0: 0x140
+    offset_base1: 0x2a0
     condition: { macro_path: ["tdmout", "A", "imp"], eq: 1 }
   B:
-    offset_base: 0x150
-    ext_offset: 0x2b0
+    offset_base0: 0x150
+    offset_base1: 0x2b0
     condition: { macro_path: ["tdmout", "B", "imp"], eq: 1 }
   C:
-    offset_base: 0x160
-    ext_offset: 0x2c0
+    offset_base0: 0x160
+    offset_base1: 0x2c0
     condition: { macro_path: ["tdmout", "C", "imp"], eq: 1 }
 
-registers:
+registers0:
   - name: TDMOUT_{X}_CTRL0
     offset: 0x00
+    description: TDM output control register
     fields:
       - bits: "31"
         name: reg_work_enable
@@ -62,6 +63,7 @@ registers:
 
   - name: TDMOUT_{X}_CTRL1
     offset: 0x01
+    description: TDM output control register
     fields:
       - bits: "31"
         name: eq_drc_sel
@@ -131,6 +133,7 @@ registers:
 
   - name: TDMOUT_{X}_SWAP0
     offset: 0x02
+    description: TDM output lane swap register
     fields:
       - bits: "31:28"
         name: ch7_sel
@@ -175,6 +178,7 @@ registers:
 
   - name: TDMOUT_{X}_MASK0
     offset: 0x03
+    description: TDM output channel mask register
     fields:
       - bits: "31:0"
         name: lane0_mask
@@ -184,6 +188,7 @@ registers:
 
   - name: TDMOUT_{X}_MASK1
     offset: 0x04
+    description: TDM output channel mask register
     fields:
       - bits: "31:0"
         name: lane1_mask
@@ -193,6 +198,7 @@ registers:
 
   - name: TDMOUT_{X}_MASK2
     offset: 0x05
+    description: TDM output channel mask register
     fields:
       - bits: "31:0"
         name: lane2_mask
@@ -202,6 +208,7 @@ registers:
 
   - name: TDMOUT_{X}_MASK3
     offset: 0x06
+    description: TDM output channel mask register
     fields:
       - bits: "31:0"
         name: lane3_mask
@@ -211,6 +218,7 @@ registers:
 
   - name: TDMOUT_{X}_STAT
     offset: 0x07
+    description: TDM output status register
     fields:
       - bits: "31:0"
         name: status
@@ -220,6 +228,7 @@ registers:
 
   - name: TDMOUT_{X}_GAIN0
     offset: 0x08
+    description: TDM output gain register
     fields:
       - bits: "31:24"
         name: gain_ch3
@@ -244,6 +253,7 @@ registers:
 
   - name: TDMOUT_{X}_GAIN1
     offset: 0x09
+    description: TDM output gain register
     fields:
       - bits: "31:24"
         name: gain_ch7
@@ -268,6 +278,7 @@ registers:
 
   - name: TDMOUT_{X}_MUTE_VAL
     offset: 0x0a
+    description: TDM output mute value register
     fields:
       - bits: "31:0"
         name: mute_val
@@ -277,6 +288,7 @@ registers:
 
   - name: TDMOUT_{X}_MUTE0
     offset: 0x0b
+    description: TDM output mute-pattern register
     fields:
       - bits: "31:0"
         name: lane0_mute
@@ -286,6 +298,7 @@ registers:
 
   - name: TDMOUT_{X}_MUTE1
     offset: 0x0c
+    description: TDM output mute-pattern register
     fields:
       - bits: "31:0"
         name: lane1_mute
@@ -295,6 +308,7 @@ registers:
 
   - name: TDMOUT_{X}_MUTE2
     offset: 0x0d
+    description: TDM output mute-pattern register
     fields:
       - bits: "31:0"
         name: lane2_mute
@@ -304,6 +318,7 @@ registers:
 
   - name: TDMOUT_{X}_MUTE3
     offset: 0x0e
+    description: TDM output mute-pattern register
     fields:
       - bits: "31:0"
         name: lane3_mute
@@ -313,6 +328,7 @@ registers:
 
   - name: TDMOUT_{X}_MASK_VAL
     offset: 0x0f
+    description: TDM output mask value register
     fields:
       - bits: "31:0"
         name: mask_val
@@ -320,9 +336,10 @@ registers:
         default: "0x00000000"
         description: "when masked, the channel value"
 
-ext_registers:
+registers1:
   - name: TDMOUT_{X}_CTRL2
     offset: 0x00
+    description: TDM output control register
     fields:
       - bits: "31:24"
         name: reg_clr_by_init
@@ -337,6 +354,7 @@ ext_registers:
 
   - name: TDMOUT_{X}_SWAP1
     offset: 0x01
+    description: TDM output lane swap register
     fields:
       - bits: "31:28"
         name: ch15_sel
@@ -381,6 +399,7 @@ ext_registers:
 
   - name: TDMOUT_{X}_GAIN2
     offset: 0x02
+    description: TDM output gain register
     fields:
       - bits: "31:24"
         name: gain_ch11
@@ -405,6 +424,7 @@ ext_registers:
 
   - name: TDMOUT_{X}_GAIN3
     offset: 0x03
+    description: TDM output gain register
     fields:
       - bits: "31:24"
         name: gain_ch15
@@ -429,6 +449,7 @@ ext_registers:
 
   - name: TDMOUT_{X}_MASK4
     offset: 0x04
+    description: TDM output channel mask register
     fields:
       - bits: "31:0"
         name: lane4_mask
@@ -438,6 +459,7 @@ ext_registers:
 
   - name: TDMOUT_{X}_MASK5
     offset: 0x05
+    description: TDM output channel mask register
     fields:
       - bits: "31:0"
         name: lane5_mask
@@ -447,6 +469,7 @@ ext_registers:
 
   - name: TDMOUT_{X}_MASK6
     offset: 0x06
+    description: TDM output channel mask register
     fields:
       - bits: "31:0"
         name: lane6_mask
@@ -456,6 +479,7 @@ ext_registers:
 
   - name: TDMOUT_{X}_MASK7
     offset: 0x07
+    description: TDM output channel mask register
     fields:
       - bits: "31:0"
         name: lane7_mask
@@ -465,6 +489,7 @@ ext_registers:
 
   - name: TDMOUT_{X}_MUTE4
     offset: 0x08
+    description: TDM output mute-pattern register
     fields:
       - bits: "31:0"
         name: lane4_mute
@@ -474,6 +499,7 @@ ext_registers:
 
   - name: TDMOUT_{X}_MUTE5
     offset: 0x09
+    description: TDM output mute-pattern register
     fields:
       - bits: "31:0"
         name: lane5_mute
@@ -483,6 +509,7 @@ ext_registers:
 
   - name: TDMOUT_{X}_MUTE6
     offset: 0x0a
+    description: TDM output mute-pattern register
     fields:
       - bits: "31:0"
         name: lane6_mute
@@ -492,6 +519,7 @@ ext_registers:
 
   - name: TDMOUT_{X}_MUTE7
     offset: 0x0b
+    description: TDM output mute-pattern register
     fields:
       - bits: "31:0"
         name: lane7_mute
@@ -501,6 +529,7 @@ ext_registers:
 
   - name: TDMOUT_{X}_GAIN_EN
     offset: 0x0c
+    description: TDM output gain enable register
     fields:
       - bits: "15:0"
         name: ch_gain_en
@@ -510,6 +539,7 @@ ext_registers:
 
   - name: TDMOUT_{X}_GAIN_CTRL
     offset: 0x0d
+    description: TDM output control register
     fields:
       - bits: "31"
         name: reg_gain_step_chg
@@ -531,3 +561,4 @@ ext_registers:
         access: R/W
         default: "0x0000"
         description: "the period of each change, unit is FS"
+

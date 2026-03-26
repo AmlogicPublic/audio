@@ -3,15 +3,16 @@ parent_base: audio_top_ee
 
 instances:
   A:
-    offset_base: 0x3b0
+    offset_base0: 0x3b0
     condition: { macro_path: ["pcpd_mon", "A", "imp"], eq: 1 }
   B:
-    offset_base: 0x3c0
+    offset_base0: 0x3c0
     condition: { macro_path: ["pcpd_mon", "B", "imp"], eq: 1 }
 
-registers:
+registers0:
   - name: PCPD_MON_{X}_CTRL0
     offset: 0x00
+    description: PCPD monitor control register
     fields:
       - bits: "31"
         name: reg_en
@@ -41,6 +42,7 @@ registers:
 
   - name: PCPD_MON_{X}_CTRL1
     offset: 0x01
+    description: PCPD monitor control register
     fields:
       - bits: "31:16"
         name: pb_val
@@ -55,6 +57,7 @@ registers:
 
   - name: PCPD_MON_{X}_CTRL2
     offset: 0x02
+    description: PCPD monitor control register
     fields:
       - bits: "31:0"
         name: reg_channel_mask
@@ -64,6 +67,7 @@ registers:
 
   - name: PCPD_MON_{X}_CTRL3
     offset: 0x03
+    description: PCPD monitor control register
     fields:
       - bits: "29:20"
         name: reg_chnum_mask
@@ -88,6 +92,7 @@ registers:
 
   - name: PCPD_MON_{X}_CTRL4
     offset: 0x04
+    description: PCPD monitor control register
     fields:
       - bits: "31"
         name: reg_papb_timeout_en
@@ -102,6 +107,7 @@ registers:
 
   - name: PCPD_MON_{X}_CTRL5
     offset: 0x05
+    description: PCPD monitor control register
     fields:
       - bits: "31:28"
         name: reg_internal_sts_clr
@@ -126,6 +132,7 @@ registers:
 
   - name: PCPD_MON_{X}_STAT0
     offset: 0x08
+    description: PCPD monitor status register
     fields:
       - bits: "31:12"
         name: r_data_num
@@ -175,6 +182,7 @@ registers:
 
   - name: PCPD_MON_{X}_STAT1
     offset: 0x09
+    description: PCPD monitor status register
     fields:
       - bits: "31:16"
         name: r_pc_data

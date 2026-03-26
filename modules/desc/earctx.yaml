@@ -1,0 +1,192 @@
+module: earctx
+display_name: "eARC Transmitter"
+condition:
+  any_of:
+    - "earctx.CMDC.imp"
+    - "earctx.DMAC.imp"
+    - "earctx.TOP.imp"
+
+overview: |
+  The eARC (Enhanced Audio Return Channel) Transmitter implements the HDMI 2.1 eARC specification,
+  enabling high-bandwidth audio transmission from a TV, set-top box, or streaming device to an AVR
+  or soundbar. The eARC TX allows sending uncompressed multi-channel audio (up to 32 channels) and
+  high-bitrate object audio formats like Dolby TrueHD, DTS-HD Master Audio, and Dolby Atmos through
+  the HDMI cable's return channel.
+
+  The eARC TX consists of three functional blocks: CMDC (Common Mode Data Channel) for control
+  signaling, DMAC (Differential Mode Audio Channel) for audio data transmission, and TOP for
+  global control. The module handles discovery with eARC RX devices, capability negotiation,
+  and continuous audio streaming.
+
+features:
+  - HDMI 2.1 eARC specification compliant.
+  - CMDC (Common Mode Data Channel):
+    - Discovery protocol initiation with eARC RX.
+    - Capability query (RX supported formats).
+    - Heartbeat generation for link monitoring.
+    - CEC tunneling support.
+  - DMAC (Differential Mode Audio Channel):
+    - High-bandwidth differential audio transmission.
+    - IEC60958 (LPCM) and IEC61937 (compressed) audio support.
+    - Up to 32-channel uncompressed audio.
+    - Sample rates up to 192 kHz, bit depths up to 24-bit.
+    - Dolby TrueHD, DTS-HD MA, Dolby Atmos, DTS:X passthrough.
+  - TOP (Global Control):
+    - Overall module enable and configuration.
+    - Interrupt aggregation from CMDC and DMAC.
+    - Status reporting.
+  - Error detection code (CRC) insertion.
+  - Channel status generation.
+  - Clock generation for differential signaling.
+
+block_diagram:
+  images:
+    - earctx.png
+  description: "eARC TX Block Diagram"
+
+function_description: |
+  **eARC Protocol Overview:**
+
+  The eARC TX initiates and maintains the audio return channel:
+  - **CMDC**: Bidirectional control channel (1MHz biphase, TX as master)
+  - **DMAC**: Unidirectional audio channel with falling-edge modulation
+
+  **Data Path Architecture (see block diagram):**
+
+  ```
+  DDR → fr_ddr → Err Corrector → MUX → BIPHASE ENCODER → falling_edge modulation → eARC/ARC PHY
+                                  ↑                                                      ↓
+                          (bypass/enable)                                    DMAC_audio_out / spdif_audio_out
+  
+  APB reg bank0 ←→ CMDC Master → cmdc_biphase_signal → eARC/ARC PHY
+                        ↓
+                   capb_block
+  ```
+
+  **CMDC Block (Master Mode):**
+
+  The CMDC operates as master, initiating communication with eARC RX:
+
+  State Machine (`EARC_TX_CMDC_VSM_CTRL0`):
+  ```
+  IDLE1 → IDLE2 → DISC1 → DISC2 → ARC → eARC_PENDING → eARC
+  ```
+
+  Key register functions:
+  - `VSM_CTRL0`: State control (`sw_state`, `arc_enable`, `auto_state_en`, `noack_repeat_en`)
+  - `VSM_CTRL1`: HPD selection and comma count threshold
+  - `VSM_CTRL2-6`: Timing for disc1_hpd, disc2_heartbeat, no_ack, disc_timeout, earc_heartbeat
+  - `VSM_CTRL7`: Heartbeat detection timing with `status_soft_val`
+  - `MASTER_CTRL`: Master command control (`master_cmd_rw`, `master_hb_ignore`, `master_cmd_count`, `master_cmd_id`, `master_cmd_address`)
+  - `PACKET_CTRL0-6`: Packet mode, preamble/post threshold, timeout config
+  - `BIPHASE_CTRL0-3`: ACK delay, comma detection threshold, manual reset
+
+  Interrupt sources (`CMDC_TOP_CTRL0`):
+  - State transitions: `idle1_int`, `idle2_int`, `disc1_int`, `disc2_int`, `earc_int`
+  - Heartbeat: `hb_status_int`, `losthb_int`, `timeout_int`
+  - Command: `int_recv_finished`, `int_recv_ack`, `int_recv_nack`, `int_recv_norsp`
+  - Errors: `int_recv_ecc_err`, `int_recv_unexp`
+
+  **DMAC Block:**
+
+  Supports both eARC mode and ARC (SPDIF) mode:
+
+  Audio data path:
+  - `SPDIFOUT_CTRL0`: Biphase work start/clear, AFIFO reset, mute control
+  - `SPDIFOUT_CTRL1`: FRDDR source select, data format (8/16/32-bit)
+  - `ERR_CORRT_CTRL0-4`: BCH error correction generation, L/R channel select, gain
+  - `FE_CTRL0`: Falling-edge modulation enable, hold time control
+
+  Channel status generation (`SPDIFOUT_CHSTS0-B`):
+  - 192-bit channel status for both A and B channels
+  - Includes sample rate, bit depth, audio/non-audio flag
+
+  Mute and format switching (`ERR_CORRT_CTRL2`):
+  - `mute_mode`: 0=always, 1=mute N blocks then unmute, 2=mute N blocks then hold bus
+  - `mute_block_num`: Number of blocks to mute during format change
+  - `mute_bit_chst`: Which channel status bit indicates mute
+
+  User bit (IU) transmission (`ERR_CORRT_CTRL1/4`):
+  - `iu_transmit_data`: 8-bit IU data
+  - `iu_transmit_interval`: Interval between IU packets
+  - `iu_start_thd`: FIFO level threshold to start IU transmission
+
+  Gain control (`SPDIFOUT_GAIN0-5`):
+  - Per-channel gain (ch0-ch15)
+  - `gain_step`: Smooth gain ramping
+  - `gain_updt_timer`: Gain update interval
+
+  **TOP Block:**
+
+  Global control and interrupt aggregation:
+  - `TOP_CTRL0`: HPD mux selection, force mode enable
+  - `DMAC_INT_MASK/PENDING`: 6-bit DMAC interrupt mask and status
+  - `CMDC_INT_MASK/PENDING`: 18-bit CMDC interrupt mask and status
+  - `ANA_CTRL0-1`: PHY configuration (rterm, slew control, hysteresis trim)
+
+  **Audio Transmission Modes:**
+
+  | Mode | Data Path | Use Case |
+  |------|-----------|----------|
+  | eARC | fr_ddr → BCH → biphase → FE_mod | High-bandwidth (TrueHD, Atmos) |
+  | ARC | fr_ddr → biphase (bypass FE) | Legacy SPDIF compatible |
+
+  **Init Sequence for Clean Startup:**
+
+  `SPDIFOUT_SWAP` register:
+  - `init_send_en`: Send 01 sequence before audio to avoid analog pop
+  - `init_send_time`: Duration of 01 sequence
+  - `hold_start_cnt`: Delay for TDM synchronization
+
+application_notes:
+  - title: "Basic eARC Audio Transmission"
+    steps:
+      - Initialize TOP module with global enable.
+      - Configure CMDC for eARC mode.
+      - Wait for CMDC discovery complete (state = eARC).
+      - Query RX capabilities from CMDC registers.
+      - Configure DMAC with matching audio format.
+      - Configure FRDDR with audio buffer.
+      - Enable DMAC transmission.
+      - Monitor heartbeat and handle reconnection if needed.
+
+  - title: "LPCM 7.1 Transmission (192kHz)"
+    steps:
+      - Verify RX supports 8-channel 192kHz LPCM.
+      - Configure FRDDR with 8-channel interleaved buffer.
+      - Set DMAC format registers for LPCM, 8ch, 192kHz.
+      - Configure channel status bits accordingly.
+      - Enable transmission.
+      - Output appears on RX as 7.1 surround.
+
+  - title: "Dolby TrueHD/Atmos Passthrough"
+    steps:
+      - FRDDR contains pre-encoded TrueHD bitstream.
+      - Set DMAC to non-audio (compressed) mode.
+      - Channel status indicates IEC61937 format.
+      - eARC TX passes bitstream transparently.
+      - RX (AVR) decodes TrueHD internally.
+
+  - title: "Capability-Based Format Negotiation"
+    steps:
+      - After discovery, read RX capability registers.
+      - Parse supported formats (LPCM channels, sample rates, codecs).
+      - Select highest quality format both sides support.
+      - Configure DMAC and FRDDR accordingly.
+      - This ensures optimal audio quality.
+
+  - title: "Fallback to Legacy ARC"
+    steps:
+      - If eARC discovery fails (legacy RX).
+      - CMDC reverts to ARC mode.
+      - Only 2-channel compressed audio supported.
+      - Route audio through SPDIFOUT instead.
+      - ARC uses SPDIF-over-HDMI, not DMAC.
+
+  - title: "Heartbeat and Link Recovery"
+    steps:
+      - CMDC generates heartbeat automatically when enabled.
+      - Monitor heartbeat ACK from RX.
+      - On missed heartbeats (timeout), link may be lost.
+      - Re-initiate discovery sequence.
+      - Audio mutes during reconnection.

@@ -4,7 +4,7 @@ module_condition:
   macro_path: ["vad", "imp"]
   eq: 1
 
-registers:
+registers0:
   - name: VAD_TOP_CTRL0
     offset: 0x0000
     description: VAD top control 0

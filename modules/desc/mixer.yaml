@@ -1,0 +1,167 @@
+module: mixer
+display_name: "Audio Mixer"
+condition:
+  any_of:
+    - "mixer.A.imp"
+
+overview: |
+  The Audio Mixer module performs weighted summing of multiple audio channels with programmable
+  gain coefficients and soft-clipping. It enables stereo mixing, channel combining, and volume
+  control for output streams destined for TDMOUT, SPDIFOUT, or other downstream processing.
+
+  This is primarily used for low latency applications,
+  the upper layer software will use a low latency thread to feed timing-critical data to the mixer as the primary source,
+  with normal data(higher latency) from the standard audio software stack(thread) as the secondary source.
+
+  The mixer supports dual input paths (FRDDR A + FRDDR B, or FRDDR + EQ/DRC), allowing
+  applications like music + notification mixing, voice ducking, or multi-source audio blending.
+  Coefficient arithmetic matches the EQ/DRC module for consistent gain scaling.
+
+features: |
+  - 2-to-1 channel mixing with 4 programmable coefficients (2×2 matrix).
+  - 32-bit signed fixed-point coefficients (24-bit effective precision).
+  - Unity gain: `0x00800000` = 1.0, mute: `0x00000000`.
+  - Soft-clip threshold to prevent overflow distortion.
+  - Dual input path: Request A (FRDDR) + Request B (FRDDR or EQ/DRC).
+  - Selectable data width: 8/16/32-bit samples.
+  - Multi-lane support for multi-channel streams.
+  - AFIFO for clock domain crossing.
+  - Configurable FRDDR source selection for each request path.
+  - Mixer delay compensation for EQ/DRC pipeline alignment.
+  - SPDIF mode support for [27:4] data extraction.
+  - Status monitoring: overflow flag, FRDDR init state.
+
+block_diagram:
+  images: []
+  description: "Audio Mixer Block Diagram"
+
+function_description: |
+  **Mixing Equations:**
+
+  The mixer implements a 2×2 matrix mix for stereo pairs:
+
+  ```
+  Ch0_out = Ch0_in_a × coef0 + Ch2_in_a × coef1
+  Ch1_out = Ch1_in_a × coef2 + Ch3_in_a × coef3
+  ```
+
+  Where:
+  - `Ch0_in_a`, `Ch1_in_a`: Request A inputs (left/right)
+  - `Ch2_in_a`, `Ch3_in_a`: Request B inputs (left/right, same FRDDR or different)
+  - `coef0-3`: 32-bit signed coefficients
+
+  **Coefficient Format:**
+
+  | Value | Gain |
+  |-------|------|
+  | `0x00800000` | 1.0 (unity, 0 dB) |
+  | `0x00400000` | 0.5 (-6 dB) |
+  | `0x00200000` | 0.25 (-12 dB) |
+  | `0x01000000` | 2.0 (+6 dB) |
+  | `0x00000000` | 0.0 (mute) |
+  | `0xFF800000` | -1.0 (phase invert) |
+
+  Calculation: `coef = gain × 0x00800000` (signed 32-bit)
+
+  **Soft-Clip Threshold:**
+
+  `clip_thd` in `MIXER_THD` defines the maximum output magnitude:
+  - If `|output| > clip_thd`, output is clamped to ±clip_thd
+  - Default `0x7FFFFFFF` = no clipping (full 31-bit range)
+  - Lower values provide headroom for downstream processing
+
+  **Input Configuration:**
+
+  **Request A Path (`CTRL2`):**
+  - `reqa_sel_frddr`: FRDDR source (0=A, 1=B, 2=C, 3=D, 4=E)
+  - `reqa_sel_eqdrc`: 1=use EQ/DRC output instead
+  - `reqa_ch_sel`: Channel pair from 8-ch FRDDR (0=ch0/1, 1=ch2/3, etc.)
+  - `frddr_type`: Sample format (8/16/32-bit packing)
+
+  **Request B Path (`CTRL3`):**
+  - Same structure as Request A
+  - Can be same or different FRDDR
+
+  **Multi-Channel Configuration:**
+
+  - `reqa_ch_num`: Number of channels (max 8)
+  - `reg_lane_mask_a/b`: Lane enable bitmasks
+  - `bit_wide`: Sample width (0=8bit, 1-2=16bit, 3-4=32bit)
+
+  **EQ/DRC Pipeline Delay:**
+
+  When mixing FRDDR + EQ/DRC output:
+  - Set `mixer_delay_en = 1` in CTRL1
+  - Configure `mixer_delay_cnt` for pipeline latency (0=100, 1=200, ... 7=800 cycles)
+  - Ensures time-aligned mixing of processed and direct paths
+
+  **Key Registers:**
+
+  | Register | Function |
+  |----------|----------|
+  | `COEF0-3` | Mixing coefficients |
+  | `THD` | Soft-clip threshold |
+  | `CTRL0` | Master enable, source select, data format |
+  | `CTRL1` | AFIFO reset, delay enable, lane masks |
+  | `CTRL2` | Request A configuration |
+  | `CTRL3` | Request B configuration |
+  | `CTRL4` | FRDDR source selection override |
+  | `STATUS1` | Debug: FRDDR state, FIFO count, overflow |
+
+  **Data Flow:**
+
+  ```
+  FRDDR_A ──► Unpack ──► Ch0/1 ───┐
+                                   ├──► Mix (coef) ──► Clip ──► Output
+  FRDDR_B ──► Unpack ──► Ch2/3 ───┘
+  (or EQ/DRC)
+  ```
+
+application_notes:
+  - title: "Stereo Music + Notification Mixing"
+    steps: |
+      - FRDDR_A: Music stream (stereo).
+      - FRDDR_B: Notification sound (stereo).
+      - Set `reqa_sel_frddr = 0`, `reqb_sel_frddr = 1`.
+      - Coefficients for music at full volume, notification at -6dB:
+        - `coef0 = 0x00800000` (music L → out L)
+        - `coef1 = 0x00400000` (notify L → out L)
+        - `coef2 = 0x00800000` (music R → out R)
+        - `coef3 = 0x00400000` (notify R → out R)
+      - Set `clip_thd = 0x7FFFFFFF`.
+      - Enable `reg_mixer_en = 1`.
+      - Route output to TDMOUT/SPDIFOUT.
+
+  - title: "Voice Ducking (Lower Music During Voice)"
+    steps: |
+      - Music on FRDDR_A, voice on FRDDR_B.
+      - During voice activity, reduce music coefficient:
+        - `coef0 = 0x00200000` (music at -12dB)
+        - `coef1 = 0x00800000` (voice at 0dB)
+      - Software dynamically adjusts coefficients.
+      - Smooth transitions require ramping coefficients over time.
+
+  - title: "Mono Downmix from Stereo"
+    steps: |
+      - Single FRDDR with stereo (ch0=L, ch1=R).
+      - Map both L and R to mixer inputs.
+      - Set coefficients for L+R sum:
+        - `coef0 = 0x00400000` (L × 0.5)
+        - `coef1 = 0x00400000` (R × 0.5)
+      - Output: mono on Ch0.
+      - Clip threshold prevents overflow from summing.
+
+  - title: "Mixing with EQ/DRC Output"
+    steps: |
+      - FRDDR_A feeds EQ/DRC for processing.
+      - FRDDR_B provides direct reference.
+      - Set `reqa_sel_eqdrc = 1` (use EQ/DRC output).
+      - Enable `mixer_delay_en`, configure delay.
+      - Mix processed and unprocessed for A/B comparison or effect blend.
+
+  - title: "Multi-Channel 8-to-2 Downmix"
+    steps: |
+      - 8-channel source on FRDDR_A.
+      - Configure `reqa_ch_num = 7` (8 channels).
+      - Use SWAP/routing in TDMOUT to select mixer output.
+      - Coefficient matrix can implement standard downmix formulas.

@@ -4,7 +4,7 @@ module_condition:
   macro_path: ["eq_drc", "imp"]
   eq: 1
 
-registers:
+registers0:
   - name: AED_COEF_RAM_CNTL
     offset: 0x0000
     description: AED coefficient RAM control

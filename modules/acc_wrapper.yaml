@@ -7,7 +7,7 @@ instances:
       - pattern: "^EE_AUDIO_ACC_WRAPPER_"
         replacement: "EE_AUDIO_EQDRC_WRAPPER_"
 
-registers:
+registers0:
   - name: EE_AUDIO_ACC_WRAPPER_TOP_CTL0
     offset: 0x0000
     description: ACC wrapper top control 0

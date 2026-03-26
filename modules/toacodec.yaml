@@ -3,12 +3,13 @@ parent_base: audio_top_ee
 
 instances:
   A:
-    offset_base: 0x1d0
+    offset_base0: 0x1d0
     condition: { macro_path: ["toacodec", "imp"], eq: 1 }
 
-registers:
+registers0:
   - name: TOACODEC_CTRL0
     offset: 0x00
+    description: to-ACODEC path control register
     fields:
       - bits: "31"
         name: reg_toacodec_en_dat
@@ -68,6 +69,7 @@ registers:
 
   - name: TOACODEC_CTRL1
     offset: 0x04
+    description: to-ACODEC path control register
     fields:
       - bits: "31:0"
         name: reserved

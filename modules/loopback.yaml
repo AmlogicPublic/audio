@@ -3,15 +3,16 @@ parent_base: audio_top_ee
 
 instances:
   A:
-    offset_base: 0xb0
+    offset_base0: 0xb0
     condition: { macro_path: ["loopback", "A", "imp"], eq: 1 }
   B:
-    offset_base: 0x230
+    offset_base0: 0x230
     condition: { macro_path: ["loopback", "B", "imp"], eq: 1 }
 
-registers:
+registers0:
   - name: LB_{X}_CTRL0
     offset: 0x00
+    description: Loopback control 0
     fields:
       - bits: "31"
         name: reg_lb_en
@@ -66,6 +67,7 @@ registers:
 
   - name: LB_{X}_CTRL1
     offset: 0x01
+    description: Loopback control 1
     fields:
       - bits: "31"
         name: lb_sel_resample_a
@@ -120,6 +122,7 @@ registers:
 
   - name: LB_{X}_CTRL2
     offset: 0x02
+    description: Loopback data source control
     fields:
       - bits: "24:20"
         name: dat_src_sel
@@ -139,6 +142,7 @@ registers:
 
   - name: LB_{X}_CTRL3
     offset: 0x03
+    description: Loopback source control
     fields:
       - bits: "24:20"
         name: lb_src_sel_ext
@@ -158,6 +162,7 @@ registers:
 
   - name: LB_{X}_DAT_ID0
     offset: 0x04
+    description: Data channel ID 4-7
     fields:
       - bits: "31:24"
         name: data_ch7_id
@@ -182,6 +187,7 @@ registers:
 
   - name: LB_{X}_DAT_ID1
     offset: 0x05
+    description: Data channel ID 0-3
     fields:
       - bits: "31:24"
         name: data_ch3_id
@@ -206,6 +212,7 @@ registers:
 
   - name: LB_{X}_DAT_ID2
     offset: 0x06
+    description: Data channel ID 8-11
     fields:
       - bits: "31:24"
         name: data_ch11_id
@@ -230,6 +237,7 @@ registers:
 
   - name: LB_{X}_DAT_ID3
     offset: 0x07
+    description: Data channel ID 12-15
     fields:
       - bits: "31:24"
         name: data_ch15_id
@@ -254,6 +262,7 @@ registers:
 
   - name: LB_{X}_LB_ID0
     offset: 0x08
+    description: Loopback channel ID 4-7
     fields:
       - bits: "31:24"
         name: lb_ch7_id
@@ -278,6 +287,7 @@ registers:
 
   - name: LB_{X}_LB_ID1
     offset: 0x09
+    description: Loopback channel ID 0-3
     fields:
       - bits: "31:24"
         name: lb_ch3_id
@@ -302,6 +312,7 @@ registers:
 
   - name: LB_{X}_LB_ID2
     offset: 0x0a
+    description: Loopback channel ID 8-11
     fields:
       - bits: "31:24"
         name: lb_ch11_id
@@ -326,6 +337,7 @@ registers:
 
   - name: LB_{X}_LB_ID3
     offset: 0x0b
+    description: Loopback channel ID 12-15
     fields:
       - bits: "31:24"
         name: lb_ch15_id
@@ -350,6 +362,7 @@ registers:
 
   - name: LB_{X}_STS
     offset: 0x0c
+    description: Loopback status
     fields:
       - bits: "31:0"
         name: status
@@ -359,6 +372,7 @@ registers:
 
   - name: LB_{X}_CHSYNC_CTRL_INSERT
     offset: 0x0d
+    description: Insert path channel sync control
     fields:
       - bits: "31"
         name: bypass_n
@@ -398,6 +412,7 @@ registers:
 
   - name: LB_{X}_CHSYNC_CTRL_ORIG
     offset: 0x0e
+    description: Original path channel sync control
     fields:
       - bits: "31"
         name: bypass_n

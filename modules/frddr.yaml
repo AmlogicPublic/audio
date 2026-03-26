@@ -3,24 +3,25 @@ parent_base: audio_top_ee
 
 instances:
   A:
-    offset_base: 0x70
+    offset_base0: 0x70
     condition: { macro_path: ["frddr", "A", "imp"], eq: 1 }
   B:
-    offset_base: 0x80
+    offset_base0: 0x80
     condition: { macro_path: ["frddr", "B", "imp"], eq: 1 }
   C:
-    offset_base: 0x90
+    offset_base0: 0x90
     condition: { macro_path: ["frddr", "C", "imp"], eq: 1 }
   D:
-    offset_base: 0x220
+    offset_base0: 0x220
     condition: { macro_path: ["frddr", "D", "imp"], eq: 1 }
   E:
-    offset_base: 0x250
+    offset_base0: 0x250
     condition: { macro_path: ["frddr", "E", "imp"], eq: 1 }
 
-registers:
+registers0:
   - name: FRDDR_{X}_CTRL0
     offset: 0x00
+    description: FRDDR control 0
     fields:
       - bits: "31"
         name: reg_frddr_en
@@ -60,6 +61,7 @@ registers:
 
   - name: FRDDR_{X}_CTRL1
     offset: 0x01
+    description: FRDDR control 1
     fields:
       - bits: "31:24"
         name: reg_fifo_depth
@@ -89,6 +91,7 @@ registers:
 
   - name: FRDDR_{X}_START_ADDR
     offset: 0x02
+    description: Buffer A start address
     fields:
       - bits: "31:0"
         name: start_addr
@@ -98,6 +101,7 @@ registers:
 
   - name: FRDDR_{X}_FINISH_ADDR
     offset: 0x03
+    description: Buffer A finish address
     fields:
       - bits: "31:0"
         name: finish_addr
@@ -107,6 +111,7 @@ registers:
 
   - name: FRDDR_{X}_INT_ADDR
     offset: 0x04
+    description: Interrupt address/count
     fields:
       - bits: "31:0"
         name: int_addr
@@ -116,6 +121,7 @@ registers:
 
   - name: FRDDR_{X}_STATUS1
     offset: 0x05
+    description: FRDDR status 1
     fields:
       - bits: "22:20"
         name: stop_ddr_status
@@ -150,6 +156,7 @@ registers:
 
   - name: FRDDR_{X}_STATUS2
     offset: 0x06
+    description: FRDDR status 2
     fields:
       - bits: "31:0"
         name: status2
@@ -159,6 +166,7 @@ registers:
 
   - name: FRDDR_{X}_START_ADDRB
     offset: 0x07
+    description: Buffer B start address
     fields:
       - bits: "31:0"
         name: start_addrb
@@ -168,6 +176,7 @@ registers:
 
   - name: FRDDR_{X}_FINISH_ADDRB
     offset: 0x08
+    description: Buffer B finish address
     fields:
       - bits: "31:0"
         name: finish_addrb
@@ -177,6 +186,7 @@ registers:
 
   - name: FRDDR_{X}_INIT_ADDR
     offset: 0x09
+    description: Initial read address
     fields:
       - bits: "31:0"
         name: init_addr
@@ -186,6 +196,7 @@ registers:
 
   - name: FRDDR_{X}_CTRL2
     offset: 0x0a
+    description: FRDDR source control
     fields:
       - bits: "31:24"
         name: share_ch_num
@@ -260,6 +271,7 @@ registers:
 
   - name: FRDDR_{X}_AADDR
     offset: 0x0b
+    description: Address high bits control
     fields:
       - bits: "21:20"
         name: int_addr_hi
@@ -294,6 +306,7 @@ registers:
 
   - name: FRDDR_{X}_STATUS3
     offset: 0x0c
+    description: FRDDR status 3
     fields:
       - bits: "13:12"
         name: next_finish_reply_hi

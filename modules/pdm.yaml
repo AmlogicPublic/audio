@@ -7,10 +7,10 @@ instances:
       - pattern: "^PDM_"
         replacement: "PDMB_"
 
-registers:
+registers0:
   - name: PDM_CTRL
     offset: 0x0000
-    description: PDM control register
+    description: PDM control
     fields:
       - bits: "31"
         name: pdm_en
@@ -70,7 +70,7 @@ registers:
 
   - name: PDM_HCIC_CTRL1
     offset: 0x0001
-    description: HCIC filter control 1
+    description: HCIC control 1
     fields:
       - bits: "31"
         name: hcic_en
@@ -110,7 +110,7 @@ registers:
 
   - name: PDM_HCIC_CTRL2
     offset: 0x0002
-    description: HCIC filter control 2
+    description: HCIC control 2
     fields:
       - bits: "31:0"
         name: hcic_ctrl2
@@ -225,7 +225,7 @@ registers:
 
   - name: PDM_HPF_CTRL
     offset: 0x0006
-    description: High pass filter control
+    description: HPF control
     fields:
       - bits: "31"
         name: hpf_en
@@ -250,7 +250,7 @@ registers:
 
   - name: PDM_CHAN_CTRL
     offset: 0x0007
-    description: Channel 0-3 sample pointer control
+    description: Channel pointer control 0-3
     fields:
       - bits: "31:24"
         name: chan3_ptr
@@ -275,7 +275,7 @@ registers:
 
   - name: PDM_CHAN_CTRL1
     offset: 0x0008
-    description: Channel 4-7 sample pointer control
+    description: Channel pointer control 4-7
     fields:
       - bits: "31:24"
         name: chan7_ptr
@@ -370,7 +370,7 @@ registers:
 
   - name: PDM_STS
     offset: 0x000c
-    description: PDM status register
+    description: PDM status
     fields:
       - bits: "31:16"
         name: reserved
@@ -405,7 +405,7 @@ registers:
 
   - name: PDM_MUTE_VALUE
     offset: 0x000d
-    description: Mute value register
+    description: Mute value
     fields:
       - bits: "31:0"
         name: mute_value
@@ -415,7 +415,7 @@ registers:
 
   - name: PDM_MASK_NUM
     offset: 0x000e
-    description: Mask number for power on invalid data
+    description: Startup mask number
     fields:
       - bits: "31:16"
         name: reserved
@@ -430,7 +430,7 @@ registers:
 
   - name: PDM_CHAN_CTRL2
     offset: 0x000f
-    description: Channel control 2
+    description: Channel pointer control 2
     fields:
       - bits: "31:8"
         name: reserved
@@ -445,7 +445,7 @@ registers:
 
   - name: PDM_HPF_GAIN_CTRL
     offset: 0x0010
-    description: HPF gain control
+    description: HPF gain control register
     fields:
       - bits: "31:0"
         name: hpf_gain_ctrl

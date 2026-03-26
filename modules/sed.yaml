@@ -4,7 +4,7 @@ module_condition:
   macro_path: ["sed", "imp"]
   eq: 1
 
-registers:
+registers0:
   - name: SED_VERSION
     offset: 0x0000
     description: SED version register

@@ -80,6 +80,7 @@ MODULE_TREE = {
             "eq_drc": {"_addr": 0xFFAE4000, "imp": 1, "ch": 16, "static": 1, "arch": "reg"},
         },
         "IOProcessing": {
+            "tdm_dat_pad": {"imp": 1},
             "toacodec": {"imp": 0},
         },
         "Mem2MemProcessing": {

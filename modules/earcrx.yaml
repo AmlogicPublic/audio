@@ -6,7 +6,7 @@ module_condition:
 
 sections:
   CMDC:
-    registers:
+    registers0:
       - name: EARC_RX_CMDC_TOP_CTRL0
         offset: 0x0000
         description: CMDC top control 0
@@ -1283,7 +1283,7 @@ sections:
             description: reserved
 
   DMAC:
-    registers:
+    registers0:
       - name: EARCRX_DMAC_TOP_CTRL0
         offset: 0x0000
         description: DMAC top control 0
@@ -2720,7 +2720,7 @@ sections:
             description: unstable t2 count
 
   TOP:
-    registers:
+    registers0:
       - name: EARCRX_TOP_CTRL0
         offset: 0x0000
         description: Top control 0

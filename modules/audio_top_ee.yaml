@@ -243,12 +243,13 @@ exception_irq_fields_1: &exception_irq_fields_1
     description: "TDMIN_LB BIT_CNT_ERR, BIT CNT between two SLOT didn't equal to REG_BIT_NUM"
     condition: { macro_path: ["tdmin", "LB_A", "imp"], eq: 1 }
 
-registers:
+registers0:
   # ============================================================================
   # CLK/RESET Registers
   # ============================================================================
   - name: CLK_GATE_EN0
     offset: 0x00
+    description: clock gate enable register
     fields:
       - bits: "31"
         name: frhdmirx
@@ -415,6 +416,7 @@ registers:
 
   - name: CLK_GATE_EN1
     offset: 0x01
+    description: clock gate enable register
     fields:
       - bits: "19"
         name: mixer
@@ -508,8 +510,10 @@ registers:
         default: "0x0000"
         description: "mclk = pll/(clk_div+1)"
 
+    description: master clock control register
   - name: SW_RESET0
     offset: 0x0a
+    description: software reset control register
     fields:
       - bits: "31"
         name: frhdmirx
@@ -704,6 +708,7 @@ registers:
 
   - name: SW_RESET1
     offset: 0x0b
+    description: software reset control register
     fields:
       - bits: "19"
         name: mixer
@@ -802,6 +807,7 @@ registers:
         default: "0x000"
         description: "lrclk = sclk/(lrclk_div+1)"
 
+    description: master serial clock control register
   - name: MST_{X}_SCLK_CTRL1
     instances: [A, B, C, D, E, F]
     offsets: { A: 0x11, B: 0x13, C: 0x15, D: 0x17, E: 0x19, F: 0x1b }
@@ -842,8 +848,10 @@ registers:
         default: "0x00"
         description: "[5]:lrclk_ph2; [4]:sclk_ph2; [3]:lrclk_ph1; [2]:sclk_ph1; [1]:lrclk_ph0; [0]:sclk_ph0"
 
+    description: master serial clock control register
   - name: MST_DLY_CTRL0
     offset: 0x1c
+    description: master interface delay control register
     fields:
       - bits: "23:20"
         name: mst_sclk_f_ph1_dly_sel
@@ -878,6 +886,7 @@ registers:
 
   - name: MST_DLY_CTRL1
     offset: 0x1d
+    description: master interface delay control register
     fields:
       - bits: "23:20"
         name: mst_lrclk_f_ph1_dly_sel
@@ -948,8 +957,10 @@ registers:
         default: "0x0"
         description: "0~5:mst_a~f_lrclk_ph1; 6~15:i_slv_lrclk_a~j"
 
+    description: TDM input clock control register
   - name: CLK_TDMINB_LB_CTRL
     offset: 0x37
+    description: TDM input clock control register
     condition: { macro_path: ["tdmin", "LB_B", "imp"], eq: 1 }
     fields:
       - bits: "31"
@@ -980,6 +991,7 @@ registers:
 
   - name: CLK_TDMIN_D_CTRL
     offset: 0x3a
+    description: TDM input clock control register
     condition: { macro_path: ["tdmin", "D", "imp"], eq: 1 }
     fields:
       - bits: "31"
@@ -1050,8 +1062,10 @@ registers:
         default: "0x0"
         description: "0~5:mst_a~f_lrclk_ph2; 6~15:i_slv_lrclk_a~j"
 
+    description: TDM output clock control register
   - name: CLK_TDMOUT_D_CTRL
     offset: 0x3b
+    description: TDM output clock control register
     condition: { macro_path: ["tdmout", "D", "imp"], eq: 1 }
     fields:
       - bits: "31"
@@ -1090,6 +1104,7 @@ registers:
   # ============================================================================
   - name: CLK_SPDIFIN_CTRL
     offset: 0x27
+    description: SPDIF input clock control register
     condition: { macro_path: ["spdifin", "A", "imp"], eq: 1 }
     fields:
       - bits: "31"
@@ -1115,6 +1130,7 @@ registers:
 
   - name: CLK_SPDIFIN_LB_CTRL
     offset: 0x2f
+    description: SPDIF input clock control register
     condition: { macro_path: ["spdifin", "LB_A", "imp"], eq: 1 }
     fields:
       - bits: "31"
@@ -1138,6 +1154,7 @@ registers:
   # ============================================================================
   - name: CLK_SPDIFOUT_CTRL
     offset: 0x28
+    description: SPDIF output clock control register
     condition: { macro_path: ["spdifout", "A", "imp"], eq: 1 }
     fields:
       - bits: "31"
@@ -1163,6 +1180,7 @@ registers:
 
   - name: CLK_SPDIFOUT_B_CTRL
     offset: 0x2d
+    description: SPDIF output clock control register
     condition: { macro_path: ["spdifout", "B", "imp"], eq: 1 }
     fields:
       - bits: "31"
@@ -1191,6 +1209,7 @@ registers:
   # ============================================================================
   - name: CLK_RESAMPLEA_CTRL
     offset: 0x29
+    description: resample clock control register
     condition: { macro_path: ["resample", "A", "imp"], eq: 1 }
     fields:
       - bits: "31"
@@ -1216,6 +1235,7 @@ registers:
 
   - name: CLK_RESAMPLEB_CTRL
     offset: 0x2e
+    description: resample clock control register
     condition: { macro_path: ["resample", "B", "imp"], eq: 1 }
     fields:
       - bits: "31"
@@ -1236,6 +1256,7 @@ registers:
 
   - name: CLK_RESAMPLEC_CTRL
     offset: 0x3c
+    description: resample clock control register
     condition: { macro_path: ["resample", "C", "imp"], eq: 1 }
     fields:
       - bits: "31"
@@ -1259,6 +1280,7 @@ registers:
   # ============================================================================
   - name: CLK_LOCKER_CTRL
     offset: 0x2a
+    description: locker clock control register
     condition: { macro_path: ["locker", "A", "imp"], eq: 1 }
     fields:
       - bits: "31"
@@ -1304,6 +1326,7 @@ registers:
 
   - name: CLK_LOCKERB_CTRL
     offset: 0x36
+    description: locker clock control register
     condition: { macro_path: ["locker", "B", "imp"], eq: 1 }
     fields:
       - bits: "31"
@@ -1352,6 +1375,7 @@ registers:
   # ============================================================================
   - name: CLK_PDMIN_CTRL0
     offset: 0x2b
+    description: PDM input clock control register
     condition: { macro_path: ["pdm", "A", "imp"], eq: 1 }
     fields:
       - bits: "31"
@@ -1377,6 +1401,7 @@ registers:
 
   - name: CLK_PDMIN_CTRL1
     offset: 0x2c
+    description: PDM input clock control register
     condition: { macro_path: ["pdm", "A", "imp"], eq: 1 }
     fields:
       - bits: "31"
@@ -1402,6 +1427,7 @@ registers:
 
   - name: CLK_PDMIN_CTRL2
     offset: 0x38
+    description: PDM input clock control register
     condition: { macro_path: ["pdm", "B", "imp"], eq: 1 }
     fields:
       - bits: "31"
@@ -1427,6 +1453,7 @@ registers:
 
   - name: CLK_PDMIN_CTRL3
     offset: 0x39
+    description: PDM input clock control register
     condition: { macro_path: ["pdm", "B", "imp"], eq: 1 }
     fields:
       - bits: "31"
@@ -1455,6 +1482,7 @@ registers:
   # ============================================================================
   - name: CLK_EQDRC_CTRL
     offset: 0x30
+    description: clk_eqdrc_ctrl register
     condition: { macro_path: ["eqdrc", "imp"], eq: 1 }
     fields:
       - bits: "31"
@@ -1483,6 +1511,7 @@ registers:
   # ============================================================================
   - name: CLK_{VOICE}_CTRL
     offset: 0x31
+    description: clk_voice_ctrl register
     condition: { macro_path: ["voice", "imp"], eq: 1 }
     voice_param: true
     fields:
@@ -1512,6 +1541,7 @@ registers:
   # ============================================================================
   - name: EARCTX_CMDC_CLK_CTRL
     offset: 0x32
+    description: earctx_cmdc_clk_ctrl register
     condition: { macro_path: ["earctx", "imp"], eq: 1 }
     fields:
       - bits: "31"
@@ -1537,6 +1567,7 @@ registers:
 
   - name: EARCTX_DMAC_CLK_CTRL
     offset: 0x33
+    description: earctx_dmac_clk_ctrl register
     condition: { macro_path: ["earctx", "imp"], eq: 1 }
     fields:
       - bits: "31"
@@ -1565,6 +1596,7 @@ registers:
   # ============================================================================
   - name: EARCRX_CMDC_CLK_CTRL
     offset: 0x34
+    description: earcrx_cmdc_clk_ctrl register
     condition: { macro_path: ["earcrx", "imp"], eq: 1 }
     fields:
       - bits: "31"
@@ -1590,6 +1622,7 @@ registers:
 
   - name: EARCRX_DMAC_CLK_CTRL
     offset: 0x35
+    description: earcrx_dmac_clk_ctrl register
     condition: { macro_path: ["earcrx", "imp"], eq: 1 }
     fields:
       - bits: "31"
@@ -1621,11 +1654,13 @@ registers:
   # --------------------------------------------------------------------------
   - name: EXCEPTION_IRQ_STS0
     offset: 0x380
+    description: exception interrupt status register
     fields: *exception_irq_fields_0
     field_access_override: R
 
   - name: EXCEPTION_IRQ_STS1
     offset: 0x381
+    description: exception interrupt status register
     fields: *exception_irq_fields_1
     field_access_override: R
 
@@ -1634,24 +1669,28 @@ registers:
   # --------------------------------------------------------------------------
   - name: EXCEPTION_IRQ_MASK0
     offset: 0x382
+    description: exception interrupt mask register
     fields: *exception_irq_fields_0
     field_access_override: R/W
 
   - name: EXCEPTION_IRQ_MASK1
     offset: 0x383
+    description: exception interrupt mask register
     fields: *exception_irq_fields_1
     field_access_override: R/W
 
   # --------------------------------------------------------------------------
-  # EXCEPTION_IRQ_MODE (mode registers: 0=pulse, 1=level)
+  # EXCEPTION_IRQ_MODE (mode registers0: 0=pulse, 1=level)
   # --------------------------------------------------------------------------
   - name: EXCEPTION_IRQ_MODE0
     offset: 0x384
+    description: exception interrupt mode register
     fields: *exception_irq_fields_0
     field_access_override: R/W
 
   - name: EXCEPTION_IRQ_MODE1
     offset: 0x385
+    description: exception interrupt mode register
     fields: *exception_irq_fields_1
     field_access_override: R/W
 
@@ -1660,11 +1699,13 @@ registers:
   # --------------------------------------------------------------------------
   - name: EXCEPTION_IRQ_CLR0
     offset: 0x386
+    description: exception interrupt clear register
     fields: *exception_irq_fields_0
     field_access_override: R/W
 
   - name: EXCEPTION_IRQ_CLR1
     offset: 0x387
+    description: exception interrupt clear register
     fields: *exception_irq_fields_1
     field_access_override: R/W
 
@@ -1673,10 +1714,12 @@ registers:
   # --------------------------------------------------------------------------
   - name: EXCEPTION_IRQ_INV0
     offset: 0x388
+    description: exception interrupt invert register
     fields: *exception_irq_fields_0
     field_access_override: R/W
 
   - name: EXCEPTION_IRQ_INV1
     offset: 0x389
+    description: exception interrupt invert register
     fields: *exception_irq_fields_1
     field_access_override: R/W

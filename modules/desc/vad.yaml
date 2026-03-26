@@ -1,0 +1,157 @@
+module: vad
+display_name: "Voice Activity Detector"
+condition:
+  any_of:
+    - "vad.imp"
+
+overview: |
+  The Voice Activity Detector (VAD) is a low-power hardware module designed to detect human voice
+  presence in audio streams while the main CPU is sleeping or powered down. When voice activity
+  is detected (VAD flag asserted), it wakes the CPU for further processing.
+
+  The VAD processes audio from PDM microphones or TDM input, performing decimation filtering,
+  pre-emphasis, frame-based analysis, and cepstral feature extraction to distinguish speech
+  from background noise.
+
+features:
+  - Low-power always-on voice detection for CPU wake-up.
+  - Audio input from PDM (single channel) or TDM sources.
+  - Decimation FIR filter with configurable coefficients (up to 26 taps).
+  - Pre-emphasis filter for speech enhancement.
+  - Frame-based processing with history buffer.
+  - Cepstrum analysis (FFT-based spectral features).
+  - Dual-channel support for stereo microphone arrays.
+  - Independent clock gating per processing stage.
+  - LUT-based activation functions.
+  - DDR write capability for buffered audio retrieval after wake-up.
+
+block_diagram:
+  images: []
+  description: "VAD Processing Pipeline"
+
+function_description: |
+  **VAD Application Flow:**
+
+  1. PDM and VAD enabled while CPU sleeps.
+  2. Voice and VAD status continuously written to DDR via independent DMA.
+  3. When VAD flag goes high, CPU wakes up.
+  4. CPU reads saved addresses to locate voice start position.
+  5. Software processes voice data with VAD status for each 10ms frame.
+
+  **Address Tracking:**
+
+  When VAD triggers, hardware saves:
+  - `addr_ddr_voice`: Current DDR write address for voice
+  - `addr_ram_voice`: Current SRAM write pointer
+  - `addr_ddr_vad`: Current DDR address for VAD status
+  - `addr_ram_vad`: Current SRAM pointer for VAD status
+
+  Software calculates:
+  ```
+  addr_cur_voice = addr_ddr_voice + addr_ram_voice
+  addr_start_voice = addr_cur_voice - time_delay_s × fs
+  addr_start_vad = addr_cur_vad - time_delay_s × 100
+  ```
+
+  Where `time_delay_s` accounts for VAD latency (<100ms) plus any required track-back.
+
+  **Processing Pipeline:**
+
+  ```
+  Audio In → Decimation FIR → Pre-emphasis → Frame Buffer → Cepstrum → VAD Decision
+     ↓           ↓                ↓              ↓             ↓
+   16/48/96K   16 kHz          y=x-α·x[n-1]   History     FFT+Spec
+  ```
+
+  **1. Decimation FIR Filter:**
+
+  Resamples input to 16 kHz for VAD processing:
+  - `dec_rate`: 0~11 (decimation ratio - 1)
+  - `dec_filter_order`: FIR filter order (up to 26 coefficients)
+  - `dec_coef_0` ~ `dec_coef_25`: 16-bit filter coefficients
+
+  **2. Pre-emphasis:**
+
+  First-order high-pass to enhance speech formants:
+  ```
+  y[n] = x[n] - α·x[n-1]
+  ```
+  - `pre_emp_coef`: 10-bit coefficient (typically ~0.97)
+
+  **3. Frame Processing:**
+
+  - `frame_his_en`: Enable frame history buffer
+  - `frame_his_save_en`: Save frames for CPU retrieval
+  - Frame length: typically 10ms (160 samples @ 16kHz)
+
+  **4. Cepstrum Analysis:**
+
+  FFT-based spectral feature extraction:
+  - `ceps_ceps_en`: Enable cepstrum computation
+  - `ceps_spec_en`: Enable spectrum computation
+  - `post_dec_en`: Post-decimation for feature reduction
+
+  **5. Channel Configuration:**
+
+  - `two_channel_en`: Enable stereo processing
+  - `ch0_shift`, `ch1_shift`: Input scaling (0~3)
+  - `VAD_IN_SEL0/1`: Audio source selection
+
+  **Key Registers:**
+
+  | Register | Function |
+  |----------|----------|
+  | `VAD_TOP_CTRL0` | Master enables: vad_en, dec_fir_en, pre_emp_en, ceps_*_en |
+  | `VAD_TOP_CTRL1` | Clock gating and software resets per stage |
+  | `VAD_TOP_CTRL2` | Channel shift configuration |
+  | `VAD_FIR_CTRL` | Decimation rate, filter order, depth |
+  | `VAD_FIR_EMP` | Pre-emphasis coefficient |
+  | `VAD_FIR_COEF0-12` | Decimation filter coefficients |
+  | `VAD_FRAME_CTRL0-2` | Frame buffer configuration |
+  | `VAD_CEP_CTRL0-5` | Cepstrum analysis parameters |
+  | `VAD_LUT_CTRL/WR/RD` | Lookup table access |
+  | `VAD_TO_DDR` | DDR write control |
+  | `VAD_SYNC_CTRL0` | Synchronization control |
+
+  **Status Registers:**
+
+  | Register | Content |
+  |----------|---------|
+  | `VAD_TOP_STS0-2` | Top-level status |
+  | `VAD_FIR_STS0-1` | Decimation filter status |
+  | `VAD_POW_STS0-2` | Power estimation status |
+  | `VAD_FFT_STS0-1` | FFT computation status |
+  | `VAD_SPE_STS0-3` | Spectrum entropy status |
+  | `VAD_DEC_STS0-1` | Post-decimation status |
+
+  **Clock Gating:**
+
+  Per-stage clock gating in `VAD_TOP_CTRL1`:
+  - `vad_clk_gate`, `prepare_clk_gate`, `proc_clk_gate`
+  - `frame_his_clk_gate`, `ceps_ceps_clk_gate`, `ceps_spec_clk_gate`
+  - Minimizes power when stages are idle
+
+application_notes:
+  - title: "Basic Voice Wake-up Configuration"
+    steps:
+      - Configure PDM input and clock for 16kHz.
+      - Set decimation filter coefficients and rate.
+      - Enable pre-emphasis with typical coefficient ~0.97.
+      - Configure frame and cepstrum processing.
+      - Enable VAD and put CPU to sleep.
+      - On VAD interrupt, read address registers.
+      - Process buffered audio from calculated start address.
+
+  - title: "Power Optimization"
+    steps:
+      - Enable clock gating for unused stages.
+      - Use single-channel mode if stereo not needed.
+      - Adjust frame rate based on latency requirements.
+      - Disable cepstrum if simple power-based detection sufficient.
+
+  - title: "Dual Microphone Configuration"
+    steps:
+      - Set `two_channel_en = 1`.
+      - Configure `VAD_IN_SEL0/1` for both mic inputs.
+      - Adjust `ch0_shift` and `ch1_shift` for gain matching.
+      - Both channels processed for improved noise rejection.

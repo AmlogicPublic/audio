@@ -1,0 +1,179 @@
+module: eq_drc
+display_name: "Audio EQDRC"
+condition:
+  macro_path: ["eq_drc", "imp"]
+  eq: 1
+
+overview: |
+  The Audio EQ/DRC module provides parametric equalization and dynamic range compression/limiting
+  for audio streams. It enables tone shaping, frequency response correction, loudness management,
+  and speaker protection through configurable biquad filter banks and gain processors.
+
+  The module supports `{ch}` channels and can be inserted in the playback path between FRDDR and
+  TDMOUT/SPDIFOUT, or used for monitoring/metering. The EQ section implements cascaded biquad
+  filters for precise frequency response control, while the DRC section provides attack/release
+  envelope following with programmable compression curves.
+
+features: |
+  - Parametric EQ using cascaded biquad (IIR) filters.
+  - Multi-band EQ capability through filter bank configuration.
+  - Dynamic Range Compression (DRC) with adjustable attack/release times.
+  - Configurable compression threshold, ratio, and knee.
+  - Peak/RMS level detection for metering.
+  - Limiter function for speaker protection.
+  - Supports `{ch}` channels per instance.
+  - Coefficient memory for filter parameters (register-based or RAM-based per `arch`).
+  - Gain makeup and output scaling.
+  - Same coefficient format as Mixer (32-bit signed, 0x00800000 = unity).
+  - Clip threshold for overflow protection.
+
+block_diagram:
+  images:
+    - eqdrc_0.png
+  description: "Audio EQ/DRC Block Diagram"
+
+function_description: |
+  **Signal Processing Chain:**
+
+  ```
+  Input → EQ Section (Biquad Cascade) → DRC Section → Gain/Clip → Output
+              ↓                             ↓
+         Frequency Shape              Level Control
+  ```
+
+  **1. EQ Section (Parametric Equalizer):**
+
+  The EQ implements cascaded biquad (second-order IIR) filters:
+
+  **Biquad Transfer Function:**
+  ```
+  H(z) = (b0 + b1·z⁻¹ + b2·z⁻²) / (1 + a1·z⁻¹ + a2·z⁻²)
+  ```
+
+  Each biquad can implement:
+  - Peaking (parametric) filter: boost/cut at center frequency
+  - Low/high shelf: bass/treble tone control
+  - Low/high pass: filtering
+  - Notch: null at specific frequency
+  - All-pass: phase adjustment
+
+  **Coefficient Calculation (example for peaking filter):**
+  ```
+  A = 10^(dBgain/40)
+  ω₀ = 2π × fc / fs
+  α = sin(ω₀) / (2Q)
+
+  b0 = 1 + α×A
+  b1 = -2×cos(ω₀)
+  b2 = 1 - α×A
+  a1 = -2×cos(ω₀)      (normalized: a0 = 1)
+  a2 = 1 - α/A
+  ```
+
+  Coefficients are loaded via register bank or RAM depending on `arch` configuration.
+
+  **2. DRC Section (Dynamic Range Compression):**
+
+  The DRC measures signal level and applies gain reduction when exceeding threshold:
+
+  **Envelope Detection:**
+  - Attack time: How fast gain reduction responds to peaks
+  - Release time: How fast gain returns after signal drops
+
+  **Compression Curve:**
+  ```
+  For input > threshold:
+    gain_reduction = (input_dB - threshold_dB) × (1 - 1/ratio)
+    output = input - gain_reduction
+  ```
+
+  **Parameters:**
+  - Threshold: Level above which compression begins
+  - Ratio: Compression amount (2:1, 4:1, ∞:1 = limiter)
+  - Attack: Typically 1-50ms
+  - Release: Typically 50-500ms
+  - Knee: Soft or hard transition at threshold
+
+  **3. Gain and Clipping:**
+
+  Post-processing gain for makeup and final limiting:
+  - Makeup gain: Compensate for gain reduction
+  - Clip threshold: Hard limit to prevent overflow
+
+  **Coefficient Format (same as Mixer):**
+
+  | Value | Gain |
+  |-------|------|
+  | `0x00800000` | 1.0 (0 dB) |
+  | `0x01000000` | 2.0 (+6 dB) |
+  | `0x00400000` | 0.5 (-6 dB) |
+  | `0x00000000` | 0.0 (mute) |
+
+  **Configuration Architecture:**
+
+  The `arch` parameter indicates coefficient storage:
+  - `reg`: Coefficients in dedicated registers
+  - `ram`: Coefficients in shared memory
+
+  **Typical EQ Bands:**
+
+  | Band | Type | Frequency | Use |
+  |------|------|-----------|-----|
+  | 1 | High-pass | 20 Hz | Subsonic filter |
+  | 2 | Low shelf | 100 Hz | Bass control |
+  | 3 | Peaking | 500 Hz | Mid-bass |
+  | 4 | Peaking | 1 kHz | Midrange |
+  | 5 | Peaking | 3 kHz | Presence |
+  | 6 | High shelf | 10 kHz | Treble control |
+  | 7 | Low-pass | 20 kHz | Ultrasonic filter |
+
+application_notes:
+  - title: "Basic EQ Setup (5-Band Parametric)"
+    steps: |
+      - Calculate biquad coefficients for each band using design formulas.
+      - Load coefficients to EQ coefficient registers/RAM.
+      - Configure number of active biquad stages.
+      - Route FRDDR → EQ/DRC → TDMOUT.
+      - Enable EQ section.
+      - Verify frequency response with test signals.
+
+  - title: "DRC for Loudness Management"
+    steps: |
+      - Set threshold slightly below peak level (e.g., -10 dBFS).
+      - Set ratio to 4:1 for moderate compression.
+      - Configure attack time ~10ms for transparent response.
+      - Set release time ~100ms to avoid pumping.
+      - Enable DRC section.
+      - Adjust makeup gain to restore perceived loudness.
+
+  - title: "Limiter for Speaker Protection"
+    steps: |
+      - Set threshold at speaker's maximum safe level.
+      - Set ratio to ∞:1 (or very high, e.g., 20:1).
+      - Use fast attack (~1ms) to catch transients.
+      - Release can be moderate (~50ms).
+      - This prevents speaker damage from peaks.
+
+  - title: "Room Correction EQ"
+    steps: |
+      - Measure room frequency response with test microphone.
+      - Design inverse EQ curve to flatten response.
+      - Implement as parametric EQ bands targeting room modes.
+      - May require many bands (10+) for accurate correction.
+      - Use measurement software to export biquad coefficients.
+
+  - title: "Bass Boost with Subsonic Filter"
+    steps: |
+      - Band 1: High-pass at 25 Hz (removes subsonic content).
+      - Band 2: Low shelf at 80 Hz, +6 dB (bass boost).
+      - This combination adds bass without overloading speakers with subsonic energy.
+
+  - title: "Coefficient Loading Sequence"
+    steps: |
+      - Ensure EQ/DRC is disabled or in bypass.
+      - Write coefficients to designated registers/RAM.
+      - For register-based: write b0, b1, b2, a1, a2 for each biquad.
+      - For RAM-based: write via address/data port.
+      - Enable processing after all coefficients loaded.
+      - Changing coefficients live may cause clicks; use smooth transitions.
+

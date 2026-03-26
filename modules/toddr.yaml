@@ -3,29 +3,30 @@ parent_base: audio_top_ee
 
 instances:
   A:
-    offset_base: 0x40
+    offset_base0: 0x40
     chnum_offset: 0x300
     condition: { macro_path: ["toddr", "A", "imp"], eq: 1 }
   B:
-    offset_base: 0x50
+    offset_base0: 0x50
     chnum_offset: 0x310
     condition: { macro_path: ["toddr", "B", "imp"], eq: 1 }
   C:
-    offset_base: 0x60
+    offset_base0: 0x60
     chnum_offset: 0x320
     condition: { macro_path: ["toddr", "C", "imp"], eq: 1 }
   D:
-    offset_base: 0x210
+    offset_base0: 0x210
     chnum_offset: 0x330
     condition: { macro_path: ["toddr", "D", "imp"], eq: 1 }
   E:
-    offset_base: 0x240
+    offset_base0: 0x240
     chnum_offset: 0x340
     condition: { macro_path: ["toddr", "E", "imp"], eq: 1 }
 
-registers:
+registers0:
   - name: TODDR_{X}_CTRL0
     offset: 0x00
+    description: TODDR control 0
     fields:
       - bits: "31"
         name: reg_toddr_en
@@ -90,6 +91,7 @@ registers:
 
   - name: TODDR_{X}_CTRL1
     offset: 0x01
+    description: TODDR control 1
     fields:
       - bits: "30:26"
         name: src_sel
@@ -119,6 +121,7 @@ registers:
 
   - name: TODDR_{X}_START_ADDR
     offset: 0x02
+    description: Buffer A start address
     fields:
       - bits: "31:0"
         name: start_addr
@@ -128,6 +131,7 @@ registers:
 
   - name: TODDR_{X}_FINISH_ADDR
     offset: 0x03
+    description: Buffer A finish address
     fields:
       - bits: "31:0"
         name: finish_addr
@@ -137,6 +141,7 @@ registers:
 
   - name: TODDR_{X}_INT_ADDR
     offset: 0x04
+    description: Interrupt address/count
     fields:
       - bits: "31:0"
         name: int_addr
@@ -146,6 +151,7 @@ registers:
 
   - name: TODDR_{X}_STATUS1
     offset: 0x05
+    description: TODDR status 1
     fields:
       - bits: "25:23"
         name: stop_ddr_status
@@ -180,6 +186,7 @@ registers:
 
   - name: TODDR_{X}_STATUS2
     offset: 0x06
+    description: TODDR status 2
     fields:
       - bits: "31:0"
         name: status2
@@ -189,6 +196,7 @@ registers:
 
   - name: TODDR_{X}_START_ADDRB
     offset: 0x07
+    description: Buffer B start address
     fields:
       - bits: "31:0"
         name: start_addrb
@@ -198,6 +206,7 @@ registers:
 
   - name: TODDR_{X}_FINISH_ADDRB
     offset: 0x08
+    description: Buffer B finish address
     fields:
       - bits: "31:0"
         name: finish_addrb
@@ -207,6 +216,7 @@ registers:
 
   - name: TODDR_{X}_INIT_ADDR
     offset: 0x09
+    description: Initial write address
     fields:
       - bits: "31:0"
         name: init_addr
@@ -216,6 +226,7 @@ registers:
 
   - name: TODDR_{X}_CTRL2
     offset: 0x0a
+    description: TODDR control 2
     fields:
       - bits: "31"
         name: hold_read
@@ -245,6 +256,7 @@ registers:
 
   - name: TODDR_{X}_AADDR
     offset: 0x0b
+    description: Address high bits control
     fields:
       - bits: "21:20"
         name: int_addr_hi
@@ -279,6 +291,7 @@ registers:
 
   - name: TODDR_{X}_STATUS3
     offset: 0x0c
+    description: TODDR status 3
     fields:
       - bits: "29:28"
         name: vad_frame_sync_first_hi
@@ -321,9 +334,10 @@ registers:
         default: "0x0"
         description: "current ddr write address;[33:32]"
 
-chnum_registers:
+chnum_registers0:
   - name: TODDR_{X}_CHNUM_ID0
     offset: 0x00
+    description: Channel ID 0-3
     fields:
       - bits: "31:24"
         name: id_ch3
@@ -348,6 +362,7 @@ chnum_registers:
 
   - name: TODDR_{X}_CHNUM_ID1
     offset: 0x01
+    description: Channel ID 4-7
     fields:
       - bits: "31:24"
         name: id_ch7
@@ -372,6 +387,7 @@ chnum_registers:
 
   - name: TODDR_{X}_CHNUM_ID2
     offset: 0x02
+    description: Channel ID 8-11
     fields:
       - bits: "31:24"
         name: id_ch11
@@ -396,6 +412,7 @@ chnum_registers:
 
   - name: TODDR_{X}_CHNUM_ID3
     offset: 0x03
+    description: Channel ID 12-15
     fields:
       - bits: "31:24"
         name: id_ch15
@@ -420,6 +437,7 @@ chnum_registers:
 
   - name: TODDR_{X}_CHNUM_ID4
     offset: 0x04
+    description: Channel ID 16-19
     fields:
       - bits: "31:24"
         name: id_ch19
@@ -444,6 +462,7 @@ chnum_registers:
 
   - name: TODDR_{X}_CHNUM_ID5
     offset: 0x05
+    description: Channel ID 20-23
     fields:
       - bits: "31:24"
         name: id_ch23
@@ -468,6 +487,7 @@ chnum_registers:
 
   - name: TODDR_{X}_CHNUM_ID6
     offset: 0x06
+    description: Channel ID 24-27
     fields:
       - bits: "31:24"
         name: id_ch27
@@ -492,6 +512,7 @@ chnum_registers:
 
   - name: TODDR_{X}_CHNUM_ID7
     offset: 0x07
+    description: Channel ID 28-31
     fields:
       - bits: "31:24"
         name: id_ch31
@@ -516,6 +537,7 @@ chnum_registers:
 
   - name: TODDR_{X}_CHSYNC_CTRL
     offset: 0x0f
+    description: Channel sync control
     fields:
       - bits: "31"
         name: bypass_n

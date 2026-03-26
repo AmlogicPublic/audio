@@ -1,0 +1,140 @@
+module: spdifin
+display_name: "SPDIF Input Interface"
+condition:
+  any_of:
+    - "spdifin.A.imp"
+    - "spdifin.B.imp"
+
+overview: |
+  SPDIF Input (SPDIFIN) is a bi-phase mark decoder that receives serial digital audio data compliant
+  with IEC60958 (S/PDIF consumer) and IEC61937 (compressed audio over S/PDIF) standards. It automatically
+  detects the input sample rate, extracts PCM samples and channel status bits, and delivers data to
+  TODDR for system memory transfer.
+
+  The module supports both PCM and Non-PCM (compressed) audio detection via Preamble Pa/Pb recognition,
+  enabling transparent passthrough of Dolby Digital, DTS, and other compressed formats.
+
+features: |
+  - IEC60958 compliant bi-phase mark decoding.
+  - Automatic sample rate detection with multiple mode thresholds (32/44.1/48/88.2/96/176.4/192 kHz).
+  - IEC61937 Non-PCM detection via Pa/Pb preamble recognition (`reg_findpapb_en`).
+  - 192-bit channel status extraction (6 registers × 32-bit).
+  - AFIFO for clock domain crossing (`spdifin_clk` → `sysclk`).
+  - Per-channel (L/R) mute control.
+  - Parity and validity bit checking with interrupt on error.
+  - Selectable input source: external pad or internal SPDIFOUT loopback.
+  - Sample mode detection via edge timing (min/max width measurement).
+  - Multiple interrupt sources: Pa/Pb found, sample mode change, parity error, overflow, etc.
+  - Phase inversion option for inverted input signals.
+  - Data bit order inversion for compatibility.
+
+block_diagram:
+  images:
+    - spdifin_0.png
+  description: "SPDIF Input Interface Block Diagram"
+
+function_description: |
+  **Bi-Phase Mark Decoding:**
+
+  S/PDIF uses bi-phase mark encoding where:
+  - Logic '1' has a transition in the middle of the bit cell.
+  - Logic '0' has no mid-cell transition.
+  - A transition always occurs at the bit cell boundary.
+
+  The decoder measures pulse widths between edges to distinguish:
+  - Single-width pulses (representing part of a '1' bit)
+  - Double-width pulses (representing a '0' bit)
+
+  **Sample Rate Detection:**
+
+  The module measures edge-to-edge timing (`r_width_min`, `r_width_max`) and compares against
+  programmable thresholds (`reg_sample_mode0_timer_th` ~ `reg_sample_mode5_timer_th`) to determine
+  the sample rate mode. When sample mode changes, an interrupt can be generated.
+
+  | Mode | Typical Sample Rate |
+  |------|---------------------|
+  | 0 | 32 kHz |
+  | 1 | 44.1 kHz |
+  | 2 | 48 kHz |
+  | 3 | 88.2 kHz |
+  | 4 | 96 kHz |
+  | 5 | 176.4 kHz |
+  | 6 | 192 kHz |
+
+  **Frame Structure:**
+
+  Each S/PDIF frame contains:
+  - Preamble (Z/X/Y) for sync and channel identification
+  - 24-bit audio sample (or 20-bit + 4 aux)
+  - Validity bit (V)
+  - User data bit (U)
+  - Channel status bit (C)
+  - Parity bit (P)
+
+  192 frames form a block, with channel status collected across the block.
+
+  **Non-PCM (IEC61937) Detection:**
+
+  Compressed audio streams embed Pa/Pb sync words (0xF872, 0x4E1F) at the start of data bursts.
+  When `reg_findpapb_en = 1`, the module detects these patterns and generates an interrupt,
+  allowing software to switch to passthrough mode.
+
+  **Key Registers:**
+
+  | Register | Function |
+  |----------|----------|
+  | `reg_work_enable` | Master enable |
+  | `reg_spdifin_src_sel` | 0=external pad, 1=SPDIFOUT loopback |
+  | `reg_findpapb_en` | Enable Pa/Pb detection for compressed audio |
+  | `reg_check_parity` | Enable parity bit verification |
+  | `reg_check_valid` | Enable validity bit checking |
+  | `reg_mute_l/r` | Mute left/right channel |
+  | `reg_ch_status_sel` | Select which 32-bit slice of channel status appears in STAT1 |
+  | `reg_interrupt_mask` | Enable/disable individual interrupt sources |
+  | `STAT0` | Sample mode, width min/max, interrupt status |
+  | `STAT1` | Channel status bits (32-bit window) |
+
+  **Interrupt Sources (STAT0[7:0]):**
+
+  | Bit | Event |
+  |-----|-------|
+  | 7 | Pa/Pb preamble found (Non-PCM detected) |
+  | 6 | Validity bit changed |
+  | 5 | Non-PCM to PCM transition |
+  | 4 | Pc/Pd data changed |
+  | 3 | Channel status changed |
+  | 2 | Sample mode changed |
+  | 1 | Parity error |
+  | 0 | AFIFO overflow |
+
+application_notes:
+  - title: "SPDIF PCM Reception (Automatic Rate)"
+    steps: |
+      - Configure SPDIF clock source (must be >4× highest expected sample rate).
+      - Set `reg_spdifin_src_sel = 0` for external pad.
+      - Reset AFIFO: `rst_afifo_out_n = 1`, then `rst_afifo_in_n = 1`.
+      - Enable `reg_work_enable = 1`.
+      - Poll STAT0 for `r_sample_mode` to verify lock.
+      - Route to TODDR with matching format.
+
+  - title: "IEC61937 Compressed Audio Passthrough"
+    steps: |
+      - Set `reg_findpapb_en = 1` to enable Pa/Pb detection.
+      - Enable interrupt on bit 7 (Pa/Pb found).
+      - When interrupt fires, STAT0 indicates Non-PCM mode.
+      - Configure TODDR for raw passthrough (no format conversion).
+      - Forward to SPDIFOUT or HDMI for decoding by downstream device.
+
+  - title: "Channel Status Monitoring"
+    steps: |
+      - Set `reg_ch_status_sel` to select 32-bit slice (0-5).
+      - Read STAT1 for channel status bits.
+      - Iterate `reg_ch_status_sel` 0→5 to read full 192-bit status.
+      - Parse per IEC60958 for sample rate, emphasis, copy protection, etc.
+
+  - title: "Internal Loopback Testing"
+    steps: |
+      - Configure SPDIFOUT with test pattern.
+      - Set `reg_spdifin_src_sel = 1` (SPDIFOUT loopback).
+      - Enable SPDIFIN and verify received data matches transmitted.
+

@@ -1,0 +1,164 @@
+module: earcrx
+display_name: "eARC Receiver"
+condition:
+  any_of:
+    - "earcrx.CMDC.imp"
+    - "earcrx.DMAC.imp"
+    - "earcrx.TOP.imp"
+
+overview: |
+  The eARC (Enhanced Audio Return Channel) Receiver implements the HDMI 2.1 eARC specification,
+  enabling high-bandwidth audio reception from a TV or display device to an AVR, soundbar, or
+  audio processor. Unlike legacy ARC (which is limited to compressed 2-channel audio), eARC
+  supports uncompressed multi-channel audio up to 32 channels, as well as high-bitrate object
+  audio formats like Dolby TrueHD, DTS-HD Master Audio, and Dolby Atmos.
+
+  The eARC RX consists of three functional blocks: CMDC (Common Mode Data Channel) for control
+  signaling, DMAC (Differential Mode Audio Channel) for audio data, and TOP for global control.
+  The module handles the complete eARC protocol including discovery, capability exchange,
+  heartbeat monitoring, and audio stream reception.
+
+features:
+  - HDMI 2.1 eARC specification compliant.
+  - CMDC (Common Mode Data Channel):
+    - Discovery protocol with eARC TX.
+    - Capability exchange (audio format support).
+    - Heartbeat monitoring for link health.
+    - CEC passthrough capability.
+  - DMAC (Differential Mode Audio Channel):
+    - High-bandwidth differential audio reception.
+    - IEC60958 (LPCM) and IEC61937 (compressed) audio support.
+    - Up to 32-channel uncompressed audio (7.1.4 Atmos, etc.).
+    - Sample rates up to 192 kHz, bit depths up to 24-bit.
+    - Supports Dolby TrueHD, DTS-HD MA, Dolby Atmos, DTS:X.
+  - TOP (Global Control):
+    - Overall module enable and configuration.
+    - Interrupt aggregation from CMDC and DMAC.
+    - Status reporting.
+  - Error detection with CRC validation.
+  - Audio channel status extraction.
+  - Clock recovery from differential audio stream.
+
+block_diagram:
+  images:
+    - earcrx.png
+  description: "eARC RX Block Diagram"
+
+function_description: |
+  **eARC Protocol Overview:**
+
+  eARC uses the HDMI connector's HPD (Hot Plug Detect) and Utility lines for:
+  - **CMDC**: Low-speed bidirectional control channel (1MHz common mode signaling, biphase modulated)
+  - **DMAC**: High-speed unidirectional audio channel (differential signaling with falling-edge modulation)
+
+  **Data Path Architecture (see block diagram):**
+
+  ```
+  eARC/ARC PHY → MUX → Bi_phase decoder → Err Corrector → MUX → to_ddr → DDR
+                 ↓                                         ↑
+              (dmac/spdif)                           (earc/arc mode)
+  
+  cmdc_biphase_signal → CMDC_Slave → APB reg bank0
+                             ↓
+                    capabilities_data_block
+  ```
+
+  **CMDC Block (Slave Mode):**
+
+  The CMDC operates as slave, responding to eARC TX master:
+
+  State Machine (`EARC_RX_CMDC_VSM_CTRL0`):
+  ```
+  IDLE1 → IDLE2 → DISC1 → DISC2 → ARC → eARC_PENDING → eARC
+  ```
+
+  Key register functions:
+  - `VSM_CTRL0`: State control (`sw_state`, `arc_enable`, `man_hpd`, `cmdc_state_en`)
+  - `VSM_CTRL1-4`: Timing thresholds for idle, comma_off, earc_timeout, heartbeat_lost
+  - `VSM_CTRL5`: Heartbeat detection with `status_soft` value
+  - `VSM_CTRL6`: HPD control with glitch filtering (`cntl_hpd_valid_width`, `cntl_hpd_glitch_width`)
+  - `PACKET_CTRL0-6`: Packet mode, preamble threshold, timeout configuration
+  - `BIPHASE_CTRL0-2`: Biphase encoding parameters, comma detection, ACK timing
+  - `DEVICE_ID_CTRL`: Capability data block R/W via APB interface
+
+  Interrupt sources (`CMDC_TOP_CTRL0`):
+  - State transitions: `idle1_int`, `idle2_int`, `disc1_int`, `disc2_int`, `earc_int`
+  - Heartbeat: `hb_status_int`, `losthb_int`
+  - Errors: `int_rec_ecc_err`, `int_rec_parity_err`, `int_rec_invalid_id`, `int_rec_timeout`
+
+  **DMAC Block:**
+
+  Supports both eARC mode (differential) and ARC mode (SPDIF fallback):
+
+  eARC mode data path:
+  - `DMAC_SYNC_CTRL0`: Sync module enable, AFIFO reset, data invert
+  - `ERR_CORRECT_CTRL0`: BCH error correction enable, data/ECC bit ordering
+  - Audio output to TODDR
+
+  ARC/SPDIF fallback mode:
+  - `SPDIFIN_SAMPLE_CTRL0-6`: Auto sample rate detection with mode thresholds
+  - `SPDIFIN_CTRL0-6`: SPDIF decoder, Pa/Pb detection, channel status parsing
+  - Supports sample rates: mode0~mode6 with configurable thresholds
+
+  Key DMAC features:
+  - `DMAC_UBIT_CTRL0`: User bit (IU) decoding, FIFO threshold IRQ
+  - `ERR_CORRECT_CTRL0`: BCH error correction for compressed audio
+  - `ANA_RST_CTRL0-1`: Analog reset with glitch filtering
+  - Multi-channel support: `chnum_max_val` up to 64 channels
+
+  **TOP Block:**
+
+  Global control and interrupt aggregation:
+  - `TOP_CTRL0`: Force enable controls for spdif_rx_en, dmacrx_en
+  - `DMAC_INT_MASK/PENDING`: 30-bit DMAC interrupt mask and status
+  - `CMDC_INT_MASK/PENDING`: 16-bit CMDC interrupt mask and status
+  - `ANA_CTRL0-1`: PHY configuration (rterm, hysteresis, reference trim)
+  - `PLL_CTRL0-3`: Clock recovery PLL (AFC, lock detection, bias adjustment)
+
+  **Audio Format Detection:**
+
+  Channel status parsing (`SPDIFIN_STAT1/2`):
+  - Sample rate from channel status bits
+  - Compressed audio detection via Pa/Pb sync words
+  - `earc_pa_val`/`earc_pb_val` for eARC mode IEC61937 detection
+
+application_notes:
+  - title: "Basic eARC Audio Reception"
+    steps:
+      - Initialize TOP module with global enable.
+      - Configure CMDC for eARC mode (vs legacy ARC fallback).
+      - Set CMDC capability bits for supported audio formats.
+      - Wait for discovery complete (CMDC state = eARC).
+      - Enable DMAC audio reception.
+      - Configure TODDR to capture from eARC RX DMAC source.
+      - Handle interrupts for format changes, errors.
+
+  - title: "LPCM Multi-Channel Reception"
+    steps:
+      - Report LPCM capability up to desired channel count.
+      - After link established, DMAC receives LPCM stream.
+      - Parse channel status for sample rate and bit depth.
+      - Route to TODDR with appropriate format configuration.
+      - Output to speakers via TDMOUT.
+
+  - title: "Compressed Audio Passthrough (Dolby Atmos)"
+    steps:
+      - Report compressed audio capability (Dolby TrueHD/Atmos).
+      - TX sends compressed bitstream via DMAC.
+      - eARC RX passes raw bitstream to TODDR.
+      - Forward to external decoder (AVR) via SPDIFOUT or HDMI ARC.
+      - Or decode internally if DSP available.
+
+  - title: "Heartbeat Monitoring"
+    steps:
+      - CMDC heartbeat runs automatically when link established.
+      - Monitor heartbeat timeout interrupt.
+      - On timeout, link may be lost; re-initiate discovery.
+      - Typical heartbeat interval: 300ms.
+
+  - title: "ARC Fallback Mode"
+    steps:
+      - If eARC discovery fails (legacy TV).
+      - CMDC falls back to ARC mode.
+      - Only 2-channel compressed audio available.
+      - Use SPDIFIN-compatible path for ARC reception.

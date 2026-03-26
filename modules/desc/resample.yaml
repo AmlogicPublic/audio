@@ -1,0 +1,169 @@
+module: resample
+display_name: "Audio Resample (SRC)"
+condition:
+  any_of:
+    - "resample.A.imp"
+    - "resample.B.imp"
+    - "resample.C.imp"
+
+overview: |
+  The Audio Resample module is an Asynchronous Sample Rate Converter (ASRC) that converts audio streams
+  between different sample rates in real-time. It uses a polyphase interpolation architecture with
+  adaptive rate tracking to handle arbitrary and time-varying rate ratios, enabling seamless
+  interconnection of asynchronous audio domains.
+
+  {CHIP} integrates {resample_count} resample instance(s), supporting up to `{chnum}` channels
+  at `{dw}` bits per sample. The module features an internal phase-locked loop (PLL-like) mechanism
+  that continuously tracks the input/output rate relationship, compensating for clock drift in
+  live streaming scenarios.
+
+features: |
+  - Asynchronous sample rate conversion with arbitrary ratio support.
+  - Data width up to `{dw}` bits per sample.
+  - Multi-channel support: up to `{chnum}` channels per instance.
+  - Polyphase sinc interpolator with programmable tap count (`intp_tap`).
+  - Anti-alias FIR filter with programmable tap count (`filt_tap`).
+  - Post-compensation IIR filter for passband ripple correction.
+  - Adaptive rate tracking (PLL-like) for asynchronous clock domains.
+  - Bypass mode for direct passthrough.
+  - Programmable phase step (NCO) for precise ratio control.
+  - PI loop filter with adjustable KP/KI gains.
+  - Watchdog timer for hang detection.
+  - Per-stage clock gating for power optimization.
+  - Coefficient RAM for custom filter profiles.
+  - Status registers for loop lock quality monitoring.
+
+block_diagram:
+  images: []
+  description: "Audio Resample Block Diagram"
+
+function_description: |
+  **Signal Processing Architecture:**
+
+  ```
+  Input → AA Filter → Scaler → Polyphase Interpolator → Post IIR → Output
+             ↓           ↓              ↓                   ↓
+         anti-alias   optional      sinc/FIR          compensation
+                      decimation    resampling
+                                       ↑
+                              Phase Accumulator (NCO)
+                                       ↑
+                              Adaptive Rate Tracker
+  ```
+
+  **1. Anti-Alias (AA) Filter:**
+
+  Before rate change, a FIR low-pass filter removes frequencies above Nyquist/2:
+  - `filt_tap`: Number of taps (up to 255)
+  - `filt_en`: Enable AA filter
+  - Coefficients loaded via `AA_COEF_ADDR`/`AA_COEF_DATA`
+  - Right-shift via `rsft_aa` normalizes output
+
+  **2. Polyphase Interpolator:**
+
+  The core resampler uses polyphase decomposition of a sinc function:
+  - `intp_tap`: Interpolator filter length
+  - Phase accumulator (NCO) selects sub-filter bank
+  - `rsamp_step`: Phase increment = (Fs_in / Fs_out) × 2^28
+  - `init_phs`: Initial phase offset
+  - Coefficients via `SINC_COEF_ADDR`/`SINC_COEF_DATA`
+
+  **3. Post-Compensation IIR:**
+
+  Corrects passband droop from AA/interpolator cascade:
+  - `post_en`: Enable post filter
+  - Biquad coefficients in `POST_COEF0-4`
+
+  **4. Adaptive Rate Tracking:**
+
+  For asynchronous sources (e.g., SPDIF input to I2S output):
+  - Input/output phase detectors measure timing
+  - PI loop adjusts `rsamp_step` in real-time
+  - `adj_kp`/`adj_ki`: Proportional/integral gains
+  - `adj_kmax`: Anti-windup clamp
+  - `adj_idet_len`: Input detector averaging window
+
+  Loop behavior:
+  - Fast lock: Higher KP, lower KI
+  - Low jitter: Lower KP, higher KI
+  - `adj_force_en`: Inject test error for debug
+
+  **5. Bypass Mode:**
+
+  Set `module_bypass = 1` to pass audio unchanged (for direct routing).
+
+  **Key Registers:**
+
+  | Register | Function |
+  |----------|----------|
+  | `CTRL0` | Reset control: `sw_rst`, `rsamp_rst`, `lock_rst` |
+  | `CTRL1` | Enable bits, input mux, bypass, clock gating |
+  | `CTRL2` | Channel count, scaler, tap counts |
+  | `PHSINIT` | Initial phase (28-bit fractional) |
+  | `PHSSTEP` | Phase increment (31-bit, controls Fs_in/Fs_out) |
+  | `SHIFT` | Per-stage right-shift for normalization |
+  | `ADJ_CTRL0/1` | Adaptive loop enable, limits |
+  | `ADJ_SFT` | Loop filter gains (KP, KI) |
+
+  **Rate Ratio Calculation:**
+
+  `rsamp_step = (Fs_in / decimation_ratio / Fs_out) × 2^28`
+
+  Example: 48kHz → 44.1kHz (no decimation)
+  `rsamp_step = (48000 / 44100) × 2^28 = 0x11BF9E00`
+
+  **Status Monitoring:**
+
+  | Register | Content |
+  |----------|---------|
+  | `RO_STATUS` | Idle, error flags, FIFO overflow count |
+  | `RO_ADJ_FREQ` | Current NCO correction term |
+  | `RO_ADJ_PHS_ERR` | Instantaneous phase error |
+  | `RO_ADJ_KI_OUT` | Integrator output (DC trim) |
+  | `RO_IN_CNT` / `RO_OUT_CNT` | Sample counters for ratio verification |
+  | `RO_ADJ_PHS_ERR_VAR` | Phase error variance (lock quality) |
+
+application_notes:
+  - title: "Fixed 48kHz to 44.1kHz Conversion"
+    steps: |
+      - Assert `sw_rst`, `rsamp_rst`, `lock_rst`, then release.
+      - Set `chx_size` for channel count minus 1.
+      - Calculate `rsamp_step = 0x11BF9E00` (48k/44.1k × 2^28).
+      - Load AA filter coefficients (0.9×Nyquist cutoff).
+      - Load sinc interpolator coefficients.
+      - Set `filt_tap`, `intp_tap` per filter design.
+      - Configure shifts: `rsft_aa`, `rsft_sinc`, `rsft_iir`.
+      - Enable: `rsamp_en = 1`, `filt_en = 1`, `output_en = 1`.
+      - Route input source via `inp_mux`.
+
+  - title: "Adaptive SPDIF-to-I2S Conversion"
+    steps: |
+      - Configure SPDIFIN to capture incoming stream.
+      - Route SPDIFIN to Resample via TODDR path.
+      - Calculate nominal `rsamp_step` for expected rate pair.
+      - Enable adaptive loop: `adj_en = 1`.
+      - Set `adj_kp = 1`, `adj_ki = 9` for typical response.
+      - Set `adj_idet_len` based on averaging needs.
+      - Monitor `RO_ADJ_PHS_ERR` for lock status.
+      - Output feeds TDMOUT at fixed system Fs.
+
+  - title: "Bypass Mode for Rate-Matched Streams"
+    steps: |
+      - When Fs_in = Fs_out, use bypass for lower latency.
+      - Set `module_bypass = 1` in CTRL1.
+      - Audio passes through unchanged.
+
+  - title: "Multi-Channel Resample (8ch TDM)"
+    steps: |
+      - Set `chx_size = 7` (8 channels).
+      - Ensure filter coefficients support multi-channel interleaving.
+      - All channels share same rate conversion.
+      - Input and output must maintain channel order.
+
+  - title: "Custom Filter Coefficient Loading"
+    steps: |
+      - Design filter using MATLAB/scipy (Parks-McClellan, Kaiser, etc.).
+      - For AA filter: Write index to `AA_COEF_ADDR`, value to `AA_COEF_DATA`.
+      - For sinc interpolator: Write to `SINC_COEF_ADDR`/`DATA`.
+      - For post IIR: Write to `POST_COEF0-4` directly.
+      - Verify by reading back coefficients.

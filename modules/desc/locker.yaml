@@ -1,0 +1,202 @@
+module: locker
+display_name: "Audio Clock Locker"
+condition:
+  any_of:
+    - "locker.A.imp"
+    - "locker.B.imp"
+
+overview: |
+  The Audio Clock Locker is a precision clock measurement module that enables closed-loop PLL tracking
+  of external asynchronous audio clocks. When the SoC cannot directly access an external clock source
+  (e.g., remote Bluetooth speaker with independent crystal, HDMI source with unknown sample rate),
+  the locker measures the frequency relationship and allows software to dynamically adjust the on-chip
+  audio PLL to match the external rate.
+
+  The primary use case is **PLL-based clock synchronization**: the locker continuously measures the
+  ratio between the external audio clock and internal reference, software calculates the rate error,
+  and adjusts the PLL divider/multiplier to minimize drift. This forms a software-controlled PLL
+  tracking loop that can lock to arbitrary external sample rates.
+
+  The module measures clock relationships between three domains: a stable reference clock (`refclk`),
+  an input audio clock (`imclk`), and an output audio clock (`omclk`). With a 166MHz reference clock,
+  the locker achieves approximately 54 counts per 48kHz BCLK period, providing PPM-level precision
+  for rate mismatch detection and PLL tuning.
+
+features: |
+  - Enables software-controlled PLL tracking of external asynchronous audio clocks.
+  - Three-domain clock measurement: reference (`refclk`), input (`imclk`), and output (`omclk`).
+  - Selectable reference clock source: system clock (pclk, ~166MHz) or oscillator (24MHz).
+  - High resolution: ~54 counts per 48kHz BCLK period with 166MHz reference (PPM-level precision).
+  - Four independent cross-domain counters for bidirectional measurement.
+  - Programmable latch intervals for flexible measurement windows.
+  - Hardware-triggered (continuous) or software-triggered (on-demand) counter latching.
+  - 64-bit counter values (low + high registers) for extended measurement windows.
+  - Per-domain clock downsampling for high-frequency clock measurement.
+  - Interrupt generation on measurement completion for closed-loop control.
+  - Dual instances (A and B) for monitoring multiple clock pairs simultaneously.
+  - Package counters for measurement cycle tracking.
+
+block_diagram:
+  images: []
+  description: "Audio Clock Locker Block Diagram"
+
+function_description: |
+  **PLL Tracking Loop Architecture:**
+
+  The locker enables a software-controlled PLL tracking loop:
+
+  ```
+  External Clock ──► Locker ──► Rate Error ──► Software ──► PLL Adjust
+       (imclk)         │           Calc          │           │
+                       │                         │           ▼
+  Internal PLL ◄───────┴─────────────────────────┴───── Audio Output
+       (omclk)                                              (omclk)
+  ```
+
+  **Closed-Loop Operation:**
+
+  1. External source (Bluetooth RX, HDMI, etc.) provides audio at unknown/drifting rate
+  2. Locker measures external clock (`imclk`) against stable reference (`refclk`)
+  3. Software calculates actual external sample rate
+  4. Software adjusts audio PLL to generate matching internal clock (`omclk`)
+  5. Loop continuously tracks and compensates for drift
+
+  **Cross-Domain Clock Measurement:**
+
+  The locker counts clock edges across domains:
+
+  ```
+         ┌─────────┐
+  imclk ─┤         ├─► ref2imclk_cnt (refclk cycles during imclk_lat_int imclk cycles)
+         │         │
+  refclk─┤ Counter ├─► imclk2ref_cnt (imclk cycles during refclk_lat_int refclk cycles)
+         │ Matrix  │
+  omclk ─┤         ├─► ref2omclk_cnt (refclk cycles during omclk_lat_int omclk cycles)
+         │         │
+         │         ├─► omclk2ref_cnt (omclk cycles during refclk_lat_int refclk cycles)
+         └─────────┘
+  ```
+
+  **Measurement Process:**
+
+  1. **Configure Intervals:**
+     - `refclk_lat_int`: Number of refclk cycles for one measurement window
+     - `imclk_lat_int`: Number of imclk cycles for one measurement window
+     - `omclk_lat_int`: Number of omclk cycles for one measurement window
+
+  2. **Trigger Latch:**
+     - Software: Write to `SW_LATCH` register bits
+     - Hardware: Enable `HW_LATCH` for automatic periodic capture
+
+  3. **Read Counters:**
+     - `RO_REF2IMCLK_CNT_L/H`: Reference clock cycles counted during imclk interval
+     - `RO_REF2OMCLK_CNT_L/H`: Reference clock cycles counted during omclk interval
+     - `RO_IMCLK2REF_CNT_L/H`: Input clock cycles counted during refclk interval
+     - `RO_OMCLK2REF_CNT_L/H`: Output clock cycles counted during refclk interval
+
+  4. **Calculate Rate Error and Adjust PLL:**
+     ```
+     measured_imclk = refclk_freq × (ref2imclk_cnt / imclk_lat_int)
+     measured_omclk = refclk_freq × (ref2omclk_cnt / omclk_lat_int)
+     rate_error_ppm = (measured_omclk - measured_imclk) / measured_imclk × 1e6
+     
+     if |rate_error_ppm| > threshold:
+         adjust_pll(rate_error_ppm)  // Tune PLL to reduce error
+     ```
+
+  **Clock Source Selection:**
+
+  | `refclk_src_sel` | Source | Typical Frequency |
+  |------------------|--------|-------------------|
+  | 0 | pclk (system clock) | ~166 MHz |
+  | 1 | oscinclk (oscillator) | 24 MHz |
+  | 2-3 | Reserved | - |
+
+  **Resolution Analysis:**
+
+  With 166MHz reference and 48kHz audio (BCLK = 3.072MHz for 64fs):
+  - One BCLK period = 166M / 3.072M ≈ 54 refclk cycles
+  - One sample period (at 48kHz) = 166M / 48k ≈ 3458 refclk cycles
+  - PPM-level drift detection is achievable with appropriate measurement windows
+
+  **Downsampling:**
+
+  For very high-frequency clocks, downsampling reduces counter overflow risk:
+  - `refclk_ds_step`: Effective refclk = refclk / (ds_step + 1)
+  - `imclk_ds_step`: Effective imclk = imclk / (ds_step + 1)
+  - `omclk_ds_step`: Effective omclk = omclk / (ds_step + 1)
+
+  **Key Registers:**
+
+  | Register | Function |
+  |----------|----------|
+  | `AUD_LOCK_EN` | Master enable for locker |
+  | `AUD_LOCK_SW_RESET` | Software reset |
+  | `AUD_LOCK_SW_LATCH` | Software-triggered counter latch |
+  | `AUD_LOCK_HW_LATCH` | Hardware automatic latch enable |
+  | `AUD_LOCK_REFCLK_SRC` | Reference clock selection |
+  | `AUD_LOCK_REFCLK_LAT_INT` | Reference clock measurement window |
+  | `AUD_LOCK_IMCLK_LAT_INT` | Input clock measurement window |
+  | `AUD_LOCK_OMCLK_LAT_INT` | Output clock measurement window |
+  | `RO_REF2IMCLK_CNT_L/H` | Cross-domain counter results |
+  | `RO_REFCLK_PKG_CNT` | Measurement cycle counter |
+
+  **Interrupt Operation:**
+
+  - Configure `AUD_LOCK_INT_CTRL` for desired interrupt behavior
+  - Clear interrupts via `AUD_LOCK_INT_CLR`
+  - Read status from `RO_AUD_LOCK_INT_STATUS`
+
+application_notes:
+  - title: "PLL Tracking of External Async Clock (Primary Use Case)"
+    steps: |
+      - External source (e.g., Bluetooth RX, SPDIF) provides audio at unknown rate.
+      - Route external BCLK/MCLK to locker `imclk` input.
+      - Route internal audio PLL output to locker `omclk` input.
+      - Set `refclk_src_sel = 0` (166MHz system clock for high resolution).
+      - Configure measurement window (e.g., `refclk_lat_int = 166000` for 1ms).
+      - Enable hardware latch for continuous measurement.
+      - In periodic ISR or polling loop, read `ref2imclk_cnt` and `ref2omclk_cnt`.
+      - Calculate rate error between external and internal clocks.
+      - Adjust audio PLL divider to minimize error (closed-loop tracking).
+      - Typical convergence within a few iterations; maintains lock with sub-PPM accuracy.
+
+  - title: "Initial Sample Rate Detection"
+    steps: |
+      - Before starting playback/capture, need to know external sample rate.
+      - Configure locker with external clock on `imclk`.
+      - Use single software latch measurement.
+      - Calculate `external_fs = refclk_freq × imclk_lat_int / ref2imclk_cnt`.
+      - Round to nearest standard rate (32k/44.1k/48k/88.2k/96k/176.4k/192k).
+      - Configure internal PLL for detected rate.
+
+  - title: "Continuous Drift Compensation"
+    steps: |
+      - External crystals have PPM-level drift (temperature, aging).
+      - Enable hardware latch with interrupt on completion.
+      - Each interrupt triggers rate error calculation.
+      - Apply proportional adjustment to PLL (avoid oscillation with small steps).
+      - Track drift continuously during streaming.
+      - Typical adjustment interval 10-100ms depending on drift rate.
+
+  - title: "Multi-Output Synchronization"
+    steps: |
+      - Two outputs (e.g., I2S speaker + Bluetooth TX) need sample-accurate sync.
+      - Route first output clock to `imclk`, second to `omclk`.
+      - Measure relative rate difference.
+      - Adjust one output's PLL to match the other.
+      - Maintain sync during entire playback session.
+
+  - title: "High-Precision Long-Window Measurement"
+    steps: |
+      - For sub-PPM accuracy (e.g., professional audio), use longer windows.
+      - Set `refclk_lat_int = 16600000` (100ms window at 166MHz).
+      - Longer windows average out jitter for more stable readings.
+      - Trade-off is slower response; use for initial lock, then shorter windows for tracking.
+
+  - title: "Measurement Without External Clock Access"
+    steps: |
+      - When only data stream available (no clock pin), use frame sync or LRCLK.
+      - LRCLK = sample rate directly (48kHz for 48kHz audio).
+      - Route LRCLK to `imclk` input.
+      - Measurement gives exact sample rate for PLL tuning.

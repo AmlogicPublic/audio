@@ -1,0 +1,189 @@
+module: loopback
+display_name: "Audio Loopback (AEC)"
+condition:
+  any_of:
+    - "loopback.A.imp"
+    - "loopback.B.imp"
+
+overview: |
+  The Audio Loopback module merges two independent audio streams into a single interleaved output,
+  primarily designed for Acoustic Echo Cancellation (AEC) applications. It combines the microphone
+  input (near-end) with the speaker output reference (far-end) into a time-aligned multi-channel
+  stream that can be processed by an AEC algorithm.
+
+  The module supports flexible source selection and channel mapping, enabling various merge scenarios
+  such as: mic + speaker reference, multi-mic arrays with playback reference, or any two audio sources
+  requiring sample-accurate interleaving.
+
+  Each instance supports up to `{ch}` channels of merged output.
+
+features: |
+  - Merges two independent audio sources into single interleaved output.
+  - Flexible source selection for both "data" (original) and "loopback" paths.
+  - Per-source selection: TDMIN, SPDIFIN, PDM, Resample, Loopback, eARC RX, VAD, etc.
+  - Up to `{ch}` channels per enabled instance.
+  - Per-channel ID mapping for stream synchronization.
+  - Configurable bit slice extraction for both paths ([m:n] selection).
+  - Sign extension option for narrower samples.
+  - Channel number synchronization with buffer or drop modes.
+  - Dual rate mode: output at data rate or loopback rate.
+  - Per-channel mask and ID configuration (16 channels each path).
+  - Hold insertion mode for delayed loopback injection.
+  - Error detection with configurable stability masking.
+
+block_diagram:
+  images:
+    - loopback_0.png
+    - loopback_1.png
+  description: "Audio Loopback Data Path / Merge Waveform"
+
+function_description: |
+  **Merge Operation:**
+
+  The loopback module interleaves samples from two sources:
+
+  ```
+  Data Source (Original)     ──┐
+                               ├──► Interleaved Output → TODDR
+  Loopback Source (Reference) ──┘
+  ```
+
+  **Timing Modes:**
+
+  | `reg_lb_mode` | Behavior |
+  |---------------|----------|
+  | 0 | Output rate = Data source rate (loopback inserted) |
+  | 1 | Output rate = Loopback source rate |
+
+  **Merge Sequence (Mode 0):**
+
+  1. Loopback sample arrives → stored in temp register
+  2. Data sample arrives → sent directly to output
+  3. After data completes → loopback from temp register sent
+  4. Result: [Data Ch0][LB Ch0][Data Ch1][LB Ch1]...
+
+  **Source Selection:**
+
+  Both paths share the same source map:
+
+  | Value | Source |
+  |-------|--------|
+  | 0 | TDMIN_A |
+  | 1 | TDMIN_B |
+  | 2 | TDMIN_C |
+  | 3 | SPDIFIN |
+  | 4 | PDM_IN |
+  | 5 | FRATV |
+  | 6 | TDMIN_LB |
+  | 7 | Loopback_A |
+  | 8 | HDMIRX_SPDIF |
+  | 9 | Loopback_B |
+  | 10 | SPDIFIN_LB |
+  | 11 | eARC_RX_DMAC |
+  | 12 | HDMIRX_DSD |
+  | 13 | Resample_A |
+  | 14 | Resample_B |
+  | 15 | VAD |
+
+  **Data Path Configuration (`CTRL0`):**
+
+  - `reg_dat_src_sel`: Legacy source select (bits for TDMIN/SPDIFIN/PDM)
+  - `reg_dat_m_sel` / `reg_dat_n_sel`: Bit slice extraction [m:n]
+  - `reg_dat_sel`: Format mode (right-justified, left-justified)
+  - `reg_ext_signed`: Sign extension for narrower data
+
+  **Loopback Path Configuration (`CTRL1`):**
+
+  - `lb_src_sel`: 0=TDMIN_LB, 1=SPDIFIN_LB
+  - `lb_sel_resample_a/b`: Alternative from Resample output
+  - `reg_lb_m_sel` / `reg_lb_n_sel`: Bit slice extraction
+  - `hold_insertion`: 1=delay loopback, insert zeros first
+
+  **Extended Source Selection (`CTRL2/CTRL3`):**
+
+  For full source flexibility:
+  - `CTRL2.dat_src_sel`: Data source (same values as TODDR src_sel)
+  - `CTRL2.dat_ch_num`: Max channels (0-15 = 1-16 ch)
+  - `CTRL2.dat_ch_mask`: Per-channel enable bitmask
+  - `CTRL3`: Same for loopback path
+
+  **Channel ID Synchronization:**
+
+  For multi-stream alignment with varying arrival times:
+  - `DAT_ID0-3`: Expected channel IDs for data path
+  - `LB_ID0-3`: Expected channel IDs for loopback path
+  - `CHSYNC_CTRL_INSERT/ORIG`: Sync mode control
+    - Buffer mode: Store early samples, emit when pair arrives
+    - Drop mode: Discard samples until sync achieved
+
+  **Key Registers:**
+
+  | Register | Function |
+  |----------|----------|
+  | `LB_CTRL0` | Enable, mode, data path config |
+  | `LB_CTRL1` | Loopback path config, resample select |
+  | `LB_CTRL2` | Extended data source, channel mask |
+  | `LB_CTRL3` | Extended loopback source, channel mask |
+  | `LB_DAT_ID0-3` | Data channel ID map |
+  | `LB_LB_ID0-3` | Loopback channel ID map |
+  | `LB_STS` | Status (per `reg_sts_sel`) |
+  | `LB_CHSYNC_CTRL_*` | Channel sync mode |
+
+  **Status Output (`LB_STS`):**
+
+  | `reg_sts_sel` | Content |
+  |---------------|---------|
+  | 0 | Zeros (reserved) |
+  | 1 | Error/status flags |
+  | 2 | Insert store count (debug) |
+  | 3 | Original store count (debug) |
+
+application_notes:
+  - title: "AEC Setup (2-Mic + Speaker Reference)"
+    steps: |
+      - Configure TDMIN_A for 2-channel microphone input.
+      - Configure TDMOUT_A for speaker playback.
+      - Set TDMIN_LB to capture TDMOUT_A internally.
+      - Configure Loopback_A:
+        - Data source: TDMIN_A (mic input)
+        - Loopback source: TDMIN_LB (speaker reference)
+      - Set `dat_ch_num = 1` (2 ch mic), `lb_ch_num = 1` (2 ch ref).
+      - Set `dat_ch_mask = 0x3`, `lb_ch_mask = 0x3`.
+      - Enable `reg_lb_en = 1`.
+      - Route Loopback_A output to TODDR.
+      - Output: [Mic_L][Ref_L][Mic_R][Ref_R] per frame.
+      - AEC algorithm processes 4-ch stream.
+
+  - title: "Multi-Mic Array with Reference (4-Mic + 2-Ref)"
+    steps: |
+      - Configure TDMIN for 4-channel mic array.
+      - Configure TDMIN_LB for 2-channel speaker reference.
+      - Data path: `dat_ch_num = 3` (4 ch).
+      - Loopback path: `lb_ch_num = 1` (2 ch).
+      - Interleaved output: 6 channels total per frame.
+      - Route to TODDR for beamforming + AEC.
+
+  - title: "Resample before Loopback"
+    steps: |
+      - When mic and playback have different sample rates.
+      - Route playback reference through Resample_A first.
+      - Set `lb_sel_resample_a = 1` to select Resample output.
+      - Mic input goes directly to data path.
+      - Both streams are now at same sample rate for merge.
+
+  - title: "Hold Insertion for Delayed Reference"
+    steps: |
+      - Set `hold_insertion = 1` in CTRL1.
+      - Loopback samples are held, zeros inserted initially.
+      - Compensates for processing latency in playback path.
+      - Fine-tune delay via channel sync settings.
+
+  - title: "Channel Sync for Async Sources"
+    steps: |
+      - When data and loopback have jitter or different timing.
+      - Configure `CHSYNC_CTRL_INSERT` and `CHSYNC_CTRL_ORIG`.
+      - Set `bypass_n = 1` to enable sync.
+      - Choose mode: buffer (0) or drop (1).
+      - Set `chnum_max` for expected channel count.
+      - Sync module aligns channels before merge.
+

@@ -3,12 +3,13 @@ parent_base: audio_top_ee
 
 instances:
   A:
-    offset_base: 0x185
+    offset_base0: 0x185
     condition: { macro_path: ["mixer", "A", "imp"], eq: 1 }
 
-registers:
+registers0:
   - name: MIXER_COEF0
     offset: 0x00
+    description: Mixer coefficient 0
     fields:
       - bits: "31:0"
         name: coef0
@@ -18,6 +19,7 @@ registers:
 
   - name: MIXER_COEF1
     offset: 0x01
+    description: Mixer coefficient 1
     fields:
       - bits: "31:0"
         name: coef1
@@ -27,6 +29,7 @@ registers:
 
   - name: MIXER_COEF2
     offset: 0x02
+    description: Mixer coefficient 2
     fields:
       - bits: "31:0"
         name: coef2
@@ -36,6 +39,7 @@ registers:
 
   - name: MIXER_COEF3
     offset: 0x03
+    description: Mixer coefficient 3
     fields:
       - bits: "31:0"
         name: coef3
@@ -45,6 +49,7 @@ registers:
 
   - name: MIXER_THD
     offset: 0x04
+    description: Mixer clip threshold
     fields:
       - bits: "30:0"
         name: clip_thd
@@ -54,6 +59,7 @@ registers:
 
   - name: MIXER_CTRL0
     offset: 0x05
+    description: Mixer main control
     fields:
       - bits: "31"
         name: reg_mixer_en
@@ -123,6 +129,7 @@ registers:
 
   - name: MIXER_CTRL1
     offset: 0x06
+    description: Mixer timing and lane control
     fields:
       - bits: "29"
         name: rst_afifo_out_in
@@ -162,6 +169,7 @@ registers:
 
   - name: MIXER_CTRL2
     offset: 0x07
+    description: Mixer request A control
     fields:
       - bits: "31"
         name: reqa_rst
@@ -206,6 +214,7 @@ registers:
 
   - name: MIXER_CTRL3
     offset: 0x08
+    description: Mixer request B control
     fields:
       - bits: "31"
         name: reqb_rst
@@ -250,6 +259,7 @@ registers:
 
   - name: MIXER_CTRL4
     offset: 0x09
+    description: Mixer source select control
     fields:
       - bits: "20"
         name: frddr_src_sel2_en
@@ -299,6 +309,7 @@ registers:
 
   - name: MIXER_STATUS1
     offset: 0x0a
+    description: Mixer status
     fields:
       - bits: "23"
         name: overflow_flag

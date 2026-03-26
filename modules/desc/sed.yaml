@@ -1,0 +1,194 @@
+module: sed
+display_name: "Sound Event Detector"
+condition:
+  any_of:
+    - "sed.imp"
+
+overview: |
+  The Sound Event Detector (SED) is a dedicated neural network accelerator for audio classification,
+  detecting specific sound events (doorbell, glass break, baby cry, etc.) in real-time. It combines
+  front-end audio feature extraction (Mel filterbank) with a configurable neural network processor.
+
+  The SED operates as an always-on, low-power coprocessor, enabling sound event detection without
+  main CPU intervention until a positive detection triggers an interrupt.
+
+features:
+  - Complete audio feature extraction pipeline (downsampling, pre-emphasis, FFT, Mel filterbank).
+  - Configurable neural network engine with command-chain execution.
+  - Supports convolution, batch normalization, and multiple activation functions.
+  - SRAM-based weight and activation storage.
+  - Power-triggered processing for energy efficiency.
+  - Interrupt on detection for CPU wake-up.
+  - Programmable clock divider for power/performance tradeoff.
+
+block_diagram:
+  images: []
+  description: "SED Audio Feature Extraction and Neural Network Pipeline"
+
+function_description: |
+  **SED Architecture Overview:**
+
+  ```
+  Audio In → Downsample → Pre-emphasis → Hanning → FFT → Mel Filter → Log2 → NN Engine
+     ↓          ↓            ↓           ↓        ↓        ↓          ↓        ↓
+   16/48kHz  16kHz        High-pass  Window   512-pt   40 bands  dB scale  Classifier
+  ```
+
+  **Clock Sources:**
+
+  SED has three clock domains:
+  - `sed_apb_clk`: APB register access
+  - `sed_mod_clk`: Main processing (can be divided via `clk_div`)
+  - `sed_aud_clk`: Audio sample clock
+
+  Power control (`SED_SYS_CFG0`):
+  - `sed_clk_en`: Master clock enable
+  - `clk_div`: Clock divider (0=div1, 1=div2, ..., 255=div256)
+
+  **1. Front-End Feature Extraction:**
+
+  **Downsampling (DSM):**
+  - Configurable FIR filter coefficients (`SED_DSM_COEF0-C`)
+  - `dsm_rate`: Downsampling ratio (e.g., 3 for 48k→16k)
+  - Pre-emphasis: `pre_emp_coef` (10-bit, typical 0.97)
+
+  **Windowing:**
+  - `window_len`: FFT frame length (typically 512)
+  - `hop_len`: Frame hop (typically 256 for 50% overlap)
+  - Hanning window applied automatically
+
+  **FFT:**
+  - 512-point FFT for spectral analysis
+  - Magnitude computation for Mel filterbank input
+
+  **Mel Filterbank:**
+  - 40 triangular filters (typical) in Mel scale
+  - Coefficient base address: `SED_MEL_COEF_BASE_ADR`
+  - Output: 40-dimensional Mel-frequency energy vector
+
+  **Log2 Scaling:**
+  - `log2_din_scale`: Input scaling factor
+  - `log2_dout_bias`: Output bias (dB offset)
+  - Converts linear energy to log-domain features
+
+  **2. Neural Network Engine:**
+
+  The NN engine executes a command chain stored in SRAM:
+
+  **Command Chain Execution (`SED_CMD_CHAIN`):**
+  - `cmd_src_base`: Base address of command chain
+  - `cmd_tot_num`: Total commands in chain
+  - `cmd_start`: Trigger execution
+  - Commands execute sequentially until chain complete
+
+  **Command Types (`SED_CMD_CFG0-3`):**
+
+  | CMD | Name | Description |
+  |-----|------|-------------|
+  | 0x0 | CLR | Clear memory region |
+  | 0x1 | MAX | Max pooling |
+  | 0x2 | COPY | Memory copy |
+  | 0x3 | SET | Set constant value |
+  | 0x4 | PAD | Zero padding |
+  | 0x5 | MEAN | Average pooling |
+  | 0x6 | CONV | Convolution |
+  | 0x7 | CAT | Concatenation |
+  | 0x8 | ADD | Element-wise add |
+  | 0x9 | SUB | Element-wise subtract |
+  | 0xA | MULT | Element-wise multiply |
+  | 0xB | BATNORM | Batch normalization |
+  | 0xC | SOFTMAX | Softmax activation |
+  | 0xD | TANH | Hyperbolic tangent |
+  | 0xE | SIGMOID | Sigmoid activation |
+  | 0xF | SWISH | Swish activation (x·sigmoid(x)) |
+  | 0x10 | RELU | ReLU activation |
+  | 0x11 | CMP | Compare threshold |
+
+  **Convolution Parameters:**
+  - `conv_ich`: Input channels
+  - `conv_och`: Output channels
+  - `conv_kernel_w/h`: Kernel dimensions
+  - `conv_stride_w/h`: Stride
+  - `conv_pad_w/h`: Padding
+
+  **3. Power Trigger:**
+
+  Energy-based processing control:
+  - `pow_th_low`, `pow_th_high`: Power thresholds
+  - When input energy < `pow_th_low`: Skip NN processing (silence)
+  - When input energy > `pow_th_high`: Process frame
+  - Saves power during periods of silence
+
+  **4. Memory Map:**
+
+  All weights, activations, and commands stored in shared SRAM:
+  - Weight memory address via command configuration
+  - Activation memory address via command configuration
+  - Mel coefficients: `SED_MEL_COEF_BASE_ADR`
+
+  **Key Registers:**
+
+  | Register | Function |
+  |----------|----------|
+  | `SED_VERSION` | IP version information |
+  | `SED_SYS_CFG0/1` | Clock enable, divider |
+  | `SED_CMD_CHAIN` | Command chain control |
+  | `SED_IRQ_EN/STS` | Interrupt enable and status |
+  | `SED_TIMELOG` | Processing timestamps |
+  | `SED_CMD_CFG0-3` | Current command parameters |
+  | `SED_DSM_COEF0-C` | Downsample FIR coefficients |
+  | `SED_CFG_REG0` | window_len, hop_len, dsm_rate, pre_emp |
+  | `SED_CFG_REG1` | clk_frequency configuration |
+  | `SED_POW_CTRL0-2` | Power trigger thresholds |
+  | `SED_LOG_CTRL0/1` | Log2 scaling parameters |
+  | `SED_NN_CTRL0` | NN configuration |
+  | `SED_MEL_COEF_BASE_ADR` | Mel filterbank coefficient base |
+
+  **Interrupt System:**
+
+  `SED_IRQ_EN` / `SED_IRQ_STS`:
+  - Bit fields for various completion/error events
+  - Detection interrupt triggers CPU wake-up
+
+  **Typical NN Model Structure:**
+
+  ```
+  Mel Features (40×T) → Conv1 → BN → ReLU → Conv2 → BN → ReLU → ... → Softmax → Class
+  ```
+
+  T = number of time frames (context window)
+
+application_notes:
+  - title: "Basic Sound Event Detection Setup"
+    steps:
+      - Enable SED clock and configure divider for power budget.
+      - Load downsample filter coefficients.
+      - Set window_len=512, hop_len=256 for typical 32ms/16ms timing.
+      - Load Mel filterbank coefficients to SRAM.
+      - Load NN weights and command chain to SRAM.
+      - Configure power thresholds for VAD-gated processing.
+      - Enable interrupts and start command chain.
+      - On detection interrupt, read classification result.
+
+  - title: "Power Optimization"
+    steps:
+      - Set `pow_th_low` above noise floor to skip silent frames.
+      - Use clock divider to reduce mod_clk during low-activity periods.
+      - Disable clock via `sed_clk_en` when not in use.
+      - Use simpler NN model (fewer layers/channels) for lower power.
+
+  - title: "NN Model Deployment"
+    steps:
+      - Train model on target sound events offline.
+      - Quantize weights to fixed-point format.
+      - Generate command chain for layer sequence.
+      - Pack weights and commands into SRAM layout.
+      - Configure layer parameters via commands.
+      - Validate detection accuracy on test audio.
+
+  - title: "Feature Extraction Only"
+    steps:
+      - Configure front-end (DSM, FFT, Mel) without NN commands.
+      - Use power trigger to gate processing.
+      - Read Mel features from SRAM for external processing.
+      - Useful for custom classifiers or debugging.

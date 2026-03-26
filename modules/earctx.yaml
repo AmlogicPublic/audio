@@ -6,7 +6,7 @@ module_condition:
 
 sections:
   CMDC:
-    registers:
+    registers0:
       - name: EARC_TX_CMDC_TOP_CTRL0
         offset: 0x0030
         description: CMDC top control 0
@@ -1323,7 +1323,7 @@ sections:
             description: reserved
 
   DMAC:
-    registers:
+    registers0:
       - name: EARCTX_DMAC_TOP_CTRL0
         offset: 0x0000
         description: DMAC top control 0
@@ -2245,7 +2245,7 @@ sections:
             description: request frddr gain update timer
 
   TOP:
-    registers:
+    registers0:
       - name: EARCTX_TOP_CTRL0
         offset: 0x0000
         description: Top control 0

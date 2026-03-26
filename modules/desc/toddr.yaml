@@ -1,0 +1,186 @@
+module: toddr
+display_name: "Audio TODDR (FIFO)"
+condition:
+  any_of:
+    - "toddr.A.imp"
+    - "toddr.B.imp"
+    - "toddr.C.imp"
+    - "toddr.D.imp"
+    - "toddr.E.imp"
+
+overview: |
+  TODDR (To DDR) is the audio capture DMA engine that transfers incoming PCM samples from various
+  audio sources (TDMIN, SPDIFIN, PDM, Loopback, Resample, etc.) to system memory. It implements
+  a ring buffer mechanism with ping-pong capability, configurable interrupt watermarks, and
+  flexible sample format conversion.
+
+  The module bridges the audio domain (`sysclk`) to the memory bus via an internal FIFO, handling
+  flow control, format packing, and address management autonomously. Each TODDR instance can
+  connect to any audio source via the source selection mux.
+
+  FIFO depth is `{fifo_depth}×64` bits for enabled instance(s), providing sufficient buffering
+  for interrupt latency and DMA burst granularity.
+
+features: |
+  - Configurable FIFO depth: `{fifo_depth}×64` bits per instance.
+  - Flexible source selection: TDMIN A/B/C, SPDIFIN, PDM, Resample A/B, Loopback A/B, eARC RX, VAD, etc.
+  - Ring buffer operation with start/finish address boundaries.
+  - Ping-pong (double buffer) mode for seamless buffer switching.
+  - Programmable sample format: configurable bit slice [m:n] extraction.
+  - 64-bit packing with selectable endianness.
+  - Multiple interrupt sources: buffer full, threshold, address match, FIFO overflow.
+  - Interrupt watermark address for partial buffer notifications.
+  - Force-finish command for graceful stop with address alignment.
+  - Extended 34-bit addressing for >4GB memory systems (`AADDR` register).
+  - VAD (Voice Activity Detection) address capture for wake-word localization.
+  - Channel number synchronization for multi-stream alignment (`CHNUM_ID` registers).
+  - Hold-read mode for FIFO priming before enable.
+  - Optional channel ID insertion into sample LSBs.
+
+block_diagram:
+  images:
+    - toddr_0.png
+  description: "Audio TODDR Block Diagram"
+
+function_description: |
+  **Data Flow Pipeline:**
+
+  ```
+  Audio Source → Format Convert → 64-bit Pack → FIFO → DDR Write Engine → Memory
+       ↓              ↓               ↓           ↓
+   src_sel      [m:n] slice      endian      threshold → IRQ
+  ```
+
+  **1. Source Selection (`src_sel`):**
+
+  | Value | Source |
+  |-------|--------|
+  | 0 | TDMIN_A |
+  | 1 | TDMIN_B |
+  | 2 | TDMIN_C |
+  | 3 | SPDIFIN |
+  | 4 | PDM_IN |
+  | 5 | FRATV |
+  | 6 | TDMIN_LB |
+  | 7 | Loopback_A |
+  | 8 | HDMIRX_SPDIF |
+  | 9 | Loopback_B |
+  | 10 | SPDIFIN_LB |
+  | 11 | eARC_RX_DMAC |
+  | 12 | HDMIRX_DSD |
+  | 13 | Resample_A |
+  | 14 | Resample_B |
+  | 15 | VAD |
+
+  **2. Format Conversion:**
+
+  - `reg_toddr_m_sel`: MSB position in source sample (0-31)
+  - `reg_toddr_n_sel`: LSB position in source sample (0-31)
+  - `reg_toddr_sel`: Packing mode (0=raw slice, 1-4=16/32-bit formats)
+  - `reg_ext_signed`: Sign extension for narrower samples
+
+  Example: Extract 24-bit from 32-bit sample → m_sel=31, n_sel=8
+
+  **3. 64-bit Packing and FIFO:**
+
+  Samples are accumulated into 64-bit words before FIFO entry.
+  `reg_toddr_endian` controls byte order within the 64-bit word.
+
+  FIFO provides elastic buffering:
+  - `reg_fifo_start_rd_th`: Threshold (count) to trigger DDR write
+  - `fifo_cnt` in STATUS1: Current FIFO occupancy
+
+  **4. Ring Buffer Management:**
+
+  | Register | Function |
+  |----------|----------|
+  | `start_addr` | Buffer A base address (8-byte aligned) |
+  | `finish_addr` | Buffer A end address (wrap boundary) |
+  | `init_addr` | Initial write address after enable |
+  | `start_addrb` / `finish_addrb` | Buffer B for ping-pong mode |
+  | `int_addr` | Interrupt watermark address |
+
+  When write pointer reaches `finish_addr`:
+  - Wrap to `start_addr` (ring mode)
+  - Or switch to Buffer B (ping-pong mode, `reg_toddr_pp_mode=1`)
+
+  **5. Interrupt Sources:**
+
+  | Bit | Event |
+  |-----|-------|
+  | 21 | FIFO overflow (write side) |
+  | 20 | FIFO overflow (read side) |
+  | 19 | int_addr once (first cross) |
+  | 18 | int_addr repeat (every cross) |
+  | 17 | Match int_addr |
+  | 16 | Match finish_addr (buffer full) |
+
+  **6. VAD Integration:**
+
+  When VAD (Voice Activity Detection) triggers:
+  - `vad_flag` / `vad_frame_sync` capture current DDR address
+  - Enables precise audio segment extraction around wake word
+  - Read captured addresses from STATUS3
+
+  **7. Channel Number Sync (`CHNUM_ID` registers):**
+
+  For multi-channel TDM streams, channel ID can be:
+  - Auto-generated from valid_cnt
+  - Matched against programmed IDs (`id_ch0` ~ `id_ch31`)
+  - `enable_sync_chnum`: Start capture when ch0 arrives
+
+  **Key Status Registers:**
+
+  | Register | Content |
+  |----------|---------|
+  | `STATUS1` | FIFO count, sel_b, stop_ddr progress, IRQ flags |
+  | `STATUS2` | Current DDR write address (per `reg_status_sel`) |
+  | `STATUS3` | Extended addresses [33:32], VAD captures |
+
+application_notes:
+  - title: "Stereo Recording (16-bit, 48kHz)"
+    steps: |
+      - Allocate DDR buffer (e.g., 64KB ring buffer).
+      - Set `start_addr`, `finish_addr` = start + size - 8.
+      - Set `init_addr = start_addr`.
+      - Configure `src_sel` for TDMIN_A.
+      - Set format: `m_sel=15`, `n_sel=0`, `sel=1` (16-bit).
+      - Set `reg_fifo_start_rd_th` = 16 (trigger DDR write when 16 samples).
+      - Enable interrupt on `finish_addr` match.
+      - Set `reg_toddr_en = 1`.
+      - In ISR: process buffer, optionally switch ping-pong.
+
+  - title: "Ping-Pong Double Buffering"
+    steps: |
+      - Allocate two equal DDR buffers (A and B).
+      - Set `start_addr`/`finish_addr` for buffer A.
+      - Set `start_addrb`/`finish_addrb` for buffer B.
+      - Set `reg_toddr_pp_mode = 1`.
+      - Enable `finish_addr` interrupt.
+      - When buffer A fills, hardware auto-switches to B.
+      - ISR processes A while B records.
+
+  - title: "24-bit Recording from PDM"
+    steps: |
+      - Configure PDM module for desired sample rate.
+      - Set `src_sel = 4` (PDM_IN).
+      - PDM outputs 24-bit or 32-bit samples.
+      - Configure `m_sel=23`, `n_sel=0` for 24-bit extraction.
+      - Enable and capture.
+
+  - title: "VAD Wake-Word Capture"
+    steps: |
+      - Configure ring buffer large enough for context.
+      - Enable VAD module with wake word detection.
+      - When VAD triggers, read `vad_flag_first` from STATUS3.
+      - This address marks the approximate wake-word start.
+      - Extract audio from (vad_addr - pre_roll) to current position.
+
+  - title: "Graceful Stop with force_finish"
+    steps: |
+      - Set `force_finish` bit (0→1 transition).
+      - TODDR completes current 64-bit word, stops at aligned address.
+      - Read final address from STATUS2.
+      - Disable `reg_toddr_en`.
+      - Process remaining data up to final address.
+

@@ -9,7 +9,7 @@ instances:
       - pattern: "^RO_"
         replacement: "ROB_"
 
-registers:
+registers0:
   - name: AUD_LOCK_EN
     offset: 0x0000
     description: Audio lock enable

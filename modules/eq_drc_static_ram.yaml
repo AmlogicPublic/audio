@@ -12,7 +12,7 @@ arch_condition:
     - arch
   equals: ram
 
-registers:
+registers0:
   # 1. AEQ_COEF_ADDR
   - name: AEQ_COEF_ADDR
     offset: 0x0

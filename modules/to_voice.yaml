@@ -5,12 +5,13 @@ parent_base: audio_top_ee
 
 instances:
   A:
-    offset_base: 0x1d2
+    offset_base0: 0x1d2
     condition: { macro_path: ["voice", "imp"], eq: 1 }
 
-registers:
+registers0:
   - name: TO{VOICE}_CTRL0
     offset: 0x00
+    description: to-voice path control register
     fields:
       - bits: "31"
         name: reg_tovad_en

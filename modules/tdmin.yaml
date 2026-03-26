@@ -3,25 +3,26 @@ parent_base: audio_top_ee
 
 instances:
   A:
-    offset_base: 0xc0
-    ext_offset: 0x260
+    offset_base0: 0xc0
+    offset_base1: 0x260
     condition: { macro_path: ["tdmin", "A", "imp"], eq: 1 }
   B:
-    offset_base: 0xd0
-    ext_offset: 0x270
+    offset_base0: 0xd0
+    offset_base1: 0x270
     condition: { macro_path: ["tdmin", "B", "imp"], eq: 1 }
   C:
-    offset_base: 0xe0
-    ext_offset: 0x280
+    offset_base0: 0xe0
+    offset_base1: 0x280
     condition: { macro_path: ["tdmin", "C", "imp"], eq: 1 }
   LB:
-    offset_base: 0xf0
-    ext_offset: 0x290
+    offset_base0: 0xf0
+    offset_base1: 0x290
     condition: { macro_path: ["tdmin", "LB", "imp"], eq: 1 }
 
-registers:
+registers0:
   - name: TDMIN_{X}_CTRL
     offset: 0x00
+    description: TDM input control register
     fields:
       - bits: "31"
         name: reg_work_enable
@@ -96,6 +97,7 @@ registers:
 
   - name: TDMIN_{X}_SWAP0
     offset: 0x01
+    description: TDM input lane swap register
     fields:
       - bits: "31:28"
         name: ch7_sel
@@ -140,6 +142,7 @@ registers:
 
   - name: TDMIN_{X}_MASK0
     offset: 0x02
+    description: TDM input channel mask register
     fields:
       - bits: "31:0"
         name: lane0_mask
@@ -149,6 +152,7 @@ registers:
 
   - name: TDMIN_{X}_MASK1
     offset: 0x03
+    description: TDM input channel mask register
     fields:
       - bits: "31:0"
         name: lane1_mask
@@ -158,6 +162,7 @@ registers:
 
   - name: TDMIN_{X}_MASK2
     offset: 0x04
+    description: TDM input channel mask register
     fields:
       - bits: "31:0"
         name: lane2_mask
@@ -167,6 +172,7 @@ registers:
 
   - name: TDMIN_{X}_MASK3
     offset: 0x05
+    description: TDM input channel mask register
     fields:
       - bits: "31:0"
         name: lane3_mask
@@ -176,6 +182,7 @@ registers:
 
   - name: TDMIN_{X}_STAT
     offset: 0x06
+    description: TDM input status register
     fields:
       - bits: "31:29"
         name: afifo_cnt
@@ -215,6 +222,7 @@ registers:
 
   - name: TDMIN_{X}_MUTE_VAL
     offset: 0x07
+    description: TDM input mute value register
     fields:
       - bits: "31:0"
         name: mute_val
@@ -224,6 +232,7 @@ registers:
 
   - name: TDMIN_{X}_MUTE0
     offset: 0x08
+    description: TDM input mute-pattern register
     fields:
       - bits: "31:0"
         name: lane0_mute
@@ -233,6 +242,7 @@ registers:
 
   - name: TDMIN_{X}_MUTE1
     offset: 0x09
+    description: TDM input mute-pattern register
     fields:
       - bits: "31:0"
         name: lane1_mute
@@ -242,6 +252,7 @@ registers:
 
   - name: TDMIN_{X}_MUTE2
     offset: 0x0a
+    description: TDM input mute-pattern register
     fields:
       - bits: "31:0"
         name: lane2_mute
@@ -251,6 +262,7 @@ registers:
 
   - name: TDMIN_{X}_MUTE3
     offset: 0x0b
+    description: TDM input mute-pattern register
     fields:
       - bits: "31:0"
         name: lane3_mute
@@ -258,9 +270,10 @@ registers:
         default: "0x00000000"
         description: "mute each channel in lane3, max is 32 ch"
 
-ext_registers:
+registers1:
   - name: TDMIN_{X}_SWAP1
     offset: 0x00
+    description: TDM input lane swap register
     fields:
       - bits: "31:28"
         name: ch15_sel
@@ -305,6 +318,7 @@ ext_registers:
 
   - name: TDMIN_{X}_MASK4
     offset: 0x01
+    description: TDM input channel mask register
     fields:
       - bits: "31:0"
         name: lane4_mask
@@ -314,6 +328,7 @@ ext_registers:
 
   - name: TDMIN_{X}_MASK5
     offset: 0x02
+    description: TDM input channel mask register
     fields:
       - bits: "31:0"
         name: lane5_mask
@@ -323,6 +338,7 @@ ext_registers:
 
   - name: TDMIN_{X}_MASK6
     offset: 0x03
+    description: TDM input channel mask register
     fields:
       - bits: "31:0"
         name: lane6_mask
@@ -332,6 +348,7 @@ ext_registers:
 
   - name: TDMIN_{X}_MASK7
     offset: 0x04
+    description: TDM input channel mask register
     fields:
       - bits: "31:0"
         name: lane7_mask
@@ -341,6 +358,7 @@ ext_registers:
 
   - name: TDMIN_{X}_MUTE4
     offset: 0x05
+    description: TDM input mute-pattern register
     fields:
       - bits: "31:0"
         name: lane4_mute
@@ -350,6 +368,7 @@ ext_registers:
 
   - name: TDMIN_{X}_MUTE5
     offset: 0x06
+    description: TDM input mute-pattern register
     fields:
       - bits: "31:0"
         name: lane5_mute
@@ -359,6 +378,7 @@ ext_registers:
 
   - name: TDMIN_{X}_MUTE6
     offset: 0x07
+    description: TDM input mute-pattern register
     fields:
       - bits: "31:0"
         name: lane6_mute
@@ -368,9 +388,11 @@ ext_registers:
 
   - name: TDMIN_{X}_MUTE7
     offset: 0x08
+    description: TDM input mute-pattern register
     fields:
       - bits: "31:0"
         name: lane7_mute
         access: R/W
         default: "0x00000000"
         description: "mute each channel in lane7, max is 32 ch"
+

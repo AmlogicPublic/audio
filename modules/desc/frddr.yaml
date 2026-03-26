@@ -1,0 +1,184 @@
+module: frddr
+display_name: "Audio FRDDR (FIFO)"
+condition:
+  any_of:
+    - "frddr.A.imp"
+    - "frddr.B.imp"
+    - "frddr.C.imp"
+    - "frddr.D.imp"
+    - "frddr.E.imp"
+
+overview: |
+  FRDDR (From DDR) is the audio playback DMA engine that transfers PCM samples from system memory
+  to audio output modules (TDMOUT, SPDIFOUT, EQ/DRC, Mixer). It implements a ring buffer mechanism
+  with ping-pong capability, prefetch logic, and request-driven data delivery.
+
+  The module pre-fills its internal FIFO from DDR before enabling audio output, ensuring glitch-free
+  playback startup. Multiple audio consumers can share a single FRDDR via the source selection
+  mechanism, enabling efficient multi-output scenarios.
+
+  FIFO depth is `{fifo_depth}×64` bits for enabled instance(s), providing sufficient buffering
+  for interrupt latency and DMA burst granularity.
+
+features: |
+  - Configurable FIFO depth: `{fifo_depth}×64` bits per instance.
+  - Ring buffer operation with start/finish address boundaries.
+  - Ping-pong (double buffer) mode for seamless buffer switching.
+  - Automatic FIFO prefetch on enable (fills before first request served).
+  - Request-driven data delivery to multiple consumers (TDMOUT, SPDIFOUT, EQ/DRC, Mixer).
+  - Configurable ACK delay for timing alignment.
+  - Multiple interrupt sources: buffer empty, threshold, address match, FIFO overflow.
+  - Interrupt watermark address for partial buffer notifications.
+  - Force-finish command for graceful stop with address alignment.
+  - Extended 34-bit addressing for >4GB memory systems (`AADDR` register).
+  - Shared buffer support with channel number configuration.
+  - Per-lane source selection for multi-consumer architectures.
+  - Programmable endianness for byte ordering.
+  - Mixer request width selection (2ch vs 8ch).
+
+block_diagram:
+  images:
+    - frddr_0.png
+    - frddr_1.png
+  description: "Audio FRDDR Block Diagram and Multi-Consumer Architecture"
+
+function_description: |
+  **Data Flow Pipeline:**
+
+  ```
+  Memory → DDR Read Engine → FIFO → Request/ACK Interface → Audio Consumer
+              ↓                ↓           ↓
+         prefetch         threshold    TDMOUT/SPDIFOUT/EQ/Mixer
+  ```
+
+  **1. Prefetch and FIFO Management:**
+
+  When `reg_frddr_en` is set:
+  1. FRDDR begins fetching 64-bit words from `init_addr`
+  2. FIFO fills until `reg_fifo_depth` reached or threshold met
+  3. Only after prefetch completes, FRDDR responds to consumer requests
+
+  FIFO behavior:
+  - `reg_fifo_depth`: Maximum FIFO level
+  - `reg_fifo_start_wr_th`: When `fifo_cnt < (depth - th)`, trigger DDR read
+  - `fifo_cnt` in STATUS1: Current FIFO occupancy
+
+  **2. Ring Buffer Management:**
+
+  | Register | Function |
+  |----------|----------|
+  | `start_addr` | Buffer A base address (8-byte aligned) |
+  | `finish_addr` | Buffer A end address (wrap boundary) |
+  | `init_addr` | Initial read address after enable |
+  | `start_addrb` / `finish_addrb` | Buffer B for ping-pong mode |
+  | `int_addr` | Interrupt watermark address |
+
+  When read pointer reaches `finish_addr`:
+  - Wrap to `start_addr` (ring mode)
+  - Or switch to Buffer B (ping-pong mode, `reg_frddr_pp_mode=1`)
+
+  **3. Consumer Source Selection (`CTRL2`):**
+
+  FRDDR can serve multiple consumers simultaneously via three source paths:
+  - `src_sel0`: Primary path (TDMOUT_A/B/C, SPDIFOUT_A/B, or EQ/DRC)
+  - `src_sel1`: Secondary path (parallel consumer)
+  - `src_sel2`: Tertiary path (parallel consumer)
+
+  | src_sel Value | Consumer |
+  |---------------|----------|
+  | 0 | TDMOUT_A |
+  | 1 | TDMOUT_B |
+  | 2 | TDMOUT_C |
+  | 3 | SPDIFOUT_A |
+  | 4 | SPDIFOUT_B |
+
+  `src_selX_eq = 1`: Route to EQ/DRC instead of direct TDMOUT/SPDIFOUT
+  `src_selX_mixer = 1`: Route to Mixer
+
+  **4. Shared Buffer Mode:**
+
+  For multi-channel consumers sharing one DDR buffer:
+  - `share_ch_num`: Number of channels in shared buffer
+  - Consumers take turns requesting, FRDDR interleaves data appropriately
+
+  **5. Interrupt Sources:**
+
+  | Bit | Event |
+  |-----|-------|
+  | 21 | FIFO overflow (write side) |
+  | 20 | FIFO overflow (read side) |
+  | 19 | int_addr once (first cross) |
+  | 18 | int_addr repeat (every cross) |
+  | 17 | Match int_addr |
+  | 16 | Match finish_addr (buffer consumed) |
+
+  **6. Stop Sequence:**
+
+  For graceful stop:
+  1. Set `reg_stop_ddr` (0→1 transition) in CTRL2
+  2. FRDDR completes pending requests, stops fetching
+  3. Monitor `stop_ddr_done` in STATUS1
+  4. Disable `reg_frddr_en`
+
+  Alternative: `force_finish` for immediate stop with address alignment.
+
+  **Key Status Registers:**
+
+  | Register | Content |
+  |----------|---------|
+  | `STATUS1` | FIFO count, sel_b, stop_ddr progress, IRQ flags |
+  | `STATUS2` | Current DDR read address (per `reg_status_sel`) |
+  | `STATUS3` | Extended addresses [33:32] |
+
+  **Timing Considerations:**
+
+  - `reg_frddr_ack_dly`: Adds delay cycles to ACK, useful for synchronization
+  - Prefetch ensures FIFO is full before first sample is requested
+  - Consumer must wait for FRDDR init_done before enabling playback
+
+application_notes:
+  - title: "Stereo Playback (16-bit, 48kHz)"
+    steps: |
+      - Prepare DDR buffer with interleaved L/R samples.
+      - Set `start_addr`, `finish_addr`, `init_addr`.
+      - Configure TDMOUT: `reg_frddr_sel = X` (this FRDDR).
+      - Set FRDDR `src_sel0_en = 1`, `src_sel0 = 0` (TDMOUT_A).
+      - Set `reg_fifo_depth` and `reg_fifo_start_wr_th`.
+      - Enable `reg_frddr_en = 1`.
+      - Wait for FIFO prefetch (check `fifo_cnt`).
+      - Then enable TDMOUT.
+      - Handle `finish_addr` interrupt for buffer refill.
+
+  - title: "Ping-Pong Double Buffering"
+    steps: |
+      - Allocate two DDR buffers (A and B).
+      - Set Buffer A addresses, Buffer B addresses.
+      - Set `reg_frddr_pp_mode = 1`.
+      - Enable `finish_addr` interrupt.
+      - When buffer A empties, hardware switches to B.
+      - ISR refills A while B plays.
+
+  - title: "Simultaneous I2S + SPDIF Playback"
+    steps: |
+      - Single FRDDR feeds both TDMOUT and SPDIFOUT.
+      - Set `src_sel0_en = 1`, `src_sel0 = 0` (TDMOUT_A).
+      - Set `src_sel1_en = 1`, `src_sel1 = 3` (SPDIFOUT_A).
+      - Both consumers share the same DDR buffer.
+      - FRDDR serves requests round-robin.
+
+  - title: "Playback through EQ/DRC"
+    steps: |
+      - Configure FRDDR buffer with audio data.
+      - Set `src_sel0_en = 1`, `src_sel0_eq = 1`.
+      - EQ/DRC will request data from this FRDDR.
+      - TDMOUT/SPDIFOUT then sources from EQ/DRC output.
+
+  - title: "Graceful Stop for Gapless Playback"
+    steps: |
+      - When approaching end of track, prepare next buffer.
+      - Set `reg_stop_ddr = 1` in CTRL2.
+      - Monitor `stop_ddr_done` in STATUS1.
+      - Update `start_addr`/`finish_addr` for next track.
+      - Clear `reg_stop_ddr`, enable again.
+      - Achieves seamless track transition.
+

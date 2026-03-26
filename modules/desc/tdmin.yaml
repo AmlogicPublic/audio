@@ -1,0 +1,115 @@
+module: tdmin
+display_name: "TDM Input Interface"
+condition:
+  any_of:
+    - "tdmin.A.imp"
+    - "tdmin.B.imp"
+    - "tdmin.C.imp"
+
+overview: |
+  TDM Input (TDMIN) is a configurable serial audio receiver supporting both TDM (Time Division Multiplexing)
+  and I2S interface modes. It deserializes audio data from external codecs, digital microphones, or
+  internal loopback paths, and delivers PCM samples to the TODDR for DMA transfer to system memory.
+
+  Each TDMIN instance supports up to `{pad_num}` parallel data lanes, enabling multi-channel audio capture
+  (e.g., 8 lanes × 2 slots = 16 channels stereo, or 4 lanes × 8 slots = 32 channels TDM).
+
+  The module includes an asynchronous FIFO (AFIFO) for clock domain crossing from the external bit clock
+  (`tdm_sclk`) to the system clock (`sysclk`), ensuring glitch-free data transfer regardless of clock
+  phase relationship.
+
+features: |
+  - Dual mode operation: TDM mode (up to 32 slots/frame) and I2S mode (2 slots/frame).
+  - Supports up to `{pad_num}` parallel data lanes per instance (TDMIN_A/B: 4 lanes, TDMIN_C: 8 lanes).
+  - Configurable bit width per slot: 8/16/24/32 bits (`reg_tdmin_bit_num`).
+  - Flexible input source selection via `tdmin_src_sel`: external pads, HDMIRX, ACODEC, or internal TDMOUT loopback.
+  - AFIFO for clock domain crossing (`tdm_sclk` → `sysclk`) with overflow detection.
+  - Programmable bit skew adjustment (0-7 cycles) for LRCLK-to-data alignment (`reg_tdmin_in_bit_skew`).
+  - Per-channel mask and mute control across all lanes (up to 32 channels/lane).
+  - Full channel remapping via SWAP registers (any input slot → any output channel).
+  - Optional WS (LRCLK) and DATA polarity inversion for codec compatibility.
+  - LSB-first or MSB-first serial bit order.
+  - Stability monitoring with configurable error masks (AFIFO overflow, slot/bit count errors).
+  - Channel number (chnum) generation modes for multi-stream synchronization.
+
+block_diagram:
+  images:
+    - tdmin_0.png
+  description: "TDM Input Interface Block Diagram"
+
+function_description: |
+  **Data Flow Pipeline:**
+
+  1. **Input Stage** (operates at `tdm_sclk`):
+     - Serial data from selected source (`tdmin_src_sel`) is sampled on SCLK edges.
+     - LRCLK (WS) edge detection triggers frame synchronization and resets `bit_cnt`/`slot_cnt`.
+     - Bit skew control (`reg_tdmin_in_bit_skew`) delays LRCLK relative to data for alignment.
+
+  2. **Deserialization**:
+     - Serial bits are shifted into 32-bit parallel registers (one per lane).
+     - After `reg_tdmin_bit_num + 1` bits, the parallel register is latched as a complete sample.
+     - Samples are routed through the SWAP matrix for channel remapping.
+
+  3. **AFIFO Crossing** (clock domain boundary):
+     - Samples enter the AFIFO at `tdm_sclk` rate.
+     - AFIFO provides elastic buffering for clock drift and phase differences.
+     - AFIFO must be reset in sequence: `rst_afifo_out_n` first, then `rst_afifo_in_n`.
+
+  4. **Output Stage** (operates at `sysclk`):
+     - Samples are read from AFIFO and gated through MASK/MUTE logic.
+     - Masked channels are suppressed; muted channels output `mute_val`.
+     - `chnum` (channel number) is generated per `reg_tdmin_chnum_mode` for downstream sync.
+     - Data is passed to TODDR for DDR transfer.
+
+  **Key Configuration Parameters:**
+
+  | Register | Function |
+  |----------|----------|
+  | `reg_i2s_mode` | 0=TDM (multi-slot), 1=I2S (2-slot) |
+  | `reg_tdmin_slot_num` | Slots per frame minus 1 (I2S: 1, TDM: up to 31) |
+  | `reg_tdmin_bit_num` | Bits per slot minus 1 (e.g., 31 for 32-bit) |
+  | `tdmin_src_sel` | Input source: 0=pad_A, 1=pad_B, 2=pad_C, 6=HDMIRX, 7=ACODEC, 12-14=TDMOUT loopback |
+  | `reg_tdmin_in_bit_skew` | Skew cycles (0-7) for WS/DATA alignment |
+  | `SWAP0/SWAP1` | Channel remapping: `chX_sel` selects source (lane/L/R) |
+  | `MASK0-7` | Per-lane channel enable bitmask (32 bits each) |
+  | `MUTE0-7` | Per-lane channel mute bitmask (32 bits each) |
+
+  **Stability Monitoring:**
+  `STAT` register reports real-time `afifo_cnt`, `bit_cnt`/`slot_cnt` min/max, and overflow flag.
+  Configure `reg_stable_mask` to control which errors can trigger the "unstable" signal.
+
+application_notes:
+  - title: "I2S Stereo Recording (16-bit, 48kHz)"
+    steps: |
+      - Set `tdmin_src_sel` to select external I2S pad.
+      - Configure `reg_i2s_mode = 1` (I2S mode).
+      - Set `reg_tdmin_slot_num = 1` (2 slots per frame).
+      - Set `reg_tdmin_bit_num = 15` (16 bits per slot).
+      - Reset AFIFO: write `rst_afifo_out_n = 1`, then `rst_afifo_in_n = 1`.
+      - Configure SWAP0 for default L/R mapping.
+      - Set MASK0 = 0x3 to enable ch0/ch1.
+      - Enable `reg_work_enable = 1`.
+      - Connect TODDR to capture samples.
+
+  - title: "TDM 8-Channel Recording (32-bit)"
+    steps: |
+      - Set `reg_i2s_mode = 0` (TDM mode).
+      - Set `reg_tdmin_slot_num = 7` (8 slots per frame).
+      - Set `reg_tdmin_bit_num = 31` (32 bits per slot).
+      - Configure lane mask: MASK0 = 0xFF (8 channels on lane0).
+      - Adjust `reg_tdmin_in_bit_skew` if data edges are misaligned.
+      - Reset AFIFO sequence, then enable.
+
+  - title: "Internal Loopback from TDMOUT"
+    steps: |
+      - Set `tdmin_src_sel = 12/13/14` to select TDMOUT_A/B/C.
+      - Match TDMOUT slot/bit configuration.
+      - This allows audio monitoring without external wiring.
+
+  - title: "Multi-Lane 32-Channel TDM"
+    steps: |
+      - Use TDMIN_C with 8 lanes (`pad_num = 8`).
+      - Set `reg_tdmin_slot_num = 3` (4 slots/lane).
+      - Configure MASK0-7 for all 32 channels (4 slots × 8 lanes).
+      - Use SWAP registers to reorder channels as needed.
+
