@@ -511,37 +511,58 @@ def md_img(src: str, alt: str, with_figure=False) -> str:
     return img
 
 
-def render_application_notes(enabled_descs: dict[str, dict]) -> str:
-    """汇总所有模块的 application_notes"""
+def render_application_notes(enabled_descs: dict[str, dict], groups: list[tuple[str, list[str]]]) -> str:
+    """汇总所有模块的 application_notes，按模块分组"""
     parts = []
-    for key, desc in enabled_descs.items():
-        notes = desc.get("application_notes")
-        if not notes:
-            continue
-        assert isinstance(notes, list), f"application_notes must be list: {key}"
-        display = desc.get("display_name", key)
-        for note in notes:
-            assert isinstance(note, dict), f"application_notes item must be dict: {key}"
-            title = note.get("title", "Untitled")
-            parts.append(f"### {display}: {title}\n")
-            steps = note.get("steps")
-            if steps:
-                if isinstance(steps, str):
-                    parts.append(steps.rstrip() + "\n")
-                else:
-                    assert isinstance(steps, list), f"application_notes.steps must be str or list: {key}"
-                    for step in steps:
-                        parts.append(f"- {step}\n")
-            desc_text = note.get("description")
-            if desc_text:
-                parts.append(f"\n{desc_text}\n")
-            parts.append("\n")
+    group_idx = 1
+    
+    for group_name, module_order in groups:
+        group_parts = []
+        mod_idx = 1
+        
+        for m in module_order:
+            if m not in enabled_descs:
+                continue
+            desc = enabled_descs[m]
+            notes = desc.get("application_notes")
+            if not notes:
+                continue
+            assert isinstance(notes, list), f"application_notes must be list: {m}"
+            display = desc.get("display_name", m)
+            
+            note_idx = 1
+            for note in notes:
+                assert isinstance(note, dict), f"application_notes item must be dict: {m}"
+                title = note.get("title", "Untitled")
+                section_num = f"6.{group_idx}.{mod_idx}.{note_idx}"
+                group_parts.append(f"#### {section_num}. {display}: {title}\n")
+                steps = note.get("steps")
+                if steps:
+                    if isinstance(steps, str):
+                        group_parts.append(steps.rstrip() + "\n")
+                    else:
+                        assert isinstance(steps, list), f"application_notes.steps must be str or list: {m}"
+                        for step in steps:
+                            group_parts.append(f"- {step}\n")
+                desc_text = note.get("description")
+                if desc_text:
+                    group_parts.append(f"\n{desc_text}\n")
+                group_parts.append("\n")
+                note_idx += 1
+            mod_idx += 1
+        
+        if group_parts:
+            parts.append(f"### 6.{group_idx}. {group_name}\n")
+            parts.extend(group_parts)
+            group_idx += 1
+    
     return "".join(parts)
 
 
-def render_module_block(desc: dict) -> str:
+def render_module_block(desc: dict, section_num: str = "") -> str:
     module_key = str(desc["module"]).strip()
     display = desc.get("display_name", module_key)
+    num_prefix = f"{section_num}. " if section_num else ""
     active_cfgs = find_active_module_cfgs(module_key)
     assert active_cfgs, f"module is enabled by condition but has no active cfgs: {module_key}"
 
@@ -609,16 +630,26 @@ def render_module_block(desc: dict) -> str:
         assert isinstance(img, str), f"block_diagram.images item must be str: {module_key}"
         img_lines.append(md_img(img, alt=display, with_figure=True))
 
-    parts = [f"#### {display}\n"]
+    parts = [f"#### {num_prefix}{display}\n"]
     if overview:
         parts.append(overview + "\n")
+    
+    sub_idx = 1
     feats_md = render_features().rstrip()
     if feats_md:
-        parts.append("##### Features\n" + feats_md + "\n")
+        sub_num = f"{section_num}.{sub_idx}" if section_num else ""
+        sub_prefix = f"{sub_num}. " if sub_num else ""
+        parts.append(f"##### {sub_prefix}Features\n" + feats_md + "\n")
+        sub_idx += 1
     if img_lines:
-        parts.append("##### Block Diagram\n" + "\n\n".join(img_lines) + "\n")
+        sub_num = f"{section_num}.{sub_idx}" if section_num else ""
+        sub_prefix = f"{sub_num}. " if sub_num else ""
+        parts.append(f"##### {sub_prefix}Block Diagram\n" + "\n\n".join(img_lines) + "\n")
+        sub_idx += 1
     if func_desc:
-        parts.append("##### Function Description\n" + func_desc + "\n")
+        sub_num = f"{section_num}.{sub_idx}" if section_num else ""
+        sub_prefix = f"{sub_num}. " if sub_num else ""
+        parts.append(f"##### {sub_prefix}Function Description\n" + func_desc + "\n")
     return "".join(parts)
 
 
@@ -736,7 +767,7 @@ LAYOUT_CSS = """
 }
 
 :root {
-    --img-w: 127mm;
+    --img-w: 182mm;  /* 100% of A4 content width (182mm) */
 }
 
 body {
@@ -774,7 +805,7 @@ img {
     max-width: 100%;
     height: auto;
     object-fit: contain;
-    margin: 10px auto 8px;
+    margin: 10px 0 8px;
     border: 1px solid #d1d5db;
     border-radius: 4px;
     background: #fff;
@@ -807,6 +838,7 @@ table.reg-tbl {
     width: 182mm;
     max-width: 182mm;
     table-layout: fixed;
+    box-sizing: border-box;
 }
 
 table.reg-tbl th:nth-child(1) { width: 12mm; }
@@ -842,6 +874,9 @@ table.reg-tbl td:nth-child(4) {
     padding: 5px 10px;
     margin: 16px 0 6px;
     font-size: 0.92rem;
+    width: 182mm;
+    max-width: 182mm;
+    box-sizing: border-box;
 }
 
 .reg-hdr .reg-name {
@@ -895,7 +930,7 @@ blockquote {
         page-break-inside: avoid;
     }
     img {
-        margin: 5px auto 6px;
+        margin: 5px 0 6px;
     }
 }
 """.strip()
@@ -941,6 +976,7 @@ def export_html(md_path: Path, title: str) -> Path:
         "html5",
         "--standalone",
         "--toc",
+        "--toc-depth=5",
         "--metadata",
         f"title={title}",
         "-H",
@@ -1044,19 +1080,24 @@ def main():
         ("Input Processing", ["resample", "loopback"]),
         ("Output Processing", ["mixer", "eq_drc"]),
         ("Clock and Timing", ["locker"]),
+        ("Voice Processing", ["sed", "vad"]),
     ]
 
     for idx, (group_name, module_order) in enumerate(groups):
-        set_fig_section(f"4.{idx + 1}")
-        parts.append(f"### 4.{idx + 1}. {group_name}\n")
+        group_num = f"4.{idx + 1}"
+        set_fig_section(group_num)
+        parts.append(f"### {group_num}. {group_name}\n")
+        mod_idx = 1
         for m in module_order:
             if m in enabled_descs:
-                parts.append(render_module_block(enabled_descs[m]) + "\n")
+                section_num = f"{group_num}.{mod_idx}"
+                parts.append(render_module_block(enabled_descs[m], section_num) + "\n")
+                mod_idx += 1
 
     parts.append(render_register_section(tree))
 
     parts.append("## 6. Application Notes\n")
-    app_notes_md = render_application_notes(enabled_descs)
+    app_notes_md = render_application_notes(enabled_descs, groups)
     if app_notes_md:
         parts.append(app_notes_md)
     else:
