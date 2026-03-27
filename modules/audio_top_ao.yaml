@@ -178,7 +178,7 @@ registers0:
     offset: 0x0006
     description: security mute control register
 
-  # Voice相关寄存器（名称根据algo参数化）
+  # Voice相关寄存器(名称根据algo参数化)
   - name: EE_AUDIO2_MCLK_{VOICE}_CTRL
     offset: 0x0010
     description: master clock control register

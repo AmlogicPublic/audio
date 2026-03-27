@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Audio Spec 文档生成器（基于 modules/desc/*.yaml）"""
+"""Audio Spec 文档生成器(基于 modules/desc/*.yaml)"""
 
 import sys
 import re
@@ -34,7 +34,7 @@ def set_fig_section(section: str):
 
 
 # ============================================================================
-# YAML 寄存器解析（支持 registers0/1/... 和 offset_base0/1/...）
+# YAML 寄存器解析(支持 registers0/1/... 和 offset_base0/1/...)
 # ============================================================================
 
 @dataclass
@@ -158,7 +158,7 @@ def _collect_offset_bases(icfg: dict) -> list[tuple[str, int]]:
 
 
 def load_all_yaml():
-    """加载所有模块 YAML（支持 registers0/1/...、sections、submodules）"""
+    """加载所有模块 YAML(支持 registers0/1/...、sections、submodules)"""
     if YAML_CACHE:
         return
     for p in MODULES_DIR.glob("*.yaml"):
@@ -169,7 +169,7 @@ def load_all_yaml():
         if not _check_yaml_cond(data.get("module_condition")):
             continue
 
-        # 处理 sections（如 earcrx, earctx）
+        # 处理 sections(如 earcrx, earctx)
         for sec_name, sec_data in data.get("sections", {}).items():
             reg_groups = _collect_register_groups(sec_data)
             all_regs: list[Reg] = []
@@ -179,7 +179,7 @@ def load_all_yaml():
             cache_key = f"{mod_name}_{sec_name}".lower()
             YAML_CACHE[cache_key] = (all_regs, 0)
 
-        # 处理 submodules（如 spdif）
+        # 处理 submodules(如 spdif)
         for sub_name, sub_data in data.get("submodules", {}).items():
             reg_groups = _collect_register_groups(sub_data)
             for iid, icfg in sub_data.get("instances", {}).items():
@@ -199,7 +199,7 @@ def load_all_yaml():
                 cache_key = f"{sub_name}_{iid}".lower()
                 YAML_CACHE[cache_key] = (all_regs, 0)
 
-        # 处理 instances（顶层实例）
+        # 处理 instances(顶层实例)
         reg_groups = _collect_register_groups(data)
         for iid, icfg in data.get("instances", {}).items():
             icfg = icfg or {}
@@ -253,7 +253,7 @@ def _is_module_parent(key: str, val: dict) -> bool:
 
 
 def build_module_tree() -> list[Module]:
-    """构建模块树（使用新格式 YAML）"""
+    """构建模块树(使用新格式 YAML)"""
     load_all_yaml()
 
     def build(key: str, val) -> Module:
@@ -289,13 +289,20 @@ def build_module_tree() -> list[Module]:
     return [build(k, v) for k, v in MODULE_TREE.items() if build(k, v)]
 
 
+def count_regs(node: Module) -> int:
+    """递归统计节点及其所有后代的活跃寄存器总数"""
+    if node.children:
+        return len(node.regs) + sum(count_regs(c) for c in node.children)
+    return len(node.regs) if node.active else 0
+
+
 def tree_md(node: Module, base_addr=0, depth=0, prefix="") -> str:
-    """渲染树状结构（含地址信息）"""
+    """渲染树状结构(含地址信息)"""
     lines = []
     base = node.addr if node.addr else base_addr
 
     if node.children:
-        total = sum(len(c.regs) for c in node.children)
+        total = count_regs(node)
         addr = f" 0x{node.addr:08X}" if node.addr else ""
         lines.append(f"{prefix}{node.name}{addr} ({total} regs)\n")
         for i, c in enumerate(node.children):
@@ -329,7 +336,7 @@ def clk_md() -> str:
 
 
 def get_cfg(*path):
-    """从 MODULE_TREE 查找配置值（支持递归查找）"""
+    """从 MODULE_TREE 查找配置值(支持递归查找)"""
 
     def search(node, remaining):
         if not remaining:
@@ -713,7 +720,7 @@ def render_reg_summary_md(node, base_addr=0) -> list[list[str]]:
                     val |= (fv << lo)
             reset_val = f"0x{val:08X}"
         desc = r.desc if r.desc else ""
-        rows.append([f'<a id="sum-{r.name}"></a>[{r.name}](#reg-{r.name})', f"0x{abs_addr:08X}", "W", reset_val, desc])
+        rows.append([f'<a id="sum-{r.name}"></a>[{r.name}](#reg-{r.name})', f"0x{abs_addr:08X}", "32", reset_val, desc])
     return rows
 
 
@@ -724,7 +731,7 @@ def render_register_section(tree) -> str:
     for n in tree:
         summary_rows.extend(render_reg_summary_md(n, base_addr=0))
 
-    summary_md = "| Name | Offset | Size | Reset Value | Description |\n|---|---|---|---|---|\n"
+    summary_md = "| Name | Address | Size | Reset Value | Description |\n|---|---|---|---|---|\n"
     for row in summary_rows:
         summary_md += f"| {row[0]} | {row[1]} | {row[2]} | {row[3]} | {row[4]} |\n"
 
@@ -1029,32 +1036,33 @@ def main():
     title = apply_placeholders(common.get("title_template", "{CHIP} Audio Specification"), global_ctx)
     parts.append(f"# {title}\n\n")
 
-    # Overview
+    # Overview (合并 overview, features, block diagram)
     parts.append("## 1. Overview\n")
     overview = common.get("overview", "").rstrip()
     if overview:
         parts.append(apply_placeholders(overview, global_ctx) + "\n\n")
-
-    # Features
-    parts.append("## 2. Features\n")
     feats = common.get("features") or []
     if feats:
         assert isinstance(feats, list), "common.features must be list"
         for f in feats:
             parts.append(f"- {apply_placeholders(str(f), global_ctx)}\n")
         parts.append("\n")
-
-    # Block diagram
-    set_fig_section("3")
-    parts.append("## 3. Block Diagram\n")
+    set_fig_section("1")
     b = common.get("block_diagram") or {}
     b_imgs = b.get("images") or []
     assert isinstance(b_imgs, list), "common.block_diagram.images must be list"
     for img in b_imgs:
         parts.append(md_img(str(img), alt=f"{CHIP} Audio Path", with_figure=True) + "\n\n")
 
+    # Clock Tree
+    set_fig_section("2")
+    parts.append("## 2. Clock Tree\n")
+    parts.append(md_img("../media/audio_top_ee_0.png", alt="Audio Clock Tree 0", with_figure=True) + "\n\n")
+    parts.append(md_img("../media/audio_top_ee_1.png", alt="Audio Clock Tree 1", with_figure=True) + "\n\n")
+    parts.append(md_img("../media/audio_top_ee_2.png", alt="Audio Clock Tree 2", with_figure=True) + "\n\n")
+
     # Function description (audio path)
-    parts.append("## 4. Function Description\n")
+    parts.append("## 3. Function Description\n")
 
     groups = [
         ("Audio Input", ["tdmin", "spdifin", "pdm", "earcrx"]),
@@ -1068,7 +1076,7 @@ def main():
     ]
 
     for idx, (group_name, module_order) in enumerate(groups):
-        group_num = f"4.{idx + 1}"
+        group_num = f"3.{idx + 1}"
         set_fig_section(group_num)
         parts.append(f"### {group_num}. {group_name}\n")
         mod_idx = 1
@@ -1077,6 +1085,14 @@ def main():
                 section_num = f"{group_num}.{mod_idx}"
                 parts.append(render_module_block(enabled_descs[m], section_num) + "\n")
                 mod_idx += 1
+
+    # IO Timing
+    set_fig_section("4")
+    parts.append("## 4. IO Timing\n")
+    parts.append("### 4.1 Master Mode\n")
+    parts.append(md_img("../media/timing_master.png", alt="TDM Master Timing", with_figure=True) + "\n\n")
+    parts.append("### 4.2 Slave Mode\n")
+    parts.append(md_img("../media/timing_slave.png", alt="TDM Slave Timing", with_figure=True) + "\n\n")
 
     parts.append(render_register_section(tree))
 

@@ -1,25 +1,16 @@
 title_template: "{CHIP} Audio Specification"
 
 overview: |
-  Audio Path
-
-  {CHIP} integrates:
-  - {tdmin_count} TDM input interfaces (exclude TDMIN_LB)
-  - {tdmout_count} TDM output interfaces
+  {CHIP} audio subsystem integrates:
+  - {tdmin_count} TDM input interfaces (exclude TDMIN_LB), supports `TDM`, `SPDIF`, and `PDM`
+  - {tdmout_count} TDM output interfaces, supports `TDM`, `SPDIF` encode, and `HDMI/DP TX`
   - {pdm_count} PDM interface(s)
-  - {toddr_count} TODDR (FIFO) for transfer input data to DDR
-  - {frddr_count} FRDDR (FIFO) for transfer data from DDR to output
+  - {toddr_count} TODDR / {frddr_count} FRDDR for DDR datapath
   - {loopback_count} Loopback for AEC
+  - EQDRC for audio EQ and DRC processing
+  - eARC RX/TX for audio return channel
 
-  Below is the diagram for {CHIP} audio path.
-
-features:
-  - Audio input supports `TDM`, `SPDIF`, and `PDM`.
-  - Audio output supports `TDM`, `SPDIF` encode, and `HDMI/DP TX`.
-  - DDR datapath uses `TODDR`/`FRDDR` FIFO transfer.
-  - Loopback merges sources for AEC.
-  - EQDRC provides EQ and DRC for audio streams.
-  - eARC RX/TX for audio return channel.
+features: []
 
 block_diagram:
   images:
