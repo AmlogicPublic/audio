@@ -72,6 +72,8 @@ YAML_CACHE: dict[str, tuple[list[Reg], int]] = {}
 def _check_yaml_cond(cond) -> bool:
     if not cond:
         return True
+    if "all_of" in cond:
+        return all(_check_yaml_cond(c) for c in cond["all_of"])
     path = cond.get("macro_path", [])
     val = get_cfg(*path)
     if val is None:
@@ -169,6 +171,8 @@ def load_all_yaml():
             continue
         mod_name = _resolve_voice(data["module"]).lower()
         if not _check_yaml_cond(data.get("module_condition")):
+            continue
+        if not _check_yaml_cond(data.get("arch_condition")):
             continue
 
         # 处理 sections(如 earcrx, earctx)
@@ -359,10 +363,15 @@ def get_cfg(*path):
 
 
 def check_cond(cond) -> bool:
-    """desc 的 condition 过滤：支持 macro_path/equal 或 any_of(字符串路径)"""
+    """desc 的 condition 过滤：支持 macro_path/equal 或 any_of/all_of"""
     if not cond:
         return True
     assert isinstance(cond, dict), f"condition must be dict, got: {type(cond)}"
+
+    if "all_of" in cond:
+        all_list = cond["all_of"]
+        assert isinstance(all_list, list) and all_list, "condition.all_of must be non-empty list"
+        return all(check_cond(c) for c in all_list)
 
     if "any_of" in cond:
         any_list = cond["any_of"]
@@ -380,10 +389,11 @@ def check_cond(cond) -> bool:
                 assert False, f"unsupported any_of item type: {type(item)}"
         return False
 
-    assert "macro_path" in cond, "condition must have either any_of or macro_path"
+    assert "macro_path" in cond, "condition must have either all_of, any_of, or macro_path"
     path = cond.get("macro_path", [])
     val = get_cfg(*path)
-    assert val is not None, f"macro_path not found: {path}"
+    if val is None:
+        return False
     if "eq" in cond:
         return val == cond["eq"]
     if "equals" in cond:
@@ -446,6 +456,8 @@ def load_module_descs() -> dict[str, dict]:
             continue
         assert isinstance(data, dict), f"desc yaml must be dict: {p}"
         assert "module" in data, f"desc yaml missing 'module': {p}"
+        if not check_cond(data.get("condition")):
+            continue
         key = str(data["module"]).strip()
         out[key] = data
     return out

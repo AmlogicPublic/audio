@@ -1,0 +1,564 @@
+module: TDMOUT
+parent_base: audio_top_ee
+
+instances:
+  A:
+    offset_base0: 0x140
+    offset_base1: 0x2a0
+    condition: { macro_path: ["tdmout", "A", "imp"], eq: 1 }
+  B:
+    offset_base0: 0x150
+    offset_base1: 0x2b0
+    condition: { macro_path: ["tdmout", "B", "imp"], eq: 1 }
+  C:
+    offset_base0: 0x160
+    offset_base1: 0x2c0
+    condition: { macro_path: ["tdmout", "C", "imp"], eq: 1 }
+
+registers0:
+  - name: TDMOUT_{X}_CTRL0
+    offset: 0x00
+    description: TDM output control register
+    fields:
+      - bits: "31"
+        name: reg_work_enable
+        access: R/W
+        default: "0"
+        description: "0:disable; 1:enable"
+      - bits: "30"
+        name: reg_rst_req_frddr
+        access: R/W
+        default: "0"
+        description: "reset ref_frddr in TDMOUT"
+      - bits: "29"
+        name: reg_rst_afifo_out_n
+        access: R/W
+        default: "0"
+        description: "reset afifo out side"
+      - bits: "28"
+        name: reg_rst_afifo_in_n
+        access: R/W
+        default: "0"
+        description: "reset afifo in side; need set 1 after set reg_rst_afifo_out_n to 1"
+      - bits: "19:15"
+        name: reg_tdm_init_bitnum
+        access: R/W
+        default: "0x00"
+        description: "initial count value of bitcnt"
+      - bits: "14:10"
+        name: reg_tdm_init_slotnum
+        access: R/W
+        default: "0x00"
+        description: "initial count value of slotcnt"
+      - bits: "9:5"
+        name: reg_tdmout_slot_num
+        access: R/W
+        default: "0x00"
+        description: "max value of slotcnt; if 8 slots, set to 7"
+      - bits: "4:0"
+        name: reg_tdmout_bit_num
+        access: R/W
+        default: "0x00"
+        description: "max value of bitcnt; if 16bits, set to 15"
+
+  - name: TDMOUT_{X}_CTRL1
+    offset: 0x01
+    description: TDM output control register
+    fields:
+      - bits: "31"
+        name: eq_drc_sel
+        access: R/W
+        default: "0"
+        description: "1:select eq_drc output"
+      - bits: "30"
+        name: reg_debug_en
+        access: R/W
+        default: "0"
+        description: "0:disable debug; 1:enable"
+      - bits: "29"
+        name: reg_out_lsb_first
+        access: R/W
+        default: "0"
+        description: "0:msb first; 1:lsb first"
+      - bits: "28"
+        name: reg_rev_ws_in
+        access: R/W
+        default: "0"
+        description: "revert ws; 0:disable; 1:enable"
+      - bits: "27"
+        name: reg_rev_dat
+        access: R/W
+        default: "0"
+        description: "revert data; 0:disable; 1:enable"
+      - bits: "26:24"
+        name: reg_frddr_sel
+        access: R/W
+        default: "0x0"
+        description: "0:frddr_A; 1:frddr_B; 2:frddr_C; 3:frddr_D; 4:frddr_E"
+      - bits: "23:16"
+        name: reg_wait_cnt
+        access: R/W
+        default: "0x00"
+        description: "wait some time when enable set to 1, then start request data from frddr"
+      - bits: "15:14"
+        name: reg_gain_shift
+        access: R/W
+        default: "0x0"
+        description: "0:data*1; 1:data*2; 2:data*4; 3:data*8"
+      - bits: "12:8"
+        name: reg_frddr_msb
+        access: R/W
+        default: "0x00"
+        description: "msb position of data"
+      - bits: "6:4"
+        name: reg_frddr_type
+        access: R/W
+        default: "0x0"
+        description: "0:split 64bits to 8 sample(8bit); 1~2:16bit; 3~4:32bit"
+      - bits: "3"
+        name: reg_keep_req_ddr_init
+        access: R/W
+        default: "0"
+        description: "set 0 will stop sending data if req_ddr stopped by init_done pull down"
+      - bits: "2"
+        name: reg_sts_sel
+        access: R/W
+        default: "0"
+        description: reg_sts_sel
+      - bits: "1"
+        name: reg_mixer_sel
+        access: R/W
+        default: "0"
+        description: "1:select mixer output"
+
+  - name: TDMOUT_{X}_SWAP0
+    offset: 0x02
+    description: TDM output lane swap register
+    fields:
+      - bits: "31:28"
+        name: ch7_sel
+        access: R/W
+        default: "0x0"
+        description: "0:lane0 L; 1:lane0 R; 2:lane1 L; ... 15:lane7 R"
+      - bits: "27:24"
+        name: ch6_sel
+        access: R/W
+        default: "0x0"
+        description: ch6_sel
+      - bits: "23:20"
+        name: ch5_sel
+        access: R/W
+        default: "0x0"
+        description: ch5_sel
+      - bits: "19:16"
+        name: ch4_sel
+        access: R/W
+        default: "0x0"
+        description: ch4_sel
+      - bits: "15:12"
+        name: ch3_sel
+        access: R/W
+        default: "0x0"
+        description: ch3_sel
+      - bits: "11:8"
+        name: ch2_sel
+        access: R/W
+        default: "0x0"
+        description: ch2_sel
+      - bits: "7:4"
+        name: ch1_sel
+        access: R/W
+        default: "0x0"
+        description: ch1_sel
+      - bits: "3:0"
+        name: ch0_sel
+        access: R/W
+        default: "0x0"
+        description: ch0_sel
+
+  - name: TDMOUT_{X}_MASK0
+    offset: 0x03
+    description: TDM output channel mask register
+    fields:
+      - bits: "31:0"
+        name: lane0_mask
+        access: R/W
+        default: "0x00000000"
+        description: "mask each channel in lane0, max is 32 ch"
+
+  - name: TDMOUT_{X}_MASK1
+    offset: 0x04
+    description: TDM output channel mask register
+    fields:
+      - bits: "31:0"
+        name: lane1_mask
+        access: R/W
+        default: "0x00000000"
+        description: "mask each channel in lane1, max is 32 ch"
+
+  - name: TDMOUT_{X}_MASK2
+    offset: 0x05
+    description: TDM output channel mask register
+    fields:
+      - bits: "31:0"
+        name: lane2_mask
+        access: R/W
+        default: "0x00000000"
+        description: "mask each channel in lane2, max is 32 ch"
+
+  - name: TDMOUT_{X}_MASK3
+    offset: 0x06
+    description: TDM output channel mask register
+    fields:
+      - bits: "31:0"
+        name: lane3_mask
+        access: R/W
+        default: "0x00000000"
+        description: "mask each channel in lane3, max is 32 ch"
+
+  - name: TDMOUT_{X}_STAT
+    offset: 0x07
+    description: TDM output status register
+    fields:
+      - bits: "31:0"
+        name: status
+        access: R
+        default: "0x00000000"
+        description: "by reg_sts_sel: 0:fifo/error status; 1:cur_gain_val"
+
+  - name: TDMOUT_{X}_GAIN0
+    offset: 0x08
+    description: TDM output gain register
+    fields:
+      - bits: "31:24"
+        name: gain_ch3
+        access: R/W
+        default: "0xFF"
+        description: gain_ch3
+      - bits: "23:16"
+        name: gain_ch2
+        access: R/W
+        default: "0xFF"
+        description: gain_ch2
+      - bits: "15:8"
+        name: gain_ch1
+        access: R/W
+        default: "0xFF"
+        description: gain_ch1
+      - bits: "7:0"
+        name: gain_ch0
+        access: R/W
+        default: "0xFF"
+        description: gain_ch0
+
+  - name: TDMOUT_{X}_GAIN1
+    offset: 0x09
+    description: TDM output gain register
+    fields:
+      - bits: "31:24"
+        name: gain_ch7
+        access: R/W
+        default: "0xFF"
+        description: gain_ch7
+      - bits: "23:16"
+        name: gain_ch6
+        access: R/W
+        default: "0xFF"
+        description: gain_ch6
+      - bits: "15:8"
+        name: gain_ch5
+        access: R/W
+        default: "0xFF"
+        description: gain_ch5
+      - bits: "7:0"
+        name: gain_ch4
+        access: R/W
+        default: "0xFF"
+        description: gain_ch4
+
+  - name: TDMOUT_{X}_MUTE_VAL
+    offset: 0x0a
+    description: TDM output mute value register
+    fields:
+      - bits: "31:0"
+        name: mute_val
+        access: R/W
+        default: "0x00000000"
+        description: "when mute, the channel value"
+
+  - name: TDMOUT_{X}_MUTE0
+    offset: 0x0b
+    description: TDM output mute-pattern register
+    fields:
+      - bits: "31:0"
+        name: lane0_mute
+        access: R/W
+        default: "0x00000000"
+        description: "mute each channel in lane0, max is 32 ch"
+
+  - name: TDMOUT_{X}_MUTE1
+    offset: 0x0c
+    description: TDM output mute-pattern register
+    fields:
+      - bits: "31:0"
+        name: lane1_mute
+        access: R/W
+        default: "0x00000000"
+        description: "mute each channel in lane1, max is 32 ch"
+
+  - name: TDMOUT_{X}_MUTE2
+    offset: 0x0d
+    description: TDM output mute-pattern register
+    fields:
+      - bits: "31:0"
+        name: lane2_mute
+        access: R/W
+        default: "0x00000000"
+        description: "mute each channel in lane2, max is 32 ch"
+
+  - name: TDMOUT_{X}_MUTE3
+    offset: 0x0e
+    description: TDM output mute-pattern register
+    fields:
+      - bits: "31:0"
+        name: lane3_mute
+        access: R/W
+        default: "0x00000000"
+        description: "mute each channel in lane3, max is 32 ch"
+
+  - name: TDMOUT_{X}_MASK_VAL
+    offset: 0x0f
+    description: TDM output mask value register
+    fields:
+      - bits: "31:0"
+        name: mask_val
+        access: R/W
+        default: "0x00000000"
+        description: "when masked, the channel value"
+
+registers1:
+  - name: TDMOUT_{X}_CTRL2
+    offset: 0x00
+    description: TDM output control register
+    fields:
+      - bits: "31:24"
+        name: reg_clr_by_init
+        access: R/W
+        default: "0x00"
+        description: "when FRDDR is disable, clear the status of REQ_FRDDR"
+      - bits: "7:0"
+        name: reg_tdm_lr_mix
+        access: R/W
+        default: "0x00"
+        description: "[7]:mix l7 and r7; ... [0]:mix l0 and r0"
+
+  - name: TDMOUT_{X}_SWAP1
+    offset: 0x01
+    description: TDM output lane swap register
+    fields:
+      - bits: "31:28"
+        name: ch15_sel
+        access: R/W
+        default: "0x0"
+        description: ch15_sel
+      - bits: "27:24"
+        name: ch14_sel
+        access: R/W
+        default: "0x0"
+        description: ch14_sel
+      - bits: "23:20"
+        name: ch13_sel
+        access: R/W
+        default: "0x0"
+        description: ch13_sel
+      - bits: "19:16"
+        name: ch12_sel
+        access: R/W
+        default: "0x0"
+        description: ch12_sel
+      - bits: "15:12"
+        name: ch11_sel
+        access: R/W
+        default: "0x0"
+        description: ch11_sel
+      - bits: "11:8"
+        name: ch10_sel
+        access: R/W
+        default: "0x0"
+        description: ch10_sel
+      - bits: "7:4"
+        name: ch9_sel
+        access: R/W
+        default: "0x0"
+        description: ch9_sel
+      - bits: "3:0"
+        name: ch8_sel
+        access: R/W
+        default: "0x0"
+        description: ch8_sel
+
+  - name: TDMOUT_{X}_GAIN2
+    offset: 0x02
+    description: TDM output gain register
+    fields:
+      - bits: "31:24"
+        name: gain_ch11
+        access: R/W
+        default: "0xFF"
+        description: gain_ch11
+      - bits: "23:16"
+        name: gain_ch10
+        access: R/W
+        default: "0xFF"
+        description: gain_ch10
+      - bits: "15:8"
+        name: gain_ch9
+        access: R/W
+        default: "0xFF"
+        description: gain_ch9
+      - bits: "7:0"
+        name: gain_ch8
+        access: R/W
+        default: "0xFF"
+        description: gain_ch8
+
+  - name: TDMOUT_{X}_GAIN3
+    offset: 0x03
+    description: TDM output gain register
+    fields:
+      - bits: "31:24"
+        name: gain_ch15
+        access: R/W
+        default: "0xFF"
+        description: gain_ch15
+      - bits: "23:16"
+        name: gain_ch14
+        access: R/W
+        default: "0xFF"
+        description: gain_ch14
+      - bits: "15:8"
+        name: gain_ch13
+        access: R/W
+        default: "0xFF"
+        description: gain_ch13
+      - bits: "7:0"
+        name: gain_ch12
+        access: R/W
+        default: "0xFF"
+        description: gain_ch12
+
+  - name: TDMOUT_{X}_MASK4
+    offset: 0x04
+    description: TDM output channel mask register
+    fields:
+      - bits: "31:0"
+        name: lane4_mask
+        access: R/W
+        default: "0x00000000"
+        description: "mask each channel in lane4, max is 32 ch"
+
+  - name: TDMOUT_{X}_MASK5
+    offset: 0x05
+    description: TDM output channel mask register
+    fields:
+      - bits: "31:0"
+        name: lane5_mask
+        access: R/W
+        default: "0x00000000"
+        description: "mask each channel in lane5, max is 32 ch"
+
+  - name: TDMOUT_{X}_MASK6
+    offset: 0x06
+    description: TDM output channel mask register
+    fields:
+      - bits: "31:0"
+        name: lane6_mask
+        access: R/W
+        default: "0x00000000"
+        description: "mask each channel in lane6, max is 32 ch"
+
+  - name: TDMOUT_{X}_MASK7
+    offset: 0x07
+    description: TDM output channel mask register
+    fields:
+      - bits: "31:0"
+        name: lane7_mask
+        access: R/W
+        default: "0x00000000"
+        description: "mask each channel in lane7, max is 32 ch"
+
+  - name: TDMOUT_{X}_MUTE4
+    offset: 0x08
+    description: TDM output mute-pattern register
+    fields:
+      - bits: "31:0"
+        name: lane4_mute
+        access: R/W
+        default: "0x00000000"
+        description: "mute each channel in lane4, max is 32 ch"
+
+  - name: TDMOUT_{X}_MUTE5
+    offset: 0x09
+    description: TDM output mute-pattern register
+    fields:
+      - bits: "31:0"
+        name: lane5_mute
+        access: R/W
+        default: "0x00000000"
+        description: "mute each channel in lane5, max is 32 ch"
+
+  - name: TDMOUT_{X}_MUTE6
+    offset: 0x0a
+    description: TDM output mute-pattern register
+    fields:
+      - bits: "31:0"
+        name: lane6_mute
+        access: R/W
+        default: "0x00000000"
+        description: "mute each channel in lane6, max is 32 ch"
+
+  - name: TDMOUT_{X}_MUTE7
+    offset: 0x0b
+    description: TDM output mute-pattern register
+    fields:
+      - bits: "31:0"
+        name: lane7_mute
+        access: R/W
+        default: "0x00000000"
+        description: "mute each channel in lane7, max is 32 ch"
+
+  - name: TDMOUT_{X}_GAIN_EN
+    offset: 0x0c
+    description: TDM output gain enable register
+    fields:
+      - bits: "15:0"
+        name: ch_gain_en
+        access: R/W
+        default: "0x0000"
+        description: "ch[n] gain_en; 1:out=in*gain_ch[n]; 0:out=in"
+
+  - name: TDMOUT_{X}_GAIN_CTRL
+    offset: 0x0d
+    description: TDM output control register
+    fields:
+      - bits: "31"
+        name: reg_gain_step_chg
+        access: R/W
+        default: "0"
+        description: "0:current_gain follows reg_gain directly; 1:step by step"
+      - bits: "25:24"
+        name: reg_cur_gain_sel
+        access: R/W
+        default: "0x0"
+        description: "0:ch3~0; 1:ch7~4; 2:ch11~8; 3:ch15~12"
+      - bits: "23:16"
+        name: reg_gain_step
+        access: R/W
+        default: "0x00"
+        description: "modified gain value each time"
+      - bits: "15:0"
+        name: reg_gain_updt_timer
+        access: R/W
+        default: "0x0000"
+        description: "the period of each change, unit is FS"
+

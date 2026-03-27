@@ -9,7 +9,7 @@ CHIP = "A10"
 # ============================================================================
 MODULE_TREE = {
     "audio_ao_top": {
-        "_addr": 0xFFAE1000,
+        "_addr": 0xFFAE1400,
         "audio_top_ao": {"imp": 1},  # audio_top_ao.yaml
         "Input": {
             "pdm": {
@@ -19,7 +19,7 @@ MODULE_TREE = {
         },
         "Voice": {
             "sed": {"_addr": 0xFFAC0000, "imp": 1},
-            "vad": {"_addr": 0xFE331800, "imp": 0},
+            "vad": {"_addr": 0xFFAE1800, "imp": 0},
         },
     },
     "audio_ee_top": {
@@ -80,7 +80,7 @@ MODULE_TREE = {
         },
         "OutputProcessing": {
             "mixer":  {"A": {"imp": 1}},
-            "eq_drc": {"_addr": 0xFFAE4000, "imp": 1, "ch": 32, "static": 1, "arch": "reg", "arch_desc": "coefficients in dedicated registers"},
+            "eq_drc": {"_addr": 0xFFAE4000, "imp": 1, "ch": 32, "static": 1, "arch": "ram_peq", "arch_desc": "coefficients in RAM with PEQ support"},
         },
         "IOProcessing": {
             "tdm_dat_pad": {"imp": 1},
@@ -94,7 +94,7 @@ MODULE_TREE = {
         },
         "Voice": {
             "sed": {"_addr": 0xFFAC0000, "imp": 0},
-            "vad": {"_addr": 0xFE331800, "imp": 0},
+            "vad": {"_addr": 0xFFAE1800, "imp": 0},
         },
         "DMA": {
             "toddr": {

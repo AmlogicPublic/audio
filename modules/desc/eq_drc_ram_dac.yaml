@@ -1,0 +1,259 @@
+module: eq_drc
+display_name: "Audio EQDRC"
+condition:
+  all_of:
+    - macro_path: ["eq_drc", "imp"]
+      eq: 1
+    - macro_path: ["eq_drc", "arch"]
+      equals: ram_dac
+
+overview: |
+  The Audio EQ/DRC module provides parametric equalization and dynamic range compression/limiting
+  for audio streams. It enables tone shaping, frequency response correction, loudness management,
+  and speaker protection through configurable biquad filter banks and gain processors.
+
+  **Important**: While the module can accept multi-channel input from FRDDR (up to `{ch}` channels),
+  the EQ/DRC processing only operates on **2 channels** (Ch1/Ch2). Other channels pass through
+  unprocessed or should be routed separately.
+
+  The module can be inserted in the playback path between FRDDR and TDMOUT/SPDIFOUT, or used for
+  monitoring/metering. The EQ section implements cascaded biquad filters for precise frequency
+  response control, while the DRC section provides attack/release envelope following with
+  programmable compression curves.
+
+features: |
+  - **2-channel processing**: EQ/DRC operates on Ch1 and Ch2 only (independent coefficients per channel).
+  - Parametric EQ using cascaded biquad (IIR) filters (max 16 taps per channel).
+  - Post EQ (PEQ) with fixed 4 taps after FDRC.
+  - Multi-band DRC capability through 2nd order crossover filters.
+  - Dynamic Range Compression (DRC) with adjustable attack/release times.
+  - Configurable compression threshold, ratio, and knee.
+  - Peak/RMS level detection for metering (selectable input source via mux).
+  - Limiter function for speaker protection.
+  - Accepts up to `{ch}` channel input from FRDDR (only 2 processed).
+  - Coefficient storage: {arch_desc}.
+  - Gain makeup and output scaling.
+  - Same coefficient format as Mixer (32-bit signed, 0x00800000 = unity).
+  - Clip threshold for overflow protection (max 0x7f_ffff).
+  - Runtime RAM read/write support (requires external PA mute).
+
+block_diagram:
+  images:
+    - eqdrc_0.png
+  description: "Audio EQ/DRC Block Diagram"
+
+function_description: |
+  **Signal Processing Chain:**
+
+  ```
+  Input → PEQ(4-tap) → DC Cut → Mix → EQ(max 16-tap) → 3D Surround
+        → Crossover(2nd order) → MDRC(Low/Mid/High) → Volume_LR
+        → FDRC → Volume_Master → Clip → Output
+  ```
+
+  Level Meter can monitor any node in the chain via `lm_mux` selector.
+
+  **Biquad Transfer Function:**
+  ```
+  H(z) = (b0 + b1·z⁻¹ + b2·z⁻²) / (1 + a1·z⁻¹ + a2·z⁻²)
+  ```
+
+  Each biquad requires 5 coefficients, stored in RAM order: `b0, a1, b1, a2, b2`
+
+  Each biquad can implement:
+  - Peaking (parametric) filter: boost/cut at center frequency
+  - Low/high shelf: bass/treble tone control
+  - Low/high pass: filtering
+  - Notch: null at specific frequency
+  - All-pass: phase adjustment
+
+  **Coefficient Calculation (example for peaking filter):**
+  ```
+  A = 10^(dBgain/40)
+  ω₀ = 2π × fc / fs
+  α = sin(ω₀) / (2Q)
+
+  b0 = 1 + α×A
+  b1 = -2×cos(ω₀)
+  b2 = 1 - α×A
+  a1 = -2×cos(ω₀)      (normalized: a0 = 1)
+  a2 = 1 - α/A
+  ```
+
+  **DRC Section (Dynamic Range Compression):**
+
+  The DRC measures signal level and applies gain reduction when exceeding threshold:
+
+  **Envelope Detection:**
+  - Attack time: How fast gain reduction responds to peaks
+  - Release time: How fast gain returns after signal drops
+
+  **Compression Curve:**
+  ```
+  For input > threshold:
+    gain_reduction = (input_dB - threshold_dB) × (1 - 1/ratio)
+    output = input - gain_reduction
+  ```
+
+  **Parameters:**
+  - Threshold: Level above which compression begins
+  - Ratio: Compression amount (2:1, 4:1, ∞:1 = limiter)
+  - Attack: Typically 1-50ms
+  - Release: Typically 50-500ms
+  - Knee: Soft or hard transition at threshold
+
+  **Gain and Clipping:**
+
+  Post-processing gain for makeup and final limiting:
+  - Makeup gain: Compensate for gain reduction
+  - Clip threshold: Hard limit to prevent overflow (max 0x7fffff)
+
+  **Coefficient Format (same as Mixer):**
+
+  | Value | Gain |
+  |-------|------|
+  | `0x800000` | 1.0 (0 dB) |
+  | `0x400000` | 0.5 (-6 dB) |
+  | `0x1000000` | 2.0 (+6 dB) |
+  | `0x000000` | 0.0 (mute) |
+
+  **Typical EQ Bands:**
+  | Band | Type | Frequency | Use |
+  |------|------|-----------|-----|
+  | 1 | High-pass | 20 Hz | Subsonic filter |
+  | 2 | Low shelf | 100 Hz | Bass control |
+  | 3 | Peaking | 500 Hz | Mid-bass |
+  | 4 | Peaking | 1 kHz | Midrange |
+  | 5 | Peaking | 3 kHz | Presence |
+  | 6 | High shelf | 10 kHz | Treble control |
+  | 7 | Low-pass | 20 kHz | Ultrasonic filter |
+  
+  ---
+
+  **RAM Coefficient Layout (300 addresses total):**
+
+  Write `AEQ_COEF_ADDR` to set start address, then write `AEQ_COEF_DATA` sequentially (auto-increment).
+  **Important**: Start address must be even, data count must be even (fill padding slots with any value).
+
+  | RAM Addr | Name | Description |
+  |----------|------|-------------|
+  | **DC Cut Filter** |||
+  | 0~4 | Reg_dc_coef | DC cut filter (b0,a1,b1,a2,b2), default b0=0x800000 |
+  | **EQ Channel 1** (16 taps × 5 coefs = 80) |||
+  | 5~9 | Reg_eq_ch1_coef0 | EQ Ch1 Tap0 (b0,a1,b1,a2,b2) |
+  | 10~14 | Reg_eq_ch1_coef1 | EQ Ch1 Tap1 |
+  | ... | ... | ... |
+  | 80~84 | Reg_eq_ch1_coef15 | EQ Ch1 Tap15 |
+  | **EQ Channel 2** (16 taps × 5 coefs = 80) |||
+  | 85~89 | Reg_eq_ch2_coef0 | EQ Ch2 Tap0 |
+  | ... | ... | ... |
+  | 160~164 | Reg_eq_ch2_coef15 | EQ Ch2 Tap15 |
+  | **3D Surround** |||
+  | 165~169 | Reg_3d_surround_coef0 | 3D filter0 (5 coefs) |
+  | 170~174 | Reg_3d_surround_coef1 | 3D filter1 (5 coefs) |
+  | 175 | 3d_gain | 3D gain |
+  | **Crossover Filters (2nd order, 2 biquads per band)** |||
+  | 176~185 | Reg_low2_coef | Low-pass filter (2 stages × 5 coefs) |
+  | 186~195 | Reg_low1_coef | Mid-pass low filter (2 stages × 5 coefs) |
+  | 196~205 | Reg_high1_coef | Mid-pass high filter (2 stages × 5 coefs) |
+  | 206~215 | Reg_high2_coef | High-pass filter (2 stages × 5 coefs) |
+  | **MDRC Low Band** (11 params) |||
+  | 216 | mdrc_rms_coef_low | RMS detection coefficient |
+  | 217~218 | mdrc_thd1/thd2_low | Threshold 1 and 2 |
+  | 219~221 | mdrc_k0/k1/k2_low | Gain slopes |
+  | 222~223 | mdrc_offset1/offset2_low | Offsets |
+  | 224~225 | mdrc_release/attack_low | Release and attack coefficients |
+  | 226 | mdrc_low_gain | Low band output gain |
+  | **MDRC Mid Band** (11 params) |||
+  | 227~237 | mdrc_mid_* | Same structure as Low band |
+  | **MDRC High Band** (11 params) |||
+  | 238~248 | mdrc_high_* | Same structure as Low band |
+  | **MDRC Full Band / FDRC** (10 params, no gain) |||
+  | 249~258 | mdrc_full_* | Same as above but without gain |
+  | **PEQ Channel 1** (4 taps × 5 coefs = 20) |||
+  | 259~263 | Reg_peq_ch1_coef0 | PEQ Ch1 Tap0 |
+  | 264~268 | Reg_peq_ch1_coef1 | PEQ Ch1 Tap1 |
+  | 269~273 | Reg_peq_ch1_coef2 | PEQ Ch1 Tap2 |
+  | 274~278 | Reg_peq_ch1_coef3 | PEQ Ch1 Tap3 |
+  | **PEQ Channel 2** (4 taps × 5 coefs = 20) |||
+  | 279~283 | Reg_peq_ch2_coef0 | PEQ Ch2 Tap0 |
+  | 284~288 | Reg_peq_ch2_coef1 | PEQ Ch2 Tap1 |
+  | 289~293 | Reg_peq_ch2_coef2 | PEQ Ch2 Tap2 |
+  | 294~298 | Reg_peq_ch2_coef3 | PEQ Ch2 Tap3 |
+  | **Level Meter** |||
+  | 299 | lm_rms_coef | Level meter RMS detection coefficient |
+
+  ---
+
+  **Level Meter MUX Selection (`lm_mux` in AED_SEL):**
+
+  | Value | Monitor Point |
+  |-------|---------------|
+  | 0/1 | din (input) |
+  | 2/3 | peq output |
+  | 4/5 | dc cut output |
+  | 6/7 | mix output |
+  | 8/9 | eq output |
+  | 12/13 | 3d surround output |
+  | 14/15 | mdrc output |
+  | 16/17 | volume_lr output |
+  | 18/19 | full band drc output |
+  | 20/21 | volume master output |
+  | 22/23 | clip output |
+  | 24 | ch1 i2s output |
+  | default | ch2 i2s output |
+
+application_notes:
+  - title: "RAM Coefficient Loading Sequence"
+    steps: |
+      - Mute external PA or disable EQDRC to prevent glitches.
+      - Write `AEQ_COEF_ADDR` = start address (must be even).
+      - Write `AEQ_COEF_DATA` sequentially, address auto-increments.
+      - Data count must be even (fill padding slots with 0).
+      - Enable corresponding function bits (dc_en, eq_en, mdrc_en, etc.).
+      - Set `eqdrc_en = 1` to start processing.
+      - Runtime coefficient update is supported (requires PA mute).
+
+  - title: "Basic EQ Setup (5-Band Parametric)"
+    steps: |
+      - Calculate biquad coefficients for each band using design formulas.
+      - Set `eq_tap = 4` (for 5 taps, value = tap_count - 1).
+      - Write Ch1 coefficients to RAM addr 5~29 (5 taps × 5 coefs).
+      - Write Ch2 coefficients to RAM addr 85~109.
+      - Set `eq_en = 1` to enable EQ processing.
+      - Verify frequency response with test signals.
+
+  - title: "MDRC Multi-band Compression Setup"
+    steps: |
+      - Configure crossover coefficients (RAM addr 176~215).
+      - Configure MDRC parameters for each band:
+        - `mdrc_thd1/thd2`: compression thresholds
+        - `mdrc_k0/k1/k2`: compression ratios (gain slopes)
+        - `mdrc_attack/release`: time constants
+        - `mdrc_*_gain`: band output gain
+      - Set `mdrc_all_en = 1`, configure `mdrc_en[2:0]` for bands.
+
+  - title: "Volume Control with Smooth Fade"
+    steps: |
+      - Set target volume values:
+        - `volume_ch1`, `volume_ch2`: channel volume (0~0x3FF)
+        - `volume_master`: master volume (0~0x3FF)
+      - Configure fade parameters:
+        - `volume_step`: change amount per update
+        - `volume_slew_cnt`: update interval
+      - Enable `vol_lr_en = 1`, `vol_mst_en = 1`.
+
+  - title: "Level Meter Monitoring"
+    steps: |
+      - Configure `lm_rms_coef` (RAM addr 299).
+      - Set `lm_mux` in AED_SEL to select monitor point.
+      - Set `lm_en = 1` to enable level meter.
+      - Read `AEQ_RO_LM_RMS_OUT` for RMS level value.
+
+  - title: "Limiter for Speaker Protection"
+    steps: |
+      - Set `clip_thd` to speaker's maximum safe level (max 0x7fffff).
+      - Configure FDRC with high ratio for limiting.
+      - Use fast attack (~1ms) to catch transients.
+      - This prevents speaker damage from peaks.
+

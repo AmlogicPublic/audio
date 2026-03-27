@@ -1,8 +1,12 @@
-module: EQ_DRC
+module: eq_drc
 
 module_condition:
-  macro_path: ["eq_drc", "imp"]
+  macro_path: ["eq_drc", "static"]
   eq: 1
+
+arch_condition:
+  macro_path: ["eq_drc", "arch"]
+  equals: reg_dac
 
 registers0:
   - name: AED_COEF_RAM_CNTL

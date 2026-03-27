@@ -1,27 +1,35 @@
 module: eq_drc
 display_name: "Audio EQDRC"
 condition:
-  macro_path: ["eq_drc", "imp"]
-  eq: 1
+  all_of:
+    - macro_path: ["eq_drc", "imp"]
+      eq: 1
+    - macro_path: ["eq_drc", "arch"]
+      equals: reg_dac
 
 overview: |
   The Audio EQ/DRC module provides parametric equalization and dynamic range compression/limiting
   for audio streams. It enables tone shaping, frequency response correction, loudness management,
   and speaker protection through configurable biquad filter banks and gain processors.
 
-  The module supports `{ch}` channels and can be inserted in the playback path between FRDDR and
-  TDMOUT/SPDIFOUT, or used for monitoring/metering. The EQ section implements cascaded biquad
-  filters for precise frequency response control, while the DRC section provides attack/release
-  envelope following with programmable compression curves.
+  **Important**: While the module can accept multi-channel input from FRDDR (up to `{ch}` channels),
+  the EQ/DRC processing only operates on **2 channels** (Ch1/Ch2). Other channels pass through
+  unprocessed or should be routed separately.
+
+  The module can be inserted in the playback path between FRDDR and TDMOUT/SPDIFOUT, or used for
+  monitoring/metering. The EQ section implements cascaded biquad filters for precise frequency
+  response control, while the DRC section provides attack/release envelope following with
+  programmable compression curves.
 
 features: |
+  - **2-channel processing**: EQ/DRC operates on Ch1 and Ch2 only (independent coefficients per channel).
   - Parametric EQ using cascaded biquad (IIR) filters.
-  - Multi-band EQ capability through filter bank configuration.
+  - Multi-band DRC capability through crossover filters.
   - Dynamic Range Compression (DRC) with adjustable attack/release times.
   - Configurable compression threshold, ratio, and knee.
   - Peak/RMS level detection for metering.
   - Limiter function for speaker protection.
-  - Supports `{ch}` channels per instance.
+  - Accepts up to `{ch}` channel input from FRDDR (only 2 processed).
   - Coefficient storage: {arch_desc}.
   - Gain makeup and output scaling.
   - Same coefficient format as Mixer (32-bit signed, 0x00800000 = unity).

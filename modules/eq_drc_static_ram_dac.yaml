@@ -1,16 +1,16 @@
-module: EQ_DRC_STATIC_RAM
+module: eq_drc
 
 module_condition:
   macro_path:
-    - eqdrc
+    - eq_drc
     - static
   eq: 1
 
 arch_condition:
   macro_path:
-    - eqdrc
+    - eq_drc
     - arch
-  equals: ram
+  equals: ram_dac
 
 registers0:
   # 1. AEQ_COEF_ADDR

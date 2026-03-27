@@ -1,0 +1,355 @@
+module: eq_drc
+
+module_condition:
+  macro_path:
+    - eq_drc
+    - static
+  eq: 1
+
+arch_condition:
+  macro_path:
+    - eq_drc
+    - arch
+  equals: ram_peq
+
+registers0:
+  # 1. AEQ_COEF_ADDR
+  - name: AEQ_COEF_ADDR
+    offset: 0x0
+    description: Coefficient RAM address
+    fields:
+      - bits: "31:10"
+        name: reserved
+        access: R/W
+        default: "0x0"
+        description: reserved
+      - bits: "8:0"
+        name: addr
+        access: R/W
+        default: "0x0"
+        description: "read or write the addr of coef ram"
+
+  # 2. AEQ_COEF_DATA
+  - name: AEQ_COEF_DATA
+    offset: 0x1
+    description: Coefficient RAM data
+    fields:
+      - bits: "27:0"
+        name: data
+        access: R/W
+        default: "0x0"
+        description: "read from coef ram or write to coef ram"
+
+  # 3. AEQ_MIX0_LL
+  - name: AEQ_MIX0_LL
+    offset: 0x2
+    description: Mix coefficient LL
+    fields:
+      - bits: "27:0"
+        name: mix_ll
+        access: R/W
+        default: "0x800000"
+        description: Mix_ll
+
+  # 4. AEQ_MIX0_RL
+  - name: AEQ_MIX0_RL
+    offset: 0x3
+    description: Mix coefficient RL
+    fields:
+      - bits: "27:0"
+        name: mix_rl
+        access: R/W
+        default: "0x0"
+        description: Mix_rl
+
+  # 5. AEQ_MIX0_LR
+  - name: AEQ_MIX0_LR
+    offset: 0x4
+    description: Mix coefficient LR
+    fields:
+      - bits: "27:0"
+        name: mix_lr
+        access: R/W
+        default: "0x0"
+        description: Mix_lr
+
+  # 6. AEQ_MIX0_RR
+  - name: AEQ_MIX0_RR
+    offset: 0x5
+    description: Mix coefficient RR
+    fields:
+      - bits: "27:0"
+        name: mix_rr
+        access: R/W
+        default: "0x800000"
+        description: Mix_rr
+
+  # 7. AEQ_SOFT_REST
+  - name: AEQ_SOFT_REST
+    offset: 0x9
+    description: Soft reset control
+    fields:
+      - bits: "2"
+        name: vol_rst
+        access: R/W
+        default: "0x0"
+        description: Vol_rst
+      - bits: "1"
+        name: ctl_rst
+        access: R/W
+        default: "0x0"
+        description: Ctl_rst
+      - bits: "0"
+        name: sw_rst
+        access: R/W
+        default: "0x0"
+        description: Sw_rst
+
+  # 8. AED_STATUS_CTRL
+  - name: AED_STATUS_CTRL
+    offset: 0x10
+    description: AED status control register
+    fields:
+      - bits: "31:29"
+        name: reserved_31_29
+        access: R/W
+        default: "0x0"
+        description: reserved
+      - bits: "28"
+        name: peq_en
+        access: R/W
+        default: "0x0"
+        description: Peq_en
+      - bits: "27"
+        name: reserved_27
+        access: R/W
+        default: "0x0"
+        description: reserved
+      - bits: "26"
+        name: eqdrc_en
+        access: R/W
+        default: "0x1"
+        description: eqdrc_en
+      - bits: "25"
+        name: vol_mst_en
+        access: R/W
+        default: "0x1"
+        description: "Vol_mst_en //must set 1"
+      - bits: "24"
+        name: crx_bar_en
+        access: R/W
+        default: "0x0"
+        description: "Crx_bar_en //must set 1"
+      - bits: "23"
+        name: fmt_en
+        access: R/W
+        default: "0x1"
+        description: Fmt_en
+      - bits: "22"
+        name: vol_lr_en
+        access: R/W
+        default: "0x1"
+        description: "Vol_lr_en //must set 1"
+      - bits: "21"
+        name: mix_en
+        access: R/W
+        default: "0x0"
+        description: Mix_en
+      - bits: "20:15"
+        name: reserved_20_15
+        access: R/W
+        default: "0x1"
+        description: reserved
+      - bits: "14:10"
+        name: eq_tap
+        access: R/W
+        default: "0xf"
+        description: Eq_tap
+      - bits: "9:7"
+        name: mdrc_en
+        access: R/W
+        default: "0x0"
+        description: "Mdrc_en: bit[2]for high drc, [1]for mid drc, [0]for low drc"
+      - bits: "6"
+        name: mdrc_all_en
+        access: R/W
+        default: "0x0"
+        description: Mdrc_all_en
+      - bits: "5"
+        name: lm_en
+        access: R/W
+        default: "0x0"
+        description: Lm_en
+      - bits: "4"
+        name: drc_en
+        access: R/W
+        default: "0x0"
+        description: Drc_en
+      - bits: "3"
+        name: "3d_en"
+        access: R/W
+        default: "0x0"
+        description: 3d_en
+      - bits: "2"
+        name: eq_en
+        access: R/W
+        default: "0x0"
+        description: Eq_en
+      - bits: "1"
+        name: reserved_1
+        access: R/W
+        default: "0x0"
+        description: reserved
+      - bits: "0"
+        name: dc_en
+        access: R/W
+        default: "0x0"
+        description: Dc_en
+
+  # 9. AED_SEL
+  - name: AED_SEL
+    offset: 0x11
+    description: AED select register
+    fields:
+      - bits: "31:30"
+        name: reserved_31_30
+        access: R/W
+        default: "0x0"
+        description: reserved
+      - bits: "29:25"
+        name: lm_mux
+        access: R/W
+        default: "0x0"
+        description: "Lm_mux: 0/1:din, 2/3:peq, 4/5:dc, 6/7:mix, 8/9:eq, 10/11:eq, 12/13:3d surround, 14/15:mdrc1, 16/17:volume_lr, 18/19:full band drc, 20/21:volume master, 22/23:clip_out, 24:ch1_i2s_out, default:ch2_i2s_out"
+      - bits: "24"
+        name: i2s_dout_signed
+        access: R/W
+        default: "0x0"
+        description: I2s_dout_signed
+      - bits: "23:21"
+        name: reserved_23_21
+        access: R/W
+        default: "0x0"
+        description: reserved
+      - bits: "20:16"
+        name: reg_ro_sel
+        access: R/W
+        default: "0x0"
+        description: Reg_ro_sel
+      - bits: "15:0"
+        name: reserved_15_0
+        access: R/W
+        default: "0x4"
+        description: reserved
+
+  # 10. AED_EQ_VOLUME_VAL
+  - name: AED_EQ_VOLUME_VAL
+    offset: 0x12
+    description: EQ volume value
+    fields:
+      - bits: "29:20"
+        name: volume_master
+        access: R/W
+        default: "0xc4"
+        description: Volume_master
+      - bits: "19:10"
+        name: volume_ch2
+        access: R/W
+        default: "0xc0"
+        description: Volume_ch2
+      - bits: "9:0"
+        name: volume_ch1
+        access: R/W
+        default: "0xc0"
+        description: Volume_ch1
+
+  # 11. AED_EQ_VOLUME_STEP_CNT
+  - name: AED_EQ_VOLUME_STEP_CNT
+    offset: 0x13
+    description: EQ volume step count
+    fields:
+      - bits: "31:30"
+        name: volume_step
+        access: R/W
+        default: "0x2"
+        description: Volume step
+      - bits: "29:28"
+        name: volume_master_step
+        access: R/W
+        default: "0x2"
+        description: Volume master step
+      - bits: "23:12"
+        name: volume_slew_cnt
+        access: R/W
+        default: "0x1"
+        description: Volume slew cnt
+      - bits: "11:0"
+        name: volume_master_slew_cnt
+        access: R/W
+        default: "0x1"
+        description: Volume master slew cnt
+
+  # 12. AED_MUTE_CTRL
+  - name: AED_MUTE_CTRL
+    offset: 0x14
+    description: Mute control
+    fields:
+      - bits: "2"
+        name: mute_master
+        access: R/W
+        default: "0x0"
+        description: Mute_master
+      - bits: "1"
+        name: mute_ch2
+        access: R/W
+        default: "0x0"
+        description: Mute_ch2
+      - bits: "0"
+        name: mute_ch1
+        access: R/W
+        default: "0x0"
+        description: Mute_ch1
+
+  # 13. AED_CLIP_THD
+  - name: AED_CLIP_THD
+    offset: 0x15
+    description: Clip threshold
+    fields:
+      - bits: "26:0"
+        name: clip_thd
+        access: R/W
+        default: "0x7fffff"
+        description: Clip_thd
+
+  # 14. AEQ_DEBUG_STATUS_REPORT
+  - name: AEQ_DEBUG_STATUS_REPORT
+    offset: 0x20
+    description: DSP debug register (read-only)
+    fields:
+      - bits: "27:0"
+        name: dsp_debug
+        access: R
+        default: ""
+        description: Dsp debug register
+
+  # 15. AEQ_PA_STATUS_REPORT
+  - name: AEQ_PA_STATUS_REPORT
+    offset: 0x21
+    description: PA status report (read-only)
+    fields:
+      - bits: "27:0"
+        name: pa_debug
+        access: R
+        default: ""
+        description: Dsp debug register
+
+  # 16. AEQ_RO_LM_RMS_OUT
+  - name: AEQ_RO_LM_RMS_OUT
+    offset: 0x22
+    description: Level meter RMS output (read-only)
+    fields:
+      - bits: "27:0"
+        name: lm_rms_out
+        access: R
+        default: ""
+        description: Level meter out
