@@ -5,6 +5,8 @@ import sys
 import re
 import shutil
 import subprocess
+import base64
+import mimetypes
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
@@ -949,6 +951,29 @@ def _find_edge_exe() -> Path:
     assert False, "未找到 msedge，请安装 Microsoft Edge 或将 msedge 加入 PATH"
 
 
+def embed_images_in_html(html_path: Path) -> None:
+    """把 HTML 中的图片转成 base64 data URI 嵌入"""
+    html_dir = html_path.parent
+    content = html_path.read_text(encoding="utf-8")
+
+    img_re = re.compile(r'<img\s+([^>]*)src="([^"]+)"([^>]*)>', re.IGNORECASE)
+
+    def replace_img(m: re.Match) -> str:
+        before, src, after = m.group(1), m.group(2), m.group(3)
+        if src.startswith("data:"):
+            return m.group(0)
+        img_path = (html_dir / src).resolve()
+        if not img_path.exists():
+            return m.group(0)
+        mime, _ = mimetypes.guess_type(str(img_path))
+        mime = mime or "image/png"
+        b64 = base64.b64encode(img_path.read_bytes()).decode("ascii")
+        return f'<img {before}src="data:{mime};base64,{b64}"{after}>'
+
+    new_content = img_re.sub(replace_img, content)
+    html_path.write_text(new_content, encoding="utf-8")
+
+
 def export_html(md_path: Path, title: str) -> Path:
     pandoc = shutil.which("pandoc")
     assert pandoc, "未找到 pandoc，请先安装并加入 PATH"
@@ -976,6 +1001,7 @@ def export_html(md_path: Path, title: str) -> Path:
     ]
     html_ret = subprocess.run(html_cmd, check=False, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     assert html_ret.returncode == 0, "pandoc 转换 HTML 失败"
+    embed_images_in_html(html_path)
     print(f"输出: {html_path}")
     return html_path
 
