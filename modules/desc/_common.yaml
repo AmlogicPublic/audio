@@ -14,6 +14,6 @@ features: []
 
 block_diagram:
   images:
-    - ../media/top.png
+    - ../media/top_a10.png
   description: "{CHIP} Audio Path"
 

@@ -2,7 +2,7 @@
 Audio Spec 配置
 """
 
-CHIP = "A9"
+CHIP = "A10"
 
 # ============================================================================
 # 模块树 - 层级结构 + 配置参数统一定义
@@ -52,7 +52,7 @@ MODULE_TREE = {
             "tdmout": {
                 "A": {"imp": 1, "pad_num": 4},
                 "B": {"imp": 1, "pad_num": 4},
-                "C": {"imp": 1, "pad_num": 8},
+                "C": {"imp": 1, "pad_num": 13},
                 "D": {"imp": 0, "pad_num": 8},
             },
             "spdifout": {
@@ -66,7 +66,7 @@ MODULE_TREE = {
             },
             "tohdmi_dp_tx": {
                 "A": {"imp": 1},
-                "B": {"imp": 1},
+                "B": {"imp": 0},
             },
         },
         "InputProcessing": {
@@ -80,7 +80,7 @@ MODULE_TREE = {
         },
         "OutputProcessing": {
             "mixer":  {"A": {"imp": 1}},
-            "eq_drc": {"_addr": 0xFFAE4000, "imp": 1, "ch": 16, "static": 1, "arch": "reg", "arch_desc": "coefficients in dedicated registers"},
+            "eq_drc": {"_addr": 0xFFAE4000, "imp": 1, "ch": 32, "static": 1, "arch": "reg", "arch_desc": "coefficients in dedicated registers"},
         },
         "IOProcessing": {
             "tdm_dat_pad": {"imp": 1},
@@ -109,13 +109,16 @@ MODULE_TREE = {
                 "B": {"imp": 1, "fifo_depth": 128},
                 "C": {"imp": 1, "fifo_depth": 128},
                 "D": {"imp": 1, "fifo_depth": 128},
-                "E": {"imp": 0, "fifo_depth": 128},
+                "E": {"imp": 1, "fifo_depth": 128},
             },
             "ddr_arb": {"imp": 0},
         },
         "Misc": {
-            "locker":   {"A": {"_addr": 0xFFAE6000, "imp": 1}, "B": {"_addr": 0xFFAE6400, "imp": 0}},
-            "pcpd_mon": {"A": {"imp": 1}, "B": {"imp": 0}},
+            "locker":   {
+                "A": {"_addr": 0xFFAE6000, "imp": 1}, 
+                "B": {"_addr": 0xFFAE6400, "imp": 0}
+                },
+            "pcpd_mon": {"A": {"imp": 0}, "B": {"imp": 0}},
         },
     },
 }
