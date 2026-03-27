@@ -157,22 +157,22 @@ registers0:
     offset: 0x06
     description: TDM data pad control register
     fields:
-      - bits: "28:24"
+      - bits: "29:24"
         name: tdm_d3_out_src_sel
         access: R/W
         default: "0x00"
-        description: "TDM_D3 out src sel; 0~7:tdmout_a lane0~7; 8~15:tdmout_b lane0~7; 16~23:tdmout_c lane0~7"
-      - bits: "20:16"
+        description: "TDM_D3 out src sel; 0~15:tdmout_a lane0~15; 16~31:tdmout_b lane0~15; 32~47:tdmout_c lane0~15; 48~63:tdmout_d lane0~15"
+      - bits: "21:16"
         name: tdm_d2_out_src_sel
         access: R/W
         default: "0x00"
         description: "TDM_D2 out src sel"
-      - bits: "12:8"
+      - bits: "13:8"
         name: tdm_d1_out_src_sel
         access: R/W
         default: "0x00"
         description: "TDM_D1 out src sel"
-      - bits: "4:0"
+      - bits: "5:0"
         name: tdm_d0_out_src_sel
         access: R/W
         default: "0x00"
@@ -182,22 +182,22 @@ registers0:
     offset: 0x07
     description: TDM data pad control register
     fields:
-      - bits: "28:24"
+      - bits: "29:24"
         name: tdm_d7_out_src_sel
         access: R/W
         default: "0x00"
         description: "TDM_D7 out src sel"
-      - bits: "20:16"
+      - bits: "21:16"
         name: tdm_d6_out_src_sel
         access: R/W
         default: "0x00"
         description: "TDM_D6 out src sel"
-      - bits: "12:8"
+      - bits: "13:8"
         name: tdm_d5_out_src_sel
         access: R/W
         default: "0x00"
         description: "TDM_D5 out src sel"
-      - bits: "4:0"
+      - bits: "5:0"
         name: tdm_d4_out_src_sel
         access: R/W
         default: "0x00"
@@ -207,22 +207,22 @@ registers0:
     offset: 0x08
     description: TDM data pad control register
     fields:
-      - bits: "28:24"
+      - bits: "29:24"
         name: tdm_d11_out_src_sel
         access: R/W
         default: "0x00"
         description: "TDM_D11 out src sel"
-      - bits: "20:16"
+      - bits: "21:16"
         name: tdm_d10_out_src_sel
         access: R/W
         default: "0x00"
         description: "TDM_D10 out src sel"
-      - bits: "12:8"
+      - bits: "13:8"
         name: tdm_d9_out_src_sel
         access: R/W
         default: "0x00"
         description: "TDM_D9 out src sel"
-      - bits: "4:0"
+      - bits: "5:0"
         name: tdm_d8_out_src_sel
         access: R/W
         default: "0x00"
@@ -232,22 +232,22 @@ registers0:
     offset: 0x09
     description: TDM data pad control register
     fields:
-      - bits: "28:24"
+      - bits: "29:24"
         name: tdm_d15_out_src_sel
         access: R/W
         default: "0x00"
         description: "TDM_D15 out src sel"
-      - bits: "20:16"
+      - bits: "21:16"
         name: tdm_d14_out_src_sel
         access: R/W
         default: "0x00"
         description: "TDM_D14 out src sel"
-      - bits: "12:8"
+      - bits: "13:8"
         name: tdm_d13_out_src_sel
         access: R/W
         default: "0x00"
         description: "TDM_D13 out src sel"
-      - bits: "4:0"
+      - bits: "5:0"
         name: tdm_d12_out_src_sel
         access: R/W
         default: "0x00"
@@ -257,22 +257,22 @@ registers0:
     offset: 0x0a
     description: TDM data pad control register
     fields:
-      - bits: "28:24"
+      - bits: "29:24"
         name: tdm_d19_out_src_sel
         access: R/W
         default: "0x00"
         description: "TDM_D19 out src sel"
-      - bits: "20:16"
+      - bits: "21:16"
         name: tdm_d18_out_src_sel
         access: R/W
         default: "0x00"
         description: "TDM_D18 out src sel"
-      - bits: "12:8"
+      - bits: "13:8"
         name: tdm_d17_out_src_sel
         access: R/W
         default: "0x00"
         description: "TDM_D17 out src sel"
-      - bits: "4:0"
+      - bits: "5:0"
         name: tdm_d16_out_src_sel
         access: R/W
         default: "0x00"
@@ -282,22 +282,22 @@ registers0:
     offset: 0x0b
     description: TDM data pad control register
     fields:
-      - bits: "28:24"
+      - bits: "29:24"
         name: tdm_d23_out_src_sel
         access: R/W
         default: "0x00"
         description: "TDM_D23 out src sel"
-      - bits: "20:16"
+      - bits: "21:16"
         name: tdm_d22_out_src_sel
         access: R/W
         default: "0x00"
         description: "TDM_D22 out src sel"
-      - bits: "12:8"
+      - bits: "13:8"
         name: tdm_d21_out_src_sel
         access: R/W
         default: "0x00"
         description: "TDM_D21 out src sel"
-      - bits: "4:0"
+      - bits: "5:0"
         name: tdm_d20_out_src_sel
         access: R/W
         default: "0x00"
@@ -307,22 +307,22 @@ registers0:
     offset: 0x0c
     description: TDM data pad control register
     fields:
-      - bits: "28:24"
+      - bits: "29:24"
         name: tdm_d27_out_src_sel
         access: R/W
         default: "0x00"
         description: "TDM_D27 out src sel"
-      - bits: "20:16"
+      - bits: "21:16"
         name: tdm_d26_out_src_sel
         access: R/W
         default: "0x00"
         description: "TDM_D26 out src sel"
-      - bits: "12:8"
+      - bits: "13:8"
         name: tdm_d25_out_src_sel
         access: R/W
         default: "0x00"
         description: "TDM_D25 out src sel"
-      - bits: "4:0"
+      - bits: "5:0"
         name: tdm_d24_out_src_sel
         access: R/W
         default: "0x00"
@@ -332,22 +332,22 @@ registers0:
     offset: 0x0d
     description: TDM data pad control register
     fields:
-      - bits: "28:24"
+      - bits: "29:24"
         name: tdm_d31_out_src_sel
         access: R/W
         default: "0x00"
         description: "TDM_D31 out src sel"
-      - bits: "20:16"
+      - bits: "21:16"
         name: tdm_d30_out_src_sel
         access: R/W
         default: "0x00"
         description: "TDM_D30 out src sel"
-      - bits: "12:8"
+      - bits: "13:8"
         name: tdm_d29_out_src_sel
         access: R/W
         default: "0x00"
         description: "TDM_D29 out src sel"
-      - bits: "4:0"
+      - bits: "5:0"
         name: tdm_d28_out_src_sel
         access: R/W
         default: "0x00"
