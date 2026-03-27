@@ -55,7 +55,10 @@ MODULE_TREE = {
                 "C": {"imp": 1, "pad_num": 8},
                 "D": {"imp": 0, "pad_num": 8},
             },
-            "spdifout": {"A": {"imp": 1, "ch16": 1}, "B": {"imp": 1, "ch16": 1}},
+            "spdifout": {
+                "A": {"imp": 1, "ch_support": "up to 16 channels", "ch_feature": "Multi-channel support up to 16 channels"},
+                "B": {"imp": 1, "ch_support": "up to 16 channels", "ch_feature": "Multi-channel support up to 16 channels"},
+            },
             "earctx": {
                 "CMDC": {"_addr": 0xFFAE5000, "imp": 1},
                 "DMAC": {"_addr": 0xFFAE5400, "imp": 1},
@@ -77,7 +80,7 @@ MODULE_TREE = {
         },
         "OutputProcessing": {
             "mixer":  {"A": {"imp": 1}},
-            "eq_drc": {"_addr": 0xFFAE4000, "imp": 1, "ch": 16, "static": 1, "arch": "reg"},
+            "eq_drc": {"_addr": 0xFFAE4000, "imp": 1, "ch": 16, "static": 1, "arch": "reg", "arch_desc": "coefficients in dedicated registers"},
         },
         "IOProcessing": {
             "tdm_dat_pad": {"imp": 1},

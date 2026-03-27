@@ -14,8 +14,11 @@ overview: |
   channel status bits for proper identification of audio format, sample rate, and copy protection.
   Data can optionally be routed through EQ/DRC or Mixer before encoding.
 
+  Channel support: {ch_support}.
+
 features: |
   - IEC60958 compliant bi-phase mark encoding.
+  - {ch_feature}.
   - Full 192-bit channel status programming (2 channels × 192 bits each via CHSTS0-B registers).
   - Customizable preamble patterns (Z/X/Y) for non-standard requirements.
   - Per-channel 8-bit digital gain with smooth step transitions.

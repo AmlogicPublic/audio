@@ -22,7 +22,7 @@ features: |
   - Peak/RMS level detection for metering.
   - Limiter function for speaker protection.
   - Supports `{ch}` channels per instance.
-  - Coefficient memory for filter parameters (register-based or RAM-based per `arch`).
+  - Coefficient storage: {arch_desc}.
   - Gain makeup and output scaling.
   - Same coefficient format as Mixer (32-bit signed, 0x00800000 = unity).
   - Clip threshold for overflow protection.
@@ -111,9 +111,11 @@ function_description: |
 
   **Configuration Architecture:**
 
-  The `arch` parameter indicates coefficient storage:
-  - `reg`: Coefficients in dedicated registers
-  - `ram`: Coefficients in shared memory
+  Current instance: {arch_desc}.
+  
+  Architecture options:
+  - `reg`: Coefficients in dedicated registers (lower latency, simpler access)
+  - `ram`: Coefficients in shared memory (more flexible, larger coefficient sets)
 
   **Typical EQ Bands:**
 

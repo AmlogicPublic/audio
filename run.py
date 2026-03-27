@@ -541,8 +541,12 @@ def render_module_block(desc: dict, section_num: str = "") -> str:
             if name in cfg:
                 values.append(cfg[name])
         assert values, f"placeholder {{{name}}} not found in active cfg for module {module_key}"
-        # max is a safe default for lane/ch/fifo-depth style params
-        ctx[name] = max(int(v) for v in values)
+        # string params: use first (all instances should have same value)
+        # numeric params: max is safe default for lane/ch/fifo-depth style
+        if isinstance(values[0], str):
+            ctx[name] = values[0]
+        else:
+            ctx[name] = max(int(v) for v in values)
 
     def render_features() -> str:
         feats = desc.get("features")
