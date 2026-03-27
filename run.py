@@ -511,54 +511,6 @@ def md_img(src: str, alt: str, with_figure=False) -> str:
     return img
 
 
-def render_application_notes(enabled_descs: dict[str, dict], groups: list[tuple[str, list[str]]]) -> str:
-    """汇总所有模块的 application_notes，按模块分组"""
-    parts = []
-    group_idx = 1
-    
-    for group_name, module_order in groups:
-        group_parts = []
-        mod_idx = 1
-        
-        for m in module_order:
-            if m not in enabled_descs:
-                continue
-            desc = enabled_descs[m]
-            notes = desc.get("application_notes")
-            if not notes:
-                continue
-            assert isinstance(notes, list), f"application_notes must be list: {m}"
-            display = desc.get("display_name", m)
-            
-            note_idx = 1
-            for note in notes:
-                assert isinstance(note, dict), f"application_notes item must be dict: {m}"
-                title = note.get("title", "Untitled")
-                section_num = f"6.{group_idx}.{mod_idx}.{note_idx}"
-                group_parts.append(f"#### {section_num}. {display}: {title}\n")
-                steps = note.get("steps")
-                if steps:
-                    if isinstance(steps, str):
-                        group_parts.append(steps.rstrip() + "\n")
-                    else:
-                        assert isinstance(steps, list), f"application_notes.steps must be str or list: {m}"
-                        for step in steps:
-                            group_parts.append(f"- {step}\n")
-                desc_text = note.get("description")
-                if desc_text:
-                    group_parts.append(f"\n{desc_text}\n")
-                group_parts.append("\n")
-                note_idx += 1
-            mod_idx += 1
-        
-        if group_parts:
-            parts.append(f"### 6.{group_idx}. {group_name}\n")
-            parts.extend(group_parts)
-            group_idx += 1
-    
-    return "".join(parts)
-
-
 def render_module_block(desc: dict, section_num: str = "") -> str:
     module_key = str(desc["module"]).strip()
     display = desc.get("display_name", module_key)
@@ -650,6 +602,33 @@ def render_module_block(desc: dict, section_num: str = "") -> str:
         sub_num = f"{section_num}.{sub_idx}" if section_num else ""
         sub_prefix = f"{sub_num}. " if sub_num else ""
         parts.append(f"##### {sub_prefix}Function Description\n" + func_desc + "\n")
+        sub_idx += 1
+
+    notes = desc.get("application_notes")
+    if notes:
+        assert isinstance(notes, list), f"application_notes must be list: {module_key}"
+        sub_num = f"{section_num}.{sub_idx}" if section_num else ""
+        sub_prefix = f"{sub_num}. " if sub_num else ""
+        parts.append(f"##### {sub_prefix}Application Notes\n")
+        note_idx = 1
+        for note in notes:
+            assert isinstance(note, dict), f"application_notes item must be dict: {module_key}"
+            title = note.get("title", "Untitled")
+            parts.append(f"**{note_idx}. {title}**\n\n")
+            steps = note.get("steps")
+            if steps:
+                if isinstance(steps, str):
+                    parts.append(steps.rstrip() + "\n\n")
+                else:
+                    assert isinstance(steps, list), f"application_notes.steps must be str or list: {module_key}"
+                    for step in steps:
+                        parts.append(f"- {step}\n")
+                    parts.append("\n")
+            desc_text = note.get("description")
+            if desc_text:
+                parts.append(f"{desc_text}\n\n")
+            note_idx += 1
+
     return "".join(parts)
 
 
@@ -1081,6 +1060,7 @@ def main():
         ("Output Processing", ["mixer", "eq_drc"]),
         ("Clock and Timing", ["locker"]),
         ("Voice Processing", ["sed", "vad"]),
+        ("Signal Monitor", ["pcpd_mon"]),
     ]
 
     for idx, (group_name, module_order) in enumerate(groups):
@@ -1095,13 +1075,6 @@ def main():
                 mod_idx += 1
 
     parts.append(render_register_section(tree))
-
-    parts.append("## 6. Application Notes\n")
-    app_notes_md = render_application_notes(enabled_descs, groups)
-    if app_notes_md:
-        parts.append(app_notes_md)
-    else:
-        parts.append("_No application notes defined._\n")
 
     md_path.write_text("".join(parts), encoding="utf-8")
     print(f"输出: {md_path}")

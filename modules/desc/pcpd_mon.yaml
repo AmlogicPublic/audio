@@ -1,0 +1,146 @@
+module: pcpd_mon
+display_name: "PC/PD Monitor (IEC61937 Header Detector)"
+condition:
+  any_of:
+    - "pcpd_mon.A.imp"
+    - "pcpd_mon.B.imp"
+
+overview: |
+  The PC/PD Monitor is an IEC61937 preamble detector for compressed audio streams. It scans incoming
+  audio data for Pa/Pb sync words (0xF872/0x4E1F) and extracts the Pc (data-type) and Pd (length)
+  fields from IEC61937 burst headers. This enables automatic detection of compressed audio formats
+  (AC3, DTS, etc.) in S/PDIF or HDMI audio streams.
+
+  When compressed audio is transmitted over S/PDIF/HDMI, each data burst is preceded by a preamble
+  containing Pa/Pb sync words followed by Pc (codec type) and Pd (payload length). The PCPD monitor
+  continuously scans the audio data path and reports when it detects these headers, allowing software
+  to identify the audio format without parsing the stream manually.
+
+features:
+  - Automatic IEC61937 preamble detection (Pa=0xF872, Pb=0x4E1F).
+  - Extracts Pc (data-type/codec) and Pd (payload length) from burst header.
+  - Configurable Pa/Pb values for non-standard implementations.
+  - Multiple input source selection (TDMIN, SPDIFIN, EARCRX, Loopback, etc.).
+  - Channel masking for multi-channel stream inspection.
+  - Timeout detection for missing preamble (stream became PCM).
+  - Interrupt on preamble detection, Pc change, or timeout.
+  - Dual instances (A/B) for monitoring multiple streams simultaneously.
+
+block_diagram:
+  images:
+    - pcpd_mon.png
+  description: "PC/PD Monitor Block Diagram"
+
+function_description: |
+  **Internal Architecture:**
+
+  ```
+  Multi-Source ──► MUX ──► sel[m:n] ──► 32bit ──► package ──► 64bits ──► pcpd_detect
+     Inputs               (msb/lsb)              (format)
+  ```
+
+  The monitor receives data from multiple audio sources through a mux, then selects specific bit
+  positions (m:n) via msb/lsb configuration. The 32-bit data is packaged into 64-bit format before
+  the preamble detector scans for Pa/Pb patterns.
+
+  **IEC61937 Frame Structure:**
+
+  ```
+  ┌──────────┬──────────┬──────────┬──────────┬─────────────────┐
+  │  Pa      │  Pb      │  Pc      │  Pd      │  Payload        │
+  │  0xF872  │  0x4E1F  │ DataType │  Length  │  Compressed Data│
+  │  16-bit  │  16-bit  │  16-bit  │  16-bit  │  Variable       │
+  └──────────┴──────────┴──────────┴──────────┴─────────────────┘
+  ```
+
+  **Pc (Data-Type) Common Values:**
+
+  | Pc Value | Audio Format |
+  |----------|--------------|
+  | 0x0001 | AC3 |
+  | 0x000B | DTS Type I |
+  | 0x000C | DTS Type II |
+  | 0x000D | DTS Type III |
+  | 0x0015 | E-AC3 |
+  | 0x0016 | DTS-HD |
+
+  **Input Source Selection (`src_sel`):**
+
+  | Value | Source |
+  |-------|--------|
+  | 0 | TDMIN_A |
+  | 1 | TDMIN_B |
+  | 2 | TDMIN_C |
+  | 3 | SPDIFIN |
+  | 4 | PDMIN |
+  | 5 | FRATV |
+  | 6 | TDMIN_LB |
+  | 7 | Loopback_A |
+  | 8 | FRHDMIRX_SPDIF |
+  | 9 | Loopback_B |
+  | 10 | SPDIFIN_LB |
+  | 11 | EARC_RX_DMAC |
+  | 12 | FRHDMIRX_DSD |
+  | 13 | Resample_A |
+  | 14 | Resample_B |
+  | 15 | VAD |
+
+  **Detection Flow:**
+
+  1. Audio data flows through selected source.
+  2. Monitor scans for Pa (0xF872) followed by Pb (0x4E1F).
+  3. On match, captures next 16-bit words as Pc and Pd.
+  4. Updates status registers and optionally triggers interrupt.
+  5. Software reads Pc to determine codec type.
+
+  **Key Registers:**
+
+  | Register | Function |
+  |----------|----------|
+  | `PCPD_MON_CTRL0` | Enable, source select, data format |
+  | `PCPD_MON_CTRL1` | Pa/Pb values (configurable) |
+  | `PCPD_MON_CTRL2` | Channel mask (32 channels) |
+  | `PCPD_MON_CTRL3` | Channel number mask, change IRQ |
+  | `PCPD_MON_CTRL4` | Timeout enable and threshold |
+  | `PCPD_MON_CTRL5` | Interrupt enable, mode, clear |
+  | `PCPD_MON_STAT0` | Detection status, data count |
+  | `PCPD_MON_STAT1` | Captured Pc and Pd values |
+
+  **Interrupt Events:**
+
+  - `find_pd`: Preamble detected, Pc/Pd captured.
+  - `pcpd_change`: Pc value changed (format switch).
+  - `papb_timeout`: No preamble within threshold (stream is PCM).
+
+application_notes:
+  - title: "Detecting Compressed Audio on SPDIF Input"
+    steps:
+      - Set `src_sel = 3` (SPDIFIN).
+      - Use default Pa/Pb values (0xF872/0x4E1F).
+      - Set `reg_channel_mask = 0xFFFFFFFC` (monitor channels 0-1 only for stereo).
+      - Enable with `reg_en = 1`.
+      - Enable `find_pd` interrupt (`reg_int_en[0] = 1`).
+      - On interrupt, read `r_pc_data` from STAT1 for codec type.
+      - Compare Pc against known values (0x0001=AC3, 0x0015=E-AC3, etc.).
+
+  - title: "PCM vs Compressed Detection"
+    steps:
+      - Enable timeout detection (`reg_papb_timeout_en = 1`).
+      - Set threshold based on expected burst interval (e.g., AC3 = 1536 samples at 48kHz).
+      - If `papb_timeout` interrupt fires, stream is likely PCM.
+      - If `find_pd` fires, stream is compressed.
+      - Use for automatic format switching.
+
+  - title: "Monitoring Format Changes"
+    steps:
+      - Enable `pcpd_change` interrupt (`reg_int_en[1] = 1`).
+      - Interrupt fires when Pc value changes (e.g., AC3 -> DTS).
+      - Read new Pc value and reconfigure decoder accordingly.
+      - Useful for seamless format transitions.
+
+  - title: "HDMI/eARC Compressed Audio Detection"
+    steps:
+      - Set `src_sel = 11` (EARC_RX_DMAC) for eARC input.
+      - Or `src_sel = 8` (FRHDMIRX_SPDIF) for HDMI input.
+      - Monitor for IEC61937 preamble.
+      - High bitrate formats (TrueHD, DTS-HD MA) use different Pc codes.

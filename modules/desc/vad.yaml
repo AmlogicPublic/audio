@@ -6,38 +6,75 @@ condition:
     - "audio_ee_top.Voice.vad.imp"
 
 overview: |
-  The Voice Activity Detector (VAD) is a low-power hardware module designed to detect human voice
-  presence in audio streams while the main CPU is sleeping or powered down. When voice activity
-  is detected (VAD flag asserted), it wakes the CPU for further processing.
+  The Voice Activity Detector (VAD) is a low-power hardware module designed to wake up the DSP
+  when it determines voice is present in a particular audio signal. It supports 2-channel audio
+  streams combined from PDM filter output.
 
-  The VAD processes audio from PDM microphones or TDM input, performing decimation filtering,
-  pre-emphasis, frame-based analysis, and cepstral feature extraction to distinguish speech
-  from background noise.
+  The audio stream is downsampled to 8K/s rate and de-noised before detection processing. VAD
+  performs detection every 10ms using three methods: power detection, cepstral detection, and
+  spectral entropy detection. It contains a 256-point FFT for cepstral and spectral entropy
+  calculation.
 
 features:
-  - Low-power always-on voice detection for CPU wake-up.
-  - Audio input from PDM (single channel) or TDM sources.
-  - Decimation FIR filter with configurable coefficients (up to 26 taps).
+  - Wake up DSP/CPU when voice activity detected.
+  - Support 2 channels audio streams from PDM filter output.
+  - Downsample to 8K/s sample rate with de-noise processing.
+  - Three detection methods: power, cepstral, spectral entropy.
+  - 10ms detection interval per frame.
+  - 256-point radix-2 FFT for cepstral and spectral entropy calculation.
   - Pre-emphasis filter for speech enhancement.
-  - Frame-based processing with history buffer.
-  - Cepstrum analysis (FFT-based spectral features).
-  - Dual-channel support for stereo microphone arrays.
+  - Hanning window function for frame processing.
+  - Dual-path decision: 2-combine-1 decision for even/odd channels.
+  - N/M frame flag decision for final VAD output.
   - Independent clock gating per processing stage.
-  - LUT-based activation functions.
   - DDR write capability for buffered audio retrieval after wake-up.
 
 block_diagram:
-  images: []
+  images:
+    - vad.png
   description: "VAD Processing Pipeline"
 
 function_description: |
   **VAD Application Flow:**
 
-  1. PDM and VAD enabled while CPU sleeps.
+  1. PDM and VAD enabled while CPU/DSP sleeps.
   2. Voice and VAD status continuously written to DDR via independent DMA.
-  3. When VAD flag goes high, CPU wakes up.
-  4. CPU reads saved addresses to locate voice start position.
+  3. When VAD flag goes high, DSP wakes up.
+  4. DSP reads saved addresses to locate voice start position.
   5. Software processes voice data with VAD status for each 10ms frame.
+
+  **Processing Pipeline:**
+
+  ```
+  PDM_OUT(32bits)─┬─► vad_combine0 ─┬─► afifo8 ─► downsample_filter ─► in_data_ram ─► pow_detection
+                  │                 │              + emphasis_filter    (spsram)        │
+                  └─► vad_combine1 ─┘              exp_dat(18bits)                      ▼
+                                                        │                         vadflag_pow
+                                                        ▼
+                                    ┌───────────────────────────────────────────────┐
+                                    │  frame_256samples(18bits)                     │
+                                    │       │                                       │
+                                    │  hann_win_func ─► ram_256x32 ─► cepstrum ────►│─► ceps_flag
+                                    │       │                           │           │
+                                    │  radix-2 FFT ◄────────────────────┘           │
+                                    │       │ (fft: pow_log 11bits)                 │
+                                    │       │ (ifft: real_ceps 16bits)              │
+                                    │       ▼                                       │
+                                    │  pow_log ─► 11bits ─► spectral_entropy ──────►│─► se_flag
+                                    └───────────────────────────────────────────────┘
+                                                        │
+                                    vadflag_pow ────────┼──► 2combin1 ──► 2combin1 ──► N/M frame ──► vadflag
+                                    ceps_flag ──────────┤    decision      decision    flag decision
+                                    se_flag ────────────┘
+  ```
+
+  **Three Detection Methods:**
+
+  | Method | Description | Flag |
+  |--------|-------------|------|
+  | Power Detection | Energy-based detection from input samples | vadflag_pow |
+  | Cepstral Detection | FFT → log → IFFT cepstrum features | ceps_flag |
+  | Spectral Entropy | Log power spectrum entropy measure | se_flag |
 
   **Address Tracking:**
 
@@ -56,47 +93,50 @@ function_description: |
 
   Where `time_delay_s` accounts for VAD latency (<100ms) plus any required track-back.
 
-  **Processing Pipeline:**
+  **1. Downsampling Filter + Emphasis:**
 
-  ```
-  Audio In → Decimation FIR → Pre-emphasis → Frame Buffer → Cepstrum → VAD Decision
-     ↓           ↓                ↓              ↓             ↓
-   16/48/96K   16 kHz          y=x-α·x[n-1]   History     FFT+Spec
-  ```
-
-  **1. Decimation FIR Filter:**
-
-  Resamples input to 16 kHz for VAD processing:
-  - `dec_rate`: 0~11 (decimation ratio - 1)
+  Resamples input to 8 kHz for VAD processing with de-noise:
+  - `dec_rate`: Decimation ratio configuration
   - `dec_filter_order`: FIR filter order (up to 26 coefficients)
   - `dec_coef_0` ~ `dec_coef_25`: 16-bit filter coefficients
+  - Combined with emphasis filter for speech enhancement (y[n] = x[n] - α·x[n-1])
+  - Output: exp_dat (18 bits)
 
-  **2. Pre-emphasis:**
+  **2. Power Detection:**
 
-  First-order high-pass to enhance speech formants:
-  ```
-  y[n] = x[n] - α·x[n-1]
-  ```
-  - `pre_emp_coef`: 10-bit coefficient (typically ~0.97)
+  Direct energy-based detection from input data RAM:
+  - Samples stored in spsram_360x18 (even/odd channels)
+  - Outputs: vadflag_pow_e, vadflag_pow_o
 
-  **3. Frame Processing:**
+  **3. 256-point Radix-2 FFT:**
 
-  - `frame_his_en`: Enable frame history buffer
-  - `frame_his_save_en`: Save frames for CPU retrieval
-  - Frame length: typically 10ms (160 samples @ 16kHz)
+  Core spectral analysis block:
+  - Hanning window applied before FFT (hann_win_func → ram_256x32)
+  - FFT loop: pow_log output (11 bits)
+  - IFFT loop: real_ceps output (16 bits) for cepstrum
 
-  **4. Cepstrum Analysis:**
+  **4. Cepstrum Detection:**
 
-  FFT-based spectral feature extraction:
-  - `ceps_ceps_en`: Enable cepstrum computation
-  - `ceps_spec_en`: Enable spectrum computation
-  - `post_dec_en`: Post-decimation for feature reduction
+  FFT → log → IFFT based cepstrum feature extraction:
+  - Outputs: ceps_flag
 
-  **5. Channel Configuration:**
+  **5. Spectral Entropy Detection:**
 
-  - `two_channel_en`: Enable stereo processing
+  Power spectrum entropy measurement:
+  - pow_log → 11bits → spectral_entropy
+  - Outputs: se_flag
+
+  **6. Decision Logic:**
+
+  Multi-stage decision combining:
+  - 2combin1 decision: combines even/odd channel flags
+  - N/M frame flag decision: final vadflag output based on M of N frames
+
+  **7. Channel Configuration:**
+
+  - `two_channel_en`: Enable dual-channel (even/odd) processing
   - `ch0_shift`, `ch1_shift`: Input scaling (0~3)
-  - `VAD_IN_SEL0/1`: Audio source selection
+  - `VAD_IN_SEL0/1`: Audio source selection (combined from PDM filter)
 
   **Key Registers:**
 
@@ -135,24 +175,35 @@ function_description: |
 application_notes:
   - title: "Basic Voice Wake-up Configuration"
     steps:
-      - Configure PDM input and clock for 16kHz.
-      - Set decimation filter coefficients and rate.
-      - Enable pre-emphasis with typical coefficient ~0.97.
-      - Configure frame and cepstrum processing.
-      - Enable VAD and put CPU to sleep.
+      - Configure PDM input and combine channels via vad_combine0/1.
+      - Set decimation filter to downsample to 8kHz.
+      - Enable emphasis filter for speech enhancement.
+      - Configure 256-point FFT for cepstrum and spectral entropy.
+      - Set detection thresholds for power, cepstral, and spectral entropy.
+      - Configure N/M frame decision (e.g., 3 of 5 frames).
+      - Enable VAD and put DSP to sleep.
       - On VAD interrupt, read address registers.
       - Process buffered audio from calculated start address.
+
+  - title: "Detection Method Selection"
+    steps:
+      - Power detection alone for simple energy-based wake-up.
+      - Add cepstral detection for better speech vs noise discrimination.
+      - Add spectral entropy for complex noise environments.
+      - 2combin1 decision combines multiple detection results.
+      - N/M frame decision provides temporal smoothing (reduces false alarms).
 
   - title: "Power Optimization"
     steps:
       - Enable clock gating for unused stages.
       - Use single-channel mode if stereo not needed.
-      - Adjust frame rate based on latency requirements.
-      - Disable cepstrum if simple power-based detection sufficient.
+      - Disable spectral entropy if cepstral detection sufficient.
+      - 10ms frame interval balances latency vs power.
 
   - title: "Dual Microphone Configuration"
     steps:
-      - Set `two_channel_en = 1`.
-      - Configure `VAD_IN_SEL0/1` for both mic inputs.
+      - Combine 2 PDM channels via vad_combine0/1.
+      - Even/odd channel paths process independently.
       - Adjust `ch0_shift` and `ch1_shift` for gain matching.
-      - Both channels processed for improved noise rejection.
+      - 2combin1 decision merges even/odd channel flags.
+      - Dual mics improve SNR and noise rejection.

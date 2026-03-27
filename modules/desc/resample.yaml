@@ -18,37 +18,42 @@ overview: |
   live streaming scenarios.
 
 features: |
-  - Asynchronous sample rate conversion with arbitrary ratio support.
-  - Data width up to `{dw}` bits per sample.
-  - Multi-channel support: up to `{chnum}` channels per instance.
-  - Polyphase sinc interpolator with programmable tap count (`intp_tap`).
-  - Anti-alias FIR filter with programmable tap count (`filt_tap`).
-  - Post-compensation IIR filter for passband ripple correction.
+  - Max 8 audio sources muxed to 1 source for resample core.
+  - MSB/LSB bit selection after source mux.
+  - Multi-channel support: up to `{chnum}` channels per instance, `{dw}` bits per sample.
+  - Anti-alias (AA) FIR filter: max 64 taps, supports 1/2 and 1/4 downsampling.
+  - SINC interpolation filter: max 64 taps, 1/2^28 phase precision.
+  - IIR compensation filter (5 taps) for high-frequency damping correction.
+  - Phase lock module for input/output clock synchronization.
   - Adaptive rate tracking (PLL-like) for asynchronous clock domains.
   - Bypass mode for direct passthrough.
   - Programmable phase step (NCO) for precise ratio control.
   - PI loop filter with adjustable KP/KI gains.
-  - Watchdog timer for hang detection.
-  - Per-stage clock gating for power optimization.
   - Coefficient RAM for custom filter profiles.
   - Status registers for loop lock quality monitoring.
 
 block_diagram:
-  images: []
+  images:
+    - resample.png
   description: "Audio Resample Block Diagram"
 
 function_description: |
   **Signal Processing Architecture:**
 
   ```
-  Input → AA Filter → Scaler → Polyphase Interpolator → Post IIR → Output
-             ↓           ↓              ↓                   ↓
-         anti-alias   optional      sinc/FIR          compensation
-                      decimation    resampling
-                                       ↑
-                              Phase Accumulator (NCO)
-                                       ↑
-                              Adaptive Rate Tracker
+                              ┌─────────────────────────────────────┐
+  clk/rst_n ──────────────────┤                                     │
+                              │          rsamp_core                 │
+  APB ───► [reg] ─────────────┤  ┌──────────────────────────────┐   │
+                              │  │  AA (64tap) downsample filter│   │
+  src0 ─┐                     │  └──────────────────────────────┘   │
+  src1 ─┼──► [mux8] ──────────┤  ┌──────────────────────────────┐   ├───► dout
+  ...   │                     │  │ SINC (64tap) interp. filter  │   │
+  src7 ─┘                     │  └──────────────────────────────┘   │
+                              │  ┌──────────────────────────────┐   │
+  mclk ──► [phase] ─► phs_err─┤  │   IIR (5tap) comp. filter    │───┼─► [RAM]
+           [lock ]            │  └──────────────────────────────┘   │
+                              └─────────────────────────────────────┘
   ```
 
   **1. Anti-Alias (AA) Filter:**
