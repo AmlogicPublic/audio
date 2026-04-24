@@ -4,11 +4,11 @@ parent_base: audio_top_ee
 instances:
   A:
     offset_base0: 0x185
-    condition: { macro_path: ["mixer", "A", "imp"], eq: 1 }
+    condition: { macro_path: [ "mixer", "A", "imp" ], eq: 1 }
 
 registers0:
   - name: MIXER_COEF0
-    offset: 0x00
+    offset: 0x0
     description: Mixer coefficient 0
     fields:
       - bits: "31:0"
@@ -18,7 +18,7 @@ registers0:
         description: "Ch0_in_a*coef0 + Ch2_in_a*coef1 = ch0_out, same as eqdrc"
 
   - name: MIXER_COEF1
-    offset: 0x01
+    offset: 0x1
     description: Mixer coefficient 1
     fields:
       - bits: "31:0"
@@ -28,7 +28,7 @@ registers0:
         description: "Ch0_in_a*coef0 + Ch2_in_a*coef1 = ch0_out"
 
   - name: MIXER_COEF2
-    offset: 0x02
+    offset: 0x2
     description: Mixer coefficient 2
     fields:
       - bits: "31:0"
@@ -38,7 +38,7 @@ registers0:
         description: "Ch1_in_a*coef2 + Ch3_in_a*coef3 = ch1_out"
 
   - name: MIXER_COEF3
-    offset: 0x03
+    offset: 0x3
     description: Mixer coefficient 3
     fields:
       - bits: "31:0"
@@ -48,7 +48,7 @@ registers0:
         description: "Ch1_in_a*coef2 + Ch3_in_a*coef3 = ch1_out"
 
   - name: MIXER_THD
-    offset: 0x04
+    offset: 0x4
     description: Mixer clip threshold
     fields:
       - bits: "30:0"
@@ -58,7 +58,7 @@ registers0:
         description: "Clip threshold, same as eqdrc"
 
   - name: MIXER_CTRL0
-    offset: 0x05
+    offset: 0x5
     description: Mixer main control
     fields:
       - bits: "31"
@@ -128,7 +128,7 @@ registers0:
         description: "Reqa select frddr; 0:frddra; 1:frddrb; 2:frddrc; 3:frddrd; 4:frddre"
 
   - name: MIXER_CTRL1
-    offset: 0x06
+    offset: 0x6
     description: Mixer timing and lane control
     fields:
       - bits: "29"
@@ -168,7 +168,7 @@ registers0:
         description: "0x0f means 4lane; can only set 1:1lane; 3:2lane; 7:3lane; f:4lane"
 
   - name: MIXER_CTRL2
-    offset: 0x07
+    offset: 0x7
     description: Mixer request A control
     fields:
       - bits: "31"
@@ -195,7 +195,8 @@ registers0:
         name: wait_cnt
         access: R/W
         default: "0x00"
-        description: "Wait some time when enable set to 1, then start request data from frddr"
+        description: "Wait some time when enable set to 1, then start request data from
+          frddr"
       - bits: "15:11"
         name: frddr_msb
         access: R/W
@@ -213,7 +214,7 @@ registers0:
         description: "clr_by_init"
 
   - name: MIXER_CTRL3
-    offset: 0x08
+    offset: 0x8
     description: Mixer request B control
     fields:
       - bits: "31"
@@ -240,7 +241,8 @@ registers0:
         name: wait_cnt
         access: R/W
         default: "0x00"
-        description: "Wait some time when enable set to 1, then start request data from frddr"
+        description: "Wait some time when enable set to 1, then start request data from
+          frddr"
       - bits: "15:11"
         name: frddr_msb
         access: R/W
@@ -258,7 +260,7 @@ registers0:
         description: "clr_by_init"
 
   - name: MIXER_CTRL4
-    offset: 0x09
+    offset: 0x9
     description: Mixer source select control
     fields:
       - bits: "20"
@@ -308,7 +310,7 @@ registers0:
         description: "0:tdmout_a; 1:tdmout_b; 2:tdmout_c; 3:spdifout; 4:spdifout_b"
 
   - name: MIXER_STATUS1
-    offset: 0x0a
+    offset: 0xa
     description: Mixer status
     fields:
       - bits: "23"

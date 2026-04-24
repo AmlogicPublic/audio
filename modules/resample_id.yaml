@@ -4,14 +4,14 @@ parent_base: audio_top_ee
 instances:
   A:
     offset_base0: 0x350
-    condition: { macro_path: ["resample", "A", "imp"], eq: 1 }
+    condition: { macro_path: [ "resample", "A", "imp" ], eq: 1 }
   B:
     offset_base0: 0x360
-    condition: { macro_path: ["resample", "B", "imp"], eq: 1 }
+    condition: { macro_path: [ "resample", "B", "imp" ], eq: 1 }
 
 registers0:
   - name: RSAMP_{X}_CHNUM_ID0
-    offset: 0x00
+    offset: 0x0
     description: resample channel ID register
     fields:
       - bits: "31:24"
@@ -36,7 +36,7 @@ registers0:
         description: ID of ch0
 
   - name: RSAMP_{X}_CHNUM_ID1
-    offset: 0x01
+    offset: 0x1
     description: resample channel ID register
     fields:
       - bits: "31:24"
@@ -61,7 +61,7 @@ registers0:
         description: ID of ch4
 
   - name: RSAMP_{X}_CHNUM_ID2
-    offset: 0x02
+    offset: 0x2
     description: resample channel ID register
     fields:
       - bits: "31:24"
@@ -86,7 +86,7 @@ registers0:
         description: ID of ch8
 
   - name: RSAMP_{X}_CHNUM_ID3
-    offset: 0x03
+    offset: 0x3
     description: resample channel ID register
     fields:
       - bits: "31:24"
@@ -111,7 +111,7 @@ registers0:
         description: ID of ch12
 
   - name: RSAMP_{X}_CHNUM_ID4
-    offset: 0x04
+    offset: 0x4
     description: resample channel ID register
     fields:
       - bits: "31:24"
@@ -136,7 +136,7 @@ registers0:
         description: ID of ch16
 
   - name: RSAMP_{X}_CHNUM_ID5
-    offset: 0x05
+    offset: 0x5
     description: resample channel ID register
     fields:
       - bits: "31:24"
@@ -161,7 +161,7 @@ registers0:
         description: ID of ch20
 
   - name: RSAMP_{X}_CHNUM_ID6
-    offset: 0x06
+    offset: 0x6
     description: resample channel ID register
     fields:
       - bits: "31:24"
@@ -186,7 +186,7 @@ registers0:
         description: ID of ch24
 
   - name: RSAMP_{X}_CHNUM_ID7
-    offset: 0x07
+    offset: 0x7
     description: resample channel ID register
     fields:
       - bits: "31:24"
@@ -211,7 +211,7 @@ registers0:
         description: ID of ch28
 
   - name: RSAMP_{X}_CHSYNC_CTRL
-    offset: 0x0f
+    offset: 0xf
     description: resample channel sync control register
     fields:
       - bits: "31"
@@ -243,7 +243,8 @@ registers0:
         name: debug_en0
         access: R/W
         default: "0"
-        description: "BUF_MODE only; 1:send chnum info from input; 0:generate new chnum info"
+        description: "BUF_MODE only; 1:send chnum info from input; 0:generate new chnum
+          info"
       - bits: "7:0"
         name: chnum_max
         access: R/W
@@ -252,21 +253,24 @@ registers0:
 
 chsync_mask:
   name: RSAMP_CHSYNC_MASK
-  offset: 0x0e
+  offset: 0xe
   base_instance: A
   fields:
     - bits: "23:16"
       name: rsamp_c_stable_mask
       access: R/W
       default: "0x00"
-      description: "resample_C stable mask; [3]:out_en changed; [2]:soft_reset; [1]:en_r changed; [0]:en changed"
+      description: "resample_C stable mask; [3]:out_en changed; [2]:soft_reset;
+        [1]:en_r changed; [0]:en changed"
     - bits: "15:8"
       name: rsamp_b_stable_mask
       access: R/W
       default: "0x00"
-      description: "resample_B stable mask; [3]:rsamp_en=0; [2]:rsamp_rst=1; [1]:output_en=0; [0]:bypass changed"
+      description: "resample_B stable mask; [3]:rsamp_en=0; [2]:rsamp_rst=1;
+        [1]:output_en=0; [0]:bypass changed"
     - bits: "7:0"
       name: rsamp_a_stable_mask
       access: R/W
       default: "0x00"
-      description: "resample_A stable mask; [3]:rsamp_en=0; [2]:rsamp_rst=1; [1]:output_en=0; [0]:bypass changed"
+      description: "resample_A stable mask; [3]:rsamp_en=0; [2]:rsamp_rst=1;
+        [1]:output_en=0; [0]:bypass changed"

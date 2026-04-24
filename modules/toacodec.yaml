@@ -4,11 +4,11 @@ parent_base: audio_top_ee
 instances:
   A:
     offset_base0: 0x1d0
-    condition: { macro_path: ["toacodec", "imp"], eq: 1 }
+    condition: { macro_path: [ "toacodec", "imp" ], eq: 1 }
 
 registers0:
   - name: TOACODEC_CTRL0
-    offset: 0x00
+    offset: 0x0
     description: to-ACODEC path control register
     fields:
       - bits: "31"
@@ -30,17 +30,20 @@ registers0:
         name: dat1_sel
         access: R/W
         default: "0x00"
-        description: "0~7:tdmout_a_dat[0~7]; 8~15:tdmout_b_dat[0~7]; 16~23:tdmout_c_dat[0~7]; 24~31:tdmout_d_dat[0~7]"
+        description: "0~7:tdmout_a_dat[0~7]; 8~15:tdmout_b_dat[0~7];
+          16~23:tdmout_c_dat[0~7]; 24~31:tdmout_d_dat[0~7]"
       - bits: "21:16"
         name: dat0_sel
         access: R/W
         default: "0x00"
-        description: "0~7:tdmout_a_dat[0~7]; 8~15:tdmout_b_dat[0~7]; 16~23:tdmout_c_dat[0~7]; 24~31:tdmout_d_dat[0~7]"
+        description: "0~7:tdmout_a_dat[0~7]; 8~15:tdmout_b_dat[0~7];
+          16~23:tdmout_c_dat[0~7]; 24~31:tdmout_d_dat[0~7]"
       - bits: "15:12"
         name: lrclk_sel
         access: R/W
         default: "0x0"
-        description: "0:tdmout_a_lrclk; 1:tdmout_b_lrclk; 2:tdmout_c_lrclk; 4~7:tdmin_a~d_lrclk; 8~13:mst_a~f_lrclk_ph0"
+        description: "0:tdmout_a_lrclk; 1:tdmout_b_lrclk; 2:tdmout_c_lrclk;
+          4~7:tdmin_a~d_lrclk; 8~13:mst_a~f_lrclk_ph0"
       - bits: "10"
         name: lrclk_inv
         access: R/W
@@ -60,7 +63,8 @@ registers0:
         name: bclk_sel
         access: R/W
         default: "0x0"
-        description: "0:tdmout_a_bclk; 1:tdmout_b_bclk; 2:tdmout_c_bclk; 4~7:tdmin_a~d_bclk; 8~13:mst_a~f_sclk"
+        description: "0:tdmout_a_bclk; 1:tdmout_b_bclk; 2:tdmout_c_bclk;
+          4~7:tdmin_a~d_bclk; 8~13:mst_a~f_sclk"
       - bits: "3:0"
         name: mclk_sel
         access: R/W
@@ -68,7 +72,7 @@ registers0:
         description: "0~5:mst_mclk_a~f; 6:slv_sclk_a; 7:slv_sclk_b"
 
   - name: TOACODEC_CTRL1
-    offset: 0x04
+    offset: 0x4
     description: to-ACODEC path control register
     fields:
       - bits: "31:0"

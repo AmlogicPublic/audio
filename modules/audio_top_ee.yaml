@@ -8,247 +8,260 @@ exception_irq_fields_0: &exception_irq_fields_0
   - bits: "31"
     name: loopback_a_orig_chnum_sync_err1
     default: "0"
-    description: "LOOPBACK_A ORIG DATA, CHNUM_SYNC_ERR1: detect write new ch when pop buffer"
-    condition: { macro_path: ["loopback", "A", "imp"], eq: 1 }
+    description: "LOOPBACK_A ORIG DATA, CHNUM_SYNC_ERR1: detect write new ch when
+      pop buffer"
+    condition: { macro_path: [ "loopback", "A", "imp" ], eq: 1 }
   - bits: "30"
     name: loopback_a_orig_chnum_sync_err0
     default: "0"
-    description: "LOOPBACK_A ORIG DATA, CHNUM_SYNC_ERR0: miss CH (cur_chnum_id != reg_chnum_id)"
-    condition: { macro_path: ["loopback", "A", "imp"], eq: 1 }
+    description: "LOOPBACK_A ORIG DATA, CHNUM_SYNC_ERR0: miss CH (cur_chnum_id !=
+      reg_chnum_id)"
+    condition: { macro_path: [ "loopback", "A", "imp" ], eq: 1 }
   - bits: "29"
     name: loopback_a_insert_chnum_sync_err1
     default: "0"
-    description: "LOOPBACK_A INSERT DATA, CHNUM_SYNC_ERR1: detect write new ch when pop buffer"
-    condition: { macro_path: ["loopback", "A", "imp"], eq: 1 }
+    description: "LOOPBACK_A INSERT DATA, CHNUM_SYNC_ERR1: detect write new ch when
+      pop buffer"
+    condition: { macro_path: [ "loopback", "A", "imp" ], eq: 1 }
   - bits: "28"
     name: loopback_a_insert_chnum_sync_err0
     default: "0"
-    description: "LOOPBACK_A INSERT DATA, CHNUM_SYNC_ERR0: miss CH (cur_chnum_id != reg_chnum_id)"
-    condition: { macro_path: ["loopback", "A", "imp"], eq: 1 }
+    description: "LOOPBACK_A INSERT DATA, CHNUM_SYNC_ERR0: miss CH (cur_chnum_id !=
+      reg_chnum_id)"
+    condition: { macro_path: [ "loopback", "A", "imp" ], eq: 1 }
   - bits: "27"
     name: loopback_b_orig_chnum_sync_err1
     default: "0"
-    description: "LOOPBACK_B ORIG DATA, CHNUM_SYNC_ERR1: detect write new ch when pop buffer"
-    condition: { macro_path: ["loopback", "B", "imp"], eq: 1 }
+    description: "LOOPBACK_B ORIG DATA, CHNUM_SYNC_ERR1: detect write new ch when
+      pop buffer"
+    condition: { macro_path: [ "loopback", "B", "imp" ], eq: 1 }
   - bits: "26"
     name: loopback_b_orig_chnum_sync_err0
     default: "0"
-    description: "LOOPBACK_B ORIG DATA, CHNUM_SYNC_ERR0: miss CH (cur_chnum_id != reg_chnum_id)"
-    condition: { macro_path: ["loopback", "B", "imp"], eq: 1 }
+    description: "LOOPBACK_B ORIG DATA, CHNUM_SYNC_ERR0: miss CH (cur_chnum_id !=
+      reg_chnum_id)"
+    condition: { macro_path: [ "loopback", "B", "imp" ], eq: 1 }
   - bits: "25"
     name: loopback_b_insert_chnum_sync_err1
     default: "0"
-    description: "LOOPBACK_B INSERT DATA, CHNUM_SYNC_ERR1: detect write new ch when pop buffer"
-    condition: { macro_path: ["loopback", "B", "imp"], eq: 1 }
+    description: "LOOPBACK_B INSERT DATA, CHNUM_SYNC_ERR1: detect write new ch when
+      pop buffer"
+    condition: { macro_path: [ "loopback", "B", "imp" ], eq: 1 }
   - bits: "24"
     name: loopback_b_insert_chnum_sync_err0
     default: "0"
-    description: "LOOPBACK_B INSERT DATA, CHNUM_SYNC_ERR0: miss CH (cur_chnum_id != reg_chnum_id)"
-    condition: { macro_path: ["loopback", "B", "imp"], eq: 1 }
+    description: "LOOPBACK_B INSERT DATA, CHNUM_SYNC_ERR0: miss CH (cur_chnum_id !=
+      reg_chnum_id)"
+    condition: { macro_path: [ "loopback", "B", "imp" ], eq: 1 }
   - bits: "23"
     name: resample_a_chnum_sync_err1
     default: "0"
     description: "RESAMPLE_A CHNUM_SYNC_ERR1: detect write new ch when pop buffer"
-    condition: { macro_path: ["resample", "A", "imp"], eq: 1 }
+    condition: { macro_path: [ "resample", "A", "imp" ], eq: 1 }
   - bits: "22"
     name: resample_a_chnum_sync_err0
     default: "0"
     description: "RESAMPLE_A CHNUM_SYNC_ERR0: miss CH (cur_chnum_id != reg_chnum_id)"
-    condition: { macro_path: ["resample", "A", "imp"], eq: 1 }
+    condition: { macro_path: [ "resample", "A", "imp" ], eq: 1 }
   - bits: "21"
     name: resample_b_chnum_sync_err1
     default: "0"
     description: "RESAMPLE_B CHNUM_SYNC_ERR1: detect write new ch when pop buffer"
-    condition: { macro_path: ["resample", "B", "imp"], eq: 1 }
+    condition: { macro_path: [ "resample", "B", "imp" ], eq: 1 }
   - bits: "20"
     name: resample_b_chnum_sync_err0
     default: "0"
     description: "RESAMPLE_B CHNUM_SYNC_ERR0: miss CH (cur_chnum_id != reg_chnum_id)"
-    condition: { macro_path: ["resample", "B", "imp"], eq: 1 }
+    condition: { macro_path: [ "resample", "B", "imp" ], eq: 1 }
   - bits: "17"
     name: spdifin_reserved
     default: "0"
     description: "SPDIFIN reserved"
-    condition: { macro_path: ["spdifin", "A", "imp"], eq: 1 }
+    condition: { macro_path: [ "spdifin", "A", "imp" ], eq: 1 }
   - bits: "16"
     name: spdifin_afifo_overflow
     default: "0"
     description: "SPDIFIN afifo overflow"
-    condition: { macro_path: ["spdifin", "A", "imp"], eq: 1 }
+    condition: { macro_path: [ "spdifin", "A", "imp" ], eq: 1 }
   - bits: "15"
     name: spdifin_cyc_cnt_err_min
     default: "0"
     description: "SPDIFIN cyc_cnt err, < min"
-    condition: { macro_path: ["spdifin", "A", "imp"], eq: 1 }
+    condition: { macro_path: [ "spdifin", "A", "imp" ], eq: 1 }
   - bits: "14"
     name: spdifin_cyc_cnt_err_max
     default: "0"
     description: "SPDIFIN cyc_cnt err, > max"
-    condition: { macro_path: ["spdifin", "A", "imp"], eq: 1 }
+    condition: { macro_path: [ "spdifin", "A", "imp" ], eq: 1 }
   - bits: "13"
     name: spdifin_parity_err
     default: "0"
     description: "SPDIFIN parity_err"
-    condition: { macro_path: ["spdifin", "A", "imp"], eq: 1 }
+    condition: { macro_path: [ "spdifin", "A", "imp" ], eq: 1 }
   - bits: "12"
     name: spdifin_bit_cnt_err_gt64
     default: "0"
     description: "SPDIFIN bit_cnt err, > 64"
-    condition: { macro_path: ["spdifin", "A", "imp"], eq: 1 }
+    condition: { macro_path: [ "spdifin", "A", "imp" ], eq: 1 }
   - bits: "11"
     name: spdifin_bit_cnt_err_ne64
     default: "0"
     description: "SPDIFIN bit_cnt err, != 64"
-    condition: { macro_path: ["spdifin", "A", "imp"], eq: 1 }
+    condition: { macro_path: [ "spdifin", "A", "imp" ], eq: 1 }
   - bits: "10"
     name: spdifin_xyz_err
     default: "0"
     description: "SPDIFIN xyz_err"
-    condition: { macro_path: ["spdifin", "A", "imp"], eq: 1 }
+    condition: { macro_path: [ "spdifin", "A", "imp" ], eq: 1 }
   - bits: "9"
     name: sed_chnum_sync_err1
     default: "0"
     description: "SED CHNUM_SYNC_ERR1: detect write new ch when pop buffer"
-    condition: { macro_path: ["eqdrc", "imp"], eq: 1 }
+    condition: { macro_path: [ "eqdrc", "imp" ], eq: 1 }
   - bits: "8"
     name: sed_chnum_sync_err0
     default: "0"
     description: "SED CHNUM_SYNC_ERR0: miss CH (cur_chnum_id != reg_chnum_id)"
-    condition: { macro_path: ["eqdrc", "imp"], eq: 1 }
+    condition: { macro_path: [ "eqdrc", "imp" ], eq: 1 }
 
 exception_irq_fields_1: &exception_irq_fields_1
   - bits: "31"
     name: toddr_a_chnum_sync_err1
     default: "0"
     description: "TODDR_A CHNUM_SYNC_ERR1: detect write new ch when pop buffer"
-    condition: { macro_path: ["toddr", "A", "imp"], eq: 1 }
+    condition: { macro_path: [ "toddr", "A", "imp" ], eq: 1 }
   - bits: "30"
     name: toddr_a_chnum_sync_err0
     default: "0"
     description: "TODDR_A CHNUM_SYNC_ERR0: miss CH (cur_chnum_id != reg_chnum_id)"
-    condition: { macro_path: ["toddr", "A", "imp"], eq: 1 }
+    condition: { macro_path: [ "toddr", "A", "imp" ], eq: 1 }
   - bits: "29"
     name: toddr_b_chnum_sync_err1
     default: "0"
     description: "TODDR_B CHNUM_SYNC_ERR1: detect write new ch when pop buffer"
-    condition: { macro_path: ["toddr", "B", "imp"], eq: 1 }
+    condition: { macro_path: [ "toddr", "B", "imp" ], eq: 1 }
   - bits: "28"
     name: toddr_b_chnum_sync_err0
     default: "0"
     description: "TODDR_B CHNUM_SYNC_ERR0: miss CH (cur_chnum_id != reg_chnum_id)"
-    condition: { macro_path: ["toddr", "B", "imp"], eq: 1 }
+    condition: { macro_path: [ "toddr", "B", "imp" ], eq: 1 }
   - bits: "27"
     name: toddr_c_chnum_sync_err1
     default: "0"
     description: "TODDR_C CHNUM_SYNC_ERR1: detect write new ch when pop buffer"
-    condition: { macro_path: ["toddr", "C", "imp"], eq: 1 }
+    condition: { macro_path: [ "toddr", "C", "imp" ], eq: 1 }
   - bits: "26"
     name: toddr_c_chnum_sync_err0
     default: "0"
     description: "TODDR_C CHNUM_SYNC_ERR0: miss CH (cur_chnum_id != reg_chnum_id)"
-    condition: { macro_path: ["toddr", "C", "imp"], eq: 1 }
+    condition: { macro_path: [ "toddr", "C", "imp" ], eq: 1 }
   - bits: "25"
     name: toddr_d_chnum_sync_err1
     default: "0"
     description: "TODDR_D CHNUM_SYNC_ERR1: detect write new ch when pop buffer"
-    condition: { macro_path: ["toddr", "D", "imp"], eq: 1 }
+    condition: { macro_path: [ "toddr", "D", "imp" ], eq: 1 }
   - bits: "24"
     name: toddr_d_chnum_sync_err0
     default: "0"
     description: "TODDR_D CHNUM_SYNC_ERR0: miss CH (cur_chnum_id != reg_chnum_id)"
-    condition: { macro_path: ["toddr", "D", "imp"], eq: 1 }
+    condition: { macro_path: [ "toddr", "D", "imp" ], eq: 1 }
   - bits: "23"
     name: toddr_e_chnum_sync_err1
     default: "0"
     description: "TODDR_E CHNUM_SYNC_ERR1: detect write new ch when pop buffer"
-    condition: { macro_path: ["toddr", "E", "imp"], eq: 1 }
+    condition: { macro_path: [ "toddr", "E", "imp" ], eq: 1 }
   - bits: "22"
     name: toddr_e_chnum_sync_err0
     default: "0"
     description: "TODDR_E CHNUM_SYNC_ERR0: miss CH (cur_chnum_id != reg_chnum_id)"
-    condition: { macro_path: ["toddr", "E", "imp"], eq: 1 }
+    condition: { macro_path: [ "toddr", "E", "imp" ], eq: 1 }
   - bits: "17"
     name: pdmin_hpf_not_finish
     default: "0"
     description: "PDMIN HPF NOT FINISH"
-    condition: { macro_path: ["pdm", "A", "imp"], eq: 1 }
+    condition: { macro_path: [ "pdm", "A", "imp" ], eq: 1 }
   - bits: "16"
     name: pdmin_hcic_not_finish
     default: "0"
     description: "PDMIN HCIC NOT FINISH"
-    condition: { macro_path: ["pdm", "A", "imp"], eq: 1 }
+    condition: { macro_path: [ "pdm", "A", "imp" ], eq: 1 }
   - bits: "14"
     name: tdmin_a_afifo_overflow
     default: "0"
     description: "TDMIN_A AFIFO OVERFLOW"
-    condition: { macro_path: ["tdmin", "A", "imp"], eq: 1 }
+    condition: { macro_path: [ "tdmin", "A", "imp" ], eq: 1 }
   - bits: "13"
     name: tdmin_a_slot_cnt_err
     default: "0"
-    description: "TDMIN_A SLOT_CNT_ERR, SLOT CNT between two WS_RISE didn't equal to REG_SLOT_NUM"
-    condition: { macro_path: ["tdmin", "A", "imp"], eq: 1 }
+    description: "TDMIN_A SLOT_CNT_ERR, SLOT CNT between two WS_RISE didn't equal to
+      REG_SLOT_NUM"
+    condition: { macro_path: [ "tdmin", "A", "imp" ], eq: 1 }
   - bits: "12"
     name: tdmin_a_bit_cnt_err
     default: "0"
     description: "TDMIN_A BIT_CNT_ERR, BIT CNT between two SLOT didn't equal to REG_BIT_NUM"
-    condition: { macro_path: ["tdmin", "A", "imp"], eq: 1 }
+    condition: { macro_path: [ "tdmin", "A", "imp" ], eq: 1 }
   - bits: "10"
     name: tdmin_b_afifo_overflow
     default: "0"
     description: "TDMIN_B AFIFO OVERFLOW"
-    condition: { macro_path: ["tdmin", "B", "imp"], eq: 1 }
+    condition: { macro_path: [ "tdmin", "B", "imp" ], eq: 1 }
   - bits: "9"
     name: tdmin_b_slot_cnt_err
     default: "0"
-    description: "TDMIN_B SLOT_CNT_ERR, SLOT CNT between two WS_RISE didn't equal to REG_SLOT_NUM"
-    condition: { macro_path: ["tdmin", "B", "imp"], eq: 1 }
+    description: "TDMIN_B SLOT_CNT_ERR, SLOT CNT between two WS_RISE didn't equal to
+      REG_SLOT_NUM"
+    condition: { macro_path: [ "tdmin", "B", "imp" ], eq: 1 }
   - bits: "8"
     name: tdmin_b_bit_cnt_err
     default: "0"
     description: "TDMIN_B BIT_CNT_ERR, BIT CNT between two SLOT didn't equal to REG_BIT_NUM"
-    condition: { macro_path: ["tdmin", "B", "imp"], eq: 1 }
+    condition: { macro_path: [ "tdmin", "B", "imp" ], eq: 1 }
   - bits: "6"
     name: tdmin_c_afifo_overflow
     default: "0"
     description: "TDMIN_C AFIFO OVERFLOW"
-    condition: { macro_path: ["tdmin", "C", "imp"], eq: 1 }
+    condition: { macro_path: [ "tdmin", "C", "imp" ], eq: 1 }
   - bits: "5"
     name: tdmin_c_slot_cnt_err
     default: "0"
-    description: "TDMIN_C SLOT_CNT_ERR, SLOT CNT between two WS_RISE didn't equal to REG_SLOT_NUM"
-    condition: { macro_path: ["tdmin", "C", "imp"], eq: 1 }
+    description: "TDMIN_C SLOT_CNT_ERR, SLOT CNT between two WS_RISE didn't equal to
+      REG_SLOT_NUM"
+    condition: { macro_path: [ "tdmin", "C", "imp" ], eq: 1 }
   - bits: "4"
     name: tdmin_c_bit_cnt_err
     default: "0"
     description: "TDMIN_C BIT_CNT_ERR, BIT CNT between two SLOT didn't equal to REG_BIT_NUM"
-    condition: { macro_path: ["tdmin", "C", "imp"], eq: 1 }
+    condition: { macro_path: [ "tdmin", "C", "imp" ], eq: 1 }
   - bits: "3"
     name: ddr_arb_timeout
     default: "0"
     description: "DDR_ARB locked for one request for long time (> time_out_cnt)"
-    condition: { macro_path: ["ddr_arb", "imp"], eq: 1 }
+    condition: { macro_path: [ "ddr_arb", "imp" ], eq: 1 }
   - bits: "2"
     name: tdmin_lb_afifo_overflow
     default: "0"
     description: "TDMIN_LB AFIFO OVERFLOW"
-    condition: { macro_path: ["tdmin", "LB_A", "imp"], eq: 1 }
+    condition: { macro_path: [ "tdmin", "LB_A", "imp" ], eq: 1 }
   - bits: "1"
     name: tdmin_lb_slot_cnt_err
     default: "0"
-    description: "TDMIN_LB SLOT_CNT_ERR, SLOT CNT between two WS_RISE didn't equal to REG_SLOT_NUM"
-    condition: { macro_path: ["tdmin", "LB_A", "imp"], eq: 1 }
+    description: "TDMIN_LB SLOT_CNT_ERR, SLOT CNT between two WS_RISE didn't equal
+      to REG_SLOT_NUM"
+    condition: { macro_path: [ "tdmin", "LB_A", "imp" ], eq: 1 }
   - bits: "0"
     name: tdmin_lb_bit_cnt_err
     default: "0"
-    description: "TDMIN_LB BIT_CNT_ERR, BIT CNT between two SLOT didn't equal to REG_BIT_NUM"
-    condition: { macro_path: ["tdmin", "LB_A", "imp"], eq: 1 }
+    description: "TDMIN_LB BIT_CNT_ERR, BIT CNT between two SLOT didn't equal to
+      REG_BIT_NUM"
+    condition: { macro_path: [ "tdmin", "LB_A", "imp" ], eq: 1 }
 
 registers0:
   # ============================================================================
   # CLK/RESET Registers
   # ============================================================================
   - name: CLK_GATE_EN0
-    offset: 0x00
+    offset: 0x0
     description: clock gate enable register
     fields:
       - bits: "31"
@@ -256,166 +269,166 @@ registers0:
         access: R/W
         default: "0"
         description: "frhdmirx clk gate; 0:disable; 1:enable"
-        condition: { macro_path: ["hdmirx", "A", "imp"], eq: 1 }
+        condition: { macro_path: [ "hdmirx", "A", "imp" ], eq: 1 }
       - bits: "30"
         name: fratv
         access: R/W
         default: "0"
         description: "fratv clk gate; 0:disable; 1:enable"
-        condition: { macro_path: ["atv", "imp"], eq: 1 }
+        condition: { macro_path: [ "atv", "imp" ], eq: 1 }
       - bits: "29"
         name: spdifin_lb
         access: R/W
         default: "0"
         description: "spdifin_lb clk gate; 0:disable; 1:enable"
-        condition: { macro_path: ["spdifin", "LB_A", "imp"], eq: 1 }
+        condition: { macro_path: [ "spdifin", "LB_A", "imp" ], eq: 1 }
       - bits: "28"
         name: audio_locker
         access: R/W
         default: "0"
         description: "audio locker clk gate; 0:disable; 1:enable"
-        condition: { macro_path: ["locker", "A", "imp"], eq: 1 }
+        condition: { macro_path: [ "locker", "A", "imp" ], eq: 1 }
       - bits: "27"
         name: tovad
         access: R/W
         default: "0"
         description: "tovad clk gate; 0:disable; 1:enable"
-        condition: { macro_path: ["voice", "imp"], eq: 1 }
+        condition: { macro_path: [ "voice", "imp" ], eq: 1 }
       - bits: "26"
         name: resampleb
         access: R/W
         default: "0"
         description: "resampleB clk gate; 0:disable; 1:enable"
-        condition: { macro_path: ["resample", "B", "imp"], eq: 1 }
+        condition: { macro_path: [ "resample", "B", "imp" ], eq: 1 }
       - bits: "22"
         name: eqdrc
         access: R/W
         default: "0"
         description: "eqdrc clk gate; 0:disable; 1:enable"
-        condition: { macro_path: ["eqdrc", "imp"], eq: 1 }
+        condition: { macro_path: [ "eqdrc", "imp" ], eq: 1 }
       - bits: "21"
         name: spdifout_b
         access: R/W
         default: "0"
         description: "spdifoutB clk gate; 0:disable; 1:enable"
-        condition: { macro_path: ["spdifout", "B", "imp"], eq: 1 }
+        condition: { macro_path: [ "spdifout", "B", "imp" ], eq: 1 }
       - bits: "18"
         name: resamplea
         access: R/W
         default: "0"
         description: "resampleA clk gate; 0:disable; 1:enable"
-        condition: { macro_path: ["resample", "A", "imp"], eq: 1 }
+        condition: { macro_path: [ "resample", "A", "imp" ], eq: 1 }
       - bits: "17"
         name: spdifout
         access: R/W
         default: "0"
         description: "spdifout clk gate; 0:disable; 1:enable"
-        condition: { macro_path: ["spdifout", "A", "imp"], eq: 1 }
+        condition: { macro_path: [ "spdifout", "A", "imp" ], eq: 1 }
       - bits: "16"
         name: spdifin
         access: R/W
         default: "0"
         description: "spdifin clk gate; 0:disable; 1:enable"
-        condition: { macro_path: ["spdifin", "A", "imp"], eq: 1 }
+        condition: { macro_path: [ "spdifin", "A", "imp" ], eq: 1 }
       - bits: "15"
         name: loopback_a
         access: R/W
         default: "0"
         description: "loopbackA clk gate; 0:disable; 1:enable"
-        condition: { macro_path: ["loopback", "A", "imp"], eq: 1 }
+        condition: { macro_path: [ "loopback", "A", "imp" ], eq: 1 }
       - bits: "14"
         name: toddr_c
         access: R/W
         default: "0"
         description: "toddrc clk gate; 0:disable; 1:enable"
-        condition: { macro_path: ["toddr", "C", "imp"], eq: 1 }
+        condition: { macro_path: [ "toddr", "C", "imp" ], eq: 1 }
       - bits: "13"
         name: toddr_b
         access: R/W
         default: "0"
         description: "toddrb clk gate; 0:disable; 1:enable"
-        condition: { macro_path: ["toddr", "B", "imp"], eq: 1 }
+        condition: { macro_path: [ "toddr", "B", "imp" ], eq: 1 }
       - bits: "12"
         name: toddr_a
         access: R/W
         default: "0"
         description: "toddra clk gate; 0:disable; 1:enable"
-        condition: { macro_path: ["toddr", "A", "imp"], eq: 1 }
+        condition: { macro_path: [ "toddr", "A", "imp" ], eq: 1 }
       - bits: "11"
         name: frddr_c
         access: R/W
         default: "0"
         description: "frddrc clk gate; 0:disable; 1:enable"
-        condition: { macro_path: ["frddr", "C", "imp"], eq: 1 }
+        condition: { macro_path: [ "frddr", "C", "imp" ], eq: 1 }
       - bits: "10"
         name: frddr_b
         access: R/W
         default: "0"
         description: "frddrb clk gate; 0:disable; 1:enable"
-        condition: { macro_path: ["frddr", "B", "imp"], eq: 1 }
+        condition: { macro_path: [ "frddr", "B", "imp" ], eq: 1 }
       - bits: "9"
         name: frddr_a
         access: R/W
         default: "0"
         description: "frddra clk gate; 0:disable; 1:enable"
-        condition: { macro_path: ["frddr", "A", "imp"], eq: 1 }
+        condition: { macro_path: [ "frddr", "A", "imp" ], eq: 1 }
       - bits: "8"
         name: tdmout_c
         access: R/W
         default: "0"
         description: "tdmoutc clk gate; 0:disable; 1:enable"
-        condition: { macro_path: ["tdmout", "C", "imp"], eq: 1 }
+        condition: { macro_path: [ "tdmout", "C", "imp" ], eq: 1 }
       - bits: "7"
         name: tdmout_b
         access: R/W
         default: "0"
         description: "tdmoutb clk gate; 0:disable; 1:enable"
-        condition: { macro_path: ["tdmout", "B", "imp"], eq: 1 }
+        condition: { macro_path: [ "tdmout", "B", "imp" ], eq: 1 }
       - bits: "6"
         name: tdmout_a
         access: R/W
         default: "0"
         description: "tdmouta clk gate; 0:disable; 1:enable"
-        condition: { macro_path: ["tdmout", "A", "imp"], eq: 1 }
+        condition: { macro_path: [ "tdmout", "A", "imp" ], eq: 1 }
       - bits: "5"
         name: tdmin_lb
         access: R/W
         default: "0"
         description: "tdminlb clk gate; 0:disable; 1:enable"
-        condition: { macro_path: ["tdmin", "LB_A", "imp"], eq: 1 }
+        condition: { macro_path: [ "tdmin", "LB_A", "imp" ], eq: 1 }
       - bits: "4"
         name: tdmin_c
         access: R/W
         default: "0"
         description: "tdminc clk gate; 0:disable; 1:enable"
-        condition: { macro_path: ["tdmin", "C", "imp"], eq: 1 }
+        condition: { macro_path: [ "tdmin", "C", "imp" ], eq: 1 }
       - bits: "3"
         name: tdmin_b
         access: R/W
         default: "0"
         description: "tdminb clk gate; 0:disable; 1:enable"
-        condition: { macro_path: ["tdmin", "B", "imp"], eq: 1 }
+        condition: { macro_path: [ "tdmin", "B", "imp" ], eq: 1 }
       - bits: "2"
         name: tdmin_a
         access: R/W
         default: "0"
         description: "tdmina clk gate; 0:disable; 1:enable"
-        condition: { macro_path: ["tdmin", "A", "imp"], eq: 1 }
+        condition: { macro_path: [ "tdmin", "A", "imp" ], eq: 1 }
       - bits: "1"
         name: pdm
         access: R/W
         default: "0"
         description: "pdm clk gate; 0:disable; 1:enable"
-        condition: { macro_path: ["pdm", "A", "imp"], eq: 1 }
+        condition: { macro_path: [ "pdm", "A", "imp" ], eq: 1 }
       - bits: "0"
         name: ddr_arb
         access: R/W
         default: "0"
         description: "ddr_arb clk gate; 0:disable; 1:enable"
-        condition: { macro_path: ["ddr_arb", "imp"], eq: 1 }
+        condition: { macro_path: [ "ddr_arb", "imp" ], eq: 1 }
 
   - name: CLK_GATE_EN1
-    offset: 0x01
+    offset: 0x1
     description: clock gate enable register
     fields:
       - bits: "19"
@@ -423,71 +436,71 @@ registers0:
         access: R/W
         default: "0"
         description: "mixer clk gate"
-        condition: { macro_path: ["mixer", "imp"], eq: 1 }
+        condition: { macro_path: [ "mixer", "imp" ], eq: 1 }
       - bits: "15"
         name: pcpd_mon
         access: R/W
         default: "0"
         description: "pcpd_mon clk gate"
-        condition: { macro_path: ["pcpd_mon", "A", "imp"], eq: 1 }
+        condition: { macro_path: [ "pcpd_mon", "A", "imp" ], eq: 1 }
       - bits: "8"
         name: locker_b
         access: R/W
         default: "0"
         description: "locker_b clk gate"
-        condition: { macro_path: ["locker", "B", "imp"], eq: 1 }
+        condition: { macro_path: [ "locker", "B", "imp" ], eq: 1 }
       - bits: "7"
         name: resampleb_old
         access: R/W
         default: "0"
         description: "resampleb_old clk gate"
-        condition: { macro_path: ["resample", "C", "imp"], eq: 1 }
+        condition: { macro_path: [ "resample", "C", "imp" ], eq: 1 }
       - bits: "6"
         name: earcrx
         access: R/W
         default: "0"
         description: "earcrx clk gate"
-        condition: { macro_path: ["earcrx", "imp"], eq: 1 }
+        condition: { macro_path: [ "earcrx", "imp" ], eq: 1 }
       - bits: "5"
         name: earctx
         access: R/W
         default: "0"
         description: "earctx clk gate"
-        condition: { macro_path: ["earctx", "imp"], eq: 1 }
+        condition: { macro_path: [ "earctx", "imp" ], eq: 1 }
       - bits: "4"
         name: toddr_e
         access: R/W
         default: "0"
         description: "toddrE clk gate"
-        condition: { macro_path: ["toddr", "E", "imp"], eq: 1 }
+        condition: { macro_path: [ "toddr", "E", "imp" ], eq: 1 }
       - bits: "3"
         name: frddr_e
         access: R/W
         default: "0"
         description: "frddrE clk gate"
-        condition: { macro_path: ["frddr", "E", "imp"], eq: 1 }
+        condition: { macro_path: [ "frddr", "E", "imp" ], eq: 1 }
       - bits: "2"
         name: loopback_b
         access: R/W
         default: "0"
         description: "loopbackB clk gate; 0:disable; 1:enable"
-        condition: { macro_path: ["loopback", "B", "imp"], eq: 1 }
+        condition: { macro_path: [ "loopback", "B", "imp" ], eq: 1 }
       - bits: "1"
         name: toddr_d
         access: R/W
         default: "0"
         description: "toddrd clk gate; 0:disable; 1:enable"
-        condition: { macro_path: ["toddr", "D", "imp"], eq: 1 }
+        condition: { macro_path: [ "toddr", "D", "imp" ], eq: 1 }
       - bits: "0"
         name: frddr_d
         access: R/W
         default: "0"
         description: "frddrd clk gate; 0:disable; 1:enable"
-        condition: { macro_path: ["frddr", "D", "imp"], eq: 1 }
+        condition: { macro_path: [ "frddr", "D", "imp" ], eq: 1 }
 
   - name: MCLK_{X}_CTRL
-    instances: [A, B, C, D, E, F]
-    offsets: { A: 0x02, B: 0x03, C: 0x04, D: 0x05, E: 0x06, F: 0x07 }
+    instances: [ A, B, C, D, E, F ]
+    offsets: { A: 0x2, B: 0x3, C: 0x4, D: 0x5, E: 0x6, F: 0x7 }
     fields:
       - bits: "31"
         name: clk_en
@@ -512,7 +525,7 @@ registers0:
 
     description: master clock control register
   - name: SW_RESET0
-    offset: 0x0a
+    offset: 0xa
     description: software reset control register
     fields:
       - bits: "31"
@@ -520,37 +533,37 @@ registers0:
         access: R/W
         default: "0"
         description: "frhdmirx soft reset"
-        condition: { macro_path: ["hdmirx", "A", "imp"], eq: 1 }
+        condition: { macro_path: [ "hdmirx", "A", "imp" ], eq: 1 }
       - bits: "30"
         name: fratv
         access: R/W
         default: "0"
         description: "fratv soft reset"
-        condition: { macro_path: ["atv", "imp"], eq: 1 }
+        condition: { macro_path: [ "atv", "imp" ], eq: 1 }
       - bits: "29"
         name: spdifin_lb
         access: R/W
         default: "0"
         description: "spdifin_lb soft reset"
-        condition: { macro_path: ["spdifin", "LB_A", "imp"], eq: 1 }
+        condition: { macro_path: [ "spdifin", "LB_A", "imp" ], eq: 1 }
       - bits: "28"
         name: locker
         access: R/W
         default: "0"
         description: "locker soft reset"
-        condition: { macro_path: ["locker", "A", "imp"], eq: 1 }
+        condition: { macro_path: [ "locker", "A", "imp" ], eq: 1 }
       - bits: "27"
         name: tovad
         access: R/W
         default: "0"
         description: "tovad soft reset"
-        condition: { macro_path: ["voice", "imp"], eq: 1 }
+        condition: { macro_path: [ "voice", "imp" ], eq: 1 }
       - bits: "26"
         name: resampleb
         access: R/W
         default: "0"
         description: "resampleB soft reset"
-        condition: { macro_path: ["resample", "B", "imp"], eq: 1 }
+        condition: { macro_path: [ "resample", "B", "imp" ], eq: 1 }
       - bits: "25"
         name: clk_tree
         access: R/W
@@ -561,13 +574,13 @@ registers0:
         access: R/W
         default: "0"
         description: "tohdmitx soft reset"
-        condition: { macro_path: ["hdmi_dp_tx", "A", "imp"], eq: 1 }
+        condition: { macro_path: [ "hdmi_dp_tx", "A", "imp" ], eq: 1 }
       - bits: "23"
         name: toacodec
         access: R/W
         default: "0"
         description: "toacodec soft reset"
-        condition: { macro_path: ["aocdec", "imp"], eq: 1 }
+        condition: { macro_path: [ "aocdec", "imp" ], eq: 1 }
       - bits: "22"
         name: toram
         access: R/W
@@ -578,136 +591,136 @@ registers0:
         access: R/W
         default: "0"
         description: "powdet soft reset"
-        condition: { macro_path: ["pcpd_mon", "A", "imp"], eq: 1 }
+        condition: { macro_path: [ "pcpd_mon", "A", "imp" ], eq: 1 }
       - bits: "20"
         name: ddrarb
         access: R/W
         default: "0"
         description: "ddrarb soft reset"
-        condition: { macro_path: ["ddr_arb", "imp"], eq: 1 }
+        condition: { macro_path: [ "ddr_arb", "imp" ], eq: 1 }
       - bits: "19"
         name: resample
         access: R/W
         default: "0"
         description: "resample soft reset"
-        condition: { macro_path: ["resample", "A", "imp"], eq: 1 }
+        condition: { macro_path: [ "resample", "A", "imp" ], eq: 1 }
       - bits: "18"
         name: eqdrc
         access: R/W
         default: "0"
         description: "eqdrc soft reset"
-        condition: { macro_path: ["eqdrc", "imp"], eq: 1 }
+        condition: { macro_path: [ "eqdrc", "imp" ], eq: 1 }
       - bits: "17"
         name: spdifin
         access: R/W
         default: "0"
         description: "spdifin soft reset"
-        condition: { macro_path: ["spdifin", "A", "imp"], eq: 1 }
+        condition: { macro_path: [ "spdifin", "A", "imp" ], eq: 1 }
       - bits: "16"
         name: spdifout_b
         access: R/W
         default: "0"
         description: "spdifoutB soft reset"
-        condition: { macro_path: ["spdifout", "B", "imp"], eq: 1 }
+        condition: { macro_path: [ "spdifout", "B", "imp" ], eq: 1 }
       - bits: "15"
         name: spdifout
         access: R/W
         default: "0"
         description: "spdifout soft reset"
-        condition: { macro_path: ["spdifout", "A", "imp"], eq: 1 }
+        condition: { macro_path: [ "spdifout", "A", "imp" ], eq: 1 }
       - bits: "14"
         name: tdmout_c
         access: R/W
         default: "0"
         description: "tdmoutc soft reset"
-        condition: { macro_path: ["tdmout", "C", "imp"], eq: 1 }
+        condition: { macro_path: [ "tdmout", "C", "imp" ], eq: 1 }
       - bits: "13"
         name: tdmout_b
         access: R/W
         default: "0"
         description: "tdmoutb soft reset"
-        condition: { macro_path: ["tdmout", "B", "imp"], eq: 1 }
+        condition: { macro_path: [ "tdmout", "B", "imp" ], eq: 1 }
       - bits: "12"
         name: tdmout_a
         access: R/W
         default: "0"
         description: "tdmouta soft reset"
-        condition: { macro_path: ["tdmout", "A", "imp"], eq: 1 }
+        condition: { macro_path: [ "tdmout", "A", "imp" ], eq: 1 }
       - bits: "11"
         name: frddr_c
         access: R/W
         default: "0"
         description: "frddrc soft reset"
-        condition: { macro_path: ["frddr", "C", "imp"], eq: 1 }
+        condition: { macro_path: [ "frddr", "C", "imp" ], eq: 1 }
       - bits: "10"
         name: frddr_b
         access: R/W
         default: "0"
         description: "frddrb soft reset"
-        condition: { macro_path: ["frddr", "B", "imp"], eq: 1 }
+        condition: { macro_path: [ "frddr", "B", "imp" ], eq: 1 }
       - bits: "9"
         name: frddr_a
         access: R/W
         default: "0"
         description: "frddra soft reset"
-        condition: { macro_path: ["frddr", "A", "imp"], eq: 1 }
+        condition: { macro_path: [ "frddr", "A", "imp" ], eq: 1 }
       - bits: "8"
         name: toddr_c
         access: R/W
         default: "0"
         description: "toddrc soft reset"
-        condition: { macro_path: ["toddr", "C", "imp"], eq: 1 }
+        condition: { macro_path: [ "toddr", "C", "imp" ], eq: 1 }
       - bits: "7"
         name: toddr_b
         access: R/W
         default: "0"
         description: "toddrb soft reset"
-        condition: { macro_path: ["toddr", "B", "imp"], eq: 1 }
+        condition: { macro_path: [ "toddr", "B", "imp" ], eq: 1 }
       - bits: "6"
         name: toddr_a
         access: R/W
         default: "0"
         description: "toddra soft reset"
-        condition: { macro_path: ["toddr", "A", "imp"], eq: 1 }
+        condition: { macro_path: [ "toddr", "A", "imp" ], eq: 1 }
       - bits: "5"
         name: loopback
         access: R/W
         default: "0"
         description: "loopback soft reset"
-        condition: { macro_path: ["loopback", "A", "imp"], eq: 1 }
+        condition: { macro_path: [ "loopback", "A", "imp" ], eq: 1 }
       - bits: "4"
         name: tdmin_lb
         access: R/W
         default: "0"
         description: "tdmin_lb soft reset"
-        condition: { macro_path: ["tdmin", "LB_A", "imp"], eq: 1 }
+        condition: { macro_path: [ "tdmin", "LB_A", "imp" ], eq: 1 }
       - bits: "3"
         name: tdmin_c
         access: R/W
         default: "0"
         description: "tdminc soft reset"
-        condition: { macro_path: ["tdmin", "C", "imp"], eq: 1 }
+        condition: { macro_path: [ "tdmin", "C", "imp" ], eq: 1 }
       - bits: "2"
         name: tdmin_b
         access: R/W
         default: "0"
         description: "tdminb soft reset"
-        condition: { macro_path: ["tdmin", "B", "imp"], eq: 1 }
+        condition: { macro_path: [ "tdmin", "B", "imp" ], eq: 1 }
       - bits: "1"
         name: tdmin_a
         access: R/W
         default: "0"
         description: "tdmina soft reset"
-        condition: { macro_path: ["tdmin", "A", "imp"], eq: 1 }
+        condition: { macro_path: [ "tdmin", "A", "imp" ], eq: 1 }
       - bits: "0"
         name: pdm
         access: R/W
         default: "0"
         description: "pdm soft reset"
-        condition: { macro_path: ["pdm", "A", "imp"], eq: 1 }
+        condition: { macro_path: [ "pdm", "A", "imp" ], eq: 1 }
 
   - name: SW_RESET1
-    offset: 0x0b
+    offset: 0xb
     description: software reset control register
     fields:
       - bits: "19"
@@ -715,70 +728,70 @@ registers0:
         access: R/W
         default: "0"
         description: "mixer soft reset"
-        condition: { macro_path: ["mixer", "imp"], eq: 1 }
+        condition: { macro_path: [ "mixer", "imp" ], eq: 1 }
       - bits: "15"
         name: pcpd_mon
         access: R/W
         default: "0"
         description: "pcpd_mon soft reset"
-        condition: { macro_path: ["pcpd_mon", "A", "imp"], eq: 1 }
+        condition: { macro_path: [ "pcpd_mon", "A", "imp" ], eq: 1 }
       - bits: "8"
         name: locker_b
         access: R/W
         default: "0"
         description: "lockerB soft reset"
-        condition: { macro_path: ["locker", "B", "imp"], eq: 1 }
+        condition: { macro_path: [ "locker", "B", "imp" ], eq: 1 }
       - bits: "7"
         name: resampleb_old
         access: R/W
         default: "0"
         description: "resampleB_old soft reset"
-        condition: { macro_path: ["resample", "C", "imp"], eq: 1 }
+        condition: { macro_path: [ "resample", "C", "imp" ], eq: 1 }
       - bits: "6"
         name: earcrx
         access: R/W
         default: "0"
         description: "earcRX soft reset"
-        condition: { macro_path: ["earcrx", "imp"], eq: 1 }
+        condition: { macro_path: [ "earcrx", "imp" ], eq: 1 }
       - bits: "5"
         name: earctx
         access: R/W
         default: "0"
         description: "earcTX soft reset"
-        condition: { macro_path: ["earctx", "imp"], eq: 1 }
+        condition: { macro_path: [ "earctx", "imp" ], eq: 1 }
       - bits: "4"
         name: frddr_e
         access: R/W
         default: "0"
         description: "frddrE soft reset"
-        condition: { macro_path: ["frddr", "E", "imp"], eq: 1 }
+        condition: { macro_path: [ "frddr", "E", "imp" ], eq: 1 }
       - bits: "3"
         name: toddr_e
         access: R/W
         default: "0"
         description: "toddrE soft reset"
-        condition: { macro_path: ["toddr", "E", "imp"], eq: 1 }
+        condition: { macro_path: [ "toddr", "E", "imp" ], eq: 1 }
       - bits: "2"
         name: loopback_b
         access: R/W
         default: "0"
         description: "loopbackB soft reset"
-        condition: { macro_path: ["loopback", "B", "imp"], eq: 1 }
+        condition: { macro_path: [ "loopback", "B", "imp" ], eq: 1 }
       - bits: "1"
         name: toddr_d
         access: R/W
         default: "0"
         description: "toddrd soft reset"
-        condition: { macro_path: ["toddr", "D", "imp"], eq: 1 }
+        condition: { macro_path: [ "toddr", "D", "imp" ], eq: 1 }
       - bits: "0"
         name: frddr_d
         access: R/W
         default: "0"
         description: "frddrd soft reset"
-        condition: { macro_path: ["frddr", "D", "imp"], eq: 1 }
+        condition: { macro_path: [ "frddr", "D", "imp" ], eq: 1 }
 
   - name: MST_{X}_SCLK_CTRL0
-    instances: [A, B, C, D, E, F]
+    instances: [ A, B, C, D, E, F ]
     offsets: { A: 0x10, B: 0x12, C: 0x14, D: 0x16, E: 0x18, F: 0x1a }
     fields:
       - bits: "31"
@@ -809,7 +822,7 @@ registers0:
 
     description: master serial clock control register
   - name: MST_{X}_SCLK_CTRL1
-    instances: [A, B, C, D, E, F]
+    instances: [ A, B, C, D, E, F ]
     offsets: { A: 0x11, B: 0x13, C: 0x15, D: 0x17, E: 0x19, F: 0x1b }
     fields:
       - bits: "31:28"
@@ -846,7 +859,8 @@ registers0:
         name: clk_inv
         access: R/W
         default: "0x00"
-        description: "[5]:lrclk_ph2; [4]:sclk_ph2; [3]:lrclk_ph1; [2]:sclk_ph1; [1]:lrclk_ph0; [0]:sclk_ph0"
+        description: "[5]:lrclk_ph2; [4]:sclk_ph2; [3]:lrclk_ph1; [2]:sclk_ph1;
+          [1]:lrclk_ph0; [0]:sclk_ph0"
 
     description: master serial clock control register
   - name: MST_DLY_CTRL0
@@ -923,13 +937,13 @@ registers0:
   # TDMIN CLK Registers
   # ============================================================================
   - name: CLK_TDMIN_{X}_CTRL
-    instances: [A, B, C, LB]
+    instances: [ A, B, C, LB ]
     offsets: { A: 0x20, B: 0x21, C: 0x22, LB: 0x23 }
     conditions:
-      A: { macro_path: ["tdmin", "A", "imp"], eq: 1 }
-      B: { macro_path: ["tdmin", "B", "imp"], eq: 1 }
-      C: { macro_path: ["tdmin", "C", "imp"], eq: 1 }
-      LB: { macro_path: ["tdmin", "LB_A", "imp"], eq: 1 }
+      A: { macro_path: [ "tdmin", "A", "imp" ], eq: 1 }
+      B: { macro_path: [ "tdmin", "B", "imp" ], eq: 1 }
+      C: { macro_path: [ "tdmin", "C", "imp" ], eq: 1 }
+      LB: { macro_path: [ "tdmin", "LB_A", "imp" ], eq: 1 }
     fields:
       - bits: "31"
         name: clk_in_en
@@ -961,7 +975,7 @@ registers0:
   - name: CLK_TDMINB_LB_CTRL
     offset: 0x37
     description: TDM input clock control register
-    condition: { macro_path: ["tdmin", "LB_B", "imp"], eq: 1 }
+    condition: { macro_path: [ "tdmin", "LB_B", "imp" ], eq: 1 }
     fields:
       - bits: "31"
         name: clk_in_en
@@ -992,7 +1006,7 @@ registers0:
   - name: CLK_TDMIN_D_CTRL
     offset: 0x3a
     description: TDM input clock control register
-    condition: { macro_path: ["tdmin", "D", "imp"], eq: 1 }
+    condition: { macro_path: [ "tdmin", "D", "imp" ], eq: 1 }
     fields:
       - bits: "31"
         name: clk_in_en
@@ -1024,12 +1038,12 @@ registers0:
   # TDMOUT CLK Registers
   # ============================================================================
   - name: CLK_TDMOUT_{X}_CTRL
-    instances: [A, B, C]
+    instances: [ A, B, C ]
     offsets: { A: 0x24, B: 0x25, C: 0x26 }
     conditions:
-      A: { macro_path: ["tdmout", "A", "imp"], eq: 1 }
-      B: { macro_path: ["tdmout", "B", "imp"], eq: 1 }
-      C: { macro_path: ["tdmout", "C", "imp"], eq: 1 }
+      A: { macro_path: [ "tdmout", "A", "imp" ], eq: 1 }
+      B: { macro_path: [ "tdmout", "B", "imp" ], eq: 1 }
+      C: { macro_path: [ "tdmout", "C", "imp" ], eq: 1 }
     fields:
       - bits: "31"
         name: clk_in_en
@@ -1066,7 +1080,7 @@ registers0:
   - name: CLK_TDMOUT_D_CTRL
     offset: 0x3b
     description: TDM output clock control register
-    condition: { macro_path: ["tdmout", "D", "imp"], eq: 1 }
+    condition: { macro_path: [ "tdmout", "D", "imp" ], eq: 1 }
     fields:
       - bits: "31"
         name: clk_in_en
@@ -1105,7 +1119,7 @@ registers0:
   - name: CLK_SPDIFIN_CTRL
     offset: 0x27
     description: SPDIF input clock control register
-    condition: { macro_path: ["spdifin", "A", "imp"], eq: 1 }
+    condition: { macro_path: [ "spdifin", "A", "imp" ], eq: 1 }
     fields:
       - bits: "31"
         name: clk_en
@@ -1131,7 +1145,7 @@ registers0:
   - name: CLK_SPDIFIN_LB_CTRL
     offset: 0x2f
     description: SPDIF input clock control register
-    condition: { macro_path: ["spdifin", "LB_A", "imp"], eq: 1 }
+    condition: { macro_path: [ "spdifin", "LB_A", "imp" ], eq: 1 }
     fields:
       - bits: "31"
         name: clk_en
@@ -1155,7 +1169,7 @@ registers0:
   - name: CLK_SPDIFOUT_CTRL
     offset: 0x28
     description: SPDIF output clock control register
-    condition: { macro_path: ["spdifout", "A", "imp"], eq: 1 }
+    condition: { macro_path: [ "spdifout", "A", "imp" ], eq: 1 }
     fields:
       - bits: "31"
         name: clk_en
@@ -1181,7 +1195,7 @@ registers0:
   - name: CLK_SPDIFOUT_B_CTRL
     offset: 0x2d
     description: SPDIF output clock control register
-    condition: { macro_path: ["spdifout", "B", "imp"], eq: 1 }
+    condition: { macro_path: [ "spdifout", "B", "imp" ], eq: 1 }
     fields:
       - bits: "31"
         name: clk_en
@@ -1210,7 +1224,7 @@ registers0:
   - name: CLK_RESAMPLEA_CTRL
     offset: 0x29
     description: resample clock control register
-    condition: { macro_path: ["resample", "A", "imp"], eq: 1 }
+    condition: { macro_path: [ "resample", "A", "imp" ], eq: 1 }
     fields:
       - bits: "31"
         name: clk_en
@@ -1236,7 +1250,7 @@ registers0:
   - name: CLK_RESAMPLEB_CTRL
     offset: 0x2e
     description: resample clock control register
-    condition: { macro_path: ["resample", "B", "imp"], eq: 1 }
+    condition: { macro_path: [ "resample", "B", "imp" ], eq: 1 }
     fields:
       - bits: "31"
         name: clk_en
@@ -1257,7 +1271,7 @@ registers0:
   - name: CLK_RESAMPLEC_CTRL
     offset: 0x3c
     description: resample clock control register
-    condition: { macro_path: ["resample", "C", "imp"], eq: 1 }
+    condition: { macro_path: [ "resample", "C", "imp" ], eq: 1 }
     fields:
       - bits: "31"
         name: clk_en
@@ -1281,7 +1295,7 @@ registers0:
   - name: CLK_LOCKER_CTRL
     offset: 0x2a
     description: locker clock control register
-    condition: { macro_path: ["locker", "A", "imp"], eq: 1 }
+    condition: { macro_path: [ "locker", "A", "imp" ], eq: 1 }
     fields:
       - bits: "31"
         name: lock_out_clk_en
@@ -1327,7 +1341,7 @@ registers0:
   - name: CLK_LOCKERB_CTRL
     offset: 0x36
     description: locker clock control register
-    condition: { macro_path: ["locker", "B", "imp"], eq: 1 }
+    condition: { macro_path: [ "locker", "B", "imp" ], eq: 1 }
     fields:
       - bits: "31"
         name: lockb_out_clk_en
@@ -1376,7 +1390,7 @@ registers0:
   - name: CLK_PDMIN_CTRL0
     offset: 0x2b
     description: PDM input clock control register
-    condition: { macro_path: ["pdm", "A", "imp"], eq: 1 }
+    condition: { macro_path: [ "pdm", "A", "imp" ], eq: 1 }
     fields:
       - bits: "31"
         name: clk_en
@@ -1402,7 +1416,7 @@ registers0:
   - name: CLK_PDMIN_CTRL1
     offset: 0x2c
     description: PDM input clock control register
-    condition: { macro_path: ["pdm", "A", "imp"], eq: 1 }
+    condition: { macro_path: [ "pdm", "A", "imp" ], eq: 1 }
     fields:
       - bits: "31"
         name: clk_en
@@ -1428,7 +1442,7 @@ registers0:
   - name: CLK_PDMIN_CTRL2
     offset: 0x38
     description: PDM input clock control register
-    condition: { macro_path: ["pdm", "B", "imp"], eq: 1 }
+    condition: { macro_path: [ "pdm", "B", "imp" ], eq: 1 }
     fields:
       - bits: "31"
         name: clk_en
@@ -1454,7 +1468,7 @@ registers0:
   - name: CLK_PDMIN_CTRL3
     offset: 0x39
     description: PDM input clock control register
-    condition: { macro_path: ["pdm", "B", "imp"], eq: 1 }
+    condition: { macro_path: [ "pdm", "B", "imp" ], eq: 1 }
     fields:
       - bits: "31"
         name: clk_en
@@ -1483,7 +1497,7 @@ registers0:
   - name: CLK_EQDRC_CTRL
     offset: 0x30
     description: clk_eqdrc_ctrl register
-    condition: { macro_path: ["eqdrc", "imp"], eq: 1 }
+    condition: { macro_path: [ "eqdrc", "imp" ], eq: 1 }
     fields:
       - bits: "31"
         name: clk_en
@@ -1512,7 +1526,7 @@ registers0:
   - name: CLK_{VOICE}_CTRL
     offset: 0x31
     description: clk_voice_ctrl register
-    condition: { macro_path: ["voice", "imp"], eq: 1 }
+    condition: { macro_path: [ "voice", "imp" ], eq: 1 }
     voice_param: true
     fields:
       - bits: "31"
@@ -1542,7 +1556,7 @@ registers0:
   - name: EARCTX_CMDC_CLK_CTRL
     offset: 0x32
     description: earctx_cmdc_clk_ctrl register
-    condition: { macro_path: ["earctx", "imp"], eq: 1 }
+    condition: { macro_path: [ "earctx", "imp" ], eq: 1 }
     fields:
       - bits: "31"
         name: clk_en
@@ -1558,7 +1572,8 @@ registers0:
         name: clk_sel
         access: R/W
         default: "0x0"
-        description: "0:cts_oscin; 1:hifi1_pll; 4:hifi0_pll; 5:fclk_div3; 6:fclk_div4; 7:fclk_div5"
+        description: "0:cts_oscin; 1:hifi1_pll; 4:hifi0_pll; 5:fclk_div3; 6:fclk_div4;
+          7:fclk_div5"
       - bits: "15:0"
         name: clk_div
         access: R/W
@@ -1568,7 +1583,7 @@ registers0:
   - name: EARCTX_DMAC_CLK_CTRL
     offset: 0x33
     description: earctx_dmac_clk_ctrl register
-    condition: { macro_path: ["earctx", "imp"], eq: 1 }
+    condition: { macro_path: [ "earctx", "imp" ], eq: 1 }
     fields:
       - bits: "31"
         name: clk_en
@@ -1584,7 +1599,8 @@ registers0:
         name: clk_sel
         access: R/W
         default: "0x0"
-        description: "0:cts_oscin; 1:hifi1_pll; 4:hifi0_pll; 5:fclk_div3; 6:fclk_div4; 7:fclk_div5"
+        description: "0:cts_oscin; 1:hifi1_pll; 4:hifi0_pll; 5:fclk_div3; 6:fclk_div4;
+          7:fclk_div5"
       - bits: "15:0"
         name: clk_div
         access: R/W
@@ -1597,7 +1613,7 @@ registers0:
   - name: EARCRX_CMDC_CLK_CTRL
     offset: 0x34
     description: earcrx_cmdc_clk_ctrl register
-    condition: { macro_path: ["earcrx", "imp"], eq: 1 }
+    condition: { macro_path: [ "earcrx", "imp" ], eq: 1 }
     fields:
       - bits: "31"
         name: clk_en
@@ -1613,7 +1629,8 @@ registers0:
         name: clk_sel
         access: R/W
         default: "0x0"
-        description: "0:cts_oscin; 1:hifi1_pll; 4:hifi0_pll; 5:fclk_div3; 6:fclk_div4; 7:fclk_div5"
+        description: "0:cts_oscin; 1:hifi1_pll; 4:hifi0_pll; 5:fclk_div3; 6:fclk_div4;
+          7:fclk_div5"
       - bits: "15:0"
         name: clk_div
         access: R/W
@@ -1623,7 +1640,7 @@ registers0:
   - name: EARCRX_DMAC_CLK_CTRL
     offset: 0x35
     description: earcrx_dmac_clk_ctrl register
-    condition: { macro_path: ["earcrx", "imp"], eq: 1 }
+    condition: { macro_path: [ "earcrx", "imp" ], eq: 1 }
     fields:
       - bits: "31"
         name: clk_en
@@ -1639,7 +1656,8 @@ registers0:
         name: clk_sel
         access: R/W
         default: "0x0"
-        description: "0:cts_oscin; 1:hifi1_pll; 4:hifi0_pll; 5:fclk_div3; 6:fclk_div4; 7:fclk_div5"
+        description: "0:cts_oscin; 1:hifi1_pll; 4:hifi0_pll; 5:fclk_div3; 6:fclk_div4;
+          7:fclk_div5"
       - bits: "15:0"
         name: clk_div
         access: R/W

@@ -6,11 +6,11 @@ parent_base: audio_top_ee
 instances:
   A:
     offset_base0: 0x1d2
-    condition: { macro_path: ["voice", "imp"], eq: 1 }
+    condition: { macro_path: [ "voice", "imp" ], eq: 1 }
 
 registers0:
   - name: TO{VOICE}_CTRL0
-    offset: 0x00
+    offset: 0x0
     description: to-voice path control register
     fields:
       - bits: "31"
@@ -27,4 +27,7 @@ registers0:
         name: src_sel
         access: R/W
         default: "0x00"
-        description: "0:tdmin_a; 1:tdmin_b; 2:tdmin_c; 3:spdifin; 4:pdmin; 5:fratv; 6:tdmin_lb; 7:loopback_a; 8:frhdmirx_spdif; 9:loopback_b; 10:spdifin_lb; 11:earc_rx_dmac; 12:frhdmirx_dsd; 13:resample_a; 14:resample_b; 15:vad"
+        description: "0:tdmin_a; 1:tdmin_b; 2:tdmin_c; 3:spdifin; 4:pdmin; 5:fratv;
+          6:tdmin_lb; 7:loopback_a; 8:frhdmirx_spdif; 9:loopback_b;
+          10:spdifin_lb; 11:earc_rx_dmac; 12:frhdmirx_dsd; 13:resample_a;
+          14:resample_b; 15:vad"

@@ -1,14 +1,14 @@
 module: EARCRX
 
 module_condition:
-  macro_path: ["earcrx", "imp"]
+  macro_path: [ "earcrx", "imp" ]
   eq: 1
 
 sections:
   CMDC:
     registers0:
       - name: EARC_RX_CMDC_TOP_CTRL0
-        offset: 0x0000
+        offset: 0x0
         description: CMDC top control 0
         fields:
           - bits: "31"
@@ -128,7 +128,7 @@ sections:
             description: reserved
 
       - name: EARC_RX_CMDC_TOP_CTRL1
-        offset: 0x0001
+        offset: 0x1
         description: CMDC top control 1
         fields:
           - bits: "31:13"
@@ -153,7 +153,7 @@ sections:
             description: top soft reset
 
       - name: EARC_RX_CMDC_TOP_CTRL2
-        offset: 0x0002
+        offset: 0x2
         description: CMDC top control 2 - interrupt reset
         fields:
           - bits: "31"
@@ -243,7 +243,7 @@ sections:
             description: reserved
 
       - name: EARC_RX_CMDC_TIMER_CTRL0
-        offset: 0x0003
+        offset: 0x3
         description: CMDC timer control 0
         fields:
           - bits: "31:0"
@@ -253,7 +253,7 @@ sections:
             description: CMDC status 0 (read only)
 
       - name: EARC_RX_CMDC_TIMER_CTRL1
-        offset: 0x0004
+        offset: 0x4
         description: CMDC timer control 1
         fields:
           - bits: "31:0"
@@ -263,7 +263,7 @@ sections:
             description: CMDC status 0 (read only)
 
       - name: EARC_RX_CMDC_TIMER_CTRL2
-        offset: 0x0005
+        offset: 0x5
         description: CMDC timer control 2
         fields:
           - bits: "31:0"
@@ -273,7 +273,7 @@ sections:
             description: CMDC status 0 (read only)
 
       - name: EARC_RX_CMDC_TIMER_CTRL3
-        offset: 0x0006
+        offset: 0x6
         description: CMDC timer control 3
         fields:
           - bits: "31:0"
@@ -283,7 +283,7 @@ sections:
             description: CMDC status 0 (read only)
 
       - name: EARC_RX_CMDC_VSM_CTRL0
-        offset: 0x0007
+        offset: 0x7
         description: VSM control 0
         fields:
           - bits: "31"
@@ -363,7 +363,7 @@ sections:
             description: reserved
 
       - name: EARC_RX_CMDC_VSM_CTRL1
-        offset: 0x0008
+        offset: 0x8
         description: VSM control 1 - idle done timing
         fields:
           - bits: "31:12"
@@ -398,7 +398,7 @@ sections:
             description: enable control
 
       - name: EARC_RX_CMDC_VSM_CTRL2
-        offset: 0x0009
+        offset: 0x9
         description: VSM control 2 - comma off done timing
         fields:
           - bits: "31:12"
@@ -433,7 +433,7 @@ sections:
             description: enable control
 
       - name: EARC_RX_CMDC_VSM_CTRL3
-        offset: 0x000a
+        offset: 0xa
         description: VSM control 3 - earc timeout timing
         fields:
           - bits: "31:12"
@@ -468,7 +468,7 @@ sections:
             description: enable control
 
       - name: EARC_RX_CMDC_VSM_CTRL4
-        offset: 0x000b
+        offset: 0xb
         description: VSM control 4 - heartbeat lost timing
         fields:
           - bits: "31:12"
@@ -503,7 +503,7 @@ sections:
             description: enable control
 
       - name: EARC_RX_CMDC_VSM_CTRL5
-        offset: 0x000c
+        offset: 0xc
         description: VSM control 5 - in earc heartbeat detect timing
         fields:
           - bits: "31:16"
@@ -543,7 +543,7 @@ sections:
             description: enable control
 
       - name: EARC_RX_CMDC_VSM_CTRL6
-        offset: 0x000d
+        offset: 0xd
         description: VSM control 6 - HPD control
         fields:
           - bits: "31:17"
@@ -568,7 +568,7 @@ sections:
             description: HPD glitch width
 
       - name: EARC_RX_CMDC_VSM_CTRL7
-        offset: 0x000e
+        offset: 0xe
         description: VSM control 7
         fields:
           - bits: "31:0"
@@ -578,7 +578,7 @@ sections:
             description: VSM control 7
 
       - name: EARC_RX_CMDC_VSM_CTRL8
-        offset: 0x000f
+        offset: 0xf
         description: VSM control 8
         fields:
           - bits: "31:0"
@@ -588,7 +588,7 @@ sections:
             description: VSM control 8
 
       - name: EARC_RX_CMDC_VSM_CTRL9
-        offset: 0x0010
+        offset: 0x10
         description: VSM control 9
         fields:
           - bits: "31:0"
@@ -598,7 +598,7 @@ sections:
             description: VSM control 9
 
       - name: EARC_RX_CMDC_SENDER_CTRL0
-        offset: 0x0011
+        offset: 0x11
         description: Sender control 0
         fields:
           - bits: "31:2"
@@ -618,7 +618,7 @@ sections:
             description: heartbeat change auto
 
       - name: EARC_RX_CMDC_PACKET_CTRL0
-        offset: 0x0012
+        offset: 0x12
         description: Packet control 0
         fields:
           - bits: "31"
@@ -668,7 +668,7 @@ sections:
             description: software state
 
       - name: EARC_RX_CMDC_PACKET_CTRL1
-        offset: 0x0013
+        offset: 0x13
         description: Packet control 1
         fields:
           - bits: "31"
@@ -708,7 +708,7 @@ sections:
             description: post flag
 
       - name: EARC_RX_CMDC_PACKET_CTRL2
-        offset: 0x0014
+        offset: 0x14
         description: Packet control 2
         fields:
           - bits: "31:0"
@@ -718,7 +718,7 @@ sections:
             description: preamble flag (unsigned)
 
       - name: EARC_RX_CMDC_PACKET_CTRL3
-        offset: 0x0015
+        offset: 0x15
         description: Packet control 3
         fields:
           - bits: "31"
@@ -758,7 +758,7 @@ sections:
             description: timeout threshold
 
       - name: EARC_RX_CMDC_PACKET_CTRL4
-        offset: 0x0016
+        offset: 0x16
         description: Packet control 4
         fields:
           - bits: "31"
@@ -783,7 +783,7 @@ sections:
             description: CMDC packet head
 
       - name: EARC_RX_CMDC_PACKET_CTRL5
-        offset: 0x0017
+        offset: 0x17
         description: Packet control 5
         fields:
           - bits: "31:24"
@@ -803,7 +803,7 @@ sections:
             description: CMDC packet head mask
 
       - name: EARC_RX_CMDC_PACKET_CTRL6
-        offset: 0x0018
+        offset: 0x18
         description: Packet control 6
         fields:
           - bits: "31:20"
@@ -863,7 +863,7 @@ sections:
             description: receive read count
 
       - name: EARC_RX_CMDC_BIPHASE_CTRL0
-        offset: 0x0019
+        offset: 0x19
         description: Biphase control 0
         fields:
           - bits: "31:24"
@@ -933,7 +933,7 @@ sections:
             description: receiver free
 
       - name: EARC_RX_CMDC_BIPHASE_CTRL1
-        offset: 0x001a
+        offset: 0x1a
         description: Biphase control 1
         fields:
           - bits: "31:16"
@@ -958,7 +958,7 @@ sections:
             description: width for send
 
       - name: EARC_RX_CMDC_BIPHASE_CTRL2
-        offset: 0x001b
+        offset: 0x1b
         description: Biphase control 2
         fields:
           - bits: "31"
@@ -983,7 +983,7 @@ sections:
             description: width for comma send
 
       - name: EARC_RX_CMDC_BIPHASE_CTRL3
-        offset: 0x001c
+        offset: 0x1c
         description: Biphase control 3
         fields:
           - bits: "31:0"
@@ -993,7 +993,7 @@ sections:
             description: biphase control 3
 
       - name: EARC_RX_CMDC_DEVICE_ID_CTRL
-        offset: 0x001d
+        offset: 0x1d
         description: Device ID control
         fields:
           - bits: "31"
@@ -1033,7 +1033,7 @@ sections:
             description: APB write/read start address
 
       - name: EARC_RX_CMDC_DEVICE_WDATA
-        offset: 0x001e
+        offset: 0x1e
         description: Device write data
         fields:
           - bits: "31:8"
@@ -1048,7 +1048,7 @@ sections:
             description: APB write data
 
       - name: EARC_RX_CMDC_DEVICE_RDATA
-        offset: 0x001f
+        offset: 0x1f
         description: Device read data
         fields:
           - bits: "31:8"
@@ -1063,7 +1063,7 @@ sections:
             description: APB read data
 
       - name: EARC_RX_ANA_CTRL0
-        offset: 0x0020
+        offset: 0x20
         description: Analog control 0
         fields:
           - bits: "31:0"
@@ -1073,7 +1073,7 @@ sections:
             description: analog control 0
 
       - name: EARC_RX_ANA_CTRL1
-        offset: 0x0021
+        offset: 0x21
         description: Analog control 1
         fields:
           - bits: "31:0"
@@ -1083,7 +1083,7 @@ sections:
             description: analog control 1
 
       - name: EARC_RX_ANA_CTRL2
-        offset: 0x0022
+        offset: 0x22
         description: Analog control 2
         fields:
           - bits: "31:0"
@@ -1093,7 +1093,7 @@ sections:
             description: analog control 2
 
       - name: EARC_RX_ANA_CTRL3
-        offset: 0x0023
+        offset: 0x23
         description: Analog control 3
         fields:
           - bits: "31:0"
@@ -1103,7 +1103,7 @@ sections:
             description: analog control 3
 
       - name: EARC_RX_ANA_CTRL4
-        offset: 0x0024
+        offset: 0x24
         description: Analog control 4
         fields:
           - bits: "31:0"
@@ -1113,7 +1113,7 @@ sections:
             description: analog control 4
 
       - name: EARC_RX_ANA_CTRL5
-        offset: 0x0025
+        offset: 0x25
         description: Analog control 5
         fields:
           - bits: "31:0"
@@ -1123,7 +1123,7 @@ sections:
             description: analog control 5
 
       - name: EARC_RX_ANA_STAT0
-        offset: 0x0026
+        offset: 0x26
         description: Analog status 0
         fields:
           - bits: "31:0"
@@ -1133,7 +1133,7 @@ sections:
             description: analog status 0 (read only)
 
       - name: EARC_RX_CMDC_STATUS0
-        offset: 0x0027
+        offset: 0x27
         description: CMDC status 0
         fields:
           - bits: "31:0"
@@ -1143,7 +1143,7 @@ sections:
             description: CMDC status 0 (read only)
 
       - name: EARC_RX_CMDC_STATUS1
-        offset: 0x0028
+        offset: 0x28
         description: CMDC status 1
         fields:
           - bits: "31:0"
@@ -1153,7 +1153,7 @@ sections:
             description: CMDC status 1 (read only)
 
       - name: EARC_RX_CMDC_STATUS2
-        offset: 0x0029
+        offset: 0x29
         description: CMDC status 2
         fields:
           - bits: "31:0"
@@ -1163,7 +1163,7 @@ sections:
             description: CMDC status 2 (read only)
 
       - name: EARC_RX_CMDC_STATUS3
-        offset: 0x002a
+        offset: 0x2a
         description: CMDC status 3
         fields:
           - bits: "31:0"
@@ -1173,7 +1173,7 @@ sections:
             description: CMDC status 3 (read only)
 
       - name: EARC_RX_CMDC_STATUS4
-        offset: 0x002b
+        offset: 0x2b
         description: CMDC status 4
         fields:
           - bits: "31:0"
@@ -1183,7 +1183,7 @@ sections:
             description: CMDC status 4 (read only)
 
       - name: EARC_RX_CMDC_STATUS5
-        offset: 0x002c
+        offset: 0x2c
         description: CMDC status 5
         fields:
           - bits: "31:0"
@@ -1193,7 +1193,7 @@ sections:
             description: CMDC status 5 (read only)
 
       - name: EARC_RX_CMDC_STATUS6
-        offset: 0x002d
+        offset: 0x2d
         description: CMDC status 6
         fields:
           - bits: "31"
@@ -1285,7 +1285,7 @@ sections:
   DMAC:
     registers0:
       - name: EARCRX_DMAC_TOP_CTRL0
-        offset: 0x0000
+        offset: 0x0
         description: DMAC top control 0
         fields:
           - bits: "31"
@@ -1360,7 +1360,7 @@ sections:
             description: reserved
 
       - name: EARCRX_DMAC_SYNC_CTRL0
-        offset: 0x0001
+        offset: 0x1
         description: DMAC sync control 0
         fields:
           - bits: "31"
@@ -1435,7 +1435,7 @@ sections:
             description: dmac data invert
 
       - name: EARCRX_DMAC_SYNC_STAT0
-        offset: 0x0002
+        offset: 0x2
         description: DMAC sync status 0
         fields:
           - bits: "31:30"
@@ -1505,7 +1505,7 @@ sections:
             description: earc data valid buffer
 
       - name: EARCRX_SPDIFIN_SAMPLE_CTRL0
-        offset: 0x0003
+        offset: 0x3
         description: SPDIF in sample control 0
         fields:
           - bits: "31"
@@ -1545,7 +1545,7 @@ sections:
             description: base timer to detect sample mode change
 
       - name: EARCRX_SPDIFIN_SAMPLE_CTRL1
-        offset: 0x0004
+        offset: 0x4
         description: SPDIF in sample control 1
         fields:
           - bits: "31"
@@ -1575,7 +1575,7 @@ sections:
             description: mode2 threshold time
 
       - name: EARCRX_SPDIFIN_SAMPLE_CTRL2
-        offset: 0x0005
+        offset: 0x5
         description: SPDIF in sample control 2
         fields:
           - bits: "31:30"
@@ -1600,7 +1600,7 @@ sections:
             description: mode5 threshold time
 
       - name: EARCRX_SPDIFIN_SAMPLE_CTRL3
-        offset: 0x0006
+        offset: 0x6
         description: SPDIF in sample control 3
         fields:
           - bits: "31:24"
@@ -1625,7 +1625,7 @@ sections:
             description: mode3 sample time
 
       - name: EARCRX_SPDIFIN_SAMPLE_CTRL4
-        offset: 0x0007
+        offset: 0x7
         description: SPDIF in sample control 4
         fields:
           - bits: "31:24"
@@ -1650,7 +1650,7 @@ sections:
             description: reserved
 
       - name: EARCRX_SPDIFIN_SAMPLE_CTRL5
-        offset: 0x0008
+        offset: 0x8
         description: SPDIF in sample control 5
         fields:
           - bits: "31"
@@ -1685,7 +1685,7 @@ sections:
             description: dmac sqout filter tick
 
       - name: EARCRX_SPDIFIN_SAMPLE_STAT0
-        offset: 0x0009
+        offset: 0x9
         description: SPDIF in sample status 0
         fields:
           - bits: "31"
@@ -1725,7 +1725,7 @@ sections:
             description: reserved
 
       - name: EARCRX_SPDIFIN_SAMPLE_STAT1
-        offset: 0x000a
+        offset: 0xa
         description: SPDIF in sample status 1
         fields:
           - bits: "31:27"
@@ -1750,7 +1750,7 @@ sections:
             description: width max when debug_en valid
 
       - name: EARCRX_SPDIFIN_MUTE_VAL
-        offset: 0x000b
+        offset: 0xb
         description: SPDIF in mute value
         fields:
           - bits: "31:0"
@@ -1760,7 +1760,7 @@ sections:
             description: spdif in mute value
 
       - name: EARCRX_SPDIFIN_CTRL0
-        offset: 0x000c
+        offset: 0xc
         description: SPDIF in control 0
         fields:
           - bits: "31"
@@ -1845,7 +1845,7 @@ sections:
             description: reserved
 
       - name: EARCRX_SPDIFIN_CTRL1
-        offset: 0x000d
+        offset: 0xd
         description: SPDIF in control 1
         fields:
           - bits: "31:24"
@@ -1875,7 +1875,7 @@ sections:
             description: sync 0 mask
 
       - name: EARCRX_SPDIFIN_CTRL2
-        offset: 0x000e
+        offset: 0xe
         description: SPDIF in control 2
         fields:
           - bits: "31:24"
@@ -1965,7 +1965,7 @@ sections:
             description: force value
 
       - name: EARCRX_SPDIFIN_CTRL3
-        offset: 0x000f
+        offset: 0xf
         description: SPDIF in control 3
         fields:
           - bits: "31:16"
@@ -1980,7 +1980,7 @@ sections:
             description: earc mode pb value
 
       - name: EARCRX_SPDIFIN_STAT0
-        offset: 0x0010
+        offset: 0x10
         description: SPDIF in status 0
         fields:
           - bits: "31"
@@ -2090,7 +2090,7 @@ sections:
             description: parity error
 
       - name: EARCRX_SPDIFIN_STAT1
-        offset: 0x0011
+        offset: 0x11
         description: SPDIF in status 1
         fields:
           - bits: "31:0"
@@ -2100,7 +2100,7 @@ sections:
             description: channel status or pcpd data based on stat_sel
 
       - name: EARCRX_SPDIFIN_STAT2
-        offset: 0x0012
+        offset: 0x12
         description: SPDIF in status 2
         fields:
           - bits: "31:0"
@@ -2110,7 +2110,7 @@ sections:
             description: z_width or frame_cnt based on stat_sel
 
       - name: EARCRX_DMAC_UBIT_CTRL0
-        offset: 0x0013
+        offset: 0x13
         description: DMAC user bit control 0
         fields:
           - bits: "31"
@@ -2170,7 +2170,7 @@ sections:
             description: user bit position in data
 
       - name: EARCRX_IU_RDATA
-        offset: 0x0014
+        offset: 0x14
         description: IU read data
         fields:
           - bits: "31:8"
@@ -2185,7 +2185,7 @@ sections:
             description: iu data (read only)
 
       - name: EARCRX_DMAC_UBIT_STAT0
-        offset: 0x0015
+        offset: 0x15
         description: DMAC user bit status 0
         fields:
           - bits: "31:0"
@@ -2195,7 +2195,7 @@ sections:
             description: user bit status 0
 
       - name: EARCRX_ERR_CORRECT_CTRL0
-        offset: 0x0016
+        offset: 0x16
         description: Error correct control 0
         fields:
           - bits: "31"
@@ -2280,7 +2280,7 @@ sections:
             description: force work mode enable
 
       - name: EARCRX_ERR_CORRECT_STAT0
-        offset: 0x0017
+        offset: 0x17
         description: Error correct status 0
         fields:
           - bits: "31:0"
@@ -2290,7 +2290,7 @@ sections:
             description: error correct status 0
 
       - name: EARCRX_ANA_RST_CTRL0
-        offset: 0x0018
+        offset: 0x18
         description: Analog reset control 0
         fields:
           - bits: "31"
@@ -2312,7 +2312,8 @@ sections:
             name: ana_rst_work_en_sel
             access: R/W
             default: "0"
-            description: "analog reset work enable: 0=from bit31, 1=from bit31 & top_work_en"
+            description: "analog reset work enable: 0=from bit31, 1=from bit31 &
+              top_work_en"
           - bits: "27"
             name: reserved
             access: R/W
@@ -2335,7 +2336,7 @@ sections:
             description: earcrx_div2 hold threshold
 
       - name: EARCRX_ANA_RST_CTRL1
-        offset: 0x0019
+        offset: 0x19
         description: Analog reset control 1
         fields:
           - bits: "31"
@@ -2380,7 +2381,7 @@ sections:
             description: filter tick time 2
 
       - name: EARCRX_SPDIFIN_CTRL4
-        offset: 0x0020
+        offset: 0x20
         description: SPDIF in control 4
         fields:
           - bits: "31"
@@ -2415,7 +2416,7 @@ sections:
             description: reserved
 
       - name: EARCRX_SPDIFIN_CTRL5
-        offset: 0x0021
+        offset: 0x21
         description: SPDIF in control 5
         fields:
           - bits: "31"
@@ -2460,7 +2461,7 @@ sections:
             description: unstable interrupt mask
 
       - name: EARCRX_SPDIFIN_CTRL6
-        offset: 0x0022
+        offset: 0x22
         description: SPDIF in control 6
         fields:
           - bits: "31:28"
@@ -2500,7 +2501,7 @@ sections:
             description: check time threshold
 
       - name: EARCRX_DMAC_SYNC_CTRL1
-        offset: 0x0023
+        offset: 0x23
         description: DMAC sync control 1
         fields:
           - bits: "31:19"
@@ -2530,7 +2531,7 @@ sections:
             description: dmac valid auto stable set threshold
 
       - name: EARCRX_SPDIFIN_SAMPLE_CTRL6
-        offset: 0x0024
+        offset: 0x24
         description: SPDIF in sample control 6
         fields:
           - bits: "31:18"
@@ -2560,7 +2561,7 @@ sections:
             description: stable cycle max percent (N/256)
 
       - name: EARCRX_DMAC_SYNC_CTRL2
-        offset: 0x0025
+        offset: 0x25
         description: DMAC sync control 2
         fields:
           - bits: "31"
@@ -2590,7 +2591,7 @@ sections:
             description: unstable t0 threshold
 
       - name: EARCRX_DMAC_SYNC_CTRL3
-        offset: 0x0026
+        offset: 0x26
         description: DMAC sync control 3
         fields:
           - bits: "31"
@@ -2620,7 +2621,7 @@ sections:
             description: unstable t1 threshold
 
       - name: EARCRX_DMAC_SYNC_CTRL4
-        offset: 0x0027
+        offset: 0x27
         description: DMAC sync control 4
         fields:
           - bits: "31"
@@ -2650,7 +2651,7 @@ sections:
             description: unstable t2 threshold
 
       - name: EARCRX_DMAC_SYNC_STAT1
-        offset: 0x0028
+        offset: 0x28
         description: DMAC sync status 1
         fields:
           - bits: "31"
@@ -2670,7 +2671,7 @@ sections:
             description: unstable t0 count
 
       - name: EARCRX_DMAC_SYNC_STAT2
-        offset: 0x0029
+        offset: 0x29
         description: DMAC sync status 2
         fields:
           - bits: "31"
@@ -2690,7 +2691,7 @@ sections:
             description: unstable t1 count
 
       - name: EARCRX_DMAC_SYNC_STAT3
-        offset: 0x002a
+        offset: 0x2a
         description: DMAC sync status 3
         fields:
           - bits: "31:19"
@@ -2722,7 +2723,7 @@ sections:
   TOP:
     registers0:
       - name: EARCRX_TOP_CTRL0
-        offset: 0x0000
+        offset: 0x0
         description: Top control 0
         fields:
           - bits: "31:10"
@@ -2777,7 +2778,7 @@ sections:
             description: dmacrx sqen force value
 
       - name: EARCRX_DMAC_INT_MASK
-        offset: 0x0001
+        offset: 0x1
         description: DMAC interrupt mask
         fields:
           - bits: "31:30"
@@ -2792,7 +2793,7 @@ sections:
             description: dmac interrupt mask
 
       - name: EARCRX_DMAC_INT_PENDING
-        offset: 0x0002
+        offset: 0x2
         description: DMAC interrupt pending
         fields:
           - bits: "31:30"
@@ -2807,7 +2808,7 @@ sections:
             description: dmac interrupt pending status
 
       - name: EARCRX_CMDC_INT_MASK
-        offset: 0x0003
+        offset: 0x3
         description: CMDC interrupt mask
         fields:
           - bits: "31:16"
@@ -2822,7 +2823,7 @@ sections:
             description: cmdc interrupt mask
 
       - name: EARCRX_CMDC_INT_PENDING
-        offset: 0x0004
+        offset: 0x4
         description: CMDC interrupt pending
         fields:
           - bits: "31:16"
@@ -2837,7 +2838,7 @@ sections:
             description: cmdc interrupt pending status
 
       - name: EARCRX_ANA_CTRL0
-        offset: 0x0005
+        offset: 0x5
         description: Analog control 0
         fields:
           - bits: "31"
@@ -2897,7 +2898,7 @@ sections:
             description: cmdcrx hysteresis trim
 
       - name: EARCRX_ANA_CTRL1
-        offset: 0x0006
+        offset: 0x6
         description: Analog control 1
         fields:
           - bits: "31:26"
@@ -2952,7 +2953,7 @@ sections:
             description: dmacrx sqcon
 
       - name: EARCRX_ANA_STAT0
-        offset: 0x0007
+        offset: 0x7
         description: Analog status 0
         fields:
           - bits: "31:0"
@@ -2962,7 +2963,7 @@ sections:
             description: analog status 0
 
       - name: EARCRX_PLL_CTRL0
-        offset: 0x0008
+        offset: 0x8
         description: PLL control 0
         fields:
           - bits: "31:30"
@@ -3022,7 +3023,7 @@ sections:
             description: pll dmacrx sqout reset_n select
 
       - name: EARCRX_PLL_CTRL1
-        offset: 0x0009
+        offset: 0x9
         description: PLL control 1
         fields:
           - bits: "31:30"
@@ -3082,7 +3083,7 @@ sections:
             description: reserved
 
       - name: EARCRX_PLL_CTRL2
-        offset: 0x000a
+        offset: 0xa
         description: PLL control 2
         fields:
           - bits: "31:12"
@@ -3122,7 +3123,7 @@ sections:
             description: pll ldo reference adjust
 
       - name: EARCRX_PLL_CTRL3
-        offset: 0x000b
+        offset: 0xb
         description: PLL control 3
         fields:
           - bits: "31:8"
@@ -3137,7 +3138,7 @@ sections:
             description: pll reserve
 
       - name: EARCRX_PLL_STAT0
-        offset: 0x000c
+        offset: 0xc
         description: PLL status 0
         fields:
           - bits: "31"

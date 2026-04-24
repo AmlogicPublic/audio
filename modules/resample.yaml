@@ -16,7 +16,7 @@ instances:
 
 registers0:
   - name: RESAMPLE_CTRL0
-    offset: 0x0000
+    offset: 0x0
     description: Resample reset control
     fields:
       - bits: "31:3"
@@ -41,7 +41,7 @@ registers0:
         description: Resample_top module software reset
 
   - name: RESAMPLE_CTRL1
-    offset: 0x0001
+    offset: 0x1
     description: Resample main control
     fields:
       - bits: "31:26"
@@ -68,12 +68,14 @@ registers0:
         name: in_msb
         access: R/W
         default: "0x17"
-        description: Input sample MSB index in 32-bit word (defines justification for fixed-point audio)
+        description: Input sample MSB index in 32-bit word (defines justification for
+          fixed-point audio)
       - bits: "12"
         name: output_en
         access: R/W
         default: "0"
-        description: Output path gate for muxed source; must align with upstream mux when multiple SRC feeds exist
+        description: Output path gate for muxed source; must align with upstream mux
+          when multiple SRC feeds exist
       - bits: "11"
         name: rsamp_en
         access: R/W
@@ -88,12 +90,14 @@ registers0:
         name: post_en
         access: R/W
         default: "0"
-        description: "Post-compensation IIR after interpolator; shapes image/ripple after SRC"
+        description: "Post-compensation IIR after interpolator; shapes image/ripple
+          after SRC"
       - bits: "8"
         name: inp_mux_mode
         access: R/W
         default: "0"
-        description: Qualifies how inp_mux is interpreted (e.g. static vs sequenced input selection)
+        description: Qualifies how inp_mux is interpreted (e.g. static vs sequenced
+          input selection)
       - bits: "7:4"
         name: reserved2
         access: R/W
@@ -106,7 +110,7 @@ registers0:
         description: Input source select for TODDR / direct-path mux into this SRC instance
 
   - name: RESAMPLE_CTRL2
-    offset: 0x0002
+    offset: 0x2
     description: Channel and filter tap control
     fields:
       - bits: "31:30"
@@ -141,7 +145,7 @@ registers0:
         description: Polyphase interpolator length (taps) — sets reconstruction quality
 
   - name: RESAMPLE_PHSINIT
-    offset: 0x0003
+    offset: 0x3
     description: Phase init control
     fields:
       - bits: "31:28"
@@ -153,10 +157,11 @@ registers0:
         name: init_phs
         access: R/W
         default: "0"
-        description: Initial fractional phase in NCO accumulator (fine-tunes start alignment with input stream)
+        description: Initial fractional phase in NCO accumulator (fine-tunes start
+          alignment with input stream)
 
   - name: RESAMPLE_PHSSTEP
-    offset: 0x0004
+    offset: 0x4
     description: Phase step control
     fields:
       - bits: "31"
@@ -168,10 +173,11 @@ registers0:
         name: rsamp_step
         access: R/W
         default: "0x8000000"
-        description: "NCO step per input sample: (Fs_in / down_ratio / Fs_out) × 2^28; drives output rate"
+        description: "NCO step per input sample: (Fs_in / down_ratio / Fs_out) × 2^28;
+          drives output rate"
 
   - name: RESAMPLE_SHIFT
-    offset: 0x0005
+    offset: 0x5
     description: Filter shift control
     fields:
       - bits: "31:24"
@@ -196,7 +202,7 @@ registers0:
         description: Right-shift after AA FIR (sum of taps can exceed 24-bit)
 
   - name: RESAMPLE_ADJ_CTRL0
-    offset: 0x0006
+    offset: 0x6
     description: Auto adjust control 0
     fields:
       - bits: "31:3"
@@ -208,12 +214,14 @@ registers0:
         name: adj_out_inv
         access: R/W
         default: "0"
-        description: Invert loop correction polarity if upstream clock relationship is reversed
+        description: Invert loop correction polarity if upstream clock relationship is
+          reversed
       - bits: "1"
         name: adj_force_en
         access: R/W
         default: "0"
-        description: "Inject adj_force_err / adj_ki_force for bench test; 0 uses live phase error"
+        description: "Inject adj_force_err / adj_ki_force for bench test; 0 uses live
+          phase error"
       - bits: "0"
         name: adj_en
         access: R/W
@@ -221,7 +229,7 @@ registers0:
         description: "Enable adaptive step tuning; disable for fixed-ratio open-loop SRC"
 
   - name: RESAMPLE_ADJ_CTRL1
-    offset: 0x0007
+    offset: 0x7
     description: Auto adjust control 1
     fields:
       - bits: "31:16"
@@ -236,7 +244,7 @@ registers0:
         description: Clamp on integrated correction (anti-windup / max pull-in)
 
   - name: RESAMPLE_ADJ_SFT
-    offset: 0x0008
+    offset: 0x8
     description: Auto adjust gain/shift control
     fields:
       - bits: "31:30"
@@ -248,7 +256,8 @@ registers0:
         name: adj_dif_sel
         access: R/W
         default: "0"
-        description: Which internal tap feeds the phase-error difference (alternate observation points)
+        description: Which internal tap feeds the phase-error difference (alternate
+          observation points)
       - bits: "28:24"
         name: adj_ki
         access: R/W
@@ -286,7 +295,7 @@ registers0:
         description: Adjustment output shift value
 
   - name: RESAMPLE_ADJ_IDET_LEN
-    offset: 0x0009
+    offset: 0x9
     description: Input detect window length
     fields:
       - bits: "31:0"
@@ -296,7 +305,7 @@ registers0:
         description: Samples averaged before updating input phase metric (noise vs response)
 
   - name: RESAMPLE_ADJ_FORCE
-    offset: 0x000a
+    offset: 0xa
     description: Forced phase error value
     fields:
       - bits: "31:0"
@@ -306,7 +315,7 @@ registers0:
         description: Synthetic error word driven into loop when adj_force_en=1
 
   - name: RESAMPLE_ADJ_KI_FORCE
-    offset: 0x000b
+    offset: 0xb
     description: Forced KI value
     fields:
       - bits: "31:0"
@@ -316,7 +325,7 @@ registers0:
         description: Overrides I-branch accumulator when forcing is enabled
 
   - name: RESAMPLE_WATCHDOG_THRD
-    offset: 0x000c
+    offset: 0xc
     description: Watchdog threshold
     fields:
       - bits: "31:0"
@@ -326,7 +335,7 @@ registers0:
         description: Cycle count without expected progress before watchdog event
 
   - name: RESAMPLE_DBG_INFO
-    offset: 0x000d
+    offset: 0xd
     description: Debug info control
     fields:
       - bits: "31:0"
@@ -336,7 +345,7 @@ registers0:
         description: Vendor-defined snapshot bus (see RTL tap list)
 
   - name: RESAMPLE_AOUT_FORCE
-    offset: 0x000e
+    offset: 0xe
     description: Forced output sample value
     fields:
       - bits: "31:0"
@@ -346,7 +355,7 @@ registers0:
         description: Constant driven to output when force mode engaged in debug
 
   - name: RESAMPLE_IRQ_CTRL
-    offset: 0x000f
+    offset: 0xf
     description: Interrupt control
     fields:
       - bits: "31:0"
@@ -356,7 +365,7 @@ registers0:
         description: Bit-per-event enables and polarity (exact map in IRQ RTL)
 
   - name: RESAMPLE_RO_STATUS
-    offset: 0x0010
+    offset: 0x10
     description: Status readback
     fields:
       - bits: "31:0"
@@ -366,7 +375,7 @@ registers0:
         description: "Packed: channel check err, idle, rsamp_fifo_over_cnt[7:0]"
 
   - name: RESAMPLE_RO_ADJ_FREQ
-    offset: 0x0011
+    offset: 0x11
     description: Adjusted frequency readback
     fields:
       - bits: "31:0"
@@ -376,7 +385,7 @@ registers0:
         description: Effective NCO correction term (observe lock vs free-run)
 
   - name: RESAMPLE_RO_ADJ_DIFF_BAK
-    offset: 0x0012
+    offset: 0x12
     description: Previous phase difference readback
     fields:
       - bits: "31:0"
@@ -386,7 +395,7 @@ registers0:
         description: Held error sample used in dual-edge or debounce logic
 
   - name: RESAMPLE_RO_ADJ_DIFF_DLT
-    offset: 0x0013
+    offset: 0x13
     description: Phase difference delta readback
     fields:
       - bits: "31:0"
@@ -396,7 +405,7 @@ registers0:
         description: First-difference of error; near zero when loop is steady
 
   - name: RESAMPLE_RO_ADJ_PHS_ERR
-    offset: 0x0014
+    offset: 0x14
     description: Phase error readback
     fields:
       - bits: "31:0"
@@ -406,7 +415,7 @@ registers0:
         description: Raw detector output before scaling (sign = early/late)
 
   - name: RESAMPLE_RO_ADJ_KI_OUT
-    offset: 0x0015
+    offset: 0x15
     description: KI output readback
     fields:
       - bits: "31:0"
@@ -416,7 +425,7 @@ registers0:
         description: I-branch accumulator (tracks DC clock offset)
 
   - name: RESAMPLE_RO_IN_CNT
-    offset: 0x0016
+    offset: 0x16
     description: Input sample counter
     fields:
       - bits: "31:0"
@@ -426,7 +435,7 @@ registers0:
         description: Use with ro_out_cnt to verify ratio and detect stalls
 
   - name: RESAMPLE_RO_OUT_CNT
-    offset: 0x0017
+    offset: 0x17
     description: Output sample counter
     fields:
       - bits: "31:0"
@@ -436,7 +445,7 @@ registers0:
         description: Monotonic count; mismatch vs input indicates drop/repeat
 
   - name: RESAMPLE_RO_ADJ_PHS_ERR_VAR
-    offset: 0x0018
+    offset: 0x18
     description: Phase error variance readback
     fields:
       - bits: "31:0"
@@ -446,7 +455,7 @@ registers0:
         description: Rolling variance estimate for monitoring PLL jitter
 
   - name: RESAMPLE_POST_COEF0
-    offset: 0x0020
+    offset: 0x20
     description: Post filter coefficient 0
     fields:
       - bits: "31:0"
@@ -456,7 +465,7 @@ registers0:
         description: IIR tap / biquad coef word 0 (layout per RTL)
 
   - name: RESAMPLE_POST_COEF1
-    offset: 0x0021
+    offset: 0x21
     description: Post filter coefficient 1
     fields:
       - bits: "31:0"
@@ -466,7 +475,7 @@ registers0:
         description: IIR tap / biquad coef word 1 (layout per RTL)
 
   - name: RESAMPLE_POST_COEF2
-    offset: 0x0022
+    offset: 0x22
     description: Post filter coefficient 2
     fields:
       - bits: "31:0"
@@ -476,7 +485,7 @@ registers0:
         description: IIR tap / biquad coef word 2
 
   - name: RESAMPLE_POST_COEF3
-    offset: 0x0023
+    offset: 0x23
     description: Post filter coefficient 3
     fields:
       - bits: "31:0"
@@ -486,7 +495,7 @@ registers0:
         description: IIR tap / biquad coef word 3
 
   - name: RESAMPLE_POST_COEF4
-    offset: 0x0024
+    offset: 0x24
     description: Post filter coefficient 4
     fields:
       - bits: "31:0"
@@ -496,7 +505,7 @@ registers0:
         description: IIR tap / biquad coef word 4
 
   - name: RESAMPLE_AA_COEF_ADDR
-    offset: 0x0030
+    offset: 0x30
     description: AA coefficient address
     fields:
       - bits: "31:0"
@@ -506,7 +515,7 @@ registers0:
         description: Word index before writing aa_coef_data
 
   - name: RESAMPLE_AA_COEF_DATA
-    offset: 0x0031
+    offset: 0x31
     description: AA coefficient data
     fields:
       - bits: "31:0"
@@ -516,7 +525,7 @@ registers0:
         description: Fixed-point tap at aa_coef_addr (symmetric half often implied)
 
   - name: RESAMPLE_SINC_COEF_ADDR
-    offset: 0x0040
+    offset: 0x40
     description: SINC coefficient address
     fields:
       - bits: "31:0"
@@ -526,7 +535,7 @@ registers0:
         description: Subfilter / phase bank index
 
   - name: RESAMPLE_SINC_COEF_DATA
-    offset: 0x0041
+    offset: 0x41
     description: SINC coefficient data
     fields:
       - bits: "31:0"

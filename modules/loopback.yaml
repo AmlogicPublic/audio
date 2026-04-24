@@ -4,14 +4,14 @@ parent_base: audio_top_ee
 instances:
   A:
     offset_base0: 0xb0
-    condition: { macro_path: ["loopback", "A", "imp"], eq: 1 }
+    condition: { macro_path: [ "loopback", "A", "imp" ], eq: 1 }
   B:
     offset_base0: 0x230
-    condition: { macro_path: ["loopback", "B", "imp"], eq: 1 }
+    condition: { macro_path: [ "loopback", "B", "imp" ], eq: 1 }
 
 registers0:
   - name: LB_{X}_CTRL0
-    offset: 0x00
+    offset: 0x0
     description: Loopback control 0
     fields:
       - bits: "31"
@@ -63,10 +63,11 @@ registers0:
         name: reg_dat_src_sel
         access: R/W
         default: "0x0"
-        description: "[5]:loopbackA out; [4]:pdmin; [3]:spdifin; [2]:tdmin_c; [1]:tdmin_b; [0]:tdmin_a"
+        description: "[5]:loopbackA out; [4]:pdmin; [3]:spdifin; [2]:tdmin_c;
+          [1]:tdmin_b; [0]:tdmin_a"
 
   - name: LB_{X}_CTRL1
-    offset: 0x01
+    offset: 0x1
     description: Loopback control 1
     fields:
       - bits: "31"
@@ -121,14 +122,17 @@ registers0:
         description: "1:spdifin_lb; 0:tdmin_lb"
 
   - name: LB_{X}_CTRL2
-    offset: 0x02
+    offset: 0x2
     description: Loopback data source control
     fields:
       - bits: "24:20"
         name: dat_src_sel
         access: R/W
         default: "0x00"
-        description: "0:tdmin_a; 1:tdmin_b; 2:tdmin_c; 3:spdifin; 4:pdmin; 5:fratv; 6:tdmin_lb; 7:loopback_a; 8:frhdmirx_spdif; 9:loopback_b; 10:spdifin_lb; 11:earc_rx_dmac; 12:frhdmirx_dsd; 13:resample_a; 14:resample_b; 15:vad"
+        description: "0:tdmin_a; 1:tdmin_b; 2:tdmin_c; 3:spdifin; 4:pdmin; 5:fratv;
+          6:tdmin_lb; 7:loopback_a; 8:frhdmirx_spdif; 9:loopback_b;
+          10:spdifin_lb; 11:earc_rx_dmac; 12:frhdmirx_dsd; 13:resample_a;
+          14:resample_b; 15:vad"
       - bits: "19:16"
         name: dat_ch_num
         access: R/W
@@ -141,7 +145,7 @@ registers0:
         description: "16bits match 16 ch, set 1 will sending out"
 
   - name: LB_{X}_CTRL3
-    offset: 0x03
+    offset: 0x3
     description: Loopback source control
     fields:
       - bits: "24:20"
@@ -161,7 +165,7 @@ registers0:
         description: "16bits match 16 ch, set 1 will sending out"
 
   - name: LB_{X}_DAT_ID0
-    offset: 0x04
+    offset: 0x4
     description: Data channel ID 4-7
     fields:
       - bits: "31:24"
@@ -186,7 +190,7 @@ registers0:
         description: data_ch4_id
 
   - name: LB_{X}_DAT_ID1
-    offset: 0x05
+    offset: 0x5
     description: Data channel ID 0-3
     fields:
       - bits: "31:24"
@@ -211,7 +215,7 @@ registers0:
         description: data_ch0_id
 
   - name: LB_{X}_DAT_ID2
-    offset: 0x06
+    offset: 0x6
     description: Data channel ID 8-11
     fields:
       - bits: "31:24"
@@ -236,7 +240,7 @@ registers0:
         description: data_ch8_id
 
   - name: LB_{X}_DAT_ID3
-    offset: 0x07
+    offset: 0x7
     description: Data channel ID 12-15
     fields:
       - bits: "31:24"
@@ -261,7 +265,7 @@ registers0:
         description: data_ch12_id
 
   - name: LB_{X}_LB_ID0
-    offset: 0x08
+    offset: 0x8
     description: Loopback channel ID 4-7
     fields:
       - bits: "31:24"
@@ -286,7 +290,7 @@ registers0:
         description: lb_data_ch4_id
 
   - name: LB_{X}_LB_ID1
-    offset: 0x09
+    offset: 0x9
     description: Loopback channel ID 0-3
     fields:
       - bits: "31:24"
@@ -311,7 +315,7 @@ registers0:
         description: lb_data_ch0_id
 
   - name: LB_{X}_LB_ID2
-    offset: 0x0a
+    offset: 0xa
     description: Loopback channel ID 8-11
     fields:
       - bits: "31:24"
@@ -336,7 +340,7 @@ registers0:
         description: lb_data_ch8_id
 
   - name: LB_{X}_LB_ID3
-    offset: 0x0b
+    offset: 0xb
     description: Loopback channel ID 12-15
     fields:
       - bits: "31:24"
@@ -361,17 +365,18 @@ registers0:
         description: lb_data_ch12_id
 
   - name: LB_{X}_STS
-    offset: 0x0c
+    offset: 0xc
     description: Loopback status
     fields:
       - bits: "31:0"
         name: status
         access: R
         default: "0x00000000"
-        description: "by reg_sts_sel: 0:zeros; 1:error/status flags; 2:insert_store_cnt_debug; 3:orig_store_cnt_debug"
+        description: "by reg_sts_sel: 0:zeros; 1:error/status flags;
+          2:insert_store_cnt_debug; 3:orig_store_cnt_debug"
 
   - name: LB_{X}_CHSYNC_CTRL_INSERT
-    offset: 0x0d
+    offset: 0xd
     description: Insert path channel sync control
     fields:
       - bits: "31"
@@ -411,7 +416,7 @@ registers0:
         description: "if receive 8 ch data, set it to 7"
 
   - name: LB_{X}_CHSYNC_CTRL_ORIG
-    offset: 0x0e
+    offset: 0xe
     description: Original path channel sync control
     fields:
       - bits: "31"

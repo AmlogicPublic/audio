@@ -9,7 +9,7 @@ instances:
 
 registers0:
   - name: EE_AUDIO_ACC_WRAPPER_TOP_CTL0
-    offset: 0x0000
+    offset: 0x0
     description: ACC wrapper top control 0
     fields:
       - bits: "31"
@@ -26,7 +26,8 @@ registers0:
         name: reg_cfg_load
         access: R/W
         default: "0"
-        description: enable/rst/ack_num/req_sel etc need to load at the same time when used dynamically
+        description: enable/rst/ack_num/req_sel etc need to load at the same time when
+          used dynamically
       - bits: "28:14"
         name: reserved
         access: R/W
@@ -36,7 +37,9 @@ registers0:
         name: reg_data_type
         access: R/W
         default: "0"
-        description: "0=split 64bits to 8 samples 8bit left-justified, 1=4 samples 16bit left-justified, 2=4 samples 16bit right-justified, 3=2 samples 32bit left-justified, 4=2 samples 32bit right-justified"
+        description: "0=split 64bits to 8 samples 8bit left-justified, 1=4 samples 16bit
+          left-justified, 2=4 samples 16bit right-justified, 3=2 samples 32bit
+          left-justified, 4=2 samples 32bit right-justified"
       - bits: "10:6"
         name: reg_data_msb
         access: R/W
@@ -46,7 +49,8 @@ registers0:
         name: reg_frddr_source
         access: R/W
         default: "0"
-        description: "0=frddr_ACC (mem->ACC config), 1=asrc/eq toddr (ACC->ACC config), 2-4=NC"
+        description: "0=frddr_ACC (mem->ACC config), 1=asrc/eq toddr (ACC->ACC config),
+          2-4=NC"
       - bits: "2"
         name: reg_afifo_in_rst
         access: R/W
@@ -64,7 +68,7 @@ registers0:
         description: acc module enable (0=bypass acc)
 
   - name: EE_AUDIO_ACC_WRAPPER_TOP_CTL1
-    offset: 0x0001
+    offset: 0x1
     description: ACC wrapper top control 1
     fields:
       - bits: "31:30"
@@ -164,7 +168,7 @@ registers0:
         description: enable ch1 data for ACC core
 
   - name: EE_AUDIO_ACC_WRAPPER_TOP_CTL2
-    offset: 0x0002
+    offset: 0x2
     description: ACC wrapper top control 2
     fields:
       - bits: "31"
@@ -176,27 +180,32 @@ registers0:
         name: reg_ignore_lut_table_finish
         access: R/W
         default: "0"
-        description: "DEBUG: set to 1 if acc supports <1 outstanding sample, may render incorrect 1st sample output"
+        description: "DEBUG: set to 1 if acc supports <1 outstanding sample, may render
+          incorrect 1st sample output"
       - bits: "29"
         name: reg_ignore_outstanding_limit
         access: R/W
         default: "0"
-        description: "DEBUG: set to 0 if processed-data-out and original_substitute_data have FIXED sample phase diff"
+        description: "DEBUG: set to 0 if processed-data-out and original_substitute_data
+          have FIXED sample phase diff"
       - bits: "28"
         name: reg_ignore_output_sampling_input_done
         access: R/W
         default: "0"
-        description: "DEBUG: set to 0 if processed-data-out and original_substitute_data have 0 sample phase diff"
+        description: "DEBUG: set to 0 if processed-data-out and original_substitute_data
+          have 0 sample phase diff"
       - bits: "27"
         name: reg_end_strategy
         access: R/W
         default: "0"
-        description: "DEBUG: 0=wrapper hold strategy (default), 1=send end to ACC core (not tested)"
+        description: "DEBUG: 0=wrapper hold strategy (default), 1=send end to ACC core
+          (not tested)"
       - bits: "26"
         name: reg_ignore_auto_sample_lock
         access: R/W
         default: "0"
-        description: "DEBUG: for asrc(sample rate!=1), use total_chan=num chan_en, ignore auto sample lock"
+        description: "DEBUG: for asrc(sample rate!=1), use total_chan=num chan_en,
+          ignore auto sample lock"
       - bits: "25:20"
         name: reserved
         access: R/W
@@ -206,7 +215,8 @@ registers0:
         name: reg_ack_num
         access: R/W
         default: "0"
-        description: for calculated 1st_ack, discard first few dat_in before 1st_ack (needed for channel-sync)
+        description: for calculated 1st_ack, discard first few dat_in before 1st_ack
+          (needed for channel-sync)
       - bits: "11"
         name: reg_req_sel2_en
         access: R/W
@@ -216,7 +226,8 @@ registers0:
         name: reg_req_sel2
         access: R/W
         default: "0"
-        description: "0=toddr_ACC, 1=peer ACC (eq/resample), 2=tdmout_a, 3=tdmout_b, 4=spdifout, 5-7=NC"
+        description: "0=toddr_ACC, 1=peer ACC (eq/resample), 2=tdmout_a, 3=tdmout_b,
+          4=spdifout, 5-7=NC"
       - bits: "7"
         name: reg_req_sel1_en
         access: R/W
@@ -239,7 +250,7 @@ registers0:
         description: "0=toddr_ACC, 1=peer ACC, 2=tdmout_a, 3=tdmout_b, 4=spdifout, 5-7=NC"
 
   - name: EE_AUDIO_ACC_WRAPPER_TOP_CTL3
-    offset: 0x0003
+    offset: 0x3
     description: ACC wrapper top control 3 - channel select for ch1-8
     fields:
       - bits: "31:28"
@@ -284,7 +295,7 @@ registers0:
         description: ACC core ch1 select (DDR ch1~ch16)
 
   - name: EE_AUDIO_ACC_WRAPPER_TOP_CTL4
-    offset: 0x0004
+    offset: 0x4
     description: ACC wrapper top control 4 - channel select for ch9-16
     fields:
       - bits: "31:28"
@@ -329,7 +340,7 @@ registers0:
         description: ACC core ch9 select (DDR ch1~ch16)
 
   - name: EE_AUDIO_ACC_WRAPPER_STAT0
-    offset: 0x0010
+    offset: 0x10
     description: ACC wrapper status 0
     fields:
       - bits: "31:28"
@@ -449,7 +460,7 @@ registers0:
         description: afifo out count
 
   - name: EE_AUDIO_ACC_WRAPPER_STAT1
-    offset: 0x0011
+    offset: 0x11
     description: ACC wrapper status 1
     fields:
       - bits: "31:27"

@@ -4,14 +4,14 @@ parent_base: audio_top_ee
 instances:
   A:
     offset_base0: 0x200
-    condition: { macro_path: ["hdmirx", "A", "imp"], eq: 1 }
+    condition: { macro_path: [ "hdmirx", "A", "imp" ], eq: 1 }
   B:
     offset_base0: 0x260
-    condition: { macro_path: ["hdmirx", "B", "imp"], eq: 1 }
+    condition: { macro_path: [ "hdmirx", "B", "imp" ], eq: 1 }
 
 registers0:
   - name: FRHDMIRX_{X}_CTRL0
-    offset: 0x00
+    offset: 0x0
     description: HDMI-RX audio front-end control register
     fields:
       - bits: "31"
@@ -53,7 +53,8 @@ registers0:
         name: reg_nonpcm2pcm_th
         access: R/W
         default: "0x000"
-        description: "when detected NonPcm mode, if long time didn't detect PaPb again, generate interrupt"
+        description: "when detected NonPcm mode, if long time didn't detect PaPb again,
+          generate interrupt"
       - bits: "11:8"
         name: reg_ch_status_sel
         access: R/W
@@ -96,7 +97,7 @@ registers0:
         description: "0:disable invert; 1:enable"
 
   - name: FRHDMIRX_{X}_CTRL1
-    offset: 0x01
+    offset: 0x1
     description: HDMI-RX audio front-end control register
     fields:
       - bits: "31"
@@ -111,7 +112,7 @@ registers0:
         description: "mask each interrupt"
 
   - name: FRHDMIRX_{X}_CTRL2
-    offset: 0x02
+    offset: 0x2
     description: HDMI-RX audio front-end control register
     fields:
       - bits: "31"
@@ -181,14 +182,15 @@ registers0:
         description: ch0_out_en
 
   - name: FRHDMIRX_{X}_CTRL3
-    offset: 0x03
+    offset: 0x3
     description: HDMI-RX audio front-end control register
     fields:
       - bits: "30:28"
         name: ch7_sel
         access: R/W
         default: "0x0"
-        description: "for dsd, 0:left lane0; 1:right lane0; 2:left lane1; 3:right lane1; ..."
+        description: "for dsd, 0:left lane0; 1:right lane0; 2:left lane1; 3:right lane1;
+          ..."
       - bits: "26:24"
         name: ch6_sel
         access: R/W
@@ -226,7 +228,7 @@ registers0:
         description: ch0_sel
 
   - name: FRHDMIRX_{X}_CTRL4
-    offset: 0x04
+    offset: 0x4
     description: HDMI-RX audio front-end control register
     fields:
       - bits: "31:24"
@@ -251,7 +253,7 @@ registers0:
         description: "mask 8 channel 0 sync"
 
   - name: FRHDMIRX_{X}_CTRL5
-    offset: 0x05
+    offset: 0x5
     description: HDMI-RX audio front-end control register
     fields:
       - bits: "27:20"
@@ -276,7 +278,7 @@ registers0:
         description: stable_cyc_max
 
   - name: FRHDMIRX_{X}_STAT0
-    offset: 0x06
+    offset: 0x6
     description: HDMI-RX audio front-end status register
     fields:
       - bits: "31"
@@ -288,10 +290,12 @@ registers0:
         name: r_interrupt_status
         access: R
         default: "0x00"
-        description: "interrupt status; [7]:find PaPb; [6]:valid changed; [5]:nonpcm to pcm; [4]:Pc/Pd changed; [3]:CH status changed; [2]:sample mode changed; [1]:parity error; [0]:overflow"
+        description: "interrupt status; [7]:find PaPb; [6]:valid changed; [5]:nonpcm to
+          pcm; [4]:Pc/Pd changed; [3]:CH status changed; [2]:sample mode
+          changed; [1]:parity error; [0]:overflow"
 
   - name: FRHDMIRX_{X}_STAT1
-    offset: 0x07
+    offset: 0x7
     description: HDMI-RX audio front-end status register
     fields:
       - bits: "31:0"
@@ -301,7 +305,7 @@ registers0:
         description: "channel status by reg_ch_status_sel"
 
   - name: FRHDMIRX_{X}_STAT2
-    offset: 0x08
+    offset: 0x8
     description: HDMI-RX audio front-end status register
     fields:
       - bits: "31:0"
@@ -311,7 +315,7 @@ registers0:
         description: "debug status"
 
   - name: FRHDMIRX_{X}_MUTE_VAL
-    offset: 0x09
+    offset: 0x9
     description: HDMI-RX audio mute value register
     fields:
       - bits: "31:0"

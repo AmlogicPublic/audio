@@ -9,7 +9,7 @@ instances:
 
 registers0:
   - name: PDM_CTRL
-    offset: 0x0000
+    offset: 0x0
     description: PDM control
     fields:
       - bits: "31"
@@ -69,7 +69,7 @@ registers0:
         description: PDM channel enable. Each bit for one channel
 
   - name: PDM_HCIC_CTRL1
-    offset: 0x0001
+    offset: 0x1
     description: HCIC control 1
     fields:
       - bits: "31"
@@ -109,7 +109,7 @@ registers0:
         description: HCIC stage number. Must be 3~9
 
   - name: PDM_HCIC_CTRL2
-    offset: 0x0002
+    offset: 0x2
     description: HCIC control 2
     fields:
       - bits: "31:0"
@@ -119,7 +119,7 @@ registers0:
         description: HCIC control 2
 
   - name: PDM_F1_CTRL
-    offset: 0x0003
+    offset: 0x3
     description: Filter 1 control
     fields:
       - bits: "31"
@@ -154,7 +154,7 @@ registers0:
         description: Filter 1 stage number
 
   - name: PDM_F2_CTRL
-    offset: 0x0004
+    offset: 0x4
     description: Filter 2 control
     fields:
       - bits: "31"
@@ -189,7 +189,7 @@ registers0:
         description: Filter 2 stage number
 
   - name: PDM_F3_CTRL
-    offset: 0x0005
+    offset: 0x5
     description: Filter 3 control
     fields:
       - bits: "31"
@@ -224,7 +224,7 @@ registers0:
         description: Filter 3 stage number
 
   - name: PDM_HPF_CTRL
-    offset: 0x0006
+    offset: 0x6
     description: HPF control
     fields:
       - bits: "31"
@@ -249,7 +249,7 @@ registers0:
         description: HPF output factor
 
   - name: PDM_CHAN_CTRL
-    offset: 0x0007
+    offset: 0x7
     description: Channel pointer control 0-3
     fields:
       - bits: "31:24"
@@ -274,7 +274,7 @@ registers0:
         description: Chan0 sample pointer vs PDM_DCLK rise edge
 
   - name: PDM_CHAN_CTRL1
-    offset: 0x0008
+    offset: 0x8
     description: Channel pointer control 4-7
     fields:
       - bits: "31:24"
@@ -299,7 +299,7 @@ registers0:
         description: Chan4 sample pointer vs PDM_DCLK rise edge
 
   - name: PDM_COEFF_ADDR
-    offset: 0x0009
+    offset: 0x9
     description: Coefficient address
     fields:
       - bits: "31:9"
@@ -314,7 +314,7 @@ registers0:
         description: Address for coefficient data R/W
 
   - name: PDM_COEFF_DATA
-    offset: 0x000a
+    offset: 0xa
     description: Coefficient data
     fields:
       - bits: "31:0"
@@ -324,7 +324,7 @@ registers0:
         description: Write/read data to coefficient memory
 
   - name: PDM_CLKG_CTRL
-    offset: 0x000b
+    offset: 0xb
     description: Clock gating control
     fields:
       - bits: "31:7"
@@ -369,7 +369,7 @@ registers0:
         description: cts_pdm_clk auto clock gating
 
   - name: PDM_STS
-    offset: 0x000c
+    offset: 0xc
     description: PDM status
     fields:
       - bits: "31:16"
@@ -404,7 +404,7 @@ registers0:
         description: HCIC output overflow. CTS_PDM_CLK too slow
 
   - name: PDM_MUTE_VALUE
-    offset: 0x000d
+    offset: 0xd
     description: Mute value
     fields:
       - bits: "31:0"
@@ -414,7 +414,7 @@ registers0:
         description: Mute value when mute_mask=1
 
   - name: PDM_MASK_NUM
-    offset: 0x000e
+    offset: 0xe
     description: Startup mask number
     fields:
       - bits: "31:16"
@@ -429,7 +429,7 @@ registers0:
         description: Mask invalid data count during filter init
 
   - name: PDM_CHAN_CTRL2
-    offset: 0x000f
+    offset: 0xf
     description: Channel pointer control 2
     fields:
       - bits: "31:8"
@@ -444,7 +444,7 @@ registers0:
         description: Start filter pointer vs PDM_DCLK rise edge
 
   - name: PDM_HPF_GAIN_CTRL
-    offset: 0x0010
+    offset: 0x10
     description: HPF gain control register
     fields:
       - bits: "31:0"

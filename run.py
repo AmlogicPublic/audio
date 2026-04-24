@@ -13,7 +13,7 @@ from typing import Any
 
 import yaml
 
-from config import CHIP, MODULE_TREE, CLK_INPUTS
+from config_A9 import CHIP, MODULE_TREE, CLK_INPUTS
 
 
 DESC_DIR = Path("modules") / "desc"

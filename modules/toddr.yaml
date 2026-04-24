@@ -5,27 +5,27 @@ instances:
   A:
     offset_base0: 0x40
     chnum_offset: 0x300
-    condition: { macro_path: ["toddr", "A", "imp"], eq: 1 }
+    condition: { macro_path: [ "toddr", "A", "imp" ], eq: 1 }
   B:
     offset_base0: 0x50
     chnum_offset: 0x310
-    condition: { macro_path: ["toddr", "B", "imp"], eq: 1 }
+    condition: { macro_path: [ "toddr", "B", "imp" ], eq: 1 }
   C:
     offset_base0: 0x60
     chnum_offset: 0x320
-    condition: { macro_path: ["toddr", "C", "imp"], eq: 1 }
+    condition: { macro_path: [ "toddr", "C", "imp" ], eq: 1 }
   D:
     offset_base0: 0x210
     chnum_offset: 0x330
-    condition: { macro_path: ["toddr", "D", "imp"], eq: 1 }
+    condition: { macro_path: [ "toddr", "D", "imp" ], eq: 1 }
   E:
     offset_base0: 0x240
     chnum_offset: 0x340
-    condition: { macro_path: ["toddr", "E", "imp"], eq: 1 }
+    condition: { macro_path: [ "toddr", "E", "imp" ], eq: 1 }
 
 registers0:
   - name: TODDR_{X}_CTRL0
-    offset: 0x00
+    offset: 0x0
     description: TODDR control 0
     fields:
       - bits: "31"
@@ -57,7 +57,9 @@ registers0:
         name: int_mask
         access: R/W
         default: "0x00"
-        description: "[21]:fifo overflow write; [20]:fifo overflow read; [19]:int_addr once; [18]:int_addr repeat; [17]:match int_addr; [16]:match finish_addr"
+        description: "[21]:fifo overflow write; [20]:fifo overflow read; [19]:int_addr
+          once; [18]:int_addr repeat; [17]:match int_addr; [16]:match
+          finish_addr"
       - bits: "15:13"
         name: reg_toddr_sel
         access: R/W
@@ -90,14 +92,17 @@ registers0:
         description: "Ddr bus ugt bit"
 
   - name: TODDR_{X}_CTRL1
-    offset: 0x01
+    offset: 0x1
     description: TODDR control 1
     fields:
       - bits: "30:26"
         name: src_sel
         access: R/W
         default: "0x00"
-        description: "0:tdmin_a; 1:tdmin_b; 2:tdmin_c; 3:spdifin; 4:pdmin; 5:fratv; 6:tdmin_lb; 7:loopback_a; 8:frhdmirx_spdif; 9:loopback_b; 10:spdifin_lb; 11:earc_rx_dmac; 12:frhdmirx_dsd; 13:resample_a; 14:resample_b; 15:vad"
+        description: "0:tdmin_a; 1:tdmin_b; 2:tdmin_c; 3:spdifin; 4:pdmin; 5:fratv;
+          6:tdmin_lb; 7:loopback_a; 8:frhdmirx_spdif; 9:loopback_b;
+          10:spdifin_lb; 11:earc_rx_dmac; 12:frhdmirx_dsd; 13:resample_a;
+          14:resample_b; 15:vad"
       - bits: "25"
         name: force_finish
         access: R/W
@@ -107,7 +112,8 @@ registers0:
         name: reg_fifo_start_rd_th
         access: R/W
         default: "0x000"
-        description: "when fifo_cnt greater than this, start read from fifo and write to DDR"
+        description: "when fifo_cnt greater than this, start read from fifo and write to
+          DDR"
       - bits: "11:8"
         name: reg_status_sel
         access: R/W
@@ -120,7 +126,7 @@ registers0:
         description: "clear each bits of int_status register"
 
   - name: TODDR_{X}_START_ADDR
-    offset: 0x02
+    offset: 0x2
     description: Buffer A start address
     fields:
       - bits: "31:0"
@@ -130,7 +136,7 @@ registers0:
         description: "buff_A start address, ignore [2:0]"
 
   - name: TODDR_{X}_FINISH_ADDR
-    offset: 0x03
+    offset: 0x3
     description: Buffer A finish address
     fields:
       - bits: "31:0"
@@ -140,7 +146,7 @@ registers0:
         description: "buff_A finish address, ignore [2:0]"
 
   - name: TODDR_{X}_INT_ADDR
-    offset: 0x04
+    offset: 0x4
     description: Interrupt address/count
     fields:
       - bits: "31:0"
@@ -150,7 +156,7 @@ registers0:
         description: "usage A: as an address of interrupt; usage B: as a count of interrupt"
 
   - name: TODDR_{X}_STATUS1
-    offset: 0x05
+    offset: 0x5
     description: TODDR status 1
     fields:
       - bits: "25:23"
@@ -182,20 +188,22 @@ registers0:
         name: int_status
         access: R/W
         default: "0x00"
-        description: "when irq generate, related bit changed to 1, clear by reg_int_status_clr"
+        description: "when irq generate, related bit changed to 1, clear by
+          reg_int_status_clr"
 
   - name: TODDR_{X}_STATUS2
-    offset: 0x06
+    offset: 0x6
     description: TODDR status 2
     fields:
       - bits: "31:0"
         name: status2
         access: R/W
         default: "0x00000000"
-        description: "by reg_status_sel: 0:current ddr write addr; 1:next finish addr; 2~9:various status"
+        description: "by reg_status_sel: 0:current ddr write addr; 1:next finish addr;
+          2~9:various status"
 
   - name: TODDR_{X}_START_ADDRB
-    offset: 0x07
+    offset: 0x7
     description: Buffer B start address
     fields:
       - bits: "31:0"
@@ -205,7 +213,7 @@ registers0:
         description: "buff_B start address, ignore [2:0]"
 
   - name: TODDR_{X}_FINISH_ADDRB
-    offset: 0x08
+    offset: 0x8
     description: Buffer B finish address
     fields:
       - bits: "31:0"
@@ -215,7 +223,7 @@ registers0:
         description: "buff_B finish address, ignore [2:0]"
 
   - name: TODDR_{X}_INIT_ADDR
-    offset: 0x09
+    offset: 0x9
     description: Initial write address
     fields:
       - bits: "31:0"
@@ -225,7 +233,7 @@ registers0:
         description: "initial address, the first ddr address after enable"
 
   - name: TODDR_{X}_CTRL2
-    offset: 0x0a
+    offset: 0xa
     description: TODDR control 2
     fields:
       - bits: "31"
@@ -242,7 +250,8 @@ registers0:
         name: insert_chnum
         access: R/W
         default: "0x0"
-        description: "3:replace data[9:0] to chnum[9:0]; 2:replace data[3:0]; 1:replace data[0]; 0:not replace"
+        description: "3:replace data[9:0] to chnum[9:0]; 2:replace data[3:0]; 1:replace
+          data[0]; 0:not replace"
       - bits: "23:16"
         name: int_mode
         access: R/W
@@ -255,7 +264,7 @@ registers0:
         description: "hold read start offset"
 
   - name: TODDR_{X}_AADDR
-    offset: 0x0b
+    offset: 0xb
     description: Address high bits control
     fields:
       - bits: "21:20"
@@ -290,7 +299,7 @@ registers0:
         description: "Start_addr[33:32]"
 
   - name: TODDR_{X}_STATUS3
-    offset: 0x0c
+    offset: 0xc
     description: TODDR status 3
     fields:
       - bits: "29:28"
@@ -336,7 +345,7 @@ registers0:
 
 chnum_registers0:
   - name: TODDR_{X}_CHNUM_ID0
-    offset: 0x00
+    offset: 0x0
     description: Channel ID 0-3
     fields:
       - bits: "31:24"
@@ -361,7 +370,7 @@ chnum_registers0:
         description: ID of ch0
 
   - name: TODDR_{X}_CHNUM_ID1
-    offset: 0x01
+    offset: 0x1
     description: Channel ID 4-7
     fields:
       - bits: "31:24"
@@ -386,7 +395,7 @@ chnum_registers0:
         description: ID of ch4
 
   - name: TODDR_{X}_CHNUM_ID2
-    offset: 0x02
+    offset: 0x2
     description: Channel ID 8-11
     fields:
       - bits: "31:24"
@@ -411,7 +420,7 @@ chnum_registers0:
         description: ID of ch8
 
   - name: TODDR_{X}_CHNUM_ID3
-    offset: 0x03
+    offset: 0x3
     description: Channel ID 12-15
     fields:
       - bits: "31:24"
@@ -436,7 +445,7 @@ chnum_registers0:
         description: ID of ch12
 
   - name: TODDR_{X}_CHNUM_ID4
-    offset: 0x04
+    offset: 0x4
     description: Channel ID 16-19
     fields:
       - bits: "31:24"
@@ -461,7 +470,7 @@ chnum_registers0:
         description: ID of ch16
 
   - name: TODDR_{X}_CHNUM_ID5
-    offset: 0x05
+    offset: 0x5
     description: Channel ID 20-23
     fields:
       - bits: "31:24"
@@ -486,7 +495,7 @@ chnum_registers0:
         description: ID of ch20
 
   - name: TODDR_{X}_CHNUM_ID6
-    offset: 0x06
+    offset: 0x6
     description: Channel ID 24-27
     fields:
       - bits: "31:24"
@@ -511,7 +520,7 @@ chnum_registers0:
         description: ID of ch24
 
   - name: TODDR_{X}_CHNUM_ID7
-    offset: 0x07
+    offset: 0x7
     description: Channel ID 28-31
     fields:
       - bits: "31:24"
@@ -536,7 +545,7 @@ chnum_registers0:
         description: ID of ch28
 
   - name: TODDR_{X}_CHSYNC_CTRL
-    offset: 0x0f
+    offset: 0xf
     description: Channel sync control
     fields:
       - bits: "31"
@@ -568,7 +577,8 @@ chnum_registers0:
         name: debug_en0
         access: R/W
         default: "0"
-        description: "for BUF_MODE only; 1:send chnum info from input; 0:generate new chnum info"
+        description: "for BUF_MODE only; 1:send chnum info from input; 0:generate new
+          chnum info"
       - bits: "7:0"
         name: chnum_max
         access: R/W

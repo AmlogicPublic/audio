@@ -4,7 +4,7 @@ offset_base0: 0x390
 
 registers0:
   - name: DAT_PAD_CTRL0
-    offset: 0x00
+    offset: 0x0
     description: TDM data pad control register
     fields:
       - bits: "28:24"
@@ -29,7 +29,7 @@ registers0:
         description: "tdmin_a dat_in bit0 sel; 0~31: sel TDM_D0~TDM_D31"
 
   - name: DAT_PAD_CTRL1
-    offset: 0x01
+    offset: 0x1
     description: TDM data pad control register
     fields:
       - bits: "28:24"
@@ -54,7 +54,7 @@ registers0:
         description: "tdmin_a dat_in bit4 sel"
 
   - name: DAT_PAD_CTRL2
-    offset: 0x02
+    offset: 0x2
     description: TDM data pad control register
     fields:
       - bits: "28:24"
@@ -79,7 +79,7 @@ registers0:
         description: "tdmin_b dat_in bit0 sel; 0~31: sel TDM_D0~TDM_D31"
 
   - name: DAT_PAD_CTRL3
-    offset: 0x03
+    offset: 0x3
     description: TDM data pad control register
     fields:
       - bits: "28:24"
@@ -104,7 +104,7 @@ registers0:
         description: "tdmin_b dat_in bit4 sel"
 
   - name: DAT_PAD_CTRL4
-    offset: 0x04
+    offset: 0x4
     description: TDM data pad control register
     fields:
       - bits: "28:24"
@@ -129,7 +129,7 @@ registers0:
         description: "tdmin_c dat_in bit0 sel; 0~31: sel TDM_D0~TDM_D31"
 
   - name: DAT_PAD_CTRL5
-    offset: 0x05
+    offset: 0x5
     description: TDM data pad control register
     fields:
       - bits: "28:24"
@@ -154,14 +154,15 @@ registers0:
         description: "tdmin_c dat_in bit4 sel"
 
   - name: DAT_PAD_CTRL6
-    offset: 0x06
+    offset: 0x6
     description: TDM data pad control register
     fields:
       - bits: "29:24"
         name: tdm_d3_out_src_sel
         access: R/W
         default: "0x00"
-        description: "TDM_D3 out src sel; 0~15:tdmout_a lane0~15; 16~31:tdmout_b lane0~15; 32~47:tdmout_c lane0~15; 48~63:tdmout_d lane0~15"
+        description: "TDM_D3 out src sel; 0~15:tdmout_a lane0~15; 16~31:tdmout_b
+          lane0~15; 32~47:tdmout_c lane0~15; 48~63:tdmout_d lane0~15"
       - bits: "21:16"
         name: tdm_d2_out_src_sel
         access: R/W
@@ -179,7 +180,7 @@ registers0:
         description: "TDM_D0 out src sel"
 
   - name: DAT_PAD_CTRL7
-    offset: 0x07
+    offset: 0x7
     description: TDM data pad control register
     fields:
       - bits: "29:24"
@@ -204,7 +205,7 @@ registers0:
         description: "TDM_D4 out src sel"
 
   - name: DAT_PAD_CTRL8
-    offset: 0x08
+    offset: 0x8
     description: TDM data pad control register
     fields:
       - bits: "29:24"
@@ -229,7 +230,7 @@ registers0:
         description: "TDM_D8 out src sel"
 
   - name: DAT_PAD_CTRL9
-    offset: 0x09
+    offset: 0x9
     description: TDM data pad control register
     fields:
       - bits: "29:24"
@@ -254,7 +255,7 @@ registers0:
         description: "TDM_D12 out src sel"
 
   - name: DAT_PAD_CTRLA
-    offset: 0x0a
+    offset: 0xa
     description: TDM data pad control register
     fields:
       - bits: "29:24"
@@ -279,7 +280,7 @@ registers0:
         description: "TDM_D16 out src sel"
 
   - name: DAT_PAD_CTRLB
-    offset: 0x0b
+    offset: 0xb
     description: TDM data pad control register
     fields:
       - bits: "29:24"
@@ -304,7 +305,7 @@ registers0:
         description: "TDM_D20 out src sel"
 
   - name: DAT_PAD_CTRLC
-    offset: 0x0c
+    offset: 0xc
     description: TDM data pad control register
     fields:
       - bits: "29:24"
@@ -329,7 +330,7 @@ registers0:
         description: "TDM_D24 out src sel"
 
   - name: DAT_PAD_CTRLD
-    offset: 0x0d
+    offset: 0xd
     description: TDM data pad control register
     fields:
       - bits: "29:24"
@@ -354,7 +355,7 @@ registers0:
         description: "TDM_D28 out src sel"
 
   - name: DAT_PAD_CTRLE
-    offset: 0x0e
+    offset: 0xe
     description: TDM data pad control register
     fields:
       - bits: "31"
@@ -519,7 +520,7 @@ registers0:
         description: "TDM_D0 oen sel; 0:reg_oen_val bit0; 1:from TDMOUT"
 
   - name: DAT_PAD_CTRLF
-    offset: 0x0f
+    offset: 0xf
     description: TDM data pad control register
     fields:
       - bits: "31:0"

@@ -1,16 +1,16 @@
 module: eq_drc
 
 module_condition:
-  macro_path: ["eq_drc", "static"]
+  macro_path: [ "eq_drc", "static" ]
   eq: 1
 
 arch_condition:
-  macro_path: ["eq_drc", "arch"]
+  macro_path: [ "eq_drc", "arch" ]
   equals: reg_dac
 
 registers0:
   - name: AED_COEF_RAM_CNTL
-    offset: 0x0000
+    offset: 0x0
     description: AED coefficient RAM control
     fields:
       - bits: "31:10"
@@ -35,7 +35,7 @@ registers0:
         description: "0: command finished; 1: command wait to be done"
 
   - name: AED_COEF_RAM_DATA
-    offset: 0x0001
+    offset: 0x1
     description: AED coefficient RAM data
     fields:
       - bits: "31:26"
@@ -50,7 +50,7 @@ registers0:
         description: Read from coef ram or write to coef ram
 
   - name: AED_EQ_EN
-    offset: 0x0002
+    offset: 0x2
     description: AED EQ enable
     fields:
       - bits: "31:2"
@@ -70,7 +70,7 @@ registers0:
         description: "Enable EQ for ch1 and ch2. 1: enable, 0: bypass"
 
   - name: AED_EQ_TAP_CNTL
-    offset: 0x0003
+    offset: 0x3
     description: AED EQ tap control
     fields:
       - bits: "31:10"
@@ -90,7 +90,7 @@ registers0:
         description: Set the tap for EQ1
 
   - name: AED_EQ_VOLUME
-    offset: 0x0004
+    offset: 0x4
     description: AED EQ volume
     fields:
       - bits: "31:30"
@@ -120,7 +120,7 @@ registers0:
         description: Channel 1 volume
 
   - name: AED_EQ_VOLUME_SLEW_CNT
-    offset: 0x0005
+    offset: 0x5
     description: AED EQ volume slew count
     fields:
       - bits: "31:12"
@@ -135,7 +135,7 @@ registers0:
         description: Control volume change and mute ramp rate
 
   - name: AED_MUTE
-    offset: 0x0006
+    offset: 0x6
     description: AED mute control
     fields:
       - bits: "31"
@@ -160,7 +160,7 @@ registers0:
         description: Mute channel 1
 
   - name: AED_DRC_CNTL
-    offset: 0x0007
+    offset: 0x7
     description: AED DRC control
     fields:
       - bits: "31:6"
@@ -190,7 +190,7 @@ registers0:
         description: "Enable post DRC. 1: enable, 0: bypass"
 
   - name: AED_DRC_RMS_COEF0
-    offset: 0x0008
+    offset: 0x8
     description: AED DRC RMS coefficient 0
     fields:
       - bits: "31:26"
@@ -205,7 +205,7 @@ registers0:
         description: Coefficient for power calculation filter
 
   - name: AED_DRC_RMS_COEF1
-    offset: 0x0009
+    offset: 0x9
     description: AED DRC RMS coefficient 1
     fields:
       - bits: "31:26"
@@ -220,7 +220,7 @@ registers0:
         description: Coefficient for power calculation filter
 
   - name: AED_DRC_THD0
-    offset: 0x000a
+    offset: 0xa
     description: AED DRC threshold 0
     fields:
       - bits: "31:0"
@@ -230,7 +230,7 @@ registers0:
         description: Power threshold 0 for DRC
 
   - name: AED_DRC_THD1
-    offset: 0x000b
+    offset: 0xb
     description: AED DRC threshold 1
     fields:
       - bits: "31:0"
@@ -240,7 +240,7 @@ registers0:
         description: Power threshold 1 for DRC
 
   - name: AED_DRC_THD2
-    offset: 0x000c
+    offset: 0xc
     description: AED DRC threshold 2
     fields:
       - bits: "31:0"
@@ -250,7 +250,7 @@ registers0:
         description: Power threshold 2 for DRC
 
   - name: AED_DRC_THD3
-    offset: 0x000d
+    offset: 0xd
     description: AED DRC threshold 3
     fields:
       - bits: "31:0"
@@ -260,7 +260,7 @@ registers0:
         description: Power threshold 3 for DRC
 
   - name: AED_DRC_THD4
-    offset: 0x000e
+    offset: 0xe
     description: AED DRC threshold 4
     fields:
       - bits: "31:0"
@@ -270,7 +270,7 @@ registers0:
         description: Power threshold 4 for DRC
 
   - name: AED_DRC_K0
-    offset: 0x000f
+    offset: 0xf
     description: AED DRC K slope 0
     fields:
       - bits: "31:26"
@@ -285,7 +285,7 @@ registers0:
         description: K-slope of gain for tap 0
 
   - name: AED_DRC_K1
-    offset: 0x0010
+    offset: 0x10
     description: AED DRC K slope 1
     fields:
       - bits: "31:26"
@@ -300,7 +300,7 @@ registers0:
         description: K-slope of gain for tap 1
 
   - name: AED_DRC_K2
-    offset: 0x0011
+    offset: 0x11
     description: AED DRC K slope 2
     fields:
       - bits: "31:26"
@@ -315,7 +315,7 @@ registers0:
         description: K-slope of gain for tap 2
 
   - name: AED_DRC_K3
-    offset: 0x0012
+    offset: 0x12
     description: AED DRC K slope 3
     fields:
       - bits: "31:26"
@@ -330,7 +330,7 @@ registers0:
         description: K-slope of gain for tap 3
 
   - name: AED_DRC_K4
-    offset: 0x0013
+    offset: 0x13
     description: AED DRC K slope 4
     fields:
       - bits: "31:26"
@@ -345,7 +345,7 @@ registers0:
         description: K-slope of gain for tap 4
 
   - name: AED_DRC_K5
-    offset: 0x0014
+    offset: 0x14
     description: AED DRC K slope 5
     fields:
       - bits: "31:26"
@@ -360,7 +360,7 @@ registers0:
         description: K-slope of gain for tap 5
 
   - name: AED_DRC_THD_OUT0
-    offset: 0x0015
+    offset: 0x15
     description: AED DRC threshold out 0
     fields:
       - bits: "31:0"
@@ -370,7 +370,7 @@ registers0:
         description: Power threshold_out0 for DRC
 
   - name: AED_DRC_THD_OUT1
-    offset: 0x0016
+    offset: 0x16
     description: AED DRC threshold out 1
     fields:
       - bits: "31:0"
@@ -380,7 +380,7 @@ registers0:
         description: Power threshold_out1 for DRC
 
   - name: AED_DRC_THD_OUT2
-    offset: 0x0017
+    offset: 0x17
     description: AED DRC threshold out 2
     fields:
       - bits: "31:0"
@@ -390,7 +390,7 @@ registers0:
         description: Power threshold_out2 for DRC
 
   - name: AED_DRC_THD_OUT3
-    offset: 0x0018
+    offset: 0x18
     description: AED DRC threshold out 3
     fields:
       - bits: "31:0"
@@ -400,7 +400,7 @@ registers0:
         description: Power threshold_out3 for DRC
 
   - name: AED_DRC_OFFSET
-    offset: 0x0019
+    offset: 0x19
     description: AED DRC offset
     fields:
       - bits: "31:0"
@@ -410,7 +410,7 @@ registers0:
         description: Power offset of DRC
 
   - name: AED_DRC_RELEASE_COEF00
-    offset: 0x001a
+    offset: 0x1a
     description: AED DRC release coefficient 00
     fields:
       - bits: "31:26"
@@ -425,7 +425,7 @@ registers0:
         description: Coefficient for gain release filter
 
   - name: AED_DRC_RELEASE_COEF01
-    offset: 0x001b
+    offset: 0x1b
     description: AED DRC release coefficient 01
     fields:
       - bits: "31:26"
@@ -440,7 +440,7 @@ registers0:
         description: Coefficient for gain release filter
 
   - name: AED_DRC_RELEASE_COEF10
-    offset: 0x001c
+    offset: 0x1c
     description: AED DRC release coefficient 10
     fields:
       - bits: "31:26"
@@ -455,7 +455,7 @@ registers0:
         description: Coefficient for gain release filter
 
   - name: AED_DRC_RELEASE_COEF11
-    offset: 0x001d
+    offset: 0x1d
     description: AED DRC release coefficient 11
     fields:
       - bits: "31:26"
@@ -470,7 +470,7 @@ registers0:
         description: Coefficient for gain release filter
 
   - name: AED_DRC_RELEASE_COEF20
-    offset: 0x001e
+    offset: 0x1e
     description: AED DRC release coefficient 20
     fields:
       - bits: "31:26"
@@ -485,7 +485,7 @@ registers0:
         description: Coefficient for gain release filter
 
   - name: AED_DRC_RELEASE_COEF21
-    offset: 0x001f
+    offset: 0x1f
     description: AED DRC release coefficient 21
     fields:
       - bits: "31:26"
@@ -500,7 +500,7 @@ registers0:
         description: Coefficient for gain release filter
 
   - name: AED_DRC_RELEASE_COEF30
-    offset: 0x0020
+    offset: 0x20
     description: AED DRC release coefficient 30
     fields:
       - bits: "31:26"
@@ -515,7 +515,7 @@ registers0:
         description: Coefficient for gain release filter
 
   - name: AED_DRC_RELEASE_COEF31
-    offset: 0x0021
+    offset: 0x21
     description: AED DRC release coefficient 31
     fields:
       - bits: "31:26"
@@ -530,7 +530,7 @@ registers0:
         description: Coefficient for gain release filter
 
   - name: AED_DRC_RELEASE_COEF40
-    offset: 0x0022
+    offset: 0x22
     description: AED DRC release coefficient 40
     fields:
       - bits: "31:26"
@@ -545,7 +545,7 @@ registers0:
         description: Coefficient for gain release filter
 
   - name: AED_DRC_RELEASE_COEF41
-    offset: 0x0023
+    offset: 0x23
     description: AED DRC release coefficient 41
     fields:
       - bits: "31:26"
@@ -560,7 +560,7 @@ registers0:
         description: Coefficient for gain release filter
 
   - name: AED_DRC_RELEASE_COEF50
-    offset: 0x0024
+    offset: 0x24
     description: AED DRC release coefficient 50
     fields:
       - bits: "31:26"
@@ -575,7 +575,7 @@ registers0:
         description: Coefficient for gain release filter
 
   - name: AED_DRC_RELEASE_COEF51
-    offset: 0x0025
+    offset: 0x25
     description: AED DRC release coefficient 51
     fields:
       - bits: "31:26"
@@ -590,7 +590,7 @@ registers0:
         description: Coefficient for gain release filter
 
   - name: AED_DRC_ATTACK_COEF00
-    offset: 0x0026
+    offset: 0x26
     description: AED DRC attack coefficient 00
     fields:
       - bits: "31:26"
@@ -605,7 +605,7 @@ registers0:
         description: Coefficient for gain attack filter
 
   - name: AED_DRC_ATTACK_COEF01
-    offset: 0x0027
+    offset: 0x27
     description: AED DRC attack coefficient 01
     fields:
       - bits: "31:26"
@@ -620,7 +620,7 @@ registers0:
         description: Coefficient for gain attack filter
 
   - name: AED_DRC_ATTACK_COEF10
-    offset: 0x0028
+    offset: 0x28
     description: AED DRC attack coefficient 10
     fields:
       - bits: "31:26"
@@ -635,7 +635,7 @@ registers0:
         description: Coefficient for gain attack filter
 
   - name: AED_DRC_ATTACK_COEF11
-    offset: 0x0029
+    offset: 0x29
     description: AED DRC attack coefficient 11
     fields:
       - bits: "31:26"
@@ -650,7 +650,7 @@ registers0:
         description: Coefficient for gain attack filter
 
   - name: AED_DRC_ATTACK_COEF20
-    offset: 0x002a
+    offset: 0x2a
     description: AED DRC attack coefficient 20
     fields:
       - bits: "31:26"
@@ -665,7 +665,7 @@ registers0:
         description: Coefficient for gain attack filter
 
   - name: AED_DRC_ATTACK_COEF21
-    offset: 0x002b
+    offset: 0x2b
     description: AED DRC attack coefficient 21
     fields:
       - bits: "31:26"
@@ -680,7 +680,7 @@ registers0:
         description: Coefficient for gain attack filter
 
   - name: AED_DRC_ATTACK_COEF30
-    offset: 0x002c
+    offset: 0x2c
     description: AED DRC attack coefficient 30
     fields:
       - bits: "31:26"
@@ -695,7 +695,7 @@ registers0:
         description: Coefficient for gain attack filter
 
   - name: AED_DRC_ATTACK_COEF31
-    offset: 0x002d
+    offset: 0x2d
     description: AED DRC attack coefficient 31
     fields:
       - bits: "31:26"
@@ -710,7 +710,7 @@ registers0:
         description: Coefficient for gain attack filter
 
   - name: AED_DRC_ATTACK_COEF40
-    offset: 0x002e
+    offset: 0x2e
     description: AED DRC attack coefficient 40
     fields:
       - bits: "31:26"
@@ -725,7 +725,7 @@ registers0:
         description: Coefficient for gain attack filter
 
   - name: AED_DRC_ATTACK_COEF41
-    offset: 0x002f
+    offset: 0x2f
     description: AED DRC attack coefficient 41
     fields:
       - bits: "31:26"
@@ -740,7 +740,7 @@ registers0:
         description: Coefficient for gain attack filter
 
   - name: AED_DRC_ATTACK_COEF50
-    offset: 0x0030
+    offset: 0x30
     description: AED DRC attack coefficient 50
     fields:
       - bits: "31:26"
@@ -755,7 +755,7 @@ registers0:
         description: Coefficient for gain attack filter
 
   - name: AED_DRC_ATTACK_COEF51
-    offset: 0x0031
+    offset: 0x31
     description: AED DRC attack coefficient 51
     fields:
       - bits: "31:26"
@@ -770,7 +770,7 @@ registers0:
         description: Coefficient for gain attack filter
 
   - name: AED_DRC_LOOPBACK_CNTL
-    offset: 0x0032
+    offset: 0x32
     description: AED DRC loopback control
     fields:
       - bits: "31:18"
@@ -800,7 +800,7 @@ registers0:
         description: Look-ahead count
 
   - name: AED_MDRC_CNTL
-    offset: 0x0033
+    offset: 0x33
     description: AED MDRC control
     fields:
       - bits: "31:17"
@@ -840,7 +840,7 @@ registers0:
         description: "Enable band 0/1/2 of MDRC. 1: enable, 0: bypass"
 
   - name: AED_MDRC_RMS_COEF00
-    offset: 0x0034
+    offset: 0x34
     description: AED MDRC RMS coefficient 00
     fields:
       - bits: "31:26"
@@ -855,7 +855,7 @@ registers0:
         description: Coefficient for power calculation filter
 
   - name: AED_MDRC_RMS_COEF01
-    offset: 0x0035
+    offset: 0x35
     description: AED MDRC RMS coefficient 01
     fields:
       - bits: "31:26"
@@ -870,7 +870,7 @@ registers0:
         description: Coefficient for power calculation filter
 
   - name: AED_MDRC_RELEASE_COEF00
-    offset: 0x0036
+    offset: 0x36
     description: AED MDRC release coefficient 00
     fields:
       - bits: "31:26"
@@ -885,7 +885,7 @@ registers0:
         description: Coefficient for gain release filter
 
   - name: AED_MDRC_RELEASE_COEF01
-    offset: 0x0037
+    offset: 0x37
     description: AED MDRC release coefficient 01
     fields:
       - bits: "31:26"
@@ -900,7 +900,7 @@ registers0:
         description: Coefficient for gain release filter
 
   - name: AED_MDRC_ATTACK_COEF00
-    offset: 0x0038
+    offset: 0x38
     description: AED MDRC attack coefficient 00
     fields:
       - bits: "31:26"
@@ -915,7 +915,7 @@ registers0:
         description: Coefficient for gain attack filter
 
   - name: AED_MDRC_ATTACK_COEF01
-    offset: 0x0039
+    offset: 0x39
     description: AED MDRC attack coefficient 01
     fields:
       - bits: "31:26"
@@ -930,7 +930,7 @@ registers0:
         description: Coefficient for gain attack filter
 
   - name: AED_MDRC_THD0
-    offset: 0x003a
+    offset: 0x3a
     description: AED MDRC threshold 0
     fields:
       - bits: "31:0"
@@ -940,7 +940,7 @@ registers0:
         description: Power threshold for MDRC band 0
 
   - name: AED_MDRC_K0
-    offset: 0x003b
+    offset: 0x3b
     description: AED MDRC K slope 0
     fields:
       - bits: "31:26"
@@ -955,7 +955,7 @@ registers0:
         description: K-slope of gain for band 0
 
   - name: AED_MDRC_LOW_GAIN
-    offset: 0x003c
+    offset: 0x3c
     description: AED MDRC low band gain
     fields:
       - bits: "31:26"
@@ -970,7 +970,7 @@ registers0:
         description: Gain for DRC band 0
 
   - name: AED_MDRC_OFFSET0
-    offset: 0x003d
+    offset: 0x3d
     description: AED MDRC offset 0
     fields:
       - bits: "31:0"
@@ -980,7 +980,7 @@ registers0:
         description: Power offset of MDRC band 0
 
   - name: AED_MDRC_RMS_COEF10
-    offset: 0x003e
+    offset: 0x3e
     description: AED MDRC RMS coefficient 10
     fields:
       - bits: "31:26"
@@ -995,7 +995,7 @@ registers0:
         description: Coefficient for power calculation filter
 
   - name: AED_MDRC_RMS_COEF11
-    offset: 0x003f
+    offset: 0x3f
     description: AED MDRC RMS coefficient 11
     fields:
       - bits: "31:26"
@@ -1010,7 +1010,7 @@ registers0:
         description: Coefficient for power calculation filter
 
   - name: AED_MDRC_RELEASE_COEF10
-    offset: 0x0040
+    offset: 0x40
     description: AED MDRC release coefficient 10
     fields:
       - bits: "31:26"
@@ -1025,7 +1025,7 @@ registers0:
         description: Coefficient for gain release filter
 
   - name: AED_MDRC_RELEASE_COEF11
-    offset: 0x0041
+    offset: 0x41
     description: AED MDRC release coefficient 11
     fields:
       - bits: "31:26"
@@ -1040,7 +1040,7 @@ registers0:
         description: Coefficient for gain release filter
 
   - name: AED_MDRC_ATTACK_COEF10
-    offset: 0x0042
+    offset: 0x42
     description: AED MDRC attack coefficient 10
     fields:
       - bits: "31:26"
@@ -1055,7 +1055,7 @@ registers0:
         description: Coefficient for gain attack filter
 
   - name: AED_MDRC_ATTACK_COEF11
-    offset: 0x0043
+    offset: 0x43
     description: AED MDRC attack coefficient 11
     fields:
       - bits: "31:26"
@@ -1070,7 +1070,7 @@ registers0:
         description: Coefficient for gain attack filter
 
   - name: AED_MDRC_THD1
-    offset: 0x0044
+    offset: 0x44
     description: AED MDRC threshold 1
     fields:
       - bits: "31:0"
@@ -1080,7 +1080,7 @@ registers0:
         description: Power threshold for MDRC band 1
 
   - name: AED_MDRC_K1
-    offset: 0x0045
+    offset: 0x45
     description: AED MDRC K slope 1
     fields:
       - bits: "31:26"
@@ -1095,7 +1095,7 @@ registers0:
         description: K-slope of gain for band 1
 
   - name: AED_MDRC_OFFSET1
-    offset: 0x0046
+    offset: 0x46
     description: AED MDRC offset 1
     fields:
       - bits: "31:0"
@@ -1105,7 +1105,7 @@ registers0:
         description: Power offset of MDRC band 1
 
   - name: AED_MDRC_MID_GAIN
-    offset: 0x0047
+    offset: 0x47
     description: AED MDRC mid band gain
     fields:
       - bits: "31:26"
@@ -1120,7 +1120,7 @@ registers0:
         description: Gain for DRC band 1
 
   - name: AED_MDRC_RMS_COEF20
-    offset: 0x0048
+    offset: 0x48
     description: AED MDRC RMS coefficient 20
     fields:
       - bits: "31:26"
@@ -1135,7 +1135,7 @@ registers0:
         description: Coefficient for power calculation filter
 
   - name: AED_MDRC_RMS_COEF21
-    offset: 0x0049
+    offset: 0x49
     description: AED MDRC RMS coefficient 21
     fields:
       - bits: "31:26"
@@ -1150,7 +1150,7 @@ registers0:
         description: Coefficient for power calculation filter
 
   - name: AED_MDRC_RELEASE_COEF20
-    offset: 0x004a
+    offset: 0x4a
     description: AED MDRC release coefficient 20
     fields:
       - bits: "31:26"
@@ -1165,7 +1165,7 @@ registers0:
         description: Coefficient for gain release filter
 
   - name: AED_MDRC_RELEASE_COEF21
-    offset: 0x004b
+    offset: 0x4b
     description: AED MDRC release coefficient 21
     fields:
       - bits: "31:26"
@@ -1180,7 +1180,7 @@ registers0:
         description: Coefficient for gain release filter
 
   - name: AED_MDRC_ATTACK_COEF20
-    offset: 0x004c
+    offset: 0x4c
     description: AED MDRC attack coefficient 20
     fields:
       - bits: "31:26"
@@ -1195,7 +1195,7 @@ registers0:
         description: Coefficient for gain attack filter
 
   - name: AED_MDRC_ATTACK_COEF21
-    offset: 0x004d
+    offset: 0x4d
     description: AED MDRC attack coefficient 21
     fields:
       - bits: "31:26"
@@ -1210,7 +1210,7 @@ registers0:
         description: Coefficient for gain attack filter
 
   - name: AED_MDRC_THD2
-    offset: 0x004e
+    offset: 0x4e
     description: AED MDRC threshold 2
     fields:
       - bits: "31:0"
@@ -1220,7 +1220,7 @@ registers0:
         description: Power threshold for MDRC band 2
 
   - name: AED_MDRC_K2
-    offset: 0x004f
+    offset: 0x4f
     description: AED MDRC K slope 2
     fields:
       - bits: "31:26"
@@ -1235,7 +1235,7 @@ registers0:
         description: K-slope of gain for band 2
 
   - name: AED_MDRC_OFFSET2
-    offset: 0x0050
+    offset: 0x50
     description: AED MDRC offset 2
     fields:
       - bits: "31:0"
@@ -1245,7 +1245,7 @@ registers0:
         description: Power offset of MDRC band 2
 
   - name: AED_MDRC_HIGH_GAIN
-    offset: 0x0051
+    offset: 0x51
     description: AED MDRC high band gain
     fields:
       - bits: "31:26"
@@ -1260,7 +1260,7 @@ registers0:
         description: Gain for DRC band 2
 
   - name: AED_ED_CNTL
-    offset: 0x0052
+    offset: 0x52
     description: AED ED control
     fields:
       - bits: "31:2"
@@ -1280,7 +1280,7 @@ registers0:
         description: Soft reset
 
   - name: AED_DC_EN
-    offset: 0x0053
+    offset: 0x53
     description: AED DC cut enable
     fields:
       - bits: "31:1"
@@ -1295,7 +1295,7 @@ registers0:
         description: "Enable DC cut. 1: enable, 0: bypass"
 
   - name: AED_ND_LOW_THD
-    offset: 0x0054
+    offset: 0x54
     description: AED noise detect low threshold
     fields:
       - bits: "31:24"
@@ -1310,7 +1310,7 @@ registers0:
         description: Low threshold for noise detection
 
   - name: AED_ND_HIGH_THD
-    offset: 0x0055
+    offset: 0x55
     description: AED noise detect high threshold
     fields:
       - bits: "31:24"
@@ -1325,7 +1325,7 @@ registers0:
         description: High threshold for noise detection
 
   - name: AED_ND_CNT_THD
-    offset: 0x0056
+    offset: 0x56
     description: AED noise detect count threshold
     fields:
       - bits: "31:16"
@@ -1340,7 +1340,7 @@ registers0:
         description: Counter threshold for amplitude detection
 
   - name: AED_ND_SUM_NUM
-    offset: 0x0057
+    offset: 0x57
     description: AED noise detect sum number
     fields:
       - bits: "31:16"
@@ -1355,7 +1355,7 @@ registers0:
         description: Statistical number for sum of signal amplitude
 
   - name: AED_ND_CZ_NUM
-    offset: 0x0058
+    offset: 0x58
     description: AED noise detect zero-crossing number
     fields:
       - bits: "31:16"
@@ -1370,7 +1370,7 @@ registers0:
         description: Statistical number for zero-crossing
 
   - name: AED_ND_SUM_THD0
-    offset: 0x0059
+    offset: 0x59
     description: AED noise detect sum threshold 0
     fields:
       - bits: "31:0"
@@ -1380,7 +1380,7 @@ registers0:
         description: Low threshold for sum of amplitude
 
   - name: AED_ND_SUM_THD1
-    offset: 0x005a
+    offset: 0x5a
     description: AED noise detect sum threshold 1
     fields:
       - bits: "31:0"
@@ -1390,7 +1390,7 @@ registers0:
         description: High threshold for sum of amplitude
 
   - name: AED_ND_CZ_THD0
-    offset: 0x005b
+    offset: 0x5b
     description: AED noise detect zero-crossing threshold 0
     fields:
       - bits: "31:16"
@@ -1405,7 +1405,7 @@ registers0:
         description: Low threshold for zero-crossing number
 
   - name: AED_ND_CZ_THD1
-    offset: 0x005c
+    offset: 0x5c
     description: AED noise detect zero-crossing threshold 1
     fields:
       - bits: "31:16"
@@ -1420,7 +1420,7 @@ registers0:
         description: High threshold for zero-crossing number
 
   - name: AED_ND_COND_CNTL
-    offset: 0x005d
+    offset: 0x5d
     description: AED noise detect condition control
     fields:
       - bits: "31:6"
@@ -1460,7 +1460,7 @@ registers0:
         description: Enable noise detection for amplitude condition 0
 
   - name: AED_ND_RELEASE_COEF0
-    offset: 0x005e
+    offset: 0x5e
     description: AED noise detect release coefficient 0
     fields:
       - bits: "31:26"
@@ -1475,7 +1475,7 @@ registers0:
         description: Coefficient for release filter when gain adjusting
 
   - name: AED_ND_RELEASE_COEF1
-    offset: 0x005f
+    offset: 0x5f
     description: AED noise detect release coefficient 1
     fields:
       - bits: "31:26"
@@ -1490,7 +1490,7 @@ registers0:
         description: Coefficient for release filter when gain adjusting
 
   - name: AED_ND_ATTACK_COEF0
-    offset: 0x0060
+    offset: 0x60
     description: AED noise detect attack coefficient 0
     fields:
       - bits: "31:26"
@@ -1505,7 +1505,7 @@ registers0:
         description: Coefficient for attack filter when gain adjusting
 
   - name: AED_ND_ATTACK_COEF1
-    offset: 0x0061
+    offset: 0x61
     description: AED noise detect attack coefficient 1
     fields:
       - bits: "31:26"
@@ -1520,7 +1520,7 @@ registers0:
         description: Coefficient for attack filter when gain adjusting
 
   - name: AED_ND_CNTL
-    offset: 0x0062
+    offset: 0x62
     description: AED noise detect control
     fields:
       - bits: "31:3"
@@ -1540,7 +1540,7 @@ registers0:
         description: "Enable noise detect module. 1: enable, 0: bypass"
 
   - name: AED_MIX0_LL
-    offset: 0x0063
+    offset: 0x63
     description: AED mixer 0 LL
     fields:
       - bits: "31:26"
@@ -1555,7 +1555,7 @@ registers0:
         description: Ch1 gain to ch1 mixer
 
   - name: AED_MIX0_RL
-    offset: 0x0064
+    offset: 0x64
     description: AED mixer 0 RL
     fields:
       - bits: "31:26"
@@ -1570,7 +1570,7 @@ registers0:
         description: Ch2 gain to ch1 mixer
 
   - name: AED_MIX0_LR
-    offset: 0x0065
+    offset: 0x65
     description: AED mixer 0 LR
     fields:
       - bits: "31:26"
@@ -1585,7 +1585,7 @@ registers0:
         description: Ch1 gain to ch2 mixer
 
   - name: AED_MIX0_RR
-    offset: 0x0066
+    offset: 0x66
     description: AED mixer 0 RR
     fields:
       - bits: "31:26"
@@ -1600,7 +1600,7 @@ registers0:
         description: Ch2 gain to ch2 mixer
 
   - name: AED_CLIP_THD
-    offset: 0x0067
+    offset: 0x67
     description: AED clip threshold
     fields:
       - bits: "31:23"
@@ -1615,7 +1615,7 @@ registers0:
         description: Clipping threshold
 
   - name: AED_CH1_ND_SUM_OUT
-    offset: 0x0068
+    offset: 0x68
     description: AED channel 1 noise detect sum output
     fields:
       - bits: "31:0"
@@ -1625,7 +1625,7 @@ registers0:
         description: Sum of amplitude of ch1
 
   - name: AED_CH2_ND_SUM_OUT
-    offset: 0x0069
+    offset: 0x69
     description: AED channel 2 noise detect sum output
     fields:
       - bits: "31:0"
@@ -1635,7 +1635,7 @@ registers0:
         description: Sum of amplitude of ch2
 
   - name: AED_CH1_ND_CZ_OUT
-    offset: 0x006a
+    offset: 0x6a
     description: AED channel 1 noise detect zero-crossing output
     fields:
       - bits: "31:16"
@@ -1650,7 +1650,7 @@ registers0:
         description: Sum of zero-crossing of ch1
 
   - name: AED_CH2_ND_CZ_OUT
-    offset: 0x006b
+    offset: 0x6b
     description: AED channel 2 noise detect zero-crossing output
     fields:
       - bits: "31:16"
@@ -1665,7 +1665,7 @@ registers0:
         description: Sum of zero-crossing of ch2
 
   - name: AED_NOISE_STATUS
-    offset: 0x006c
+    offset: 0x6c
     description: AED noise status
     fields:
       - bits: "31:7"
@@ -1690,7 +1690,7 @@ registers0:
         description: Noise state
 
   - name: AED_POW_CURRENT_S0
-    offset: 0x006d
+    offset: 0x6d
     description: AED power current S0
     fields:
       - bits: "31:0"
@@ -1700,7 +1700,7 @@ registers0:
         description: MDRC0 current power
 
   - name: AED_POW_CURRENT_S1
-    offset: 0x006e
+    offset: 0x6e
     description: AED power current S1
     fields:
       - bits: "31:0"
@@ -1710,7 +1710,7 @@ registers0:
         description: MDRC1 current power
 
   - name: AED_POW_CURRENT_S2
-    offset: 0x006f
+    offset: 0x6f
     description: AED power current S2
     fields:
       - bits: "31:0"
@@ -1720,7 +1720,7 @@ registers0:
         description: MDRC2 current power
 
   - name: AED_POW_OUT0
-    offset: 0x0070
+    offset: 0x70
     description: AED power output 0
     fields:
       - bits: "31:0"
@@ -1730,7 +1730,7 @@ registers0:
         description: MDRC0 destination power
 
   - name: AED_POW_OUT1
-    offset: 0x0071
+    offset: 0x71
     description: AED power output 1
     fields:
       - bits: "31:0"
@@ -1740,7 +1740,7 @@ registers0:
         description: MDRC1 destination power
 
   - name: AED_POW_OUT2
-    offset: 0x0072
+    offset: 0x72
     description: AED power output 2
     fields:
       - bits: "31:0"
@@ -1750,7 +1750,7 @@ registers0:
         description: MDRC2 destination power
 
   - name: AED_POW_ADJ_INDEX0
-    offset: 0x0073
+    offset: 0x73
     description: AED power adjust index 0
     fields:
       - bits: "31:0"
@@ -1760,7 +1760,7 @@ registers0:
         description: MDRC0 adjusting power
 
   - name: AED_POW_ADJ_INDEX1
-    offset: 0x0074
+    offset: 0x74
     description: AED power adjust index 1
     fields:
       - bits: "31:0"
@@ -1770,7 +1770,7 @@ registers0:
         description: MDRC1 adjusting power
 
   - name: AED_POW_ADJ_INDEX2
-    offset: 0x0075
+    offset: 0x75
     description: AED power adjust index 2
     fields:
       - bits: "31:0"
@@ -1780,7 +1780,7 @@ registers0:
         description: MDRC2 adjusting power
 
   - name: AED_DRC_GAIN_INDEX0
-    offset: 0x0076
+    offset: 0x76
     description: AED DRC gain index 0
     fields:
       - bits: "31:26"
@@ -1795,7 +1795,7 @@ registers0:
         description: MDRC0 gain
 
   - name: AED_DRC_GAIN_INDEX1
-    offset: 0x0077
+    offset: 0x77
     description: AED DRC gain index 1
     fields:
       - bits: "31:26"
@@ -1810,7 +1810,7 @@ registers0:
         description: MDRC1 gain
 
   - name: AED_DRC_GAIN_INDEX2
-    offset: 0x0078
+    offset: 0x78
     description: AED DRC gain index 2
     fields:
       - bits: "31:26"
@@ -1825,7 +1825,7 @@ registers0:
         description: MDRC2 gain
 
   - name: AED_CH1_VOLUME_STATE
-    offset: 0x0079
+    offset: 0x79
     description: AED channel 1 volume state
     fields:
       - bits: "31:11"
@@ -1840,7 +1840,7 @@ registers0:
         description: Volume state of ch1
 
   - name: AED_CH2_VOLUME_STATE
-    offset: 0x007a
+    offset: 0x7a
     description: AED channel 2 volume state
     fields:
       - bits: "31:11"
@@ -1855,7 +1855,7 @@ registers0:
         description: Volume state of ch2
 
   - name: AED_CH1_VOLUME_GAIN
-    offset: 0x007b
+    offset: 0x7b
     description: AED channel 1 volume gain
     fields:
       - bits: "31:26"
@@ -1870,7 +1870,7 @@ registers0:
         description: Volume gain of ch1
 
   - name: AED_CH2_VOLUME_GAIN
-    offset: 0x007c
+    offset: 0x7c
     description: AED channel 2 volume gain
     fields:
       - bits: "31:26"
@@ -1885,7 +1885,7 @@ registers0:
         description: Volume gain of ch2
 
   - name: AED_FULL_POW_CURRENT
-    offset: 0x007d
+    offset: 0x7d
     description: AED full band power current
     fields:
       - bits: "31:0"
@@ -1895,7 +1895,7 @@ registers0:
         description: Current power
 
   - name: AED_FULL_POW_OUT
-    offset: 0x007e
+    offset: 0x7e
     description: AED full band power output
     fields:
       - bits: "31:0"
@@ -1905,7 +1905,7 @@ registers0:
         description: Destination power
 
   - name: AED_FULL_POW_ADJ
-    offset: 0x007f
+    offset: 0x7f
     description: AED full band power adjust
     fields:
       - bits: "31:0"
@@ -1915,7 +1915,7 @@ registers0:
         description: Adjusting power
 
   - name: AED_FULL_DRC_GAIN
-    offset: 0x0080
+    offset: 0x80
     description: AED full band DRC gain
     fields:
       - bits: "31:26"
@@ -1930,7 +1930,7 @@ registers0:
         description: Full band gain
 
   - name: AED_MASTER_VOLUME_STATE
-    offset: 0x0081
+    offset: 0x81
     description: AED master volume state
     fields:
       - bits: "31:11"
@@ -1945,7 +1945,7 @@ registers0:
         description: Volume state of master
 
   - name: AED_MASTER_VOLUME_GAIN
-    offset: 0x0082
+    offset: 0x82
     description: AED master volume gain
     fields:
       - bits: "31:26"
@@ -1960,7 +1960,7 @@ registers0:
         description: Volume gain of master
 
   - name: AED_TOP_CTL0
-    offset: 0x0083
+    offset: 0x83
     description: AED top control 0
     fields:
       - bits: "31:0"
@@ -1970,7 +1970,7 @@ registers0:
         description: Top control 0
 
   - name: AED_TOP_CTL1
-    offset: 0x0084
+    offset: 0x84
     description: AED top control 1
     fields:
       - bits: "31:0"
@@ -1980,7 +1980,7 @@ registers0:
         description: Top control 1
 
   - name: AED_TOP_CTL2
-    offset: 0x0085
+    offset: 0x85
     description: AED top control 2
     fields:
       - bits: "31:0"
@@ -1990,7 +1990,7 @@ registers0:
         description: Top control 2
 
   - name: AED_TOP_ST0
-    offset: 0x0086
+    offset: 0x86
     description: AED top status 0
     fields:
       - bits: "31:0"
@@ -2000,7 +2000,7 @@ registers0:
         description: Top status 0
 
   - name: AED_TOP_ST1
-    offset: 0x0087
+    offset: 0x87
     description: AED top status 1
     fields:
       - bits: "31:0"
@@ -2010,7 +2010,7 @@ registers0:
         description: Top status 1
 
   - name: AED_EQDRC_DYNAMIC_CNTL
-    offset: 0x0090
+    offset: 0x90
     description: AED EQ/DRC dynamic control
     fields:
       - bits: "31:0"
@@ -2019,1148 +2019,8 @@ registers0:
         default: "0"
         description: EQ/DRC dynamic control
 
-  - name: AED_COEF_RAM_CNTL_B
-    offset: 0x0091
-    description: AED coefficient RAM control B
-    fields:
-      - bits: "31:10"
-        name: reserved
-        access: R/W
-        default: "0"
-        description: reserved
-      - bits: "9:2"
-        name: addr_b
-        access: R/W
-        default: "0"
-        description: Read or write the addr of coef ram B
-      - bits: "1"
-        name: rd_wr_b
-        access: R/W
-        default: "0"
-        description: "0: read from coef ram; 1: write to coef ram"
-      - bits: "0"
-        name: valid_b
-        access: R/W
-        default: "0"
-        description: "0: command finished; 1: command wait to be done"
-
-  - name: AED_COEF_RAM_DATA_B
-    offset: 0x0092
-    description: AED coefficient RAM data B
-    fields:
-      - bits: "31:26"
-        name: reserved
-        access: R/W
-        default: "0"
-        description: reserved
-      - bits: "25:0"
-        name: data_b
-        access: R/W
-        default: "0"
-        description: Read from coef ram or write to coef ram B
-
-  - name: AED_DRC_RMS_COEF0_B
-    offset: 0x0093
-    description: AED DRC RMS coefficient 0 B
-    fields:
-      - bits: "31:26"
-        name: reserved
-        access: R/W
-        default: "0"
-        description: reserved
-      - bits: "25:0"
-        name: drc_rms_coef0_b
-        access: R/W
-        default: "0x34ebb"
-        description: Coefficient for power calculation filter
-
-  - name: AED_DRC_RMS_COEF1_B
-    offset: 0x0094
-    description: AED DRC RMS coefficient 1 B
-    fields:
-      - bits: "31:26"
-        name: reserved
-        access: R/W
-        default: "0"
-        description: reserved
-      - bits: "25:0"
-        name: drc_rms_coef1_b
-        access: R/W
-        default: "0x7cb145"
-        description: Coefficient for power calculation filter
-
-  - name: AED_DRC_THD0_B
-    offset: 0x0095
-    description: AED DRC threshold 0 B
-    fields:
-      - bits: "31:0"
-        name: drc_thd0_b
-        access: R/W
-        default: "0"
-        description: Power threshold 0 for DRC
-
-  - name: AED_DRC_THD1_B
-    offset: 0x0096
-    description: AED DRC threshold 1 B
-    fields:
-      - bits: "31:0"
-        name: drc_thd1_b
-        access: R/W
-        default: "0"
-        description: Power threshold 1 for DRC
-
-  - name: AED_DRC_THD2_B
-    offset: 0x0097
-    description: AED DRC threshold 2 B
-    fields:
-      - bits: "31:0"
-        name: drc_thd2_b
-        access: R/W
-        default: "0"
-        description: Power threshold 2 for DRC
-
-  - name: AED_DRC_THD3_B
-    offset: 0x0098
-    description: AED DRC threshold 3 B
-    fields:
-      - bits: "31:0"
-        name: drc_thd3_b
-        access: R/W
-        default: "0"
-        description: Power threshold 3 for DRC
-
-  - name: AED_DRC_THD4_B
-    offset: 0x0099
-    description: AED DRC threshold 4 B
-    fields:
-      - bits: "31:0"
-        name: drc_thd4_b
-        access: R/W
-        default: "0"
-        description: Power threshold 4 for DRC
-
-  - name: AED_DRC_K0_B
-    offset: 0x009a
-    description: AED DRC K slope 0 B
-    fields:
-      - bits: "31:26"
-        name: reserved
-        access: R/W
-        default: "0"
-        description: reserved
-      - bits: "25:0"
-        name: drc_k0_b
-        access: R/W
-        default: "0x40000"
-        description: K-slope of gain for tap 0
-
-  - name: AED_DRC_K1_B
-    offset: 0x009b
-    description: AED DRC K slope 1 B
-    fields:
-      - bits: "31:26"
-        name: reserved
-        access: R/W
-        default: "0"
-        description: reserved
-      - bits: "25:0"
-        name: drc_k1_b
-        access: R/W
-        default: "0x40000"
-        description: K-slope of gain for tap 1
-
-  - name: AED_DRC_K2_B
-    offset: 0x009c
-    description: AED DRC K slope 2 B
-    fields:
-      - bits: "31:26"
-        name: reserved
-        access: R/W
-        default: "0"
-        description: reserved
-      - bits: "25:0"
-        name: drc_k2_b
-        access: R/W
-        default: "0x40000"
-        description: K-slope of gain for tap 2
-
-  - name: AED_DRC_K3_B
-    offset: 0x009d
-    description: AED DRC K slope 3 B
-    fields:
-      - bits: "31:26"
-        name: reserved
-        access: R/W
-        default: "0"
-        description: reserved
-      - bits: "25:0"
-        name: drc_k3_b
-        access: R/W
-        default: "0x40000"
-        description: K-slope of gain for tap 3
-
-  - name: AED_DRC_K4_B
-    offset: 0x009e
-    description: AED DRC K slope 4 B
-    fields:
-      - bits: "31:26"
-        name: reserved
-        access: R/W
-        default: "0"
-        description: reserved
-      - bits: "25:0"
-        name: drc_k4_b
-        access: R/W
-        default: "0x40000"
-        description: K-slope of gain for tap 4
-
-  - name: AED_DRC_K5_B
-    offset: 0x009f
-    description: AED DRC K slope 5 B
-    fields:
-      - bits: "31:26"
-        name: reserved
-        access: R/W
-        default: "0"
-        description: reserved
-      - bits: "25:0"
-        name: drc_k5_b
-        access: R/W
-        default: "0x40000"
-        description: K-slope of gain for tap 5
-
-  - name: AED_DRC_THD_OUT0_B
-    offset: 0x00a0
-    description: AED DRC threshold out 0 B
-    fields:
-      - bits: "31:0"
-        name: drc_thd_out0_b
-        access: R/W
-        default: "0"
-        description: Power threshold_out0 for DRC
-
-  - name: AED_DRC_THD_OUT1_B
-    offset: 0x00a1
-    description: AED DRC threshold out 1 B
-    fields:
-      - bits: "31:0"
-        name: drc_thd_out1_b
-        access: R/W
-        default: "0"
-        description: Power threshold_out1 for DRC
-
-  - name: AED_DRC_THD_OUT2_B
-    offset: 0x00a2
-    description: AED DRC threshold out 2 B
-    fields:
-      - bits: "31:0"
-        name: drc_thd_out2_b
-        access: R/W
-        default: "0"
-        description: Power threshold_out2 for DRC
-
-  - name: AED_DRC_THD_OUT3_B
-    offset: 0x00a3
-    description: AED DRC threshold out 3 B
-    fields:
-      - bits: "31:0"
-        name: drc_thd_out3_b
-        access: R/W
-        default: "0"
-        description: Power threshold_out3 for DRC
-
-  - name: AED_DRC_OFFSET_B
-    offset: 0x00a4
-    description: AED DRC offset B
-    fields:
-      - bits: "31:0"
-        name: drc_offset_b
-        access: R/W
-        default: "0"
-        description: Power offset of DRC
-
-  - name: AED_DRC_RELEASE_COEF00_B
-    offset: 0x00a5
-    description: AED DRC release coefficient 00 B
-    fields:
-      - bits: "31:26"
-        name: reserved
-        access: R/W
-        default: "0"
-        description: reserved
-      - bits: "25:0"
-        name: drc_release_coef00_b
-        access: R/W
-        default: "0x5188"
-        description: Coefficient for gain release filter
-
-  - name: AED_DRC_RELEASE_COEF01_B
-    offset: 0x00a6
-    description: AED DRC release coefficient 01 B
-    fields:
-      - bits: "31:26"
-        name: reserved
-        access: R/W
-        default: "0"
-        description: reserved
-      - bits: "25:0"
-        name: drc_release_coef01_b
-        access: R/W
-        default: "0x7fae78"
-        description: Coefficient for gain release filter
-
-  - name: AED_DRC_RELEASE_COEF10_B
-    offset: 0x00a7
-    description: AED DRC release coefficient 10 B
-    fields:
-      - bits: "31:26"
-        name: reserved
-        access: R/W
-        default: "0"
-        description: reserved
-      - bits: "25:0"
-        name: drc_release_coef10_b
-        access: R/W
-        default: "0x5188"
-        description: Coefficient for gain release filter
-
-  - name: AED_DRC_RELEASE_COEF11_B
-    offset: 0x00a8
-    description: AED DRC release coefficient 11 B
-    fields:
-      - bits: "31:26"
-        name: reserved
-        access: R/W
-        default: "0"
-        description: reserved
-      - bits: "25:0"
-        name: drc_release_coef11_b
-        access: R/W
-        default: "0x7fae78"
-        description: Coefficient for gain release filter
-
-  - name: AED_DRC_RELEASE_COEF20_B
-    offset: 0x00a9
-    description: AED DRC release coefficient 20 B
-    fields:
-      - bits: "31:26"
-        name: reserved
-        access: R/W
-        default: "0"
-        description: reserved
-      - bits: "25:0"
-        name: drc_release_coef20_b
-        access: R/W
-        default: "0x5188"
-        description: Coefficient for gain release filter
-
-  - name: AED_DRC_RELEASE_COEF21_B
-    offset: 0x00aa
-    description: AED DRC release coefficient 21 B
-    fields:
-      - bits: "31:26"
-        name: reserved
-        access: R/W
-        default: "0"
-        description: reserved
-      - bits: "25:0"
-        name: drc_release_coef21_b
-        access: R/W
-        default: "0x7fae78"
-        description: Coefficient for gain release filter
-
-  - name: AED_DRC_RELEASE_COEF30_B
-    offset: 0x00ab
-    description: AED DRC release coefficient 30 B
-    fields:
-      - bits: "31:26"
-        name: reserved
-        access: R/W
-        default: "0"
-        description: reserved
-      - bits: "25:0"
-        name: drc_release_coef30_b
-        access: R/W
-        default: "0x5188"
-        description: Coefficient for gain release filter
-
-  - name: AED_DRC_RELEASE_COEF31_B
-    offset: 0x00ac
-    description: AED DRC release coefficient 31 B
-    fields:
-      - bits: "31:26"
-        name: reserved
-        access: R/W
-        default: "0"
-        description: reserved
-      - bits: "25:0"
-        name: drc_release_coef31_b
-        access: R/W
-        default: "0x7fae78"
-        description: Coefficient for gain release filter
-
-  - name: AED_DRC_RELEASE_COEF40_B
-    offset: 0x00ad
-    description: AED DRC release coefficient 40 B
-    fields:
-      - bits: "31:26"
-        name: reserved
-        access: R/W
-        default: "0"
-        description: reserved
-      - bits: "25:0"
-        name: drc_release_coef40_b
-        access: R/W
-        default: "0x5188"
-        description: Coefficient for gain release filter
-
-  - name: AED_DRC_RELEASE_COEF41_B
-    offset: 0x00ae
-    description: AED DRC release coefficient 41 B
-    fields:
-      - bits: "31:26"
-        name: reserved
-        access: R/W
-        default: "0"
-        description: reserved
-      - bits: "25:0"
-        name: drc_release_coef41_b
-        access: R/W
-        default: "0x7fae78"
-        description: Coefficient for gain release filter
-
-  - name: AED_DRC_RELEASE_COEF50_B
-    offset: 0x00af
-    description: AED DRC release coefficient 50 B
-    fields:
-      - bits: "31:26"
-        name: reserved
-        access: R/W
-        default: "0"
-        description: reserved
-      - bits: "25:0"
-        name: drc_release_coef50_b
-        access: R/W
-        default: "0x5188"
-        description: Coefficient for gain release filter
-
-  - name: AED_DRC_RELEASE_COEF51_B
-    offset: 0x00b0
-    description: AED DRC release coefficient 51 B
-    fields:
-      - bits: "31:26"
-        name: reserved
-        access: R/W
-        default: "0"
-        description: reserved
-      - bits: "25:0"
-        name: drc_release_coef51_b
-        access: R/W
-        default: "0x7fae78"
-        description: Coefficient for gain release filter
-
-  - name: AED_DRC_ATTACK_COEF00_B
-    offset: 0x00b1
-    description: AED DRC attack coefficient 00 B
-    fields:
-      - bits: "31:26"
-        name: reserved
-        access: R/W
-        default: "0"
-        description: reserved
-      - bits: "25:0"
-        name: drc_attack_coef00_b
-        access: R/W
-        default: "0x3263a"
-        description: Coefficient for gain attack filter
-
-  - name: AED_DRC_ATTACK_COEF01_B
-    offset: 0x00b2
-    description: AED DRC attack coefficient 01 B
-    fields:
-      - bits: "31:26"
-        name: reserved
-        access: R/W
-        default: "0"
-        description: reserved
-      - bits: "25:0"
-        name: drc_attack_coef01_b
-        access: R/W
-        default: "0x7cd9c6"
-        description: Coefficient for gain attack filter
-
-  - name: AED_DRC_ATTACK_COEF10_B
-    offset: 0x00b3
-    description: AED DRC attack coefficient 10 B
-    fields:
-      - bits: "31:26"
-        name: reserved
-        access: R/W
-        default: "0"
-        description: reserved
-      - bits: "25:0"
-        name: drc_attack_coef10_b
-        access: R/W
-        default: "0x3263a"
-        description: Coefficient for gain attack filter
-
-  - name: AED_DRC_ATTACK_COEF11_B
-    offset: 0x00b4
-    description: AED DRC attack coefficient 11 B
-    fields:
-      - bits: "31:26"
-        name: reserved
-        access: R/W
-        default: "0"
-        description: reserved
-      - bits: "25:0"
-        name: drc_attack_coef11_b
-        access: R/W
-        default: "0x7cd9c6"
-        description: Coefficient for gain attack filter
-
-  - name: AED_DRC_ATTACK_COEF20_B
-    offset: 0x00b5
-    description: AED DRC attack coefficient 20 B
-    fields:
-      - bits: "31:26"
-        name: reserved
-        access: R/W
-        default: "0"
-        description: reserved
-      - bits: "25:0"
-        name: drc_attack_coef20_b
-        access: R/W
-        default: "0x3263a"
-        description: Coefficient for gain attack filter
-
-  - name: AED_DRC_ATTACK_COEF21_B
-    offset: 0x00b6
-    description: AED DRC attack coefficient 21 B
-    fields:
-      - bits: "31:26"
-        name: reserved
-        access: R/W
-        default: "0"
-        description: reserved
-      - bits: "25:0"
-        name: drc_attack_coef21_b
-        access: R/W
-        default: "0x7cd9c6"
-        description: Coefficient for gain attack filter
-
-  - name: AED_DRC_ATTACK_COEF30_B
-    offset: 0x00b7
-    description: AED DRC attack coefficient 30 B
-    fields:
-      - bits: "31:26"
-        name: reserved
-        access: R/W
-        default: "0"
-        description: reserved
-      - bits: "25:0"
-        name: drc_attack_coef30_b
-        access: R/W
-        default: "0x3263a"
-        description: Coefficient for gain attack filter
-
-  - name: AED_DRC_ATTACK_COEF31_B
-    offset: 0x00b8
-    description: AED DRC attack coefficient 31 B
-    fields:
-      - bits: "31:26"
-        name: reserved
-        access: R/W
-        default: "0"
-        description: reserved
-      - bits: "25:0"
-        name: drc_attack_coef31_b
-        access: R/W
-        default: "0x7cd9c6"
-        description: Coefficient for gain attack filter
-
-  - name: AED_DRC_ATTACK_COEF40_B
-    offset: 0x00b9
-    description: AED DRC attack coefficient 40 B
-    fields:
-      - bits: "31:26"
-        name: reserved
-        access: R/W
-        default: "0"
-        description: reserved
-      - bits: "25:0"
-        name: drc_attack_coef40_b
-        access: R/W
-        default: "0x3263a"
-        description: Coefficient for gain attack filter
-
-  - name: AED_DRC_ATTACK_COEF41_B
-    offset: 0x00ba
-    description: AED DRC attack coefficient 41 B
-    fields:
-      - bits: "31:26"
-        name: reserved
-        access: R/W
-        default: "0"
-        description: reserved
-      - bits: "25:0"
-        name: drc_attack_coef41_b
-        access: R/W
-        default: "0x7cd9c6"
-        description: Coefficient for gain attack filter
-
-  - name: AED_DRC_ATTACK_COEF50_B
-    offset: 0x00bb
-    description: AED DRC attack coefficient 50 B
-    fields:
-      - bits: "31:26"
-        name: reserved
-        access: R/W
-        default: "0"
-        description: reserved
-      - bits: "25:0"
-        name: drc_attack_coef50_b
-        access: R/W
-        default: "0x3263a"
-        description: Coefficient for gain attack filter
-
-  - name: AED_DRC_ATTACK_COEF51_B
-    offset: 0x00bc
-    description: AED DRC attack coefficient 51 B
-    fields:
-      - bits: "31:26"
-        name: reserved
-        access: R/W
-        default: "0"
-        description: reserved
-      - bits: "25:0"
-        name: drc_attack_coef51_b
-        access: R/W
-        default: "0x7cd9c6"
-        description: Coefficient for gain attack filter
-
-  - name: AED_MDRC_RMS_COEF00_B
-    offset: 0x00bd
-    description: AED MDRC RMS coefficient 00 B
-    fields:
-      - bits: "31:26"
-        name: reserved
-        access: R/W
-        default: "0"
-        description: reserved
-      - bits: "25:0"
-        name: mdrc_rms_coef00_b
-        access: R/W
-        default: "0x34ebb"
-        description: Coefficient for power calculation filter
-
-  - name: AED_MDRC_RMS_COEF01_B
-    offset: 0x00be
-    description: AED MDRC RMS coefficient 01 B
-    fields:
-      - bits: "31:26"
-        name: reserved
-        access: R/W
-        default: "0"
-        description: reserved
-      - bits: "25:0"
-        name: mdrc_rms_coef01_b
-        access: R/W
-        default: "0x7cb145"
-        description: Coefficient for power calculation filter
-
-  - name: AED_MDRC_RMS_COEF10_B
-    offset: 0x00bf
-    description: AED MDRC RMS coefficient 10 B
-    fields:
-      - bits: "31:26"
-        name: reserved
-        access: R/W
-        default: "0"
-        description: reserved
-      - bits: "25:0"
-        name: mdrc_rms_coef10_b
-        access: R/W
-        default: "0x34ebb"
-        description: Coefficient for power calculation filter
-
-  - name: AED_MDRC_RMS_COEF11_B
-    offset: 0x00c0
-    description: AED MDRC RMS coefficient 11 B
-    fields:
-      - bits: "31:26"
-        name: reserved
-        access: R/W
-        default: "0"
-        description: reserved
-      - bits: "25:0"
-        name: mdrc_rms_coef11_b
-        access: R/W
-        default: "0x7cb145"
-        description: Coefficient for power calculation filter
-
-  - name: AED_MDRC_RMS_COEF20_B
-    offset: 0x00c1
-    description: AED MDRC RMS coefficient 20 B
-    fields:
-      - bits: "31:26"
-        name: reserved
-        access: R/W
-        default: "0"
-        description: reserved
-      - bits: "25:0"
-        name: mdrc_rms_coef20_b
-        access: R/W
-        default: "0x34ebb"
-        description: Coefficient for power calculation filter
-
-  - name: AED_MDRC_RMS_COEF21_B
-    offset: 0x00c2
-    description: AED MDRC RMS coefficient 21 B
-    fields:
-      - bits: "31:26"
-        name: reserved
-        access: R/W
-        default: "0"
-        description: reserved
-      - bits: "25:0"
-        name: mdrc_rms_coef21_b
-        access: R/W
-        default: "0x7cb145"
-        description: Coefficient for power calculation filter
-
-  - name: AED_MDRC_RELEASE_COEF00_B
-    offset: 0x00c3
-    description: AED MDRC release coefficient 00 B
-    fields:
-      - bits: "31:26"
-        name: reserved
-        access: R/W
-        default: "0"
-        description: reserved
-      - bits: "25:0"
-        name: mdrc_release_coef00_b
-        access: R/W
-        default: "0x5188"
-        description: Coefficient for gain release filter
-
-  - name: AED_MDRC_RELEASE_COEF01_B
-    offset: 0x00c4
-    description: AED MDRC release coefficient 01 B
-    fields:
-      - bits: "31:26"
-        name: reserved
-        access: R/W
-        default: "0"
-        description: reserved
-      - bits: "25:0"
-        name: mdrc_release_coef01_b
-        access: R/W
-        default: "0x7fae78"
-        description: Coefficient for gain release filter
-
-  - name: AED_MDRC_RELEASE_COEF10_B
-    offset: 0x00c5
-    description: AED MDRC release coefficient 10 B
-    fields:
-      - bits: "31:26"
-        name: reserved
-        access: R/W
-        default: "0"
-        description: reserved
-      - bits: "25:0"
-        name: mdrc_release_coef10_b
-        access: R/W
-        default: "0x5188"
-        description: Coefficient for gain release filter
-
-  - name: AED_MDRC_RELEASE_COEF11_B
-    offset: 0x00c6
-    description: AED MDRC release coefficient 11 B
-    fields:
-      - bits: "31:26"
-        name: reserved
-        access: R/W
-        default: "0"
-        description: reserved
-      - bits: "25:0"
-        name: mdrc_release_coef11_b
-        access: R/W
-        default: "0x7fae78"
-        description: Coefficient for gain release filter
-
-  - name: AED_MDRC_RELEASE_COEF20_B
-    offset: 0x00c7
-    description: AED MDRC release coefficient 20 B
-    fields:
-      - bits: "31:26"
-        name: reserved
-        access: R/W
-        default: "0"
-        description: reserved
-      - bits: "25:0"
-        name: mdrc_release_coef20_b
-        access: R/W
-        default: "0x5188"
-        description: Coefficient for gain release filter
-
-  - name: AED_MDRC_RELEASE_COEF21_B
-    offset: 0x00c8
-    description: AED MDRC release coefficient 21 B
-    fields:
-      - bits: "31:26"
-        name: reserved
-        access: R/W
-        default: "0"
-        description: reserved
-      - bits: "25:0"
-        name: mdrc_release_coef21_b
-        access: R/W
-        default: "0x7fae78"
-        description: Coefficient for gain release filter
-
-  - name: AED_MDRC_ATTACK_COEF00_B
-    offset: 0x00c9
-    description: AED MDRC attack coefficient 00 B
-    fields:
-      - bits: "31:26"
-        name: reserved
-        access: R/W
-        default: "0"
-        description: reserved
-      - bits: "25:0"
-        name: mdrc_attack_coef00_b
-        access: R/W
-        default: "0x3263a"
-        description: Coefficient for gain attack filter
-
-  - name: AED_MDRC_ATTACK_COEF01_B
-    offset: 0x00ca
-    description: AED MDRC attack coefficient 01 B
-    fields:
-      - bits: "31:26"
-        name: reserved
-        access: R/W
-        default: "0"
-        description: reserved
-      - bits: "25:0"
-        name: mdrc_attack_coef01_b
-        access: R/W
-        default: "0x7cd9c6"
-        description: Coefficient for gain attack filter
-
-  - name: AED_MDRC_ATTACK_COEF10_B
-    offset: 0x00cb
-    description: AED MDRC attack coefficient 10 B
-    fields:
-      - bits: "31:26"
-        name: reserved
-        access: R/W
-        default: "0"
-        description: reserved
-      - bits: "25:0"
-        name: mdrc_attack_coef10_b
-        access: R/W
-        default: "0x3263a"
-        description: Coefficient for gain attack filter
-
-  - name: AED_MDRC_ATTACK_COEF11_B
-    offset: 0x00cc
-    description: AED MDRC attack coefficient 11 B
-    fields:
-      - bits: "31:26"
-        name: reserved
-        access: R/W
-        default: "0"
-        description: reserved
-      - bits: "25:0"
-        name: mdrc_attack_coef11_b
-        access: R/W
-        default: "0x7cd9c6"
-        description: Coefficient for gain attack filter
-
-  - name: AED_MDRC_ATTACK_COEF20_B
-    offset: 0x00cd
-    description: AED MDRC attack coefficient 20 B
-    fields:
-      - bits: "31:26"
-        name: reserved
-        access: R/W
-        default: "0"
-        description: reserved
-      - bits: "25:0"
-        name: mdrc_attack_coef20_b
-        access: R/W
-        default: "0x3263a"
-        description: Coefficient for gain attack filter
-
-  - name: AED_MDRC_ATTACK_COEF21_B
-    offset: 0x00ce
-    description: AED MDRC attack coefficient 21 B
-    fields:
-      - bits: "31:26"
-        name: reserved
-        access: R/W
-        default: "0"
-        description: reserved
-      - bits: "25:0"
-        name: mdrc_attack_coef21_b
-        access: R/W
-        default: "0x7cd9c6"
-        description: Coefficient for gain attack filter
-
-  - name: AED_MDRC_THD0_B
-    offset: 0x00cf
-    description: AED MDRC threshold 0 B
-    fields:
-      - bits: "31:0"
-        name: mdrc_thd0_b
-        access: R/W
-        default: "0"
-        description: Power threshold for MDRC band 0
-
-  - name: AED_MDRC_THD1_B
-    offset: 0x00d0
-    description: AED MDRC threshold 1 B
-    fields:
-      - bits: "31:0"
-        name: mdrc_thd1_b
-        access: R/W
-        default: "0"
-        description: Power threshold for MDRC band 1
-
-  - name: AED_MDRC_THD2_B
-    offset: 0x00d1
-    description: AED MDRC threshold 2 B
-    fields:
-      - bits: "31:0"
-        name: mdrc_thd2_b
-        access: R/W
-        default: "0"
-        description: Power threshold for MDRC band 2
-
-  - name: AED_MDRC_K0_B
-    offset: 0x00d2
-    description: AED MDRC K slope 0 B
-    fields:
-      - bits: "31:26"
-        name: reserved
-        access: R/W
-        default: "0"
-        description: reserved
-      - bits: "25:0"
-        name: mdrc_k0_b
-        access: R/W
-        default: "0"
-        description: K-slope of gain for band 0
-
-  - name: AED_MDRC_K1_B
-    offset: 0x00d3
-    description: AED MDRC K slope 1 B
-    fields:
-      - bits: "31:26"
-        name: reserved
-        access: R/W
-        default: "0"
-        description: reserved
-      - bits: "25:0"
-        name: mdrc_k1_b
-        access: R/W
-        default: "0"
-        description: K-slope of gain for band 1
-
-  - name: AED_MDRC_K2_B
-    offset: 0x00d4
-    description: AED MDRC K slope 2 B
-    fields:
-      - bits: "31:26"
-        name: reserved
-        access: R/W
-        default: "0"
-        description: reserved
-      - bits: "25:0"
-        name: mdrc_k2_b
-        access: R/W
-        default: "0"
-        description: K-slope of gain for band 2
-
-  - name: AED_MDRC_OFFSET0_B
-    offset: 0x00d5
-    description: AED MDRC offset 0 B
-    fields:
-      - bits: "31:0"
-        name: mdrc_offset0_b
-        access: R/W
-        default: "0"
-        description: Power offset of MDRC band 0
-
-  - name: AED_MDRC_OFFSET1_B
-    offset: 0x00d6
-    description: AED MDRC offset 1 B
-    fields:
-      - bits: "31:0"
-        name: mdrc_offset1_b
-        access: R/W
-        default: "0"
-        description: Power offset of MDRC band 1
-
-  - name: AED_MDRC_OFFSET2_B
-    offset: 0x00d7
-    description: AED MDRC offset 2 B
-    fields:
-      - bits: "31:0"
-        name: mdrc_offset2_b
-        access: R/W
-        default: "0"
-        description: Power offset of MDRC band 2
-
-  - name: AED_MDRC_LOW_GAIN_B
-    offset: 0x00d8
-    description: AED MDRC low band gain B
-    fields:
-      - bits: "31:26"
-        name: reserved
-        access: R/W
-        default: "0"
-        description: reserved
-      - bits: "25:0"
-        name: mdrc_low_gain_b
-        access: R/W
-        default: "0"
-        description: Gain for DRC band 0
-
-  - name: AED_MDRC_MID_GAIN_B
-    offset: 0x00d9
-    description: AED MDRC mid band gain B
-    fields:
-      - bits: "31:26"
-        name: reserved
-        access: R/W
-        default: "0"
-        description: reserved
-      - bits: "25:0"
-        name: mdrc_mid_gain_b
-        access: R/W
-        default: "0"
-        description: Gain for DRC band 1
-
-  - name: AED_MDRC_HIGH_GAIN_B
-    offset: 0x00da
-    description: AED MDRC high band gain B
-    fields:
-      - bits: "31:26"
-        name: reserved
-        access: R/W
-        default: "0"
-        description: reserved
-      - bits: "25:0"
-        name: mdrc_high_gain_b
-        access: R/W
-        default: "0"
-        description: Gain for DRC band 2
-
-  - name: AED_DRC_CNTL_B
-    offset: 0x00db
-    description: AED DRC control B
-    fields:
-      - bits: "31:6"
-        name: reserved
-        access: R/W
-        default: "0"
-        description: reserved
-      - bits: "5:3"
-        name: drc_tap_b
-        access: R/W
-        default: "0x5"
-        description: Power tap for DRC
-      - bits: "2"
-        name: drc_pow_sel_b
-        access: R/W
-        default: "0"
-        description: "Gain alpha filter input select. 0: dB domain, 1: decimal domain"
-      - bits: "1"
-        name: drc_rms_mode_b
-        access: R/W
-        default: "0"
-        description: "Power calculation mode. 0: RMS, 1: peaking"
-      - bits: "0"
-        name: drc_en_b
-        access: R/W
-        default: "0"
-        description: "Enable post DRC. 1: enable, 0: bypass"
-
-  - name: AED_DRC_LOOPBACK_CNTL_B
-    offset: 0x00dc
-    description: AED DRC loopback control B
-    fields:
-      - bits: "31:18"
-        name: reserved
-        access: R/W
-        default: "0"
-        description: reserved
-      - bits: "17"
-        name: dis_fifo_rst_b
-        access: R/W
-        default: "0"
-        description: "0: reset fifo if drc_loopback_cnt change; 1: don't reset"
-      - bits: "16"
-        name: drc_loopback_bypass_b
-        access: R/W
-        default: "0"
-        description: "Bypass look-ahead mode. 1: bypass"
-      - bits: "15:9"
-        name: reserved2
-        access: R/W
-        default: "0"
-        description: reserved
-      - bits: "8:0"
-        name: drc_loopback_cnt_b
-        access: R/W
-        default: "0x90"
-        description: Look-ahead count
-
-  - name: AED_MDRC_CNTL_B
-    offset: 0x00dd
-    description: AED MDRC control B
-    fields:
-      - bits: "31:17"
-        name: reserved
-        access: R/W
-        default: "0"
-        description: reserved
-      - bits: "16"
-        name: mdrc_pow_sel_b
-        access: R/W
-        default: "0"
-        description: "Gain alpha filter input select. 0: dB domain, 1: decimal domain"
-      - bits: "15:9"
-        name: reserved2
-        access: R/W
-        default: "0"
-        description: reserved
-      - bits: "8"
-        name: mdrc_all_en_b
-        access: R/W
-        default: "0"
-        description: "Enable entire multi-band DRC. 1: enable, 0: bypass"
-      - bits: "7:6"
-        name: reserved3
-        access: R/W
-        default: "0"
-        description: reserved
-      - bits: "5:3"
-        name: mdrc_rms_mode_b
-        access: R/W
-        default: "0"
-        description: "Band 0/1/2 pow calculation mode. 0: RMS, 1: peaking"
-      - bits: "2:0"
-        name: mdrc_en_b
-        access: R/W
-        default: "0"
-        description: "Enable band 0/1/2 of MDRC. 1: enable, 0: bypass"
-
   - name: AED_STATUS_REG
-    offset: 0x00de
+    offset: 0xde
     description: AED status register
     fields:
       - bits: "31:0"

@@ -4,14 +4,14 @@ parent_base: audio_top_ee
 instances:
   A:
     offset_base0: 0x1d7
-    condition: { macro_path: ["tohdmi_dp_tx", "A", "imp"], eq: 1 }
+    condition: { macro_path: [ "tohdmi_dp_tx", "A", "imp" ], eq: 1 }
   B:
     offset_base0: 0x1d8
-    condition: { macro_path: ["tohdmi_dp_tx", "B", "imp"], eq: 1 }
+    condition: { macro_path: [ "tohdmi_dp_tx", "B", "imp" ], eq: 1 }
 
 registers0:
   - name: TOHDMI_DP_TX_{X}_CTRL0
-    offset: 0x00
+    offset: 0x0
     description: to-HDMI transmitter control register
     fields:
       - bits: "31"

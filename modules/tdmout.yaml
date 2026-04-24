@@ -4,17 +4,17 @@ parent_base: audio_top_ee
 instances:
   A:
     offset_base0: 0x400
-    condition: { macro_path: ["tdmout", "A", "imp"], eq: 1 }
+    condition: { macro_path: [ "tdmout", "A", "imp" ], eq: 1 }
   B:
     offset_base0: 0x460
-    condition: { macro_path: ["tdmout", "B", "imp"], eq: 1 }
+    condition: { macro_path: [ "tdmout", "B", "imp" ], eq: 1 }
   C:
     offset_base0: 0x4c0
-    condition: { macro_path: ["tdmout", "C", "imp"], eq: 1 }
+    condition: { macro_path: [ "tdmout", "C", "imp" ], eq: 1 }
 
 registers0:
   - name: TDMOUT_{X}_CTRL0
-    offset: 0x00
+    offset: 0x0
     description: TDM output control register
     fields:
       - bits: "31"
@@ -59,7 +59,7 @@ registers0:
         description: "max value of bitcnt; if 16bits, set to 15"
 
   - name: TDMOUT_{X}_CTRL1
-    offset: 0x01
+    offset: 0x1
     description: TDM output control register
     fields:
       - bits: "31"
@@ -96,7 +96,8 @@ registers0:
         name: reg_wait_cnt
         access: R/W
         default: "0x00"
-        description: "wait some time when enable set to 1, then start request data from frddr"
+        description: "wait some time when enable set to 1, then start request data from
+          frddr"
       - bits: "15:14"
         name: reg_gain_shift
         access: R/W
@@ -116,7 +117,8 @@ registers0:
         name: reg_keep_req_ddr_init
         access: R/W
         default: "0"
-        description: "set 0 will stop sending data if req_ddr stopped by init_done pull down"
+        description: "set 0 will stop sending data if req_ddr stopped by init_done pull
+          down"
       - bits: "2"
         name: reg_sts_sel
         access: R/W
@@ -129,7 +131,7 @@ registers0:
         description: "1:select mixer output"
 
   - name: TDMOUT_{X}_CTRL2
-    offset: 0x02
+    offset: 0x2
     description: TDM output control register
     fields:
       - bits: "31:24"
@@ -144,7 +146,7 @@ registers0:
         description: "[15]:mix l15 and r15; ... [0]:mix l0 and r0"
 
   - name: TDMOUT_{X}_STAT
-    offset: 0x03
+    offset: 0x3
     description: TDM output status register
     fields:
       - bits: "31:0"
@@ -154,7 +156,7 @@ registers0:
         description: "by reg_sts_sel: 0:fifo/error status; 1:cur_gain_val"
 
   - name: TDMOUT_{X}_SWAP0
-    offset: 0x04
+    offset: 0x4
     description: TDM output lane swap register
     fields:
       - bits: "29:25"
@@ -189,7 +191,7 @@ registers0:
         description: ch0_sel
 
   - name: TDMOUT_{X}_SWAP1
-    offset: 0x05
+    offset: 0x5
     description: TDM output lane swap register
     fields:
       - bits: "29:25"
@@ -224,7 +226,7 @@ registers0:
         description: ch6_sel
 
   - name: TDMOUT_{X}_SWAP2
-    offset: 0x06
+    offset: 0x6
     description: TDM output lane swap register
     fields:
       - bits: "29:25"
@@ -259,7 +261,7 @@ registers0:
         description: ch12_sel
 
   - name: TDMOUT_{X}_SWAP3
-    offset: 0x07
+    offset: 0x7
     description: TDM output lane swap register
     fields:
       - bits: "29:25"
@@ -294,7 +296,7 @@ registers0:
         description: ch18_sel
 
   - name: TDMOUT_{X}_SWAP4
-    offset: 0x08
+    offset: 0x8
     description: TDM output lane swap register
     fields:
       - bits: "29:25"
@@ -329,7 +331,7 @@ registers0:
         description: ch24_sel
 
   - name: TDMOUT_{X}_SWAP5
-    offset: 0x09
+    offset: 0x9
     description: TDM output lane swap register
     fields:
       - bits: "9:5"
@@ -344,7 +346,7 @@ registers0:
         description: ch30_sel
 
   - name: TDMOUT_{X}_MASK0
-    offset: 0x0a
+    offset: 0xa
     description: TDM output channel mask register
     fields:
       - bits: "31:0"
@@ -354,7 +356,7 @@ registers0:
         description: "mask each channel in lane0, max is 32 ch"
 
   - name: TDMOUT_{X}_MASK1
-    offset: 0x0b
+    offset: 0xb
     description: TDM output channel mask register
     fields:
       - bits: "31:0"
@@ -364,7 +366,7 @@ registers0:
         description: "mask each channel in lane1, max is 32 ch"
 
   - name: TDMOUT_{X}_MASK2
-    offset: 0x0c
+    offset: 0xc
     description: TDM output channel mask register
     fields:
       - bits: "31:0"
@@ -374,7 +376,7 @@ registers0:
         description: "mask each channel in lane2, max is 32 ch"
 
   - name: TDMOUT_{X}_MASK3
-    offset: 0x0d
+    offset: 0xd
     description: TDM output channel mask register
     fields:
       - bits: "31:0"
@@ -384,7 +386,7 @@ registers0:
         description: "mask each channel in lane3, max is 32 ch"
 
   - name: TDMOUT_{X}_MASK4
-    offset: 0x0e
+    offset: 0xe
     description: TDM output channel mask register
     fields:
       - bits: "31:0"
@@ -394,7 +396,7 @@ registers0:
         description: "mask each channel in lane4, max is 32 ch"
 
   - name: TDMOUT_{X}_MASK5
-    offset: 0x0f
+    offset: 0xf
     description: TDM output channel mask register
     fields:
       - bits: "31:0"

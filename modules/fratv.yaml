@@ -4,11 +4,11 @@ parent_base: audio_top_ee
 instances:
   A:
     offset_base0: 0x1d3
-    condition: { macro_path: ["fratv", "imp"], eq: 1 }
+    condition: { macro_path: [ "fratv", "imp" ], eq: 1 }
 
 registers0:
   - name: FRATV_CTRL0
-    offset: 0x00
+    offset: 0x0
     description: ATV audio front-end control register
     fields:
       - bits: "31"
@@ -45,4 +45,5 @@ registers0:
         name: reg_clk_inv
         access: R/W
         default: "0"
-        description: "0:capture input by rise edge of clock; 1:capture input by fall edge of clock"
+        description: "0:capture input by rise edge of clock; 1:capture input by fall
+          edge of clock"

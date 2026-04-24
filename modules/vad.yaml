@@ -1,12 +1,12 @@
 module: VAD
 
 module_condition:
-  macro_path: ["vad", "imp"]
+  macro_path: [ "vad", "imp" ]
   eq: 1
 
 registers0:
   - name: VAD_TOP_CTRL0
-    offset: 0x0000
+    offset: 0x0
     description: VAD top control 0
     fields:
       - bits: "31"
@@ -126,7 +126,7 @@ registers0:
         description: Post decimation soft reset
 
   - name: VAD_TOP_CTRL1
-    offset: 0x0001
+    offset: 0x1
     description: VAD top control 1
     fields:
       - bits: "31:30"
@@ -216,7 +216,7 @@ registers0:
         description: Post decimation software reset
 
   - name: VAD_TOP_CTRL2
-    offset: 0x0002
+    offset: 0x2
     description: VAD top control 2
     fields:
       - bits: "31:26"
@@ -246,7 +246,7 @@ registers0:
         description: reserved
 
   - name: VAD_FIR_CTRL
-    offset: 0x0003
+    offset: 0x3
     description: VAD FIR control
     fields:
       - bits: "31:30"
@@ -281,7 +281,7 @@ registers0:
         description: Decimation rate minus 1 (0~11)
 
   - name: VAD_FIR_EMP
-    offset: 0x0004
+    offset: 0x4
     description: VAD FIR pre-emphasis
     fields:
       - bits: "31:10"
@@ -296,7 +296,7 @@ registers0:
         description: Pre-emphasis coefficient (float unsigned)
 
   - name: VAD_FIR_COEF0
-    offset: 0x0005
+    offset: 0x5
     description: VAD FIR coefficient 0
     fields:
       - bits: "31:16"
@@ -311,7 +311,7 @@ registers0:
         description: Decimation coefficient 1 (8.1.1.7)
 
   - name: VAD_FIR_COEF1
-    offset: 0x0006
+    offset: 0x6
     description: VAD FIR coefficient 1
     fields:
       - bits: "31:16"
@@ -326,7 +326,7 @@ registers0:
         description: Decimation coefficient 3 (8.1.1.7)
 
   - name: VAD_FIR_COEF2
-    offset: 0x0007
+    offset: 0x7
     description: VAD FIR coefficient 2
     fields:
       - bits: "31:16"
@@ -341,7 +341,7 @@ registers0:
         description: Decimation coefficient 5 (8.1.1.7)
 
   - name: VAD_FIR_COEF3
-    offset: 0x0008
+    offset: 0x8
     description: VAD FIR coefficient 3
     fields:
       - bits: "31:16"
@@ -356,7 +356,7 @@ registers0:
         description: Decimation coefficient 7 (8.1.1.7)
 
   - name: VAD_FIR_COEF4
-    offset: 0x0009
+    offset: 0x9
     description: VAD FIR coefficient 4
     fields:
       - bits: "31:16"
@@ -371,7 +371,7 @@ registers0:
         description: Decimation coefficient 9 (8.1.1.7)
 
   - name: VAD_FIR_COEF5
-    offset: 0x000a
+    offset: 0xa
     description: VAD FIR coefficient 5
     fields:
       - bits: "31:16"
@@ -386,7 +386,7 @@ registers0:
         description: Decimation coefficient 11 (8.1.1.7)
 
   - name: VAD_FIR_COEF6
-    offset: 0x000b
+    offset: 0xb
     description: VAD FIR coefficient 6
     fields:
       - bits: "31:16"
@@ -401,7 +401,7 @@ registers0:
         description: Decimation coefficient 13 (8.1.1.7)
 
   - name: VAD_FIR_COEF7
-    offset: 0x000c
+    offset: 0xc
     description: VAD FIR coefficient 7
     fields:
       - bits: "31:16"
@@ -416,7 +416,7 @@ registers0:
         description: Decimation coefficient 15 (8.1.1.7)
 
   - name: VAD_FIR_COEF8
-    offset: 0x000d
+    offset: 0xd
     description: VAD FIR coefficient 8
     fields:
       - bits: "31:16"
@@ -431,7 +431,7 @@ registers0:
         description: Decimation coefficient 17 (8.1.1.7)
 
   - name: VAD_FIR_COEF9
-    offset: 0x000e
+    offset: 0xe
     description: VAD FIR coefficient 9
     fields:
       - bits: "31:16"
@@ -446,7 +446,7 @@ registers0:
         description: Decimation coefficient 19 (8.1.1.7)
 
   - name: VAD_FIR_COEF10
-    offset: 0x000f
+    offset: 0xf
     description: VAD FIR coefficient 10
     fields:
       - bits: "31:16"
@@ -461,7 +461,7 @@ registers0:
         description: Decimation coefficient 21 (8.1.1.7)
 
   - name: VAD_FIR_COEF11
-    offset: 0x0010
+    offset: 0x10
     description: VAD FIR coefficient 11
     fields:
       - bits: "31:16"
@@ -476,7 +476,7 @@ registers0:
         description: Decimation coefficient 23 (8.1.1.7)
 
   - name: VAD_FIR_COEF12
-    offset: 0x0011
+    offset: 0x11
     description: VAD FIR coefficient 12
     fields:
       - bits: "31:16"
@@ -491,7 +491,7 @@ registers0:
         description: Decimation coefficient 25 (8.1.1.7)
 
   - name: VAD_FRAME_CTRL0
-    offset: 0x0012
+    offset: 0x12
     description: VAD frame control 0
     fields:
       - bits: "31:0"
@@ -501,7 +501,7 @@ registers0:
         description: Frame control 0
 
   - name: VAD_FRAME_CTRL1
-    offset: 0x0013
+    offset: 0x13
     description: VAD frame control 1
     fields:
       - bits: "31:0"
@@ -511,7 +511,7 @@ registers0:
         description: Frame control 1
 
   - name: VAD_FRAME_CTRL2
-    offset: 0x0014
+    offset: 0x14
     description: VAD frame control 2
     fields:
       - bits: "31:0"
@@ -521,7 +521,7 @@ registers0:
         description: Frame control 2
 
   - name: VAD_CEP_CTRL0
-    offset: 0x0015
+    offset: 0x15
     description: VAD cepstrum control 0
     fields:
       - bits: "31:0"
@@ -531,7 +531,7 @@ registers0:
         description: Cepstrum control 0
 
   - name: VAD_CEP_CTRL1
-    offset: 0x0016
+    offset: 0x16
     description: VAD cepstrum control 1
     fields:
       - bits: "31:0"
@@ -541,7 +541,7 @@ registers0:
         description: Cepstrum control 1
 
   - name: VAD_CEP_CTRL2
-    offset: 0x0017
+    offset: 0x17
     description: VAD cepstrum control 2
     fields:
       - bits: "31:0"
@@ -551,7 +551,7 @@ registers0:
         description: Cepstrum control 2
 
   - name: VAD_CEP_CTRL3
-    offset: 0x0018
+    offset: 0x18
     description: VAD cepstrum control 3
     fields:
       - bits: "31:0"
@@ -561,7 +561,7 @@ registers0:
         description: Cepstrum control 3
 
   - name: VAD_CEP_CTRL4
-    offset: 0x0019
+    offset: 0x19
     description: VAD cepstrum control 4
     fields:
       - bits: "31:0"
@@ -571,7 +571,7 @@ registers0:
         description: Cepstrum control 4
 
   - name: VAD_CEP_CTRL5
-    offset: 0x001a
+    offset: 0x1a
     description: VAD cepstrum control 5
     fields:
       - bits: "31:0"
@@ -581,7 +581,7 @@ registers0:
         description: Cepstrum control 5
 
   - name: VAD_DEC_CTRL
-    offset: 0x001b
+    offset: 0x1b
     description: VAD decimation control
     fields:
       - bits: "31:0"
@@ -591,7 +591,7 @@ registers0:
         description: Decimation control
 
   - name: VAD_TOP_STS0
-    offset: 0x001c
+    offset: 0x1c
     description: VAD top status 0
     fields:
       - bits: "31:0"
@@ -601,7 +601,7 @@ registers0:
         description: Status 0
 
   - name: VAD_TOP_STS1
-    offset: 0x001d
+    offset: 0x1d
     description: VAD top status 1
     fields:
       - bits: "31:0"
@@ -611,7 +611,7 @@ registers0:
         description: Status 1
 
   - name: VAD_TOP_STS2
-    offset: 0x001e
+    offset: 0x1e
     description: VAD top status 2
     fields:
       - bits: "31:0"
@@ -621,7 +621,7 @@ registers0:
         description: Status 2
 
   - name: VAD_FIR_STS0
-    offset: 0x001f
+    offset: 0x1f
     description: VAD FIR status 0
     fields:
       - bits: "31:0"
@@ -631,7 +631,7 @@ registers0:
         description: FIR status 0
 
   - name: VAD_FIR_STS1
-    offset: 0x0020
+    offset: 0x20
     description: VAD FIR status 1
     fields:
       - bits: "31:0"
@@ -641,7 +641,7 @@ registers0:
         description: FIR status 1
 
   - name: VAD_POW_STS0
-    offset: 0x0021
+    offset: 0x21
     description: VAD power status 0
     fields:
       - bits: "31:0"
@@ -651,7 +651,7 @@ registers0:
         description: Power status 0
 
   - name: VAD_POW_STS1
-    offset: 0x0022
+    offset: 0x22
     description: VAD power status 1
     fields:
       - bits: "31:0"
@@ -661,7 +661,7 @@ registers0:
         description: Power status 1
 
   - name: VAD_POW_STS2
-    offset: 0x0023
+    offset: 0x23
     description: VAD power status 2
     fields:
       - bits: "31:0"
@@ -671,7 +671,7 @@ registers0:
         description: Power status 2
 
   - name: VAD_FFT_STS0
-    offset: 0x0024
+    offset: 0x24
     description: VAD FFT status 0
     fields:
       - bits: "31:0"
@@ -681,7 +681,7 @@ registers0:
         description: FFT status 0
 
   - name: VAD_FFT_STS1
-    offset: 0x0025
+    offset: 0x25
     description: VAD FFT status 1
     fields:
       - bits: "31:0"
@@ -691,7 +691,7 @@ registers0:
         description: FFT status 1
 
   - name: VAD_SPE_STS0
-    offset: 0x0026
+    offset: 0x26
     description: VAD spectrum entropy status 0
     fields:
       - bits: "31:0"
@@ -701,7 +701,7 @@ registers0:
         description: Spectrum entropy status 0
 
   - name: VAD_SPE_STS1
-    offset: 0x0027
+    offset: 0x27
     description: VAD spectrum entropy status 1
     fields:
       - bits: "31:0"
@@ -711,7 +711,7 @@ registers0:
         description: Spectrum entropy status 1
 
   - name: VAD_SPE_STS2
-    offset: 0x0028
+    offset: 0x28
     description: VAD spectrum entropy status 2
     fields:
       - bits: "31:0"
@@ -721,7 +721,7 @@ registers0:
         description: Spectrum entropy status 2
 
   - name: VAD_SPE_STS3
-    offset: 0x0029
+    offset: 0x29
     description: VAD spectrum entropy status 3
     fields:
       - bits: "31:0"
@@ -731,7 +731,7 @@ registers0:
         description: Spectrum entropy status 3
 
   - name: VAD_DEC_STS0
-    offset: 0x002a
+    offset: 0x2a
     description: VAD decimation status 0
     fields:
       - bits: "31:0"
@@ -741,7 +741,7 @@ registers0:
         description: Decimation status 0
 
   - name: VAD_DEC_STS1
-    offset: 0x002b
+    offset: 0x2b
     description: VAD decimation status 1
     fields:
       - bits: "31:0"
@@ -751,7 +751,7 @@ registers0:
         description: Decimation status 1
 
   - name: VAD_LUT_CTRL
-    offset: 0x002c
+    offset: 0x2c
     description: VAD LUT control
     fields:
       - bits: "31:0"
@@ -761,7 +761,7 @@ registers0:
         description: LUT control
 
   - name: VAD_LUT_WR
-    offset: 0x002d
+    offset: 0x2d
     description: VAD LUT write
     fields:
       - bits: "31:0"
@@ -771,7 +771,7 @@ registers0:
         description: LUT write data
 
   - name: VAD_LUT_RD
-    offset: 0x002e
+    offset: 0x2e
     description: VAD LUT read
     fields:
       - bits: "31:0"
@@ -781,7 +781,7 @@ registers0:
         description: LUT read data
 
   - name: VAD_IN_SEL0
-    offset: 0x002f
+    offset: 0x2f
     description: VAD input select 0
     fields:
       - bits: "31:0"
@@ -791,7 +791,7 @@ registers0:
         description: Input select 0
 
   - name: VAD_IN_SEL1
-    offset: 0x0030
+    offset: 0x30
     description: VAD input select 1
     fields:
       - bits: "31:0"
@@ -801,7 +801,7 @@ registers0:
         description: Input select 1
 
   - name: VAD_TO_DDR
-    offset: 0x0031
+    offset: 0x31
     description: VAD to DDR control
     fields:
       - bits: "31:0"
@@ -811,7 +811,7 @@ registers0:
         description: To DDR control
 
   - name: VAD_SYNC_CTRL0
-    offset: 0x0032
+    offset: 0x32
     description: VAD sync control 0
     fields:
       - bits: "31:0"
@@ -821,7 +821,7 @@ registers0:
         description: Sync control 0
 
   - name: VAD_SYNC_CHNUM_ID0
-    offset: 0x0033
+    offset: 0x33
     description: VAD sync channel number ID 0
     fields:
       - bits: "31:0"
@@ -831,7 +831,7 @@ registers0:
         description: Channel number ID 0
 
   - name: VAD_SYNC_CHNUM_ID1
-    offset: 0x0034
+    offset: 0x34
     description: VAD sync channel number ID 1
     fields:
       - bits: "31:0"
@@ -841,7 +841,7 @@ registers0:
         description: Channel number ID 1
 
   - name: VAD_SYNC_CHNUM_ID2
-    offset: 0x0035
+    offset: 0x35
     description: VAD sync channel number ID 2
     fields:
       - bits: "31:0"
@@ -851,7 +851,7 @@ registers0:
         description: Channel number ID 2
 
   - name: VAD_SYNC_CHNUM_ID3
-    offset: 0x0036
+    offset: 0x36
     description: VAD sync channel number ID 3
     fields:
       - bits: "31:0"
@@ -861,7 +861,7 @@ registers0:
         description: Channel number ID 3
 
   - name: VAD_SYNC_CHNUM_ID4
-    offset: 0x0037
+    offset: 0x37
     description: VAD sync channel number ID 4
     fields:
       - bits: "31:0"
@@ -871,7 +871,7 @@ registers0:
         description: Channel number ID 4
 
   - name: VAD_SYNC_CHNUM_ID5
-    offset: 0x0038
+    offset: 0x38
     description: VAD sync channel number ID 5
     fields:
       - bits: "31:0"
@@ -881,7 +881,7 @@ registers0:
         description: Channel number ID 5
 
   - name: VAD_SYNC_CHNUM_ID6
-    offset: 0x0039
+    offset: 0x39
     description: VAD sync channel number ID 6
     fields:
       - bits: "31:0"
@@ -891,7 +891,7 @@ registers0:
         description: Channel number ID 6
 
   - name: VAD_SYNC_CHNUM_ID7
-    offset: 0x003a
+    offset: 0x3a
     description: VAD sync channel number ID 7
     fields:
       - bits: "31:0"

@@ -1,12 +1,12 @@
 module: SED
 
 module_condition:
-  macro_path: ["sed", "imp"]
+  macro_path: [ "sed", "imp" ]
   eq: 1
 
 registers0:
   - name: SED_VERSION
-    offset: 0x0000
+    offset: 0x0
     description: SED version register
     fields:
       - bits: "31:8"
@@ -21,7 +21,7 @@ registers0:
         description: SED version
 
   - name: SED_SYS_CFG0
-    offset: 0x0004
+    offset: 0x4
     description: SED system config 0
     fields:
       - bits: "31:1"
@@ -36,7 +36,7 @@ registers0:
         description: Turn on SED clock
 
   - name: SED_SYS_CFG1
-    offset: 0x0005
+    offset: 0x5
     description: SED system config 1
     fields:
       - bits: "31:24"
@@ -56,7 +56,7 @@ registers0:
         description: "Integer of clk divider ratio, min 2. SED_clk = src_clk / int.frac"
 
   - name: SED_CMD_CHAIN
-    offset: 0x0010
+    offset: 0x10
     description: SED CMD chain control
     fields:
       - bits: "31"
@@ -91,7 +91,7 @@ registers0:
         description: CMD chain address in weight memory, unit 16 bytes
 
   - name: SED_IRQ_EN
-    offset: 0x0011
+    offset: 0x11
     description: SED IRQ enable
     fields:
       - bits: "31"
@@ -116,7 +116,7 @@ registers0:
         description: Enable feature 0~28 IRQ
 
   - name: SED_IRQ_STS
-    offset: 0x0012
+    offset: 0x12
     description: SED IRQ status, write 1 to clear
     fields:
       - bits: "31"
@@ -141,7 +141,7 @@ registers0:
         description: Feature 0~28 IRQ status
 
   - name: SED_TIMELOG
-    offset: 0x0013
+    offset: 0x13
     description: SED time stamp log, unit ms, start when 10ms data ready
     fields:
       - bits: "31:30"
@@ -181,7 +181,7 @@ registers0:
         description: Time stamp last
 
   - name: SED_CMD_CFG0
-    offset: 0x0040
+    offset: 0x40
     description: CMD instruction bits[31:0]
     fields:
       - bits: "31:0"
@@ -191,7 +191,7 @@ registers0:
         description: CMD instruction [31:0]
 
   - name: SED_CMD_CFG1
-    offset: 0x0041
+    offset: 0x41
     description: CMD instruction bits[63:32]
     fields:
       - bits: "31:0"
@@ -201,7 +201,7 @@ registers0:
         description: CMD instruction [63:32]
 
   - name: SED_CMD_CFG2
-    offset: 0x0042
+    offset: 0x42
     description: CMD instruction bits[95:64]
     fields:
       - bits: "31:0"
@@ -211,7 +211,7 @@ registers0:
         description: CMD instruction [95:64]
 
   - name: SED_CMD_CFG3
-    offset: 0x0043
+    offset: 0x43
     description: CMD instruction bits[127:96]
     fields:
       - bits: "31:0"
@@ -221,7 +221,7 @@ registers0:
         description: CMD instruction [127:96]
 
   - name: SED_DSM_COEF0
-    offset: 0x0080
+    offset: 0x80
     description: Down sample coefficient 0
     fields:
       - bits: "31:0"
@@ -231,7 +231,7 @@ registers0:
         description: Down sample coefficient 0
 
   - name: SED_DSM_COEF1
-    offset: 0x0081
+    offset: 0x81
     description: Down sample coefficient 1
     fields:
       - bits: "31:0"
@@ -241,7 +241,7 @@ registers0:
         description: Down sample coefficient 1
 
   - name: SED_DSM_COEF2
-    offset: 0x0082
+    offset: 0x82
     description: Down sample coefficient 2
     fields:
       - bits: "31:0"
@@ -251,7 +251,7 @@ registers0:
         description: Down sample coefficient 2
 
   - name: SED_DSM_COEF3
-    offset: 0x0083
+    offset: 0x83
     description: Down sample coefficient 3
     fields:
       - bits: "31:0"
@@ -261,7 +261,7 @@ registers0:
         description: Down sample coefficient 3
 
   - name: SED_DSM_COEF4
-    offset: 0x0084
+    offset: 0x84
     description: Down sample coefficient 4
     fields:
       - bits: "31:0"
@@ -271,7 +271,7 @@ registers0:
         description: Down sample coefficient 4
 
   - name: SED_DSM_COEF5
-    offset: 0x0085
+    offset: 0x85
     description: Down sample coefficient 5
     fields:
       - bits: "31:0"
@@ -281,7 +281,7 @@ registers0:
         description: Down sample coefficient 5
 
   - name: SED_DSM_COEF6
-    offset: 0x0086
+    offset: 0x86
     description: Down sample coefficient 6
     fields:
       - bits: "31:0"
@@ -291,7 +291,7 @@ registers0:
         description: Down sample coefficient 6
 
   - name: SED_DSM_COEF7
-    offset: 0x0087
+    offset: 0x87
     description: Down sample coefficient 7
     fields:
       - bits: "31:0"
@@ -301,7 +301,7 @@ registers0:
         description: Down sample coefficient 7
 
   - name: SED_DSM_COEF8
-    offset: 0x0088
+    offset: 0x88
     description: Down sample coefficient 8
     fields:
       - bits: "31:0"
@@ -311,7 +311,7 @@ registers0:
         description: Down sample coefficient 8
 
   - name: SED_DSM_COEF9
-    offset: 0x0089
+    offset: 0x89
     description: Down sample coefficient 9
     fields:
       - bits: "31:0"
@@ -321,7 +321,7 @@ registers0:
         description: Down sample coefficient 9
 
   - name: SED_DSM_COEFA
-    offset: 0x008a
+    offset: 0x8a
     description: Down sample coefficient A
     fields:
       - bits: "31:0"
@@ -331,7 +331,7 @@ registers0:
         description: Down sample coefficient A
 
   - name: SED_DSM_COEFB
-    offset: 0x008b
+    offset: 0x8b
     description: Down sample coefficient B
     fields:
       - bits: "31:0"
@@ -341,7 +341,7 @@ registers0:
         description: Down sample coefficient B
 
   - name: SED_DSM_COEFC
-    offset: 0x008c
+    offset: 0x8c
     description: Down sample coefficient C
     fields:
       - bits: "31:0"
@@ -351,7 +351,7 @@ registers0:
         description: Down sample coefficient C
 
   - name: SED_CFG_REG0
-    offset: 0x0090
+    offset: 0x90
     description: SED config register 0
     fields:
       - bits: "31:20"
@@ -391,7 +391,7 @@ registers0:
         description: Start receive audio data
 
   - name: SED_CFG_REG1
-    offset: 0x0091
+    offset: 0x91
     description: SED config register 1
     fields:
       - bits: "31:16"
@@ -411,7 +411,7 @@ registers0:
         description: SED time window length
 
   - name: SED_POW_CTRL0
-    offset: 0x0092
+    offset: 0x92
     description: SED power control 0
     fields:
       - bits: "31:26"
@@ -441,7 +441,7 @@ registers0:
         description: Power ramp up threshold
 
   - name: SED_POW_CTRL1
-    offset: 0x0093
+    offset: 0x93
     description: SED power control 1
     fields:
       - bits: "31:16"
@@ -456,7 +456,7 @@ registers0:
         description: Power current threshold
 
   - name: SED_POW_CTRL2
-    offset: 0x0094
+    offset: 0x94
     description: SED power control 2
     fields:
       - bits: "31:16"
@@ -471,7 +471,7 @@ registers0:
         description: Power start address
 
   - name: SED_LOG_CTRL0
-    offset: 0x0095
+    offset: 0x95
     description: SED log control 0
     fields:
       - bits: "31:16"
@@ -486,7 +486,7 @@ registers0:
         description: Minus value for log2 calculation
 
   - name: SED_LOG_CTRL1
-    offset: 0x0096
+    offset: 0x96
     description: SED log control 1
     fields:
       - bits: "31:16"
@@ -501,7 +501,7 @@ registers0:
         description: log2 zero point (16bit integer)
 
   - name: SED_NN_CTRL0
-    offset: 0x0097
+    offset: 0x97
     description: SED NN control 0
     fields:
       - bits: "31:0"

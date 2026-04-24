@@ -9,13 +9,13 @@ submodules:
     instances:
       A:
         offset_base0: 0x100
-        condition: { macro_path: ["spdifin", "A", "imp"], eq: 1 }
+        condition: { macro_path: [ "spdifin", "A", "imp" ], eq: 1 }
       B:
         offset_base0: 0x180
-        condition: { macro_path: ["spdifin", "B", "imp"], eq: 1 }
+        condition: { macro_path: [ "spdifin", "B", "imp" ], eq: 1 }
     registers0:
       - name: SPDIFIN_{X}_CTRL0
-        offset: 0x00
+        offset: 0x0
         description: SPDIF input control register
         fields:
           - bits: "31"
@@ -62,7 +62,8 @@ submodules:
             name: reg_nonpcm2pcm_th
             access: R/W
             default: "0x000"
-            description: "when detected NonPcm mode, if long time didn't detect PaPb again, generate interrupt"
+            description: "when detected NonPcm mode, if long time didn't detect PaPb again,
+              generate interrupt"
           - bits: "11:8"
             name: reg_ch_status_sel
             access: R/W
@@ -105,7 +106,7 @@ submodules:
             description: "0:disable invert; 1:enable"
 
       - name: SPDIFIN_{X}_CTRL1
-        offset: 0x01
+        offset: 0x1
         description: SPDIF input control register
         fields:
           - bits: "31"
@@ -130,7 +131,7 @@ submodules:
             description: "define a base timer to detect sample mode changed; need *256"
 
       - name: SPDIFIN_{X}_CTRL2
-        offset: 0x02
+        offset: 0x2
         description: SPDIF input control register
         fields:
           - bits: "29:20"
@@ -150,7 +151,7 @@ submodules:
             description: reg_sample_mode2_timer_th
 
       - name: SPDIFIN_{X}_CTRL3
-        offset: 0x03
+        offset: 0x3
         description: SPDIF input control register
         fields:
           - bits: "29:20"
@@ -170,7 +171,7 @@ submodules:
             description: reg_sample_mode5_timer_th
 
       - name: SPDIFIN_{X}_CTRL4
-        offset: 0x04
+        offset: 0x4
         description: SPDIF input control register
         fields:
           - bits: "31:24"
@@ -195,7 +196,7 @@ submodules:
             description: reg_sample_mode3_timer
 
       - name: SPDIFIN_{X}_CTRL5
-        offset: 0x05
+        offset: 0x5
         description: SPDIF input control register
         fields:
           - bits: "31:24"
@@ -215,14 +216,15 @@ submodules:
             description: reg_sample_mode6_timer
 
       - name: SPDIFIN_{X}_CTRL6
-        offset: 0x06
+        offset: 0x6
         description: SPDIF input control register
         fields:
           - bits: "31:24"
             name: reg_clr_internal_sts
             access: R/W
             default: "0x00"
-            description: "7:valid; 6:parity; 5:ch status; 4:z_cnt; 3:find_nonpcm; 2:pd_data; 1:pc_data; 0:find_papb"
+            description: "7:valid; 6:parity; 5:ch status; 4:z_cnt; 3:find_nonpcm; 2:pd_data;
+              1:pc_data; 0:find_papb"
           - bits: "23:16"
             name: reg_clr_interrupt
             access: R/W
@@ -255,7 +257,7 @@ submodules:
             description: "mask 8 channel 0 sync"
 
       - name: SPDIFIN_{X}_STAT0
-        offset: 0x07
+        offset: 0x7
         description: SPDIF input status register
         fields:
           - bits: "31"
@@ -282,10 +284,12 @@ submodules:
             name: r_interrupt_status
             access: R
             default: "0x00"
-            description: "[7]:find PaPb; [6]:valid changed; [5]:nonpcm to pcm; [4]:Pc/Pd changed; [3]:CH status changed; [2]:sample mode changed; [1]:parity error; [0]:overflow"
+            description: "[7]:find PaPb; [6]:valid changed; [5]:nonpcm to pcm; [4]:Pc/Pd
+              changed; [3]:CH status changed; [2]:sample mode changed;
+              [1]:parity error; [0]:overflow"
 
       - name: SPDIFIN_{X}_STAT1
-        offset: 0x08
+        offset: 0x8
         description: SPDIF input status register
         fields:
           - bits: "31:0"
@@ -295,7 +299,7 @@ submodules:
             description: "channel status by reg_ch_status_sel"
 
       - name: SPDIFIN_{X}_STAT2
-        offset: 0x09
+        offset: 0x9
         description: SPDIF input status register
         fields:
           - bits: "31:0"
@@ -305,7 +309,7 @@ submodules:
             description: "debug status by reg_ch_status_sel"
 
       - name: SPDIFIN_{X}_MUTE_VAL
-        offset: 0x0a
+        offset: 0xa
         description: SPDIF input mute value register
         fields:
           - bits: "31:0"
@@ -315,7 +319,7 @@ submodules:
             description: "when muted, the channel value"
 
       - name: SPDIFIN_{X}_CTRL7
-        offset: 0x0b
+        offset: 0xb
         description: SPDIF input control register
         fields:
           - bits: "31"
@@ -353,13 +357,13 @@ submodules:
     instances:
       A:
         offset_base0: 0x120
-        condition: { macro_path: ["spdifout", "A", "imp"], eq: 1 }
+        condition: { macro_path: [ "spdifout", "A", "imp" ], eq: 1 }
       B:
         offset_base0: 0x1a0
-        condition: { macro_path: ["spdifout", "B", "imp"], eq: 1 }
+        condition: { macro_path: [ "spdifout", "B", "imp" ], eq: 1 }
     registers0:
       - name: SPDIFOUT_{X}_STAT
-        offset: 0x00
+        offset: 0x0
         description: SPDIF output status register
         fields:
           - bits: "31:0"
@@ -369,7 +373,7 @@ submodules:
             description: "by reg_sts_sel: 0:fifo_cnt/up_error/fsm_stat; 1:cur_gain_val"
 
       - name: SPDIFOUT_{X}_GAIN0
-        offset: 0x01
+        offset: 0x1
         description: SPDIF output gain register
         fields:
           - bits: "31:24"
@@ -394,7 +398,7 @@ submodules:
             description: gain_ch0
 
       - name: SPDIFOUT_{X}_GAIN1
-        offset: 0x02
+        offset: 0x2
         description: SPDIF output gain register
         fields:
           - bits: "31:24"
@@ -419,7 +423,7 @@ submodules:
             description: gain_ch4
 
       - name: SPDIFOUT_{X}_CTRL0
-        offset: 0x03
+        offset: 0x3
         description: SPDIF output control register
         fields:
           - bits: "31"
@@ -504,7 +508,7 @@ submodules:
             description: "mask lane L/R"
 
       - name: SPDIFOUT_{X}_CTRL1
-        offset: 0x04
+        offset: 0x4
         description: SPDIF output control register
         fields:
           - bits: "27"
@@ -546,7 +550,8 @@ submodules:
             name: reg_keep_req_ddr_init
             access: R/W
             default: "0"
-            description: "set 0 will stop sending data if req_ddr stopped by init_done pull down"
+            description: "set 0 will stop sending data if req_ddr stopped by init_done pull
+              down"
           - bits: "2"
             name: reg_sts_sel
             access: R/W
@@ -564,7 +569,7 @@ submodules:
             description: "1:select eq_drc data"
 
       - name: SPDIFOUT_{X}_PREAMB
-        offset: 0x05
+        offset: 0x5
         description: SPDIF output preamble register
         fields:
           - bits: "31"
@@ -599,7 +604,7 @@ submodules:
             description: preamble Z
 
       - name: SPDIFOUT_{X}_SWAP
-        offset: 0x06
+        offset: 0x6
         description: SPDIF output lane swap register
         fields:
           - bits: "31:16"
@@ -624,7 +629,7 @@ submodules:
             description: "lane0 left ch sel"
 
       - name: SPDIFOUT_{X}_CHSTS0
-        offset: 0x07
+        offset: 0x7
         description: SPDIF output channel-status register
         fields:
           - bits: "31:0"
@@ -634,7 +639,7 @@ submodules:
             description: "channel A status[31:0]"
 
       - name: SPDIFOUT_{X}_CHSTS1
-        offset: 0x08
+        offset: 0x8
         description: SPDIF output channel-status register
         fields:
           - bits: "31:0"
@@ -644,7 +649,7 @@ submodules:
             description: "channel A status[63:32]"
 
       - name: SPDIFOUT_{X}_CHSTS2
-        offset: 0x09
+        offset: 0x9
         description: SPDIF output channel-status register
         fields:
           - bits: "31:0"
@@ -654,7 +659,7 @@ submodules:
             description: "channel A status[95:64]"
 
       - name: SPDIFOUT_{X}_CHSTS3
-        offset: 0x0a
+        offset: 0xa
         description: SPDIF output channel-status register
         fields:
           - bits: "31:0"
@@ -664,7 +669,7 @@ submodules:
             description: "channel A status[127:96]"
 
       - name: SPDIFOUT_{X}_CHSTS4
-        offset: 0x0b
+        offset: 0xb
         description: SPDIF output channel-status register
         fields:
           - bits: "31:0"
@@ -674,7 +679,7 @@ submodules:
             description: "channel A status[159:128]"
 
       - name: SPDIFOUT_{X}_CHSTS5
-        offset: 0x0c
+        offset: 0xc
         description: SPDIF output channel-status register
         fields:
           - bits: "31:0"
@@ -684,7 +689,7 @@ submodules:
             description: "channel A status[191:160]"
 
       - name: SPDIFOUT_{X}_CHSTS6
-        offset: 0x0d
+        offset: 0xd
         description: SPDIF output channel-status register
         fields:
           - bits: "31:0"
@@ -694,7 +699,7 @@ submodules:
             description: "channel B status[31:0]"
 
       - name: SPDIFOUT_{X}_CHSTS7
-        offset: 0x0e
+        offset: 0xe
         description: SPDIF output channel-status register
         fields:
           - bits: "31:0"
@@ -704,7 +709,7 @@ submodules:
             description: "channel B status[63:32]"
 
       - name: SPDIFOUT_{X}_CHSTS8
-        offset: 0x0f
+        offset: 0xf
         description: SPDIF output channel-status register
         fields:
           - bits: "31:0"
@@ -842,13 +847,13 @@ submodules:
     instances:
       A:
         offset_base0: 0x1f0
-        condition: { macro_path: ["spdifin", "LB_A", "imp"], eq: 1 }
+        condition: { macro_path: [ "spdifin", "LB_A", "imp" ], eq: 1 }
       B:
         offset_base0: 0x270
-        condition: { macro_path: ["spdifin", "LB_B", "imp"], eq: 1 }
+        condition: { macro_path: [ "spdifin", "LB_B", "imp" ], eq: 1 }
     registers0:
       - name: SPDIFIN_LB_{X}_CTRL0
-        offset: 0x00
+        offset: 0x0
         description: SPDIF input control register
         fields:
           - bits: "31"
@@ -890,7 +895,8 @@ submodules:
             name: reg_nonpcm2pcm_th
             access: R/W
             default: "0x000"
-            description: "when detected NonPcm mode, if long time didn't detect PaPb again, generate interrupt"
+            description: "when detected NonPcm mode, if long time didn't detect PaPb again,
+              generate interrupt"
           - bits: "11:8"
             name: reg_ch_status_sel
             access: R/W
@@ -933,7 +939,7 @@ submodules:
             description: "0:disable invert; 1:enable"
 
       - name: SPDIFIN_LB_{X}_CTRL1
-        offset: 0x01
+        offset: 0x1
         description: SPDIF input control register
         fields:
           - bits: "27:20"
@@ -943,7 +949,7 @@ submodules:
             description: "mask each interrupt"
 
       - name: SPDIFIN_LB_{X}_CTRL6
-        offset: 0x06
+        offset: 0x6
         description: SPDIF input control register
         fields:
           - bits: "31:24"
@@ -973,7 +979,7 @@ submodules:
             description: "mask 8 channel 0 sync"
 
       - name: SPDIFIN_LB_{X}_STAT0
-        offset: 0x07
+        offset: 0x7
         description: SPDIF input status register
         fields:
           - bits: "31"
@@ -993,7 +999,7 @@ submodules:
             description: "interrupt status"
 
       - name: SPDIFIN_LB_{X}_STAT1
-        offset: 0x08
+        offset: 0x8
         description: SPDIF input status register
         fields:
           - bits: "31:0"
@@ -1003,7 +1009,7 @@ submodules:
             description: "channel status by reg_ch_status_sel"
 
       - name: SPDIFIN_LB_{X}_MUTE_VAL
-        offset: 0x0a
+        offset: 0xa
         description: SPDIF input mute value register
         fields:
           - bits: "31:0"

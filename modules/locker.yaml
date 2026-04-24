@@ -11,7 +11,7 @@ instances:
 
 registers0:
   - name: AUD_LOCK_EN
-    offset: 0x0000
+    offset: 0x0
     description: Audio lock enable
     fields:
       - bits: "31:1"
@@ -26,7 +26,7 @@ registers0:
         description: "Audio lock enable. 0=disable, 1=enable"
 
   - name: AUD_LOCK_SW_RESET
-    offset: 0x0001
+    offset: 0x1
     description: Software reset
     fields:
       - bits: "31:1"
@@ -41,7 +41,7 @@ registers0:
         description: Software reset. 1=generate reset pulse
 
   - name: AUD_LOCK_SW_LATCH
-    offset: 0x0002
+    offset: 0x2
     description: Software latch control
     fields:
       - bits: "31:4"
@@ -71,7 +71,7 @@ registers0:
         description: imclk2ref software latch. 1=generate latch pulse
 
   - name: AUD_LOCK_HW_LATCH
-    offset: 0x0003
+    offset: 0x3
     description: Hardware latch enable
     fields:
       - bits: "31:4"
@@ -101,7 +101,7 @@ registers0:
         description: imclk2ref hardware latch enable
 
   - name: AUD_LOCK_REFCLK_SRC
-    offset: 0x0004
+    offset: 0x4
     description: Reference clock source select
     fields:
       - bits: "31:2"
@@ -116,7 +116,7 @@ registers0:
         description: "Ref clk source. 0=pclk, 1=oscinclk, 2/3=reserved"
 
   - name: AUD_LOCK_REFCLK_LAT_INT
-    offset: 0x0005
+    offset: 0x5
     description: Reference clock latch interval
     fields:
       - bits: "31:0"
@@ -126,7 +126,7 @@ registers0:
         description: Number of ref clock cycles to latch imclk/omclk
 
   - name: AUD_LOCK_IMCLK_LAT_INT
-    offset: 0x0006
+    offset: 0x6
     description: IMCLK latch interval
     fields:
       - bits: "31:0"
@@ -136,7 +136,7 @@ registers0:
         description: Number of imclk cycles to latch reference clock
 
   - name: AUD_LOCK_OMCLK_LAT_INT
-    offset: 0x0007
+    offset: 0x7
     description: OMCLK latch interval
     fields:
       - bits: "31:0"
@@ -146,7 +146,7 @@ registers0:
         description: Number of omclk cycles to latch reference clock
 
   - name: AUD_LOCK_REFCLK_DS_INT
-    offset: 0x0008
+    offset: 0x8
     description: Reference clock downsample
     fields:
       - bits: "31:10"
@@ -161,7 +161,7 @@ registers0:
         description: Downsample step for ref clock (module=x+1)
 
   - name: AUD_LOCK_IMCLK_DS_INT
-    offset: 0x0009
+    offset: 0x9
     description: IMCLK downsample
     fields:
       - bits: "31:10"
@@ -176,7 +176,7 @@ registers0:
         description: Downsample step for imclk (module=x+1)
 
   - name: AUD_LOCK_OMCLK_DS_INT
-    offset: 0x000a
+    offset: 0xa
     description: OMCLK downsample
     fields:
       - bits: "31:10"
@@ -191,7 +191,7 @@ registers0:
         description: Downsample step for omclk (module=x+1)
 
   - name: AUD_LOCK_INT_CLR
-    offset: 0x000b
+    offset: 0xb
     description: Interrupt clear
     fields:
       - bits: "31:2"
@@ -211,7 +211,7 @@ registers0:
         description: Clear interrupt
 
   - name: AUD_LOCK_GCLK_CTRL
-    offset: 0x000c
+    offset: 0xc
     description: Clock gating control
     fields:
       - bits: "31:4"
@@ -236,7 +236,7 @@ registers0:
         description: reserved
 
   - name: AUD_LOCK_INT_CTRL
-    offset: 0x000d
+    offset: 0xd
     description: Interrupt control
     fields:
       - bits: "31:4"
@@ -256,7 +256,7 @@ registers0:
         description: Interrupt control
 
   - name: RO_REF2IMCLK_CNT_L
-    offset: 0x0010
+    offset: 0x10
     description: ref2imclk counter low
     fields:
       - bits: "31:0"
@@ -266,7 +266,7 @@ registers0:
         description: Counter low 32 bits
 
   - name: RO_REF2IMCLK_CNT_H
-    offset: 0x0011
+    offset: 0x11
     description: ref2imclk counter high
     fields:
       - bits: "31:0"
@@ -276,7 +276,7 @@ registers0:
         description: Counter high bits
 
   - name: RO_REF2OMCLK_CNT_L
-    offset: 0x0012
+    offset: 0x12
     description: ref2omclk counter low
     fields:
       - bits: "31:0"
@@ -286,7 +286,7 @@ registers0:
         description: Counter low 32 bits
 
   - name: RO_REF2OMCLK_CNT_H
-    offset: 0x0013
+    offset: 0x13
     description: ref2omclk counter high
     fields:
       - bits: "31:0"
@@ -296,7 +296,7 @@ registers0:
         description: Counter high bits
 
   - name: RO_IMCLK2REF_CNT_L
-    offset: 0x0014
+    offset: 0x14
     description: imclk2ref counter low
     fields:
       - bits: "31:0"
@@ -306,7 +306,7 @@ registers0:
         description: Counter low 32 bits
 
   - name: RO_IMCLK2REF_CNT_H
-    offset: 0x0015
+    offset: 0x15
     description: imclk2ref counter high
     fields:
       - bits: "31:0"
@@ -316,7 +316,7 @@ registers0:
         description: Counter high bits
 
   - name: RO_OMCLK2REF_CNT_L
-    offset: 0x0016
+    offset: 0x16
     description: omclk2ref counter low
     fields:
       - bits: "31:0"
@@ -326,7 +326,7 @@ registers0:
         description: Counter low 32 bits
 
   - name: RO_OMCLK2REF_CNT_H
-    offset: 0x0017
+    offset: 0x17
     description: omclk2ref counter high
     fields:
       - bits: "31:0"
@@ -336,7 +336,7 @@ registers0:
         description: Counter high bits
 
   - name: RO_REFCLK_PKG_CNT
-    offset: 0x0018
+    offset: 0x18
     description: Reference clock package counter
     fields:
       - bits: "31:0"
@@ -346,7 +346,7 @@ registers0:
         description: Package counter
 
   - name: RO_IMCLK_PKG_CNT
-    offset: 0x0019
+    offset: 0x19
     description: IMCLK package counter
     fields:
       - bits: "31:0"
@@ -356,7 +356,7 @@ registers0:
         description: Package counter
 
   - name: RO_OMCLK_PKG_CNT
-    offset: 0x001a
+    offset: 0x1a
     description: OMCLK package counter
     fields:
       - bits: "31:0"
@@ -366,7 +366,7 @@ registers0:
         description: Package counter
 
   - name: RO_AUD_LOCK_INT_STATUS
-    offset: 0x001b
+    offset: 0x1b
     description: Interrupt status
     fields:
       - bits: "31:0"

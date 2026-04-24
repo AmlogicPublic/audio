@@ -4,11 +4,11 @@ parent_base: audio_top_ee
 instances:
   A:
     offset_base0: 0xa2
-    condition: { macro_path: ["ddr_arb", "imp"], eq: 1 }
+    condition: { macro_path: [ "ddr_arb", "imp" ], eq: 1 }
 
 registers0:
   - name: AM2AXI_CTRL0
-    offset: 0x00
+    offset: 0x0
     description: AM2AXI control 0
     fields:
       - bits: "31:28"
@@ -88,7 +88,7 @@ registers0:
         description: ugt_max
 
   - name: AM2AXI_CTRL1
-    offset: 0x01
+    offset: 0x1
     description: AM2AXI control 1
     fields:
       - bits: "31:28"
@@ -168,7 +168,7 @@ registers0:
         description: ugt_max
 
   - name: AXI_ASYNC_CTRL0
-    offset: 0x02
+    offset: 0x2
     description: AXI async control
     fields:
       - bits: "6"
@@ -203,7 +203,7 @@ registers0:
         description: "disable clk (wr_async)"
 
   - name: AM2AXI_STS
-    offset: 0x07
+    offset: 0x7
     description: AM2AXI status
     fields:
       - bits: "1"
@@ -218,7 +218,7 @@ registers0:
         description: arb_rd_busy
 
   - name: AXI_ASYNC_STS
-    offset: 0x08
+    offset: 0x8
     description: AXI async status
     fields:
       - bits: "31:28"
