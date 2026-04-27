@@ -1572,8 +1572,7 @@ registers0:
         name: clk_sel
         access: R/W
         default: "0x0"
-        description: "0:cts_oscin; 1:hifi1_pll; 4:hifi0_pll; 5:fclk_div3; 6:fclk_div4;
-          7:fclk_div5"
+        description: "0-7: pll0-pll7"
       - bits: "15:0"
         name: clk_div
         access: R/W
@@ -1599,8 +1598,7 @@ registers0:
         name: clk_sel
         access: R/W
         default: "0x0"
-        description: "0:cts_oscin; 1:hifi1_pll; 4:hifi0_pll; 5:fclk_div3; 6:fclk_div4;
-          7:fclk_div5"
+        description: "0-7: pll0-pll7"
       - bits: "15:0"
         name: clk_div
         access: R/W
@@ -1629,8 +1627,7 @@ registers0:
         name: clk_sel
         access: R/W
         default: "0x0"
-        description: "0:cts_oscin; 1:hifi1_pll; 4:hifi0_pll; 5:fclk_div3; 6:fclk_div4;
-          7:fclk_div5"
+        description: "0-7: pll0-pll7"
       - bits: "15:0"
         name: clk_div
         access: R/W
@@ -1656,8 +1653,7 @@ registers0:
         name: clk_sel
         access: R/W
         default: "0x0"
-        description: "0:cts_oscin; 1:hifi1_pll; 4:hifi0_pll; 5:fclk_div3; 6:fclk_div4;
-          7:fclk_div5"
+        description: "0-7: pll0-pll7"
       - bits: "15:0"
         name: clk_div
         access: R/W
