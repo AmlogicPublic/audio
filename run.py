@@ -1066,7 +1066,7 @@ def main():
 
     # output md
     OUTPUT_DIR.mkdir(exist_ok=True)
-    md_path = OUTPUT_DIR / f"audio_spec_{CHIP}.md"
+    md_path = OUTPUT_DIR / f"{CHIP}_audio_spec.md"
     if md_path.exists():
         md_path.unlink()
 
